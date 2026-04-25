@@ -442,7 +442,7 @@
 <body>
 
 <div class="topbar">
-  <div class="topbar-logo">Salvador <span>Financiero</span></div>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" style="text-decoration:none;cursor:pointer;"><div class="topbar-logo">Salvador <span>Financiero</span></div></a>
   <div class="topbar-tag">Cuestionario de Perfil de Riesgo</div>
 </div>
 
@@ -692,7 +692,7 @@
     <div class="err" id="err-3">Por favor responde todas las preguntas antes de continuar.</div>
     <div class="btn-row">
       <button class="btn-back" onclick="goBack(3)">← Regresar</button>
-      <button class="btn-next" onclick="calcular()">Ver mi perfil →</button>
+      <button class="btn-next" onclick="calcular()" style="width:100%;padding:20px;font-size:1rem;letter-spacing:0.15em;margin-top:8px;">📤 Enviar y ver mi perfil →</button>
     </div>
   </div>
 
@@ -908,6 +908,31 @@ function calcular() {
   ].map(function(item){
     return '<div style="background:white;padding:10px 12px;border:1px solid #ccc8bc;"><div style="font-family:DM Mono,monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#999;margin-bottom:3px;">'+item[0]+'</div><div style="font-family:DM Mono,monospace;font-size:0.75rem;color:#1c3a1e;font-weight:500;word-break:break-all;">'+item[1]+'</div></div>';
   }).join('');
+
+  // ── SEND TO MAKE WEBHOOK ──
+  var webhookUrl = 'https://hook.us1.make.com/ldc86a9ejku0es5fdnv1gm0xmnjbujik'; // <-- aquí va tu URL de Make
+  var payload = {
+    nombres: state.nombres,
+    apellidos: state.apellidos,
+    edad: state.edad,
+    telefono: state.telefono,
+    correo: state.correo,
+    regimen: state.regimen,
+    interesa: state.interesa,
+    emergencia: state.emergencia,
+    capital: state.capital || 'No definido',
+    semanal: state.semanal,
+    canal: state.canal,
+    perfil: profile,
+    puntaje: total + ' / 32',
+    q1: state.q1, q2: state.q2, q3: state.q3, q4: state.q4,
+    q5: state.q5, q6: state.q6, q7: state.q7, q8: state.q8
+  };
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function(e){ console.log('Webhook error:', e); });
 
   showStep('result');
 }
