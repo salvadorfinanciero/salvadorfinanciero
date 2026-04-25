@@ -46,7 +46,7 @@
     padding:60px 44px 60px 60px;min-height:calc(100vh - 80px);
     display:flex;flex-direction:column;justify-content:center;
     border-right:4px solid var(--sage);
-  }
+  background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;}
   .hero-issue{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:28px;}
   .hero-issue::before{content:'';display:block;width:22px;height:2px;background:var(--fern);}
   .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8.5vw,8rem);line-height:0.9;color:var(--white);letter-spacing:0.01em;}
@@ -403,7 +403,7 @@
   .modelo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--white);letter-spacing:0.04em;line-height:1;margin-bottom:10px;}
   .modelo-subtitle{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--fern);letter-spacing:0.1em;}
   .modelo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;}
-  .modelo-card{background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.14);padding:36px;transition:border-color .2s,background .2s;}
+  .modelo-card{background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;transition:border-color .2s,background .2s;}
   .modelo-card:hover{background:rgba(255,255,255,0.1);border-color:var(--fern);}
   .mc-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--sage);line-height:1;margin-bottom:12px;}
   .mc-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
@@ -557,12 +557,12 @@
 </nav>
 
 <section id="hero">
-  <div class="hero-left">
+  <div class="hero-left" style="background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;">
     <div class="hero-issue">Asesor Financiero Independiente · CDMX</div>
     <h1 class="hero-title">Gestión<br>de portafolios<br><span class="hi">de inversión.</span></h1>
     <div class="hero-rule"></div>
     <p class="hero-subtitle">Gestión de portafolios personalizada · Asesoría financiera independiente · Acceso a mercados internacionales</p>
-    <a href="https://bit.ly/salvadorfinanciero" target="_blank" class="hero-cta">Descubre tu Perfil de Riesgo ✦</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="hero-cta">Descubre tu Perfil de Riesgo ✦</a>
     
     
   </div>
@@ -627,20 +627,20 @@
   </div>
 </section>
 
-<section id="modelo" style="background:#1c3a1e;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
+<section id="modelo" style="background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
   <div style="text-align:center;margin-bottom:52px;">
     <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;">Cómo trabajamos ✦</div>
     <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
     <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;">
-    <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.14);padding:36px;">
+    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">01</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:white;margin-bottom:14px;">Suscripción mensual</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.65;margin-bottom:18px;">Una vez que empiezas a fondear tu cuenta (en la casa de bolsa de tu elección), entro a gestionar tu portafolio semana a semana — colocando órdenes de compra con un análisis previo, personalizado a tus objetivos y horizonte de inversión. Todo con seguimiento constante y disponibilidad directa. Pagas una suscripción mensual fija, como Netflix, pero para tu patrimonio.</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">Desde $299 / mes · según tu nivel de inversión</div>
     </div>
-    <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.14);padding:36px;">
+    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">02</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:white;margin-bottom:14px;">Bono de éxito anual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;">Solo si hay rendimiento</span></div>
       <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.65;margin-bottom:18px;">Al cierre del año revisamos cuánto creció tu inversión. Si hubo rendimiento, cobro un porcentaje únicamente sobre esa ganancia. Si no ganaste, yo no cobro ese bono. Así los dos tenemos el mismo objetivo: que tu dinero crezca.</div>
@@ -728,7 +728,7 @@
       <span class="chip hi">Moderado ✦</span>
       <span class="chip">Agresivo</span>
     </div>
-    <a href="https://bit.ly/salvadorfinanciero" target="_blank" class="p-btn">Comenzar cuestionario →</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="p-btn">Comenzar cuestionario →</a>
   </div>
   </div>
   <div class="reveal" style="position:relative;z-index:2;">
