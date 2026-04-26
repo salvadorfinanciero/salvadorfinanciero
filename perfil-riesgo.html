@@ -694,7 +694,7 @@
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;margin-top:16px;">
       <input type="checkbox" id="acepto-terminos" style="margin-top:3px;accent-color:var(--forest);width:16px;height:16px;flex-shrink:0;">
       <label for="acepto-terminos" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:#555;line-height:1.5;cursor:pointer;">
-        He leído y acepto los <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/terminos-y-condiciones.html" target="_blank" style="color:var(--forest);font-weight:600;">Términos y Condiciones</a> y el Aviso de Privacidad de Salvador Financiero.
+        He leído y acepto los <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/terminos-y-condiciones.html" target="_blank" style="color:var(--forest);font-weight:600;">Términos y Condiciones</a> y el <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html" target="_blank" style="color:var(--forest);font-weight:600;">Aviso de Privacidad</a> de Salvador Financiero.
       </label>
     </div>
     <div class="err" id="err-terminos" style="display:none;color:#c0392b;font-size:0.7rem;margin-bottom:8px;">Debes aceptar los Términos y Condiciones para continuar.</div>
@@ -950,6 +950,7 @@ function calcular() {
     capital: state.capital || 'No definido',
     semanal: state.semanal,
     canal: state.canal,
+    terminos_aceptados: 'Sí',
     perfil: profile,
     puntaje: total + ' / 32',
     q1: state.q1_texto || '', q2: state.q2_texto || '',
