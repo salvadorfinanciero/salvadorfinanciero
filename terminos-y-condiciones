@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light">
+<title>Términos y Condiciones — Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1c3a1e;
+    --pine: #2d5a30;
+    --sage: #5a7a4a;
+    --fern: #a8c498;
+    --cream: #f5f3ee;
+    --white: #ffffff;
+    --soft: #999;
+    --rule: #ccc8bc;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background:var(--cream);
+    font-family:'DM Mono',monospace;
+    color:var(--forest);
+    background-image:linear-gradient(rgba(28,58,30,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);
+    background-size:36px 36px;
+  }
+
+  /* NAV */
+  nav {
+    background:var(--forest);
+    padding:18px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:0.5px solid rgba(255,255,255,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+  }
+  .nav-brand {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.3rem;
+    letter-spacing:0.1em;
+    color:var(--white);
+    text-decoration:none;
+  }
+  .nav-brand span { color:var(--fern); }
+  .nav-back {
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--fern);
+    text-decoration:none;
+    transition:color .2s;
+  }
+  .nav-back:hover { color:white; }
+
+  /* HERO */
+  .hero {
+    background:var(--forest);
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+    background-size:36px 36px;
+    padding:60px 40px 48px;
+    border-bottom:3px solid var(--sage);
+  }
+  .hero-eyebrow {
+    font-size:0.62rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--fern);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .hero-eyebrow span {
+    display:block;
+    width:24px;
+    height:2px;
+    background:var(--fern);
+  }
+  .hero h1 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2.5rem,6vw,4rem);
+    color:var(--white);
+    letter-spacing:0.04em;
+    line-height:1;
+    margin-bottom:12px;
+  }
+  .hero-date {
+    font-size:0.62rem;
+    letter-spacing:0.15em;
+    color:rgba(255,255,255,0.4);
+    text-transform:uppercase;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width:760px;
+    margin:0 auto;
+    padding:60px 40px 80px;
+  }
+
+  /* SECTION */
+  .section {
+    background:var(--white);
+    border-left:4px solid var(--forest);
+    padding:32px 36px;
+    margin-bottom:16px;
+    box-shadow:0 2px 12px rgba(28,58,30,0.06);
+  }
+  .section-num {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:2rem;
+    color:rgba(28,58,30,0.1);
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .section h2 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.1rem;
+    letter-spacing:0.08em;
+    color:var(--forest);
+    margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--rule);
+  }
+  .section p {
+    font-size:0.78rem;
+    line-height:1.75;
+    color:#444;
+    margin-bottom:12px;
+  }
+  .section p:last-child { margin-bottom:0; }
+  .section ul {
+    list-style:none;
+    margin:8px 0 12px;
+  }
+  .section ul li {
+    font-size:0.78rem;
+    line-height:1.7;
+    color:#444;
+    padding-left:16px;
+    position:relative;
+    margin-bottom:4px;
+  }
+  .section ul li::before {
+    content:'✦';
+    position:absolute;
+    left:0;
+    color:var(--sage);
+    font-size:0.5rem;
+    top:4px;
+  }
+  strong { color:var(--forest); font-weight:600; }
+
+  /* AVISO */
+  .aviso {
+    background:var(--forest);
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+    background-size:36px 36px;
+    border-left:4px solid var(--fern);
+    padding:32px 36px;
+    margin-bottom:16px;
+  }
+  .aviso h2 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.1rem;
+    letter-spacing:0.08em;
+    color:var(--white);
+    margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+  }
+  .aviso p {
+    font-size:0.78rem;
+    line-height:1.75;
+    color:rgba(255,255,255,0.75);
+  }
+  .aviso a {
+    color:var(--fern);
+    text-decoration:none;
+  }
+
+  /* FOOTER */
+  footer {
+    background:var(--forest);
+    padding:20px 40px;
+    text-align:center;
+    border-top:3px solid var(--sage);
+  }
+  .footer-brand {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.1rem;
+    letter-spacing:0.12em;
+    color:var(--white);
+    margin-bottom:4px;
+  }
+  .footer-brand span { color:var(--fern); }
+  .footer-sub {
+    font-size:0.55rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.35);
+  }
+  .disclaimer {
+    font-size:0.58rem;
+    color:rgba(255,255,255,0.3);
+    line-height:1.6;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-style:italic;
+  }
+
+  @media(max-width:600px){
+    nav { padding:14px 20px; }
+    .hero { padding:40px 20px 32px; }
+    .container { padding:32px 20px 60px; }
+    .section { padding:24px 20px; }
+    .aviso { padding:24px 20px; }
+    footer { padding:20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Regresar</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span></span>
+    Salvador Financiero
+    <span></span>
+  </div>
+  <h1>Términos y<br>Condiciones</h1>
+  <div class="hero-date">Última actualización: Abril 2026</div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-num">01</div>
+    <h2>Naturaleza del Servicio</h2>
+    <p>Salvador Financiero, representado por <strong>Miguel S. Valdez V.</strong>, ofrece servicios de <strong>mentoría patrimonial y consultoría educativa en finanzas personales</strong>.</p>
+    <p>Salvador Financiero <strong>no</strong> es una casa de bolsa, institución financiera, ni asesor en inversiones certificado ante la CNBV o AMIB. Los servicios prestados no constituyen asesoría financiera certificada ni gestión institucional de carteras.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">02</div>
+    <h2>Alcance del Servicio</h2>
+    <p>Los servicios incluyen acompañamiento estratégico, análisis de portafolio, consultoría técnica y optimización de finanzas personales.</p>
+    <p>Cualquier ejecución de operaciones en plataformas de inversión de terceros se realiza <strong>bajo el mandato, supervisión y autorización expresa del cliente</strong>. Salvador Financiero no puede ni realiza retiros de recursos a cuentas externas — únicamente operaciones de compra y venta de valores.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">03</div>
+    <h2>Mandato de Ejecución</h2>
+    <p>El cliente autoriza expresamente cada operación al proporcionar el <strong>token de acceso temporal</strong> solicitado por Salvador Financiero previo a cada sesión de gestión. Dicho token tiene caducidad inmediata y su entrega constituye autorización válida para ejecutar las operaciones acordadas en ese horario.</p>
+    <p>Las operaciones se realizan en el horario previamente acordado entre ambas partes a través de los canales de comunicación oficiales (WhatsApp o Instagram). Los registros de dichas comunicaciones constituyen evidencia válida del mandato otorgado.</p>
+    <p>Salvador Financiero se compromete a <strong>no almacenar ni compartir</strong> las credenciales de acceso del cliente con terceros.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">04</div>
+    <h2>Uso de la Información</h2>
+    <p>La información proporcionada en el cuestionario de perfil de riesgo es utilizada exclusivamente para:</p>
+    <ul>
+      <li>Determinar el perfil de inversión del usuario</li>
+      <li>Contactar al usuario a través de Instagram (@salvadorfinanciero), correo electrónico o el número de teléfono proporcionado en el cuestionario</li>
+      <li>Mejorar los servicios ofrecidos</li>
+    </ul>
+    <p>No se comparte, vende ni transfiere información a terceros.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">05</div>
+    <h2>Esquema de Cobro</h2>
+    <p>El modelo de cobro se compone de dos elementos:</p>
+    <ul>
+      <li><strong>Suscripción mensual:</strong> cuota fija según el plan contratado, acordada al inicio de la relación</li>
+      <li><strong>Bono de éxito anual:</strong> porcentaje sobre la ganancia neta real generada durante el año, calculado sobre el capital invertido y el rendimiento obtenido según la tabla de precios presentada al cliente</li>
+    </ul>
+    <p>Si no existe rendimiento positivo al cierre del año, <strong>no se cobra bono de éxito</strong>. El esquema completo es presentado y acordado con el cliente antes de iniciar el servicio.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">06</div>
+    <h2>Rendimientos y Riesgos</h2>
+    <p>Los rendimientos pasados <strong>no garantizan rendimientos futuros</strong>. Toda inversión conlleva riesgos inherentes al mercado.</p>
+    <p>Salvador Financiero no garantiza resultados específicos ni asume responsabilidad por pérdidas derivadas de las decisiones de inversión del cliente. El cliente declara haber sido informado de los riesgos antes de iniciar el servicio.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">07</div>
+    <h2>Canales de Comunicación Oficiales</h2>
+    <p>Los canales oficiales de comunicación entre Salvador Financiero y el cliente son <strong>WhatsApp</strong> e <strong>Instagram (@salvadorfinanciero)</strong>. Los registros y acuerdos establecidos a través de estos canales son válidos y constituyen evidencia de los mandatos otorgados.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">08</div>
+    <h2>Contrato de Prestación de Servicios</h2>
+    <p>Todo cliente que contrate los servicios de Salvador Financiero deberá firmar un <strong>Contrato de Prestación de Servicios de Mentoría Patrimonial</strong> previo al inicio de la relación comercial.</p>
+    <p>Dicho contrato establece:</p>
+    <ul>
+      <li>El alcance exacto del servicio contratado</li>
+      <li>El mandato de ejecución otorgado por el cliente</li>
+      <li>El esquema de cobro pactado (suscripción mensual y bono de éxito anual)</li>
+      <li>Los derechos y obligaciones de ambas partes</li>
+      <li>Las condiciones de terminación del servicio</li>
+    </ul>
+    <p>Ninguna operación será ejecutada sin que el contrato esté debidamente firmado por ambas partes.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">09</div>
+    <h2>Confidencialidad</h2>
+    <p>Toda información compartida entre el cliente y Salvador Financiero se maneja con <strong>estricta confidencialidad</strong> y no será divulgada a terceros sin autorización expresa del cliente.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">10</div>
+    <h2>Modificaciones</h2>
+    <p>Salvador Financiero se reserva el derecho de modificar estos términos en cualquier momento. Los cambios serán notificados a través de los canales oficiales.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">11</div>
+    <h2>Jurisdicción</h2>
+    <p>Estos términos se rigen por las leyes de los <strong>Estados Unidos Mexicanos</strong>. Cualquier controversia será resuelta en los tribunales competentes de la Ciudad de México.</p>
+  </div>
+
+  <div class="aviso">
+    <h2>Aviso de Privacidad</h2>
+    <p>Miguel S. Valdez V., como responsable del tratamiento de sus datos personales, informa que la información recabada a través del cuestionario de perfil de riesgo (nombre, correo, teléfono, edad y preferencias financieras) será utilizada únicamente para contactarle y ofrecer los servicios de mentoría patrimonial de Salvador Financiero.</p>
+    <br>
+    <p>Usted tiene derecho a acceder, rectificar, cancelar u oponerse al tratamiento de sus datos personales escribiendo a <a href="mailto:info.salvadorfinanciero@gmail.com">info.salvadorfinanciero@gmail.com</a>.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">Salvador <span>Financiero</span></div>
+  <div class="footer-sub">Mentoría Patrimonial Independiente · CDMX</div>
+  <div class="disclaimer">Salvador Financiero ofrece servicios de consultoría y mentoría educativa. La ejecución de operaciones en plataformas de terceros se realiza bajo el mandato, supervisión y autorización expresa del cliente. No se realiza captación de recursos ni gestión de cartera institucional.</div>
+</footer>
+
+</body>
+</html>
