@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="light">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Cuestionario de Perfil · Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -460,7 +460,7 @@
     <span style="display:block;width:24px;height:2px;background:var(--fern);"></span>
   </div>
   <h1 class="hero-h1" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,7vw,5rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:16px;transition:font-size .3s;">Cuestionario de<br>Perfil de Riesgo</h1>
-  <p class="hero-desc" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:520px;margin:0 auto;line-height:1.65;transition:all .3s;">Responde con honestidad — no hay respuestas correctas ni incorrectas. Con base en tus respuestas me pondré en contacto contigo para platicar tu estrategia de inversión y darte una atención a tu medida.</p>
+  <p class="hero-desc" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:520px;margin:0 auto;line-height:1.65;transition:all .3s;">3 minutos. Tu perfil de inversión dice más de lo que crees — descúbrelo ahora.</p>
 </div>
 
 <div class="container">
@@ -468,7 +468,6 @@
   <!-- ══ STEP 1: Datos personales ══ -->
   <div class="step active" id="step-1">
     <div class="section-intro">
-      <div class="section-badge">Sección I · Datos Personales</div>
       <div class="section-title">Cuéntame sobre ti</div>
       <div class="section-desc">Esta información me permite conocerte y darte el seguimiento que mereces.</div>
     </div>
@@ -729,14 +728,11 @@
     <!-- CTA -->
     <div style="background:var(--pine);padding:24px 28px;border:2px solid var(--forest);border-top:none;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:8px;">¡Gracias por completar el cuestionario!</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:18px;">Hemos recibido tu información. Pronto recibirás un mensaje desde la cuenta de Instagram <strong style="color:var(--fern);">@salvadorfinanciero</strong> para platicar los siguientes pasos y darte una atención a tu medida.</div>
-      <a href="https://instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:var(--white);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 28px;text-decoration:none;">Ver @salvadorfinanciero →</a>
+      <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:18px;">Recuerda seguirnos en Instagram — ahí es donde nos vamos a contactar contigo.</div>
+      <a href="https://www.instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:var(--white);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 28px;text-decoration:none;">IG @salvadorfinanciero →</a>
     </div>
 
-    <div class="btn-row" style="margin-top:16px;">
-      <button class="btn-back" onclick="showStep(3)">← Regresar a preguntas</button>
-      <button class="btn-restart" onclick="restart()">↺ Reiniciar cuestionario</button>
-    </div>
+    <button class="btn-restart" onclick="restart()" style="margin-top:16px;">↺ Reiniciar cuestionario</button>
   </div>
 
 </div>
@@ -763,6 +759,15 @@ function updateProgress(step) {
 
 function showStep(n) {
   document.querySelectorAll('.step').forEach(function(s){ s.classList.remove('active'); });
+  // Hide progress bar and label on step 1
+  var progressWrap = document.querySelector('.progress-wrap');
+  if (progressWrap) {
+    progressWrap.style.display = (n === 1) ? 'none' : 'block';
+  }
+  var progressLabel = document.getElementById('progress-label');
+  if (progressLabel) {
+    progressLabel.style.display = (n === 1) ? 'none' : 'block';
+  }
   var el = (n === 'result') ? document.getElementById('step-result') : document.getElementById('step-'+n);
   if (el) el.classList.add('active');
   updateProgress(n);
@@ -938,6 +943,7 @@ function calcular() {
   };
   fetch(webhookUrl, {
     method: 'POST',
+    mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).catch(function(e){ console.log('Webhook error:', e); });
