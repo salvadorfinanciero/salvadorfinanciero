@@ -29,7 +29,7 @@
 
 
   nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-logo span{color:var(--fern);}
   .nav-back{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
   .nav-back:hover{color:var(--fern);}
@@ -90,8 +90,22 @@
   .insight-box strong{color:var(--sage);font-style:normal;}
 
   .chart-section{margin-bottom:24px;}
-  .chart-watermark{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.14em;color:rgba(28,58,30,0.05);line-height:1;padding:0 2px 4px 2px;user-select:none;pointer-events:none;}
-  .chart-watermark span{color:rgba(90,122,74,0.06);}
+  .chart-wrap{position:relative;}
+  .chart-wm-overlay{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(1.4rem,6vw,2.8rem);
+    letter-spacing:0.14em;
+    color:rgba(28,58,30,0.08);
+    white-space:nowrap;
+    pointer-events:none;
+    user-select:none;
+    z-index:1;
+    line-height:1;
+  }
+  .chart-wm-overlay span{color:rgba(90,122,74,0.1);}
   .chart-wrap{position:relative;height:240px;background:var(--cream);border:1.5px solid var(--rule);padding:10px 12px 12px;margin-bottom:0;}
 
   .zoom-controls{background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:10px 14px;}
@@ -130,7 +144,7 @@
     .result-card .rc-value{font-size:2rem;}
     .result-card.total .rc-value{font-size:2.6rem;}
     .multiplier-badge{font-size:0.55rem;}
-    .chart-watermark{font-size:1.4rem;}
+
     .zoom-controls{overflow-x:hidden;}
     .cta-body{flex-direction:column;align-items:flex-start;}
     .zoom-presets{gap:4px;}
@@ -144,7 +158,7 @@
 <body>
 
 <nav>
-  <div class="nav-logo">Salvador <span>Financiero</span></div>
+  <a href="index.html" class="nav-logo">Salvador <span>Financiero</span></a>
   <a href="index.html" class="nav-back">← Regresar al inicio</a>
 </nav>
 
@@ -233,8 +247,8 @@
     </div>
 
     <div class="chart-section">
-      <div class="chart-watermark">Salvador <span>Financiero</span></div>
       <div class="chart-wrap">
+        <div class="chart-wm-overlay">Salvador <span>Financiero</span></div>
         <canvas id="myChart"></canvas>
       </div>
       <div class="zoom-controls">
@@ -332,20 +346,7 @@
     document.getElementById('zp-todo').dataset.hasta = anos;
   }
 
-  const watermarkPlugin = {
-    id: 'watermark',
-    beforeDraw(ch){
-      const { ctx, chartArea: { left, top, width, height } } = ch;
-      ctx.save();
-      ctx.globalAlpha = 0.022;
-      ctx.fillStyle = '#1c3a1e';
-      ctx.font = `bold ${Math.round(width * 0.09)}px 'Bebas Neue', sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('SALVADOR FINANCIERO', left + width / 2, top + height / 2);
-      ctx.restore();
-    }
-  };
+  const watermarkPlugin = { id: 'watermark' }; // watermark is HTML overlay
 
   function renderChart(){
     const slice = getZoomSlice();
@@ -359,7 +360,7 @@
       const ctx = document.getElementById('myChart').getContext('2d');
       chart = new Chart(ctx, {
         type: 'line',
-        plugins: [watermarkPlugin],
+        plugins: [],
         data: { labels: slice.labels, datasets: [
           { label: 'Total acumulado',  data: slice.dT, borderColor: COLOR_TOTAL,   backgroundColor: 'rgba(58,125,68,0.1)',   borderWidth: 3,   fill: true,  tension: 0.35, pointRadius: 3, pointBackgroundColor: COLOR_TOTAL,   pointHoverRadius: 6, pointHoverBackgroundColor: COLOR_TOTAL },
           { label: 'Capital aportado', data: slice.dA, borderColor: COLOR_CAPITAL, backgroundColor: 'rgba(74,158,106,0.07)', borderWidth: 2.5, borderDash: [6,3], fill: true,  tension: 0.35, pointRadius: 2, pointBackgroundColor: COLOR_CAPITAL, pointHoverRadius: 5, pointHoverBackgroundColor: COLOR_CAPITAL },
