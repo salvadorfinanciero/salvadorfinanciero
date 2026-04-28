@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1c3a1e">
+<title>Calculadora de Interés Compuesto · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --forest:   #1c3a1e;
+    --pine:     #2d5a30;
+    --sage:     #5a7a4a;
+    --fern:     #a8c498;
+    --white:    #ffffff;
+    --cream:    #f5f3ee;
+    --ink:      #1a1a1a;
+    --mid:      #555;
+    --soft:     #999;
+    --rule:     #ccc8bc;
+    --c-total:   #3a7d44;
+    --c-capital: #4a9e6a;
+    --c-interes: #c47d0e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;background:var(--white);}
+
+  nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);}
+  .nav-logo span{color:var(--fern);}
+  .nav-back{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
+  .nav-back:hover{color:var(--fern);}
+
+  .hero-band{padding:64px 60px 56px;background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px;border-bottom:3px solid var(--sage);}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,7.5rem);line-height:0.88;color:var(--white);letter-spacing:0.01em;margin-bottom:24px;}
+  h1 span{color:var(--fern);display:block;margin-top:0.18em;}
+  .hero-rule{width:100%;max-width:560px;height:2px;background:var(--sage);margin-bottom:20px;}
+  .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:480px;line-height:1.65;}
+
+  .main-grid{display:grid;grid-template-columns:1fr 1.5fr;min-height:calc(100vh - 200px);}
+
+  .panel-inputs{padding:44px 52px;border-right:3px solid var(--forest);background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.07) 1px,transparent 1px);background-size:36px 36px;}
+  .input-group{margin-bottom:36px;}
+  .input-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--forest);font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .input-label::before{content:'';display:inline-block;width:14px;height:2px;background:var(--sage);flex-shrink:0;}
+  .input-value{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--forest);letter-spacing:0.02em;margin-bottom:12px;line-height:1;}
+  .input-value span{font-size:0.9rem;color:var(--mid);font-family:'DM Mono',monospace;}
+
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.2);outline:none;border-radius:2px;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);transition:transform .15s;}
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}
+  .range-labels{display:flex;justify-content:space-between;margin-top:6px;}
+  .range-labels span{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(28,58,30,0.35);letter-spacing:0.08em;}
+
+  .inversion-selector{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px;margin-bottom:10px;}
+  .inv-btn{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;letter-spacing:0.02em;padding:12px 4px;border:1.5px solid var(--rule);background:var(--white);color:var(--mid);cursor:pointer;text-align:center;transition:all .18s;}
+  .inv-btn:hover{border-color:var(--sage);color:var(--forest);}
+  .inv-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);}
+
+  .custom-input-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--rule);background:var(--white);padding:8px 12px;transition:border-color .18s;margin-top:4px;}
+  .custom-input-wrap:focus-within{border-color:var(--sage);}
+  .custom-input-wrap label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--soft);white-space:nowrap;text-transform:uppercase;}
+  .custom-input-wrap input[type=number]{flex:1;border:none;outline:none;background:transparent;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--forest);letter-spacing:0.05em;width:100%;-moz-appearance:textfield;}
+  .custom-input-wrap input[type=number]::-webkit-outer-spin-button,
+  .custom-input-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .custom-apply-btn{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 12px;background:var(--forest);color:var(--white);border:none;cursor:pointer;transition:background .18s;white-space:nowrap;}
+  .custom-apply-btn:hover{background:var(--sage);}
+
+  .panel-results{padding:44px 52px;background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;}
+  .multiplier-badge{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);margin-bottom:22px;}
+
+  .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+  .result-card{background:var(--forest);padding:20px 22px;}
+  .result-card .rc-label{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:8px;}
+  .result-card .rc-value{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--fern);letter-spacing:0.02em;line-height:1;}
+  .result-card .rc-sub{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.35);margin-top:5px;}
+  .result-card.card-capital{border:2px solid var(--c-capital);border-top:4px solid var(--c-capital);}
+  .result-card.card-interes{border:2px solid var(--c-interes);border-top:4px solid var(--c-interes);}
+  .result-card.total{grid-column:span 2;background:var(--pine);border:2px solid var(--c-total);border-top:4px solid var(--c-total);}
+  .result-card.total .rc-label{color:rgba(255,255,255,0.5);}
+  .result-card.total .rc-value{font-size:3.2rem;color:var(--white);}
+  .result-card.total .rc-sub{color:rgba(255,255,255,0.35);}
+
+  .insight-box{background:var(--cream);border-left:3px solid var(--sage);padding:14px 18px;margin-bottom:16px;}
+  .insight-box p{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:var(--forest);line-height:1.55;}
+  .insight-box strong{color:var(--sage);font-style:normal;}
+
+  .chart-section{margin-bottom:24px;}
+  .chart-watermark{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.14em;color:rgba(28,58,30,0.05);line-height:1;padding:0 2px 4px 2px;user-select:none;pointer-events:none;}
+  .chart-watermark span{color:rgba(90,122,74,0.06);}
+  .chart-wrap{position:relative;height:240px;background:var(--cream);border:1.5px solid var(--rule);padding:10px 12px 12px;margin-bottom:0;}
+
+  .zoom-controls{background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:10px 14px;}
+  .zoom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+  .zoom-item label{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:3px;}
+  .zoom-item .zoom-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--forest);line-height:1;margin-bottom:3px;}
+  .zoom-item input[type=range]{background:rgba(28,58,30,0.15);}
+  .zoom-presets{display:flex;gap:5px;flex-wrap:wrap;}
+  .zp-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.05em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--rule);background:var(--white);color:var(--soft);cursor:pointer;transition:all .15s;}
+  .zp-btn:hover{border-color:var(--sage);color:var(--forest);}
+  .zp-btn.active{background:var(--sage);border-color:var(--sage);color:var(--white);}
+
+  .cta-section{border-top:2px solid var(--rule);padding-top:24px;}
+  .cta-body{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .cta-text{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);line-height:1.9;flex:1;}
+  .cta-btn{display:inline-block;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 36px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:4px 4px 0 var(--pine);white-space:nowrap;flex-shrink:0;}
+  .cta-btn:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pine);}
+
+  footer{background:var(--forest);padding:22px 60px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--sage);flex-wrap:wrap;gap:10px;}
+  .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);letter-spacing:0.1em;}
+  .flogo span{color:var(--fern);}
+  .ftext{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;}
+  .flinks{display:flex;gap:16px;align-items:center;}
+  .flinks a{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color .2s;}
+  .flinks a:hover{color:var(--fern);}
+
+  @media(max-width:768px){
+    nav{padding:14px 20px;}
+    .hero-band{padding:40px 24px;}
+    .main-grid{grid-template-columns:1fr;}
+    .panel-inputs{border-right:none;border-bottom:3px solid var(--forest);padding:32px 24px;}
+    .panel-results{padding:32px 24px;}
+    .inversion-selector{grid-template-columns:repeat(3,1fr);}
+    .cta-body{flex-direction:column;align-items:flex-start;}
+    footer{flex-direction:column;gap:10px;padding:20px 24px;text-align:center;}
+    .flinks{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Salvador <span>Financiero</span></div>
+  <a href="index.html" class="nav-back">← Regresar al inicio</a>
+</nav>
+
+<div class="hero-band">
+  <h1>Calculadora de<br><span>Interés Compuesto</span></h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">Descubre el poder del tiempo y la constancia. Ajusta los parámetros y observa cómo tu dinero puede crecer solo.</p>
+</div>
+
+<div class="main-grid">
+  <div class="panel-inputs">
+
+    <div class="input-group">
+      <label class="input-label">Capital inicial</label>
+      <div class="input-value" id="display-capital">$10,000 <span>MXN</span></div>
+      <input type="range" id="slider-capital" min="1000" max="500000" step="1000" value="10000">
+      <div class="range-labels"><span>$1,000</span><span>$500,000</span></div>
+      <div class="custom-input-wrap" style="margin-top:12px;">
+        <label>Otro monto:</label>
+        <input type="number" id="custom-capital" placeholder="Ej. 10,000 MXN" min="0" step="100">
+        <button class="custom-apply-btn" id="apply-capital">Aplicar</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Aportación mensual aproximada</label>
+      <div class="input-value" id="display-mensual">$1,200 <span>MXN / mes · $300 a la semana</span></div>
+      <div class="inversion-selector" id="inv-selector">
+        <button class="inv-btn" data-val="1000">$1,000</button>
+        <button class="inv-btn active" data-val="1200">$1,200</button>
+        <button class="inv-btn" data-val="2000">$2,000</button>
+        <button class="inv-btn" data-val="2500">$2,500</button>
+        <button class="inv-btn" data-val="5000">$5,000</button>
+        <button class="inv-btn" data-val="8000">$8,000</button>
+        <button class="inv-btn" data-val="10000">$10,000</button>
+        <button class="inv-btn" data-val="15000">$15,000</button>
+        <button class="inv-btn" data-val="20000">$20,000</button>
+      </div>
+      <div class="custom-input-wrap">
+        <label>Otro monto:</label>
+        <input type="number" id="custom-mensual" placeholder="Ej. 30,000 MXN" min="100" step="100">
+        <button class="custom-apply-btn" id="apply-mensual">Aplicar</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Rendimiento anual estimado</label>
+      <div class="input-value" id="display-tasa">10 <span>% anual</span></div>
+      <input type="range" id="slider-tasa" min="3" max="25" step="1" value="10">
+      <div class="range-labels"><span>3%</span><span>25%</span></div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Horizonte de inversión</label>
+      <div class="input-value" id="display-anos">15 <span>años</span></div>
+      <input type="range" id="slider-anos" min="1" max="40" step="1" value="15">
+      <div class="range-labels"><span>1 año</span><span>40 años</span></div>
+    </div>
+
+  </div>
+
+  <div class="panel-results">
+
+    <div class="multiplier-badge" id="multiplier-badge">✦ Tu dinero se multiplica 4.2x</div>
+
+    <div class="results-grid">
+      <div class="result-card card-capital">
+        <div class="rc-label">Capital aportado</div>
+        <div class="rc-value" id="res-aportado">—</div>
+        <div class="rc-sub">lo que tú aportas</div>
+      </div>
+      <div class="result-card card-interes">
+        <div class="rc-label">Interés generado</div>
+        <div class="rc-value" id="res-interes">—</div>
+        <div class="rc-sub">lo que el tiempo hace</div>
+      </div>
+      <div class="result-card total">
+        <div class="rc-label">Total acumulado al final</div>
+        <div class="rc-value" id="res-total">—</div>
+        <div class="rc-sub" id="res-sub">en 15 años · rendimiento al 10% anual</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <p id="insight-text">Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.</p>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-watermark">Salvador <span>Financiero</span></div>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="zoom-controls">
+        <div class="zoom-row">
+          <div class="zoom-item">
+            <label>Desde el año</label>
+            <div class="zoom-val" id="zoom-desde-val">0</div>
+            <input type="range" id="zoom-desde" min="0" max="39" step="1" value="0">
+          </div>
+          <div class="zoom-item">
+            <label>Hasta el año</label>
+            <div class="zoom-val" id="zoom-hasta-val">15</div>
+            <input type="range" id="zoom-hasta" min="1" max="40" step="1" value="15">
+          </div>
+        </div>
+        <div class="zoom-presets">
+          <button class="zp-btn" data-desde="0" data-hasta="5">Año 1–5</button>
+          <button class="zp-btn" data-desde="0" data-hasta="10">Año 1–10</button>
+          <button class="zp-btn" data-desde="0" data-hasta="20">Año 1–20</button>
+          <button class="zp-btn" data-desde="0" data-hasta="40">Año 1–40</button>
+          <button class="zp-btn" data-desde="10" data-hasta="30">Año 10–30</button>
+          <button class="zp-btn active" id="zp-todo" data-desde="0" data-hasta="15">Todo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-body">
+        <p class="cta-text">Estos son números orientativos · Con una estrategia personalizada y acompañamiento constante · los resultados pueden ser aún mejores</p>
+        <a href="perfil-riesgo.html" class="cta-btn">Conoce tu perfil de inversión →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="flogo">Salvador <span>Financiero</span></div>
+  <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX, México · Hecho con estrategia ✦</div>
+  <div class="flinks">
+    <a href="terminos-y-condiciones.html">Términos y condiciones</a>
+    <a href="aviso-de-privacidad.html">Aviso de privacidad</a>
+  </div>
+</footer>
+
+<script>
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
+  let capital = 10000, mensual = 1200, tasa = 10, anos = 15;
+  let zoomDesde = 0, zoomHasta = 15;
+  let chart;
+  let fullData = { labels: [], dA: [], dT: [], dI: [] };
+
+  const COLOR_TOTAL   = '#3a7d44';
+  const COLOR_CAPITAL = '#4a9e6a';
+  const COLOR_INTERES = '#c47d0e';
+
+  function semanalLabel(m){ return '$' + Math.round(m / 4).toLocaleString('es-MX') + ' a la semana'; }
+  function updateCapitalDisplay(){ document.getElementById('display-capital').innerHTML = fmt(capital) + ' <span>MXN</span>'; document.getElementById('slider-capital').value = Math.min(capital, 500000); }
+  function updateMensualDisplay(){ document.getElementById('display-mensual').innerHTML = fmt(mensual) + ` <span>MXN / mes · ${semanalLabel(mensual)}</span>`; }
+
+  function buildFullData(){
+    const r = tasa / 100 / 12;
+    fullData.labels = []; fullData.dA = []; fullData.dT = []; fullData.dI = [];
+    for(let y = 0; y <= anos; y++){
+      const m = y * 12; let tot = capital;
+      for(let i = 0; i < m; i++) tot = tot * (1 + r) + mensual;
+      const aport = Math.round(capital + mensual * m);
+      const total = Math.round(tot);
+      fullData.labels.push(y === 0 ? 'Hoy' : `Año ${y}`);
+      fullData.dA.push(aport);
+      fullData.dT.push(total);
+      fullData.dI.push(Math.max(0, total - aport));
+    }
+  }
+
+  function getZoomSlice(){
+    const desde = Math.min(zoomDesde, anos);
+    const hasta  = Math.min(zoomHasta, anos);
+    return {
+      labels: fullData.labels.slice(desde, hasta + 1),
+      dT: fullData.dT.slice(desde, hasta + 1),
+      dA: fullData.dA.slice(desde, hasta + 1),
+      dI: fullData.dI.slice(desde, hasta + 1),
+    };
+  }
+
+  function updateZoomUI(){
+    document.getElementById('zoom-desde').max = Math.max(anos - 1, 0);
+    document.getElementById('zoom-hasta').max = anos;
+    document.getElementById('zoom-desde').value = zoomDesde;
+    document.getElementById('zoom-hasta').value  = zoomHasta;
+    document.getElementById('zoom-desde-val').textContent = zoomDesde;
+    document.getElementById('zoom-hasta-val').textContent  = zoomHasta;
+    // Actualizar el botón "Todo" para que refleje el horizonte actual
+    document.getElementById('zp-todo').dataset.hasta = anos;
+  }
+
+  const watermarkPlugin = {
+    id: 'watermark',
+    beforeDraw(ch){
+      const { ctx, chartArea: { left, top, width, height } } = ch;
+      ctx.save();
+      ctx.globalAlpha = 0.022;
+      ctx.fillStyle = '#1c3a1e';
+      ctx.font = `bold ${Math.round(width * 0.09)}px 'Bebas Neue', sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('SALVADOR FINANCIERO', left + width / 2, top + height / 2);
+      ctx.restore();
+    }
+  };
+
+  function renderChart(){
+    const slice = getZoomSlice();
+    if(chart){
+      chart.data.labels = slice.labels;
+      chart.data.datasets[0].data = slice.dT;
+      chart.data.datasets[1].data = slice.dA;
+      chart.data.datasets[2].data = slice.dI;
+      chart.update('none');
+    } else {
+      const ctx = document.getElementById('myChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'line',
+        plugins: [watermarkPlugin],
+        data: { labels: slice.labels, datasets: [
+          { label: 'Total acumulado',  data: slice.dT, borderColor: COLOR_TOTAL,   backgroundColor: 'rgba(58,125,68,0.1)',   borderWidth: 3,   fill: true,  tension: 0.35, pointRadius: 3, pointBackgroundColor: COLOR_TOTAL,   pointHoverRadius: 6, pointHoverBackgroundColor: COLOR_TOTAL },
+          { label: 'Capital aportado', data: slice.dA, borderColor: COLOR_CAPITAL, backgroundColor: 'rgba(74,158,106,0.07)', borderWidth: 2.5, borderDash: [6,3], fill: true,  tension: 0.35, pointRadius: 2, pointBackgroundColor: COLOR_CAPITAL, pointHoverRadius: 5, pointHoverBackgroundColor: COLOR_CAPITAL },
+          { label: 'Interés generado', data: slice.dI, borderColor: COLOR_INTERES, backgroundColor: 'transparent',            borderWidth: 2.5, borderDash: [3,4], fill: false, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: COLOR_INTERES }
+        ]},
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 300 },
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: {
+                font: { family: 'DM Mono', size: 10 }, boxWidth: 14, padding: 16,
+                generateLabels(ch){
+                  return ch.data.datasets.map((ds, i) => ({
+                    text: ds.label, fillStyle: ds.borderColor, strokeStyle: ds.borderColor,
+                    fontColor: 'rgba(28,58,30,0.6)', lineWidth: 2, datasetIndex: i, hidden: false,
+                  }));
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1c3a1e', borderColor: '#2d5a30', borderWidth: 1,
+              titleColor: '#a8c498', bodyColor: 'rgba(255,255,255,0.85)',
+              titleFont: { family: 'Bebas Neue', size: 14 }, bodyFont: { family: 'DM Mono', size: 11 }, padding: 12,
+              callbacks: {
+                labelColor(c){ const cols = [COLOR_TOTAL, COLOR_CAPITAL, COLOR_INTERES]; return { borderColor: cols[c.datasetIndex], backgroundColor: cols[c.datasetIndex] }; },
+                label: c => ` ${c.dataset.label}: ${fmt(c.raw)}`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(28,58,30,0.08)' }, ticks: { color: 'rgba(28,58,30,0.45)', font: { family: 'DM Mono', size: 10 } } },
+            y: { grid: { color: 'rgba(28,58,30,0.08)' }, ticks: { color: 'rgba(28,58,30,0.45)', font: { family: 'DM Mono', size: 10 }, callback: v => '$' + (v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(0)+'k' : v) } }
+          }
+        }
+      });
+    }
+  }
+
+  function calcular(){
+    const r = tasa / 100 / 12, n = anos * 12;
+    const aportado = capital + mensual * n;
+    let total = capital;
+    for(let i = 0; i < n; i++) total = total * (1 + r) + mensual;
+    total = Math.round(total);
+    const interes = total - aportado;
+    const pct = Math.round((interes / total) * 100);
+
+    document.getElementById('res-aportado').textContent = fmt(aportado);
+    document.getElementById('res-interes').textContent  = fmt(interes);
+    document.getElementById('res-total').textContent    = fmt(total);
+    document.getElementById('res-sub').textContent = `en ${anos} año${anos > 1 ? 's' : ''} · rendimiento al ${tasa}% anual`;
+    document.getElementById('multiplier-badge').textContent = `✦ Tu dinero se multiplica ${(total / aportado).toFixed(1)}x`;
+    document.getElementById('insight-text').innerHTML = pct >= 50
+      ? `El interés compuesto generó <strong>${pct}%</strong> de tu riqueza. El tiempo trabajó más que tú.`
+      : `Llevas buen camino. Con más tiempo o mayor aportación, el interés compuesto tomará el control: <strong>${pct}%</strong> ya viene del rendimiento.`;
+
+    // ← SINCRONIZACIÓN: el horizonte siempre mueve la gráfica al rango completo 0→años
+    zoomDesde = 0;
+    zoomHasta = anos;
+    // Desactivar botones de zoom manual para que quede limpio
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('zp-todo').classList.add('active');
+
+    buildFullData();
+    updateZoomUI();
+    renderChart();
+  }
+
+  // Sliders
+  document.getElementById('slider-capital').addEventListener('input', function(){ capital = +this.value; document.getElementById('custom-capital').value = ''; updateCapitalDisplay(); calcular(); });
+  document.getElementById('slider-tasa').addEventListener('input', function(){ tasa = +this.value; document.getElementById('display-tasa').innerHTML = tasa + ' <span>% anual</span>'; calcular(); });
+
+  // ← Horizonte — sincroniza zoom automáticamente
+  document.getElementById('slider-anos').addEventListener('input', function(){
+    anos = +this.value;
+    document.getElementById('display-anos').innerHTML = anos + ' <span>año' + (anos > 1 ? 's' : '') + '</span>';
+    calcular(); // calcular() ya pone zoomDesde=0, zoomHasta=anos
+  });
+
+  // Capital personalizado
+  function applyCustomCapital(){ const v = parseInt(document.getElementById('custom-capital').value); if(!isNaN(v) && v >= 0){ capital = v; updateCapitalDisplay(); calcular(); } }
+  document.getElementById('apply-capital').addEventListener('click', applyCustomCapital);
+  document.getElementById('custom-capital').addEventListener('keydown', e => { if(e.key === 'Enter') applyCustomCapital(); });
+
+  // Mensual predefinido
+  document.querySelectorAll('.inv-btn').forEach(btn => {
+    btn.addEventListener('click', function(){ document.querySelectorAll('.inv-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); document.getElementById('custom-mensual').value = ''; mensual = +this.dataset.val; updateMensualDisplay(); calcular(); });
+  });
+  function applyCustomMensual(){ const v = parseInt(document.getElementById('custom-mensual').value); if(v && v >= 100){ document.querySelectorAll('.inv-btn').forEach(b => b.classList.remove('active')); mensual = v; updateMensualDisplay(); calcular(); } }
+  document.getElementById('apply-mensual').addEventListener('click', applyCustomMensual);
+  document.getElementById('custom-mensual').addEventListener('keydown', e => { if(e.key === 'Enter') applyCustomMensual(); });
+
+  // Zoom manual — independiente del horizonte
+  document.getElementById('zoom-desde').addEventListener('input', function(){
+    zoomDesde = +this.value;
+    if(zoomDesde >= zoomHasta) zoomHasta = Math.min(zoomDesde + 1, anos);
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    updateZoomUI(); renderChart();
+  });
+  document.getElementById('zoom-hasta').addEventListener('input', function(){
+    zoomHasta = +this.value;
+    if(zoomHasta <= zoomDesde) zoomDesde = Math.max(0, zoomHasta - 1);
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    updateZoomUI(); renderChart();
+  });
+
+  // Botones rápidos
+  document.querySelectorAll('.zp-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      zoomDesde = Math.min(+this.dataset.desde, anos);
+      zoomHasta = Math.min(+this.dataset.hasta, anos);
+      if(zoomDesde >= zoomHasta) zoomDesde = 0;
+      updateZoomUI(); renderChart();
+    });
+  });
+
+  calcular();
+</script>
+</body>
+</html>
