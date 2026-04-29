@@ -9,7 +9,7 @@
 <style>
   :root { --forest:#1c3a1e; --pine:#2d5a30; --sage:#5a7a4a; --fern:#a8c498; --cream:#f5f3ee; --white:#ffffff; }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}body{overflow-x:hidden;}
   body{background:var(--cream);font-family:'DM Mono',monospace;color:var(--forest);min-height:100vh;
     background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);
     background-size:36px 36px;}
@@ -49,7 +49,7 @@
   .err-msg{font-size:0.6rem;color:#c0392b;margin-top:3px;display:none;}
   .field.error input,.field.error select{border-color:#c0392b;}
   .field.error .err-msg{display:block;}
-  footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);}
+  footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);position:relative;}footer::after{content:"";display:block;position:fixed;bottom:0;left:0;right:0;height:env(safe-area-inset-bottom);background:var(--forest);z-index:0;}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
   .footer-brand span{color:var(--fern);}
   .footer-sub{font-size:0.54rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
@@ -60,16 +60,16 @@
     .card{padding:22px 18px;}
     .form-grid{grid-template-columns:1fr;}
     .full{grid-column:1;}
-    footer{padding:20px max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));}
+    footer{padding:20px max(20px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(20px,env(safe-area-inset-left));}
   }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <nav>
   <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
-  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Regresar</a>
 </nav>
 
 <div class="hero">
@@ -208,7 +208,7 @@
         <label>Estado <span class="req">*</span></label>
         <select id="estado">
           <option value="">— Selecciona —</option>
-          <option>Ciudad de México</option><option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option>
+          <option selected>Ciudad de México</option><option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option>
         </select>
         <span class="err-msg">Requerido</span>
       </div>
@@ -553,7 +553,7 @@
     descargarPDF(null, `Contrato_${nombre.replace(/\s+/g,'_')}.pdf`);
   }
 
-  async function descargarPDF(htmlContent, filename) {
+  async function descargarPDF(_unused, filename) {
     const btn = document.querySelector('.btn-generar');
     btn.textContent = 'Generando PDF...';
     btn.disabled = true;
@@ -901,6 +901,5 @@
     }
   }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
