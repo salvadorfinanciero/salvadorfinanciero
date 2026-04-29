@@ -267,6 +267,14 @@
     const pagoFecha=fmtFecha(g('pago-fecha'));
     const corteFecha=fmtFecha(g('corte-fecha'));
     const estado=g('estado');
+    // Calcular fecha de renovacion automatica (firma + 12 meses)
+    const firmaRaw = g('firma-fecha');
+    let renovFecha = '_______________';
+    if (firmaRaw) {
+      const d = new Date(firmaRaw);
+      d.setFullYear(d.getFullYear() + 1);
+      renovFecha = fmtFecha(d.toISOString().split('T')[0]);
+    }
     const broker=g('broker');
     const canal=g('canal');
     const perfil=g('perfil');
@@ -463,7 +471,7 @@
 </ul>
 
 <h1>VII. Vigencia y Terminación</h1>
-<p>El presente contrato tendrá una vigencia de 12 (doce) meses a partir de la fecha de su firma (<b>${firmaFecha}</b>), renovándose automáticamente por períodos anuales iguales, salvo que cualquiera de las partes notifique por escrito su voluntad de no renovarlo con un mínimo de 15 (quince) días naturales de anticipación al vencimiento.</p>
+<p>El presente contrato tendrá una vigencia fija de 12 (doce) meses, a partir del <b>${firmaFecha}</b> y hasta el <b>${renovFecha}</b>. Al término de dicho plazo, el contrato concluye de forma natural. Si ambas partes desean continuar la relación de servicio, deberán suscribir un nuevo contrato con las condiciones vigentes en ese momento. No existe renovación automática.</p>
 <h2>7.1 Causas de terminación anticipada</h2>
 <ul>
   <li>Mutuo acuerdo de las partes, manifestado por escrito a través de los canales oficiales.</li>
