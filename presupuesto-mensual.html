@@ -171,8 +171,10 @@
     nav,.page-header,.instrucciones,.main,footer{padding-left:20px;padding-right:20px;}
     .cats-grid{grid-template-columns:1fr;}
     .instrucciones{margin-left:20px;margin-right:20px;}
-    .resumen{grid-template-columns:1fr;gap:8px;padding:14px 20px;}
-    .res-val{font-size:1.5rem;}
+    .resumen{grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 16px;}
+    .res-val{font-size:1.2rem;}
+    .res-block label{font-size:0.48rem;}
+    .res-hint{display:none;}
   }
 
   /* Marcas de agua */
@@ -577,6 +579,38 @@ buildCats();
   reswm.className = 'resumen-wm';
   reswm.textContent = 'Salvador Financiero';
   document.querySelector('.resumen').appendChild(reswm);
+
+  // Ocultar resumen sticky cuando el teclado está abierto en móvil
+  if(window.visualViewport){
+    var resumen = document.querySelector('.resumen');
+    var lastHeight = window.visualViewport.height;
+    window.visualViewport.addEventListener('resize', function(){
+      var currentHeight = window.visualViewport.height;
+      var diff = lastHeight - currentHeight;
+      // Si la altura bajó más de 150px = teclado abierto
+      if(diff > 150){
+        resumen.style.display = 'none';
+      } else {
+        resumen.style.display = '';
+      }
+      lastHeight = currentHeight;
+    });
+  }
+
+  // Ocultar resumen cuando teclado está abierto en móvil
+  var resumen = document.querySelector('.resumen');
+  document.addEventListener('focusin', function(e){
+    if(e.target.tagName === 'INPUT' && window.innerWidth <= 768){
+      resumen && resumen.classList.add('keyboard-open');
+    }
+  });
+  document.addEventListener('focusout', function(){
+    setTimeout(function(){
+      if(!document.activeElement || document.activeElement.tagName !== 'INPUT'){
+        resumen && resumen.classList.remove('keyboard-open');
+      }
+    }, 150);
+  });
 
 </script>
 </body>
