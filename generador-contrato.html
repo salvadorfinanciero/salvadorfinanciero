@@ -10,9 +10,7 @@
   :root { --forest:#1c3a1e; --pine:#2d5a30; --sage:#5a7a4a; --fern:#a8c498; --cream:#f5f3ee; --white:#ffffff; }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;overflow-x:hidden;}body{overflow-x:hidden;}
-  body{background:var(--cream);font-family:'DM Mono',monospace;color:var(--forest);min-height:100vh;
-    background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);
-    background-size:36px 36px;}
+  body{font-family:'DM Mono',monospace;color:var(--forest);min-height:100vh;}
   nav{background:var(--forest);padding:16px max(40px,env(safe-area-inset-right)) 16px max(40px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--sage);}
   .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-brand span{color:var(--fern);}
@@ -49,7 +47,7 @@
   .err-msg{font-size:0.6rem;color:#c0392b;margin-top:3px;display:none;}
   .field.error input,.field.error select{border-color:#c0392b;}
   .field.error .err-msg{display:block;}
-  footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);}html{background:var(--forest);}
+  html,body{background:var(--forest);}footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 20px)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);}.main-wrap{background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
   .footer-brand span{color:var(--fern);}
   .footer-sub{font-size:0.54rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
@@ -64,10 +62,10 @@
   }
 
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
+<div class="main-wrap">
 <nav>
   <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
 </nav>
@@ -227,6 +225,7 @@
 
 </div>
 
+</div>
 <footer>
   <div class="footer-brand">Salvador <span>Financiero</span></div>
   <div class="footer-sub">Mentoría Patrimonial Independiente · CDMX · Uso interno</div>
@@ -541,372 +540,26 @@
 
 </div></div></body></html>`;
 
-    // Store data for jsPDF renderer
-    window._contratoData = {
-      nombre, edad: g('edad'), telefono: g('telefono'), correo: g('correo'),
-      regimen: g('regimen'), broker, canal, perfil,
-      puntaje: g('puntaje'), planCat: plan.cat, planMonto: plan.monto,
-      presentacion: g('presentacion'), pagoMetodo: g('pago-metodo'),
-      pagoFecha, corteFecha, firmaFecha, estado
-    };
-    window._contratoFecha = estado + ', a ' + firmaFecha;
-    descargarPDF(null, `Contrato_${nombre.replace(/\s+/g,'_')}.pdf`);
-  }
-
-  async function descargarPDF(_unused, filename) {
-    const btn = document.querySelector('.btn-generar');
-    btn.textContent = 'Generando PDF...';
-    btn.disabled = true;
-
-    await new Promise(r => setTimeout(r, 200));
-
-    try {
-      const { jsPDF } = window.jspdf;
-
-      // A4: 210 x 297 mm, margins 18mm each side
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-      const W = 210, H = 297;
-      const mL = 18, mR = 18, mT = 16, mB = 18;
-      const textW = W - mL - mR;  // 174mm usable
-      let y = mT;
-
-      // Colors
-      const forest = [28, 58, 30];
-      const sage   = [90, 122, 74];
-      const fern   = [168, 196, 152];
-      const pine   = [45, 90, 48];
-      const white  = [255, 255, 255];
-      const gray   = [80, 80, 80];
-      const lgray  = [150, 150, 150];
-
-      function newPage() {
-        // Footer on current page
-        pdf.setFontSize(7); pdf.setTextColor(...lgray);
-        pdf.text('Salvador Financiero  ·  Mentoría Patrimonial Independiente  ·  salvadorfinanciero.github.io', W/2, H - 8, {align:'center'});
-        pdf.addPage();
-        y = mT;
-      }
-
-      function checkY(needed) {
-        if (y + needed > H - mB - 10) newPage();
-      }
-
-      function h1(text) {
-        checkY(14);
-        pdf.setFillColor(...sage);
-        pdf.rect(mL, y, textW, 0.5, 'F');
-        y += 3;
-        pdf.setFontSize(11); pdf.setFont('helvetica','bold'); pdf.setTextColor(...forest);
-        pdf.text(text, mL, y);
-        y += 7;
-      }
-
-      function h2(text) {
-        checkY(10);
-        pdf.setFontSize(9.5); pdf.setFont('helvetica','bold'); pdf.setTextColor(...sage);
-        pdf.text(text, mL, y);
-        y += 6;
-      }
-
-      function para(text, opts={}) {
-        pdf.setFontSize(9); pdf.setFont('helvetica','normal'); pdf.setTextColor(...(opts.color||gray));
-        const lines = pdf.splitTextToSize(text, textW);
-        lines.forEach(line => {
-          checkY(5);
-          pdf.text(line, mL, y);
-          y += 4.8;
-        });
-        y += 1.5;
-      }
-
-      function lv(label, value) {
-        checkY(5.5);
-        pdf.setFontSize(8.5); pdf.setFont('helvetica','bold'); pdf.setTextColor(...forest);
-        pdf.text(label + ':', mL, y);
-        pdf.setFont('helvetica','normal'); pdf.setTextColor(...gray);
-        const valLines = pdf.splitTextToSize(value, textW - 52);
-        pdf.text(valLines[0], mL + 52, y);
-        if (valLines.length > 1) {
-          valLines.slice(1).forEach(l => { y += 4.5; pdf.text(l, mL + 52, y); });
-        }
-        y += 5;
-      }
-
-      function bullet(text) {
-        pdf.setFontSize(9); pdf.setFont('helvetica','normal'); pdf.setTextColor(...gray);
-        const lines = pdf.splitTextToSize(text, textW - 8);
-        checkY(5 * lines.length);
-        pdf.setTextColor(...sage);
-        pdf.text('✦', mL + 1, y);
-        pdf.setTextColor(...gray);
-        lines.forEach((line, i) => { pdf.text(line, mL + 6, y); y += 4.8; });
-        y += 0.5;
-      }
-
-      function alert(text) {
-        pdf.setFontSize(8.5); pdf.setFont('helvetica','normal'); pdf.setTextColor(...gray);
-        const lines = pdf.splitTextToSize(text, textW - 10);
-        const boxH = lines.length * 4.5 + 6;
-        checkY(boxH + 2);
-        pdf.setFillColor(245, 243, 238);
-        pdf.rect(mL, y - 2, textW, boxH, 'F');
-        pdf.setFillColor(...sage);
-        pdf.rect(mL, y - 2, 1.5, boxH, 'F');
-        lines.forEach(line => { pdf.text(line, mL + 5, y + 2); y += 4.5; });
-        y += 5;
-      }
-
-      function tableRow(cols, widths, bg, bold=false) {
-        const rowH = 7;
-        checkY(rowH + 1);
-        pdf.setFillColor(...bg);
-        pdf.rect(mL, y - 4, textW, rowH, 'F');
-        let x = mL + 2;
-        cols.forEach((col, i) => {
-          pdf.setFontSize(bold ? 7.5 : 8.5);
-          pdf.setFont('helvetica', bold ? 'bold' : 'normal');
-          pdf.setTextColor(bold ? ...white : ...gray);
-          const txt = pdf.splitTextToSize(String(col), widths[i] - 3);
-          pdf.text(txt[0], x, y);
-          x += widths[i];
-        });
-        y += rowH - 1;
-      }
-
-      function sigLine(name, role, x, w) {
-        pdf.setDrawColor(...forest);
-        pdf.setLineWidth(0.4);
-        pdf.line(x, y + 14, x + w, y + 14);
-        pdf.setFontSize(8); pdf.setFont('helvetica','bold'); pdf.setTextColor(...forest);
-        pdf.text(name, x + w/2, y + 19, {align:'center'});
-        pdf.setFont('helvetica','italic'); pdf.setFontSize(7.5); pdf.setTextColor(...lgray);
-        pdf.text(role, x + w/2, y + 23.5, {align:'center'});
-      }
-
-      // ══════════════════════════════════════════
-      // HEADER
-      // ══════════════════════════════════════════
-      pdf.setFillColor(...forest);
-      pdf.rect(0, 0, W, 28, 'F');
-      pdf.setFontSize(20); pdf.setFont('helvetica','bold'); pdf.setTextColor(...white);
-      pdf.text('SALVADOR ', mL, 14);
-      const sw = pdf.getTextWidth('SALVADOR ');
-      pdf.setTextColor(...fern);
-      pdf.text('FINANCIERO', mL + sw, 14);
-      pdf.setFontSize(7); pdf.setFont('helvetica','normal'); pdf.setTextColor(200,220,200);
-      pdf.text('MENTORÍA PATRIMONIAL INDEPENDIENTE  ·  CDMX, MÉXICO', mL, 20);
-
-      pdf.setFillColor(...pine);
-      pdf.rect(0, 28, W, 18, 'F');
-      pdf.setFontSize(11); pdf.setFont('helvetica','bold'); pdf.setTextColor(...fern);
-      pdf.text('CONTRATO DE PRESTACIÓN DE SERVICIOS', mL, 37);
-      pdf.setFontSize(7); pdf.setFont('helvetica','normal'); pdf.setTextColor(180,210,180);
-      pdf.text('Mentoría Patrimonial  ·  Mandato de Ejecución  ·  Bono de Éxito', mL, 42);
-
-      y = 54;
-      pdf.setFontSize(8.5); pdf.setFont('helvetica','normal'); pdf.setTextColor(...lgray);
-      pdf.text(window._contratoFecha || '', mL, y);
-      y += 10;
-
-      // ══════════════════════════════════════════
-      // SECTIONS
-      // ══════════════════════════════════════════
-      const D = window._contratoData;
-
-      h1('I. ANTECEDENTES');
-      para('El presente instrumento es celebrado entre las partes que se identifican en la Sección II, con fundamento en los artículos 1793, 1794, 1796 y 2606 del Código Civil Federal de los Estados Unidos Mexicanos y demás disposiciones aplicables. Su objeto es regular la prestación de servicios de mentoría patrimonial, gestión operativa de valores bajo mandato expreso y acompañamiento financiero personalizado.');
-
-      h1('II. IDENTIFICACIÓN DE LAS PARTES');
-      h2('2.1 El Mentor Patrimonial');
-      lv('Nombre completo', 'Miguel Salvador Valdez Villegas');
-      lv('Denominación comercial', 'Salvador Financiero');
-      lv('Sitio web', 'salvadorfinanciero.github.io/salvadorfinanciero');
-      lv('Instagram', '@salvadorfinanciero');
-      lv('Correo electrónico', 'info.salvadorfinanciero@gmail.com');
-      lv('Ciudad', 'Ciudad de México, México');
-      y += 2;
-      h2('2.2 El Inversionista (Cliente)');
-      lv('Nombre completo', D.nombre);
-      lv('Edad', D.edad + ' años');
-      lv('Teléfono / WhatsApp', D.telefono);
-      lv('Correo electrónico', D.correo);
-      lv('Régimen Fiscal (SAT)', D.regimen);
-      lv('Plataforma de inversión (bróker)', D.broker);
-      lv('Canal de comunicación oficial', D.canal);
-      lv('Perfil de riesgo determinado', D.perfil);
-      lv('Puntaje del cuestionario', D.puntaje + ' / 32 puntos');
-
-      h1('III. OBJETO DEL CONTRATO');
-      para('El Mentor Patrimonial se obliga a prestar al Inversionista los servicios de mentoría patrimonial y gestión operativa de valores bajo mandato, que comprenden las actividades descritas en la Sección IV. El Inversionista, por su parte, se obliga a otorgar el mandato de ejecución necesario y a cubrir las contraprestaciones pactadas en la Sección VI.');
-      para('Los servicios aquí contratados tienen un carácter educativo, orientativo y de gestión operativa bajo instrucción del Inversionista. Salvador Financiero no es una casa de bolsa, institución financiera, ni asesor en inversiones certificado ante la CNBV o AMIB. El Inversionista conserva en todo momento la titularidad de su cuenta y sus recursos.');
-
-      h1('IV. DESCRIPCIÓN DE LOS SERVICIOS');
-      h2('4.1 Presentación Inicial (Sesión de 90 minutos)');
-      para('Previo al inicio de la relación de servicio continuo, el Inversionista podrá contratar una Presentación Inicial de 90 minutos en la que el Mentor Patrimonial:');
-      bullet('Resuelve dudas y preguntas sobre el mundo de la inversión.');
-      bullet('Presenta conceptos básicos de finanzas personales e inversión bursátil.');
-      bullet('Expone el modelo de trabajo de Salvador Financiero y las condiciones del servicio.');
-      para('Estado de la Presentación Inicial: ' + D.presentacion + '. Esta presentación se liquida de forma independiente, sin necesidad de firmar el presente contrato previo a su realización.');
-
-      h2('4.2 Servicio Mensual de Mentoría Patrimonial y Gestión Operativa');
-      para('El servicio mensual incluye un mínimo garantizado de una (1) sesión de gestión operativa por mes, pudiendo realizarse hasta cuatro (4) sesiones en función de las condiciones del mercado y la estrategia vigente. La frecuencia exacta queda a criterio del Mentor Patrimonial, quien priorizará siempre la preservación del capital del Inversionista y actuará conforme a su perfil de riesgo.');
-      para('Cada sesión de gestión operativa comprende:');
-      bullet('Aviso previo al Inversionista con al menos un (1) día natural de anticipación, indicando el día, el horario disponible para la sesión y el tipo de operación que se contempla realizar.');
-      bullet('Coordinación en tiempo real: el Inversionista proporciona el token de acceso temporal (OTP) al Mentor Patrimonial en el horario confirmado a través de ' + D.canal + ', constituyendo dicha entrega autorización expresa y comprobable para ejecutar las operaciones de esa sesión.');
-      bullet('Ejecución de operaciones de compra y/o venta de valores conforme al perfil de riesgo ' + D.perfil + ' del Inversionista y la estrategia acordada, en los activos previamente identificados.');
-      bullet('Envío de capturas de pantalla al Inversionista con el detalle de las operaciones realizadas y el estado actualizado de su portafolio al cierre de la sesión.');
-      para('Adicionalmente, el servicio mensual incluye de forma continua:');
-      bullet('Disponibilidad del Mentor Patrimonial para atender dudas y consultas financieras del Inversionista a través de ' + D.canal + '.');
-      bullet('Monitoreo del mercado y análisis del portafolio del Inversionista, con ajuste de estrategia cuando las condiciones lo requieran.');
-      bullet('Identificación de oportunidades de mercado fuera del calendario ordinario. El Mentor Patrimonial notificará al Inversionista y solicitará autorización expresa antes de ejecutar cualquier operación. Si el Inversionista no otorga autorización, no se realizará ningún movimiento.');
-      bullet('Transparencia total: el Inversionista tiene acceso en todo momento al detalle de los instrumentos en los que se ha invertido su capital a través de su propia cuenta en la plataforma ' + D.broker + '.');
-      bullet('Simulaciones y proyecciones de interés compuesto a solicitud del Inversionista.');
-
-      h2('4.3 Limitaciones Operativas Expresas');
-      alert('El Mentor Patrimonial NO podrá en ningún caso: (i) retirar o transferir fondos de la cuenta del Inversionista a ninguna cuenta bancaria o electrónica, propia o de terceros; (ii) almacenar, fotografiar o compartir con terceros las credenciales o tokens del Inversionista; (iii) ejecutar operaciones fuera del horario expresamente acordado. Cualquier movimiento de fondos será gestionado exclusivamente por el Inversionista con acceso propio a su plataforma.');
-
-      h1('V. MANDATO DE EJECUCIÓN');
-      para('El Inversionista otorga al Mentor Patrimonial un mandato de ejecución limitado y revocable para operar, exclusivamente con fines de compra y venta de valores, dentro de la cuenta de inversión del Inversionista en la plataforma ' + D.broker + '.');
-      bullet('El mandato se activa en cada sesión mediante la entrega voluntaria del token de acceso temporal (OTP) a través de ' + D.canal + ' en el horario previamente acordado. Su envío constituye autorización expresa, válida y comprobable para ejecutar las operaciones de esa sesión específica.');
-      bullet('Para operaciones fuera del calendario ordinario o fuera del perfil de riesgo ' + D.perfil + ', se requerirá autorización expresa adicional del Inversionista antes de proceder.');
-      bullet('El mandato no incluye en ningún supuesto la facultad de realizar retiros, transferencias o disposiciones de efectivo hacia cuenta alguna.');
-      bullet('El Inversionista puede revocar el mandato en cualquier momento mediante aviso escrito a través de los canales oficiales. La revocación no afecta las obligaciones económicas vigentes.');
-      bullet('Los registros de comunicación entre ambas partes — incluyendo el envío del token en cada sesión — constituyen evidencia válida del mandato otorgado y las operaciones autorizadas.');
-
-      h1('VI. CONTRAPRESTACIONES Y ESQUEMA DE COBRO');
-      h2('6.1 Tabla de Planes y Tarifas');
-      const tw = [80, 54, 40];
-      tableRow(['Plan / Inversión Semanal', 'Mensualidad MXN', 'Presentación MXN'], tw, forest, true);
-      const planes = [
-        ['INICIACIÓN · $300–$649/sem.', '$299', '$500'],
-        ['BÁSICO · $650–$1,249/sem.', '$499', '$500'],
-        ['CRECIMIENTO · $1,250–$2,499/sem.', '$650', '$650'],
-        ['AVANZADO · $2,500–$4,999/sem.', '$899', '$899'],
-        ['PATRIMONIAL · $5,000+/sem.', '7% anual s/ capital', '$1,500'],
-      ];
-      planes.forEach((row, i) => {
-        const isHL = row[0].startsWith(D.planCat.toUpperCase().split(' ')[0]);
-        tableRow(row, tw, isHL ? [220, 235, 215] : (i%2===0?[245,243,238]:[255,255,255]));
-      });
-      y += 2;
-
-      h2('6.2 Mensualidad Variable: Mecanismo de Cálculo');
-      para('La mensualidad de Salvador Financiero es de naturaleza VARIABLE. Se recalcula cada mes con base en el capital total aportado por el Inversionista durante ese periodo.');
-      bullet('Al cierre de cada mes, se sumará el capital total invertido por el Inversionista durante ese periodo. El resultado determinará la categoría aplicable y la mensualidad correspondiente al mes siguiente.');
-      bullet('Ejemplo ilustrativo: si el Inversionista aportó $300 MXN semanales durante 4 semanas, el capital mensual es $1,200 MXN → categoría Iniciación ($299/mes). Si aporta $1,400 semanales x 4 semanas = $5,600 MXN → cambia a Crecimiento ($650/mes).');
-      bullet('El Inversionista acepta expresamente que la mensualidad puede incrementarse o reducirse mes a mes en función de su nivel de aportación, sin que ello constituya una modificación al contrato.');
-      bullet('Cláusula de equidad: si el Inversionista reduce deliberadamente sus aportaciones antes del corte mensual, el Mentor Patrimonial se reserva el derecho de aplicar el promedio de aportaciones de los últimos 3 meses como base de cálculo.');
-      bullet('El Mentor Patrimonial notificará al Inversionista la categoría y mensualidad aplicable al inicio de cada mes, con base en el cálculo del mes anterior.');
-      bullet('Aviso previo de baja de categoría: si el Inversionista anticipa una reducción en su aportación mensual, deberá notificarlo con mínimo 30 días naturales de anticipación. Sin dicho aviso, la mensualidad se cobrará conforme a la categoría del mes anterior y el servicio continuará activo y siendo cobrado hasta que se regularice la situación.');
-      bullet('Si el Inversionista cae en categoría Capital Bajo sin haber avisado, el servicio continuará activo hasta el término del mes en curso y se cobrará la mensualidad de la última categoría activa.');
-
-      h2('6.3 Datos de Inicio del Contrato');
-      lv('Categoría inicial', D.planCat);
-      lv('Mensualidad inicial referencial', D.planMonto + ' (sujeta a ajuste mensual)');
-      lv('Presentación Inicial', D.presentacion);
-      lv('Método de pago', D.pagoMetodo);
-      lv('Fecha de primer pago', D.pagoFecha);
-
-      h2('6.4 Bono de Éxito Anual');
-      para('Al cierre de cada año de servicio se realizará un corte en la fecha pactada. La fecha exacta del corte anual es: ' + D.corteFecha + '. Esta fecha queda fija desde el inicio del contrato.');
-      const tw2 = [60, 74, 40];
-      tableRow(['Categoría', 'Capital Total al Corte', 'Comisión s/ Utilidad Neta'], tw2, forest, true);
-      const bonos = [
-        ['Iniciación', '$5,000 – $49,999 MXN', '15%'],
-        ['Básico', '$50,000 – $249,999 MXN', '13%'],
-        ['Crecimiento', '$250,000 – $999,999 MXN', '11%'],
-        ['Avanzado', '$1,000,000 – $4,999,999 MXN', '9%'],
-        ['Patrimonial', '$5,000,000 MXN o más', '8%'],
-      ];
-      bonos.forEach((row, i) => tableRow(row, tw2, i%2===0?[245,243,238]:[255,255,255]));
-      y += 2;
-      bullet('Independencia entre mensualidad y bono: son contraprestaciones completamente independientes. El bono anual depende del capital total reflejado en la cuenta del bróker al corte, sin importar su origen — capital semilla inicial, aportaciones periódicas, rendimientos acumulados o cualquier combinación. Todo el capital presente al corte entra en la base de cálculo, sin excepción.');
-      bullet('Si al corte anual el portafolio no registra rendimiento neto positivo, no se cobrará bono de éxito en ese periodo.');
-      bullet('El bono se calculará sobre la utilidad neta real, descontando comisiones del bróker y gastos directamente asociados a las operaciones ejecutadas durante el periodo.');
-      bullet('Integridad del corte: retiros realizados por el Inversionista dentro de los 30 días naturales previos a la fecha de corte serán considerados como si el capital aún estuviera invertido, garantizando la equidad del esquema. Ambas partes aceptan este criterio expresamente.');
-      bullet('El pago del bono se realizará dentro de los 15 días naturales siguientes al corte, previa presentación del estado de cuenta del bróker como comprobante.');
-
-      h2('6.5 Condiciones Generales de Pago');
-      bullet('La mensualidad deberá cubrirse dentro de los primeros 5 días naturales de cada mes.');
-      bullet('El incumplimiento en el pago por más de 15 días naturales faculta al Mentor Patrimonial a suspender el servicio hasta regularización del adeudo.');
-      bullet('No se realizarán reembolsos de mensualidades ya iniciadas, salvo incumplimiento imputable al Mentor Patrimonial.');
-
-      h1('VII. VIGENCIA Y TERMINACIÓN');
-      para('El presente contrato tendrá una vigencia de 12 (doce) meses a partir de la fecha de su firma (' + D.firmaFecha + '), renovándose automáticamente por períodos anuales iguales, salvo que cualquiera de las partes notifique por escrito su voluntad de no renovarlo con un mínimo de 15 días naturales de anticipación al vencimiento.');
-      h2('7.1 Causas de terminación anticipada');
-      bullet('Mutuo acuerdo de las partes, manifestado por escrito a través de los canales oficiales.');
-      bullet('Incumplimiento grave de cualquiera de las partes respecto de las obligaciones aquí estipuladas.');
-      bullet('Solicitud unilateral del Inversionista, con aviso previo de 7 días naturales. En este supuesto no procede devolución de la mensualidad en curso.');
-      bullet('Caso fortuito o fuerza mayor que impida la prestación del servicio por un período superior a 30 días naturales.');
-
-      h1('VIII. DECLARACIONES Y OBLIGACIONES DE LAS PARTES');
-      h2('8.1 Declaraciones del Mentor Patrimonial');
-      bullet('Que prestará sus servicios con diligencia, buena fe y máxima transparencia.');
-      bullet('Que ejecutará únicamente las operaciones acordadas con el Inversionista y dentro del horario pactado en cada sesión.');
-      bullet('Que no tiene conflicto de interés con ninguna casa de bolsa, fondo de inversión o emisora al momento de la firma de este contrato.');
-      bullet('Que mantendrá estricta confidencialidad sobre los datos personales, financieros y de acceso del Inversionista, conforme al Aviso de Privacidad de Salvador Financiero (LFPDPPP).');
-      bullet('Que no almacenará ni compartirá con terceros las credenciales ni tokens de acceso del Inversionista.');
-      h2('8.2 Declaraciones y obligaciones del Inversionista');
-      bullet('Que ha comprendido que el servicio incluye la gestión operativa de compra y venta de valores bajo su mandato expreso, y que no implica captación de recursos ni retiro de fondos.');
-      bullet('Que es mayor de 18 años de edad y tiene plena capacidad legal para contratar.');
-      bullet('Que asume plena responsabilidad sobre los riesgos inherentes a la inversión bursátil, entendiendo que los rendimientos pasados no garantizan rendimientos futuros.');
-      bullet('Que los datos proporcionados en el cuestionario de perfil de riesgo y en este contrato son verídicos y completos.');
-      bullet('Que se compromete a estar disponible en el horario acordado para proporcionar el token de acceso en cada sesión operativa.');
-      bullet('Que leyó, comprendió y aceptó los Términos y Condiciones y el Aviso de Privacidad disponibles en el sitio web de Salvador Financiero.');
-
-      h1('IX. LIMITACIÓN DE RESPONSABILIDAD');
-      para('El Mentor Patrimonial no será responsable por pérdidas, minusvalías o resultados financieros adversos derivados de: (i) variaciones del mercado no previstas; (ii) información incorrecta o desactualizada proporcionada por el Inversionista; (iii) indisponibilidad de plataformas de terceros; (iv) cambios en la legislación fiscal o financiera; ni (v) circunstancias de caso fortuito o fuerza mayor.');
-      para('Las operaciones de compra y venta de valores se ejecutan bajo mandato expreso del Inversionista. La responsabilidad del Mentor Patrimonial se limita a ejecutar dichas operaciones de acuerdo con la estrategia pactada y dentro del horario acordado.');
-
-      h1('X. CONFIDENCIALIDAD Y PROTECCIÓN DE DATOS PERSONALES');
-      para('El tratamiento de los datos personales del Inversionista se realizará conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), su Reglamento, y el Aviso de Privacidad de Salvador Financiero, disponible en: salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html');
-      para('El Inversionista podrá ejercer sus derechos ARCO (Acceso, Rectificación, Cancelación y Oposición) contactando a info.salvadorfinanciero@gmail.com. La respuesta se emitirá en un plazo máximo de 20 días hábiles.');
-      para('Los datos financieros y de acceso (tokens) del Inversionista serán tratados con el máximo nivel de confidencialidad y no serán almacenados ni compartidos con terceros bajo ninguna circunstancia.');
-
-      h1('XI. PROPIEDAD INTELECTUAL');
-      para('Todos los análisis, modelos, simulaciones, materiales educativos y entregables elaborados por el Mentor Patrimonial para el Inversionista son de uso exclusivo y personal de este último. El Inversionista no podrá reproducirlos, distribuirlos ni comercializarlos sin autorización escrita previa de Salvador Financiero.');
-
-      h1('XII. RESOLUCIÓN DE CONTROVERSIAS');
-      para('Las partes se comprometen a resolver cualquier diferencia de forma amistosa en primera instancia. De no alcanzar acuerdo en 30 días naturales, se someterán a la jurisdicción de los tribunales competentes de ' + D.estado + ', renunciando a cualquier otro fuero que pudiera corresponderles por razón de sus domicilios presentes o futuros.');
-
-      h1('XIII. DISPOSICIONES GENERALES');
-      bullet('Este contrato constituye el acuerdo íntegro entre las partes respecto de su objeto y deja sin efecto cualquier negociación o acuerdo previo sobre la misma materia.');
-      bullet('Cualquier modificación deberá constar por escrito y estar firmada por ambas partes para ser válida.');
-      bullet('La nulidad de alguna cláusula no afecta la validez del resto del contrato.');
-      bullet('Las comunicaciones por ' + D.canal + ' tienen plena validez para los avisos, autorizaciones y mandatos previstos en este contrato.');
-      bullet('Se elaboran dos ejemplares de idéntico tenor y valor legal, quedando uno en poder de cada parte.');
-
-      h1('XIV. FIRMAS');
-      para('Leído y comprendido el presente contrato en todas sus partes, las partes lo firman de conformidad en ' + D.estado + ', el ' + D.firmaFecha + '.');
-      checkY(40);
-      y += 8;
-      sigLine('Miguel Salvador Valdez Villegas', 'El Mentor Patrimonial · Salvador Financiero', mL, 74);
-      sigLine(D.nombre, 'El Inversionista', mL + 100, 74);
-      y += 30;
-      checkY(10);
-      pdf.setFontSize(7); pdf.setFont('helvetica','normal'); pdf.setTextColor(...lgray);
-      pdf.text('CURP / INE No.: ________________________________________________', mL + 100, y);
-      y += 12;
-
-      // Footer last page
-      pdf.setFontSize(7); pdf.setTextColor(...lgray);
-      pdf.text('Salvador Financiero  ·  Mentoría Patrimonial Independiente  ·  salvadorfinanciero.github.io', W/2, H - 8, {align:'center'});
-      pdf.setFontSize(6.5); pdf.setTextColor(180,180,180);
-      pdf.text('Salvador Financiero no es casa de bolsa ni asesor certificado CNBV/AMIB. Las operaciones se realizan bajo mandato expreso del Inversionista.', W/2, H - 4, {align:'center'});
-
-      // iOS Safari compatible download
-      const blob = pdf.output('blob');
+    // Add print button inside the contract HTML
+    const printBtn = `<div style="position:fixed;bottom:24px;right:24px;z-index:9999;">
+      <button onclick="window.print()" style="background:#1c3a1e;color:#a8c498;font-family:Arial,sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+        &#128438; Guardar / Imprimir PDF
+      </button>
+    </div>
+    <style>@media print{button,div[style*="position:fixed"]{display:none!important;}@page{margin:12mm 14mm;size:A4 portrait;}}</style>`;
+    
+    const fullHtml = html.replace('</body>', printBtn + '</body>');
+    
+    // Open in new tab - works on all browsers and devices
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(fullHtml);
+      win.document.close();
+    } else {
+      // Fallback: blob URL if popup blocked
+      const blob = new Blob([fullHtml], {type: 'text/html'});
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 3000);
-    } finally {
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#a8c498"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg> Generar PDF del Contrato';
-      btn.disabled = false;
+      window.location.href = url;
     }
   }
 </script>
