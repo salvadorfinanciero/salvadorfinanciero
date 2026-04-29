@@ -301,7 +301,7 @@
     </div>
     <div class="hf-group">
       <label>Tu ingreso mensual total</label>
-      <input type="text" placeholder="$0" id="ingreso" oninput="formatInput(this);recalcular()">
+      <input type="text" placeholder="$0" inputmode="numeric" id="ingreso" oninput="formatInput(this);recalcular()">
     </div>
   </div>
 </div>
@@ -406,8 +406,8 @@ function buildCats(){
       ${c.items.map((item,i) => `
         <div class="cat-row">
           <div class="row-lbl${item?'':' empty'}">${item||'Otro'}</div>
-          <input type="text" placeholder="$0" id="p${c.id}_${i}" oninput="recalcularCat(${c.id})">
-          <input type="text" placeholder="$0" id="g${c.id}_${i}" oninput="recalcularCat(${c.id})">
+          <input type="text" placeholder="$0" inputmode="numeric" id="p${c.id}_${i}" inputmode="numeric" oninput="recalcularCat(${c.id})">
+          <input type="text" placeholder="$0" inputmode="numeric" id="g${c.id}_${i}" inputmode="numeric" oninput="recalcularCat(${c.id})">
         </div>
       `).join('')}
       <div class="cat-total">
