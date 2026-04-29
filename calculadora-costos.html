@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1c3a1e">
+<title>Calculadora de Costos — Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1c3a1e;
+    --pine:   #2d5a30;
+    --sage:   #5a7a4a;
+    --fern:   #a8c498;
+    --cream:  #f5f3ee;
+    --white:  #ffffff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#f0ede6; font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh;
+    background-image:
+      linear-gradient(rgba(28,58,30,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,58,30,0.06) 1px, transparent 1px);
+    background-size:36px 36px;
+  }
+
+  /* NAV */
+  nav { background:var(--forest); padding:16px 40px; padding-left:max(40px, env(safe-area-inset-left)); padding-right:max(40px, env(safe-area-inset-right)); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:3px solid var(--sage); }
+  .nav-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.1em; color:var(--white); text-decoration:none; }
+  .nav-brand span { color:var(--fern); }
+  .nav-back { font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fern); text-decoration:none; }
+
+  /* HERO */
+  .hero { background:var(--forest); padding:52px max(40px, env(safe-area-inset-right)) 40px max(40px, env(safe-area-inset-left)); border-bottom:3px solid var(--sage); }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--fern); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .hero-eyebrow span { display:block; width:24px; height:2px; background:var(--fern); }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,7vw,5rem); line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:6px; }
+  .hero h1 span { color:var(--fern); }
+  .hero p { font-size:0.72rem; color:rgba(255,255,255,0.45); letter-spacing:0.06em; line-height:1.7; max-width:480px; margin-top:12px; }
+
+  /* CONTAINER */
+  .container { max-width:820px; margin:0 auto; padding:40px 40px 80px; display:flex; flex-direction:column; gap:20px; }
+
+  /* CLIENT BAR */
+  .client-bar { background:var(--white); padding:24px 32px; box-shadow:0 2px 12px rgba(28,58,30,0.07); border-top:3px solid var(--sage); }
+  .client-bar-title { font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:0.2em; color:var(--sage); margin-bottom:14px; }
+  .client-bar-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .client-bar-grid .input-group { margin-bottom:0; }
+
+  /* CARD */
+  .card { background:var(--white); border-top:4px solid var(--sage); padding:36px; box-shadow:0 2px 16px rgba(28,58,30,0.07); }
+  .card-label { font-size:0.65rem; letter-spacing:0.2em; color:rgba(28,58,30,0.4); margin-bottom:6px; text-transform:uppercase; }
+  .card h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--sage); margin-bottom:28px; padding-bottom:16px; border-bottom:1px solid rgba(28,58,30,0.1); }
+
+  /* TOGGLE */
+  .toggle-row { display:flex; margin-bottom:22px; border:1px solid rgba(28,58,30,0.2); width:fit-content; }
+  .toggle-btn { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; padding:9px 20px; border:none; cursor:pointer; background:transparent; color:rgba(28,58,30,0.4); transition:all .18s; }
+  .toggle-btn.active { background:var(--forest); color:var(--fern); }
+
+  /* INPUT */
+  .input-group { display:flex; flex-direction:column; gap:5px; margin-bottom:18px; }
+  .input-group label { font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(28,58,30,0.5); }
+  .input-wrap { position:relative; display:flex; align-items:center; }
+  .input-wrap .prefix { position:absolute; left:13px; font-size:0.88rem; color:var(--sage); pointer-events:none; }
+  .input-wrap .suffix { position:absolute; right:13px; font-size:0.65rem; color:rgba(28,58,30,0.3); pointer-events:none; }
+  input[type="number"], input[type="text"], input[type="month"] {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.95rem;
+    padding:12px 80px 12px 34px; outline:none; transition:border-color .18s;
+    -moz-appearance:textfield;
+  }
+  input[type="text"], input[type="month"] { padding:12px 16px; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+  input:focus { border-color:var(--sage); }
+
+  /* RESULT */
+  .result { margin-top:6px; padding:22px 26px; background:rgba(90,122,74,0.07); border:1px solid rgba(90,122,74,0.2); }
+  .result.hidden { display:none; }
+  .result-category { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.08em; color:var(--sage); margin-bottom:3px; }
+  .result-desc { font-size:0.6rem; letter-spacing:0.1em; color:rgba(28,58,30,0.45); text-transform:uppercase; margin-bottom:18px; line-height:1.6; }
+  .result-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .r-label { font-size:0.56rem; letter-spacing:0.13em; text-transform:uppercase; color:rgba(28,58,30,0.4); margin-bottom:3px; }
+  .r-value { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--forest); line-height:1; }
+  .r-value.accent { color:var(--sage); }
+  .r-sub { font-size:0.58rem; color:rgba(28,58,30,0.35); margin-top:2px; }
+
+  /* NO CALIFICA */
+  .no-califica { padding:18px 22px; background:rgba(160,50,50,0.05); border:1px solid rgba(160,50,50,0.15); }
+  .no-califica p { font-size:0.7rem; line-height:1.7; color:rgba(100,30,30,0.85); }
+  .no-califica strong { color:#7a1f1f; }
+
+  /* BONO EXTRA */
+  .bono-extra { margin-top:18px; padding-top:18px; border-top:1px solid rgba(28,58,30,0.1); }
+  .bono-extra-title { font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(28,58,30,0.35); margin-bottom:12px; }
+  .bono-calc-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+  .bono-calc-row .input-group { margin-bottom:0; flex:1; min-width:160px; }
+  .bono-result-box { flex:1; min-width:160px; padding:14px 18px; background:var(--forest); }
+  .bono-result-box .br-label { font-size:0.54rem; letter-spacing:0.13em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:3px; }
+  .bono-result-box .br-value { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--fern); line-height:1; }
+
+  /* TABLE */
+  .ref-table { margin-top:28px; padding-top:22px; border-top:1px solid rgba(28,58,30,0.08); }
+  .ref-table-title { font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(28,58,30,0.35); margin-bottom:10px; }
+  table { width:100%; border-collapse:collapse; font-size:0.68rem; }
+  th { text-align:left; padding:8px 10px; background:rgba(28,58,30,0.05); color:rgba(28,58,30,0.45); font-size:0.56rem; letter-spacing:0.11em; text-transform:uppercase; border-bottom:1px solid rgba(28,58,30,0.1); }
+  td { padding:8px 10px; color:rgba(28,58,30,0.62); border-bottom:1px solid rgba(28,58,30,0.05); transition:all .15s; }
+  tr.active-row td { background:rgba(90,122,74,0.09); color:var(--forest); font-weight:500; }
+  tr.active-row td:first-child { border-left:3px solid var(--sage); padding-left:7px; }
+
+  /* TICKET */
+  .ticket-section { background:var(--white); border-top:4px solid var(--forest); padding:36px; box-shadow:0 2px 16px rgba(28,58,30,0.07); }
+  .ticket-section h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--forest); margin-bottom:6px; }
+  .ticket-section .ts-sub { font-size:0.6rem; letter-spacing:0.12em; color:rgba(28,58,30,0.4); text-transform:uppercase; margin-bottom:28px; }
+  .btn-pdf {
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--forest); color:var(--fern);
+    font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;
+    padding:14px 28px; border:none; cursor:pointer; transition:background .2s;
+  }
+  .btn-pdf:hover { background:var(--pine); }
+  .btn-pdf svg { width:16px; height:16px; fill:var(--fern); }
+
+  /* TICKET PREVIEW (print target) */
+  #ticket-preview { display:none; }
+  #ticket-preview.visible { display:block; margin-top:24px; border:1px solid rgba(28,58,30,0.12); padding:0; }
+
+  /* FOOTER */
+  footer { background:var(--forest); padding:20px max(40px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(40px, env(safe-area-inset-left)); text-align:center; border-top:3px solid var(--sage); }
+  .footer-brand { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.12em; color:var(--white); margin-bottom:4px; }
+  .footer-brand span { color:var(--fern); }
+  .footer-sub { font-size:0.54rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+
+  @media(max-width:600px){
+    nav { padding:13px max(20px, env(safe-area-inset-right)) 13px max(20px, env(safe-area-inset-left)); }
+    .hero { padding:36px max(20px, env(safe-area-inset-right)) 30px max(20px, env(safe-area-inset-left)); }
+    .container { padding:24px max(16px, env(safe-area-inset-right)) 60px max(16px, env(safe-area-inset-left)); }
+    .card, .ticket-section, .client-bar { padding:22px 18px; }
+    .result-grid { grid-template-columns:1fr; }
+    .client-bar-grid { grid-template-columns:1fr; }
+    footer { padding:20px max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body * { visibility:hidden; }
+    #print-area, #print-area * { visibility:visible; }
+    #print-area { position:fixed; top:0; left:0; width:100%; }
+    @page { margin:0; size:A5 portrait; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Regresar</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow"><span></span>Uso Interno · Salvador Financiero<span></span></div>
+  <h1>Calculadora<br><span>de Costos</span></h1>
+  <p>Determina la categoría y el cobro del inversionista — mensualidad variable y bono de éxito anual.</p>
+</div>
+
+<div class="container">
+
+  <!-- DATOS DEL CLIENTE -->
+  <div class="client-bar">
+    <div class="client-bar-title">Datos del Inversionista</div>
+    <div class="client-bar-grid">
+      <div class="input-group">
+        <label>Nombre del inversionista</label>
+        <input type="text" id="inp-nombre" placeholder="Nombre completo">
+      </div>
+      <div class="input-group">
+        <label>Mes de cobro</label>
+        <input type="month" id="inp-mes">
+      </div>
+    </div>
+  </div>
+
+  <!-- MENSUALIDAD -->
+  <div class="card">
+    <div class="card-label">Sección 01</div>
+    <h2>Mensualidad Mensual</h2>
+
+    <div class="toggle-row">
+      <button class="toggle-btn active" id="btn-semanal" onclick="setModo('semanal')">Por semana</button>
+      <button class="toggle-btn" id="btn-mensual" onclick="setModo('mensual')">Total del mes</button>
+    </div>
+
+    <div class="input-group">
+      <label id="lbl-aportacion">Aportación semanal del inversionista</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="inp-aportacion" placeholder="0" min="0" oninput="calcMensual()">
+        <span class="suffix" id="suf-aportacion">MXN / sem</span>
+      </div>
+    </div>
+
+    <div id="res-mensual" class="result hidden"></div>
+
+    <div class="ref-table">
+      <div class="ref-table-title">Tabla de referencia — Mensualidades</div>
+      <table>
+        <thead><tr><th>Categoría</th><th>Aportación semanal</th><th>Mensualidad</th><th>Presentación</th></tr></thead>
+        <tbody id="tbody-mensual">
+          <tr data-key="capital-bajo"><td>Capital Bajo</td><td>Menos de $300</td><td>No aplica</td><td>$399</td></tr>
+          <tr data-key="iniciacion"><td>Iniciación</td><td>$300 – $649</td><td>$299</td><td>$500</td></tr>
+          <tr data-key="basico"><td>Básico</td><td>$650 – $1,249</td><td>$499</td><td>$500</td></tr>
+          <tr data-key="crecimiento"><td>Crecimiento</td><td>$1,250 – $2,499</td><td>$650</td><td>$650</td></tr>
+          <tr data-key="avanzado"><td>Avanzado</td><td>$2,500 – $4,999</td><td>$899</td><td>$899</td></tr>
+          <tr data-key="patrimonial"><td>Patrimonial</td><td>$5,000 o más</td><td>7% anual s/ capital</td><td>$1,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BONO ANUAL -->
+  <div class="card">
+    <div class="card-label">Sección 02</div>
+    <h2>Bono de Éxito Anual</h2>
+
+    <div class="input-group">
+      <label>Capital total en cuenta al corte anual</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="inp-capital" placeholder="0" min="0" oninput="calcBono()">
+        <span class="suffix">MXN</span>
+      </div>
+    </div>
+
+    <div id="res-bono" class="result hidden"></div>
+
+    <div class="ref-table">
+      <div class="ref-table-title">Tabla de referencia — Bono de Éxito</div>
+      <table>
+        <thead><tr><th>Categoría</th><th>Capital total al corte</th><th>Comisión s/ utilidad neta</th></tr></thead>
+        <tbody id="tbody-bono">
+          <tr data-bkey="iniciacion"><td>Iniciación</td><td>$5,000 – $49,999</td><td>15%</td></tr>
+          <tr data-bkey="basico"><td>Básico</td><td>$50,000 – $249,999</td><td>13%</td></tr>
+          <tr data-bkey="crecimiento"><td>Crecimiento</td><td>$250,000 – $999,999</td><td>11%</td></tr>
+          <tr data-bkey="avanzado"><td>Avanzado</td><td>$1,000,000 – $4,999,999</td><td>9%</td></tr>
+          <tr data-bkey="patrimonial"><td>Patrimonial</td><td>$5,000,000 o más</td><td>8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TICKET / PDF -->
+  <div class="ticket-section">
+    <h2>Generar Ticket</h2>
+    <div class="ts-sub">Resumen para compartir al inversionista</div>
+    <button class="btn-pdf" onclick="generarTicket()">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg>
+      Descargar PDF / Captura
+    </button>
+    <div id="ticket-preview"></div>
+  </div>
+
+</div>
+
+<!-- PRINT AREA (hidden, shown when PDF triggered) -->
+<div id="print-area" style="display:none;"></div>
+
+<footer>
+  <div class="footer-brand">Salvador <span>Financiero</span></div>
+  <div class="footer-sub">Mentoría Patrimonial Independiente · CDMX · Uso interno</div>
+</footer>
+
+<script>
+  let modo = 'semanal';
+  let estadoMensual = null;
+  let estadoBono = null;
+
+  const planesMensual = [
+    { key:'capital-bajo', label:'Capital Bajo',  minSem:0,    maxSem:299,    mensual:null,            presentacion:399  },
+    { key:'iniciacion',   label:'Iniciación',    minSem:300,  maxSem:649,    mensual:299,             presentacion:500  },
+    { key:'basico',       label:'Básico',        minSem:650,  maxSem:1249,   mensual:499,             presentacion:500  },
+    { key:'crecimiento',  label:'Crecimiento',   minSem:1250, maxSem:2499,   mensual:650,             presentacion:650  },
+    { key:'avanzado',     label:'Avanzado',      minSem:2500, maxSem:4999,   mensual:899,             presentacion:899  },
+    { key:'patrimonial',  label:'Patrimonial',   minSem:5000, maxSem:Infinity, mensual:'patrimonial', presentacion:1500 },
+  ];
+
+  const planesBono = [
+    { key:'iniciacion',  label:'Iniciación',  min:5000,    max:49999,    pct:15 },
+    { key:'basico',      label:'Básico',      min:50000,   max:249999,   pct:13 },
+    { key:'crecimiento', label:'Crecimiento', min:250000,  max:999999,   pct:11 },
+    { key:'avanzado',    label:'Avanzado',    min:1000000, max:4999999,  pct:9  },
+    { key:'patrimonial', label:'Patrimonial', min:5000000, max:Infinity, pct:8  },
+  ];
+
+  function fmt(n) {
+    return '$' + Number(n).toLocaleString('es-MX', {minimumFractionDigits:0, maximumFractionDigits:0});
+  }
+
+  function fmtMes(val) {
+    if (!val) return '—';
+    const [y, m] = val.split('-');
+    const nombres = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return nombres[parseInt(m)] + ' ' + y;
+  }
+
+  function setModo(m) {
+    modo = m;
+    document.getElementById('btn-semanal').classList.toggle('active', m === 'semanal');
+    document.getElementById('btn-mensual').classList.toggle('active', m === 'mensual');
+    document.getElementById('lbl-aportacion').textContent =
+      m === 'semanal' ? 'Aportación semanal del inversionista' : 'Aportación total del mes';
+    document.getElementById('suf-aportacion').textContent =
+      m === 'semanal' ? 'MXN / sem' : 'MXN / mes';
+    document.getElementById('inp-aportacion').value = '';
+    document.getElementById('res-mensual').classList.add('hidden');
+    document.querySelectorAll('#tbody-mensual tr').forEach(r => r.classList.remove('active-row'));
+    estadoMensual = null;
+  }
+
+  function calcMensual() {
+    const raw = parseFloat(document.getElementById('inp-aportacion').value) || 0;
+    const semEq = modo === 'semanal' ? raw : raw / 4;
+    const totalMes = modo === 'semanal' ? raw * 4 : raw;
+    const el = document.getElementById('res-mensual');
+    document.querySelectorAll('#tbody-mensual tr').forEach(r => r.classList.remove('active-row'));
+    estadoMensual = null;
+
+    if (raw <= 0) { el.classList.add('hidden'); return; }
+
+    const plan = planesMensual.find(p => semEq >= p.minSem && semEq <= p.maxSem);
+    if (!plan) { el.classList.add('hidden'); return; }
+
+    const row = document.querySelector(`#tbody-mensual tr[data-key="${plan.key}"]`);
+    if (row) row.classList.add('active-row');
+
+    if (plan.key === 'capital-bajo') {
+      el.innerHTML = `<div class="no-califica"><p>
+        <strong>No califica para servicio mensual.</strong><br>
+        Aportación equiv.: ${fmt(Math.round(semEq))}/sem · ${fmt(Math.round(totalMes))}/mes<br><br>
+        Ofrece la <strong>Presentación Inicial por $399 MXN</strong>.
+      </p></div>`;
+      el.classList.remove('hidden');
+      estadoMensual = { califica: false, semEq, totalMes };
+      return;
+    }
+
+    const mensualMonto = plan.mensual === 'patrimonial' ? '7% anual s/ capital' : fmt(plan.mensual);
+    const mensualHTML = plan.key === 'patrimonial'
+      ? `<div><div class="r-label">Mensualidad</div><div class="r-value accent">7% anual</div><div class="r-sub">sobre capital invertido</div></div>`
+      : `<div><div class="r-label">Mensualidad a cobrar</div><div class="r-value accent">${fmt(plan.mensual)}</div><div class="r-sub">MXN este mes</div></div>`;
+
+    el.innerHTML = `
+      <div class="result-category">${plan.label}</div>
+      <div class="result-desc">Equiv. semanal: ${fmt(Math.round(semEq))} &nbsp;·&nbsp; Total mes: ${fmt(Math.round(totalMes))} MXN</div>
+      <div class="result-grid">${mensualHTML}</div>`;
+    el.classList.remove('hidden');
+
+    estadoMensual = { califica: true, categoria: plan.label, mensual: mensualMonto, semEq, totalMes };
+  }
+
+  function calcBono() {
+    const capital = parseFloat(document.getElementById('inp-capital').value) || 0;
+    const el = document.getElementById('res-bono');
+    document.querySelectorAll('#tbody-bono tr').forEach(r => r.classList.remove('active-row'));
+    estadoBono = null;
+
+    if (capital <= 0) { el.classList.add('hidden'); return; }
+
+    if (capital < 5000) {
+      el.innerHTML = `<div class="no-califica"><p>
+        <strong>Capital insuficiente para bono de éxito.</strong><br>
+        Mínimo: <strong>$5,000 MXN</strong>. Capital al corte: ${fmt(capital)} MXN.
+      </p></div>`;
+      el.classList.remove('hidden');
+      estadoBono = { califica: false, capital };
+      return;
+    }
+
+    const plan = planesBono.find(p => capital >= p.min && capital <= p.max);
+    if (!plan) { el.classList.add('hidden'); return; }
+
+    const row = document.querySelector(`#tbody-bono tr[data-bkey="${plan.key}"]`);
+    if (row) row.classList.add('active-row');
+
+    el.innerHTML = `
+      <div class="result-category">${plan.label}</div>
+      <div class="result-desc">Capital al corte: ${fmt(capital)} MXN &nbsp;·&nbsp; Comisión: ${plan.pct}% sobre utilidad neta</div>
+      <div class="result-grid">
+        <div><div class="r-label">Porcentaje de comisión</div><div class="r-value accent">${plan.pct}%</div><div class="r-sub">sobre utilidad neta real</div></div>
+        <div><div class="r-label">Capital base</div><div class="r-value">${fmt(capital)}</div><div class="r-sub">MXN en cuenta al corte</div></div>
+      </div>
+      <div class="bono-extra">
+        <div class="bono-extra-title">Calcula el bono exacto — ingresa la utilidad neta del año</div>
+        <div class="bono-calc-row">
+          <div class="input-group">
+            <label>Utilidad neta generada</label>
+            <div class="input-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="inp-utilidad" placeholder="0" min="0" oninput="calcBonoExacto(${plan.pct})">
+              <span class="suffix">MXN</span>
+            </div>
+          </div>
+          <div class="bono-result-box" id="box-bono-exacto">
+            <div class="br-label">Bono a cobrar</div>
+            <div class="br-value">—</div>
+          </div>
+        </div>
+      </div>`;
+    el.classList.remove('hidden');
+    estadoBono = { califica: true, categoria: plan.label, pct: plan.pct, capital };
+  }
+
+  function calcBonoExacto(pct) {
+    const utilidad = parseFloat(document.getElementById('inp-utilidad').value) || 0;
+    const box = document.getElementById('box-bono-exacto');
+    if (!box) return;
+    const bono = Math.round(utilidad * pct / 100);
+    if (estadoBono) estadoBono.utilidad = utilidad, estadoBono.bono = bono;
+    box.innerHTML = `<div class="br-label">Bono a cobrar</div><div class="br-value">${utilidad > 0 ? fmt(bono) : '—'}</div>`;
+  }
+
+  // ── TICKET PDF ──────────────────────────────
+  function generarTicket() {
+    const nombre = document.getElementById('inp-nombre').value.trim() || '—';
+    const mes    = fmtMes(document.getElementById('inp-mes').value);
+    const fecha  = new Date().toLocaleDateString('es-MX', {day:'2-digit', month:'long', year:'numeric'});
+
+    let bloqMensual = '';
+    if (estadoMensual) {
+      if (!estadoMensual.califica) {
+        bloqMensual = `<div class="tk-block tk-red">
+          <div class="tk-block-label">Mensualidad</div>
+          <div class="tk-block-val">No califica para servicio mensual</div>
+          <div class="tk-block-sub">Aportación equiv. ${fmt(Math.round(estadoMensual.semEq))}/sem · ${fmt(Math.round(estadoMensual.totalMes))}/mes</div>
+        </div>`;
+      } else {
+        bloqMensual = `<div class="tk-block">
+          <div class="tk-block-label">Mensualidad — ${estadoMensual.categoria}</div>
+          <div class="tk-block-val">${estadoMensual.mensual}</div>
+          <div class="tk-block-sub">Equiv. semanal: ${fmt(Math.round(estadoMensual.semEq))} · Total mes: ${fmt(Math.round(estadoMensual.totalMes))} MXN</div>
+        </div>`;
+      }
+    } else {
+      bloqMensual = `<div class="tk-block tk-empty"><div class="tk-block-label">Mensualidad</div><div class="tk-block-val tk-dash">Sin calcular</div></div>`;
+    }
+
+    let bloqBono = '';
+    if (estadoBono) {
+      if (!estadoBono.califica) {
+        bloqBono = `<div class="tk-block tk-red">
+          <div class="tk-block-label">Bono de Éxito Anual</div>
+          <div class="tk-block-val">No aplica</div>
+          <div class="tk-block-sub">Capital al corte (${fmt(estadoBono.capital)}) por debajo del mínimo de $5,000 MXN</div>
+        </div>`;
+      } else {
+        const bonoLinea = estadoBono.bono
+          ? `<div class="tk-block-bono">Bono calculado: <strong>${fmt(estadoBono.bono)} MXN</strong> (sobre utilidad neta de ${fmt(estadoBono.utilidad)} MXN)</div>`
+          : '';
+        bloqBono = `<div class="tk-block">
+          <div class="tk-block-label">Bono de Éxito Anual — ${estadoBono.categoria}</div>
+          <div class="tk-block-val">${estadoBono.pct}% sobre utilidad neta</div>
+          <div class="tk-block-sub">Capital en cuenta al corte: ${fmt(estadoBono.capital)} MXN</div>
+          ${bonoLinea}
+        </div>`;
+      }
+    } else {
+      bloqBono = `<div class="tk-block tk-empty"><div class="tk-block-label">Bono de Éxito Anual</div><div class="tk-block-val tk-dash">Sin calcular</div></div>`;
+    }
+
+    const html = `
+    <div id="tk-root" style="
+      font-family:'DM Mono',monospace;
+      background:#ffffff;
+      color:#1c3a1e;
+      width:100%;
+      max-width:560px;
+      margin:0 auto;
+    ">
+      <!-- HEADER -->
+      <div style="background:#1c3a1e;padding:28px 32px 24px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:#ffffff;">
+          SALVADOR <span style="color:#a8c498;">FINANCIERO</span>
+        </div>
+        <div style="font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:4px;">
+          Mentoría Patrimonial Independiente · CDMX
+        </div>
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:3px;">Inversionista</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:#ffffff;">${nombre}</div>
+        </div>
+        <div style="display:flex;gap:32px;margin-top:12px;">
+          <div>
+            <div style="font-size:0.56rem;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:2px;">Periodo</div>
+            <div style="font-size:0.78rem;color:#a8c498;">${mes}</div>
+          </div>
+          <div>
+            <div style="font-size:0.56rem;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:2px;">Generado</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);">${fecha}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div style="padding:24px 32px 28px;display:flex;flex-direction:column;gap:16px;">
+        <style>
+          .tk-block { padding:16px 20px; background:#f5f3ee; border-left:4px solid #5a7a4a; }
+          .tk-block.tk-red { background:#fdf5f5; border-left-color:#c0392b; }
+          .tk-block.tk-empty { opacity:0.5; }
+          .tk-block-label { font-size:0.56rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:4px; }
+          .tk-block-val { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.06em; color:#1c3a1e; line-height:1.1; }
+          .tk-block-val.tk-dash { color:rgba(28,58,30,0.3); font-size:1rem; }
+          .tk-block-sub { font-size:0.6rem; color:rgba(28,58,30,0.45); margin-top:4px; line-height:1.5; }
+          .tk-block-bono { font-size:0.68rem; color:#2d5a30; margin-top:8px; padding-top:8px; border-top:1px solid rgba(28,58,30,0.12); }
+        </style>
+        ${bloqMensual}
+        ${bloqBono}
+      </div>
+
+      <!-- FOOTER TICKET -->
+      <div style="background:#1c3a1e;padding:16px 32px;display:flex;justify-content:center;align-items:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:#ffffff;">SALVADOR <span style="color:#a8c498;">FINANCIERO</span></div>
+      </div>
+    </div>`;
+
+    // Show preview
+    const preview = document.getElementById('ticket-preview');
+    preview.innerHTML = html;
+    preview.classList.add('visible');
+
+    // Inject into print area and trigger print
+    const printArea = document.getElementById('print-area');
+    printArea.innerHTML = `
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+      <style>
+        body { margin:0; background:white; }
+        .tk-block { padding:16px 20px; background:#f5f3ee; border-left:4px solid #5a7a4a; margin-bottom:14px; }
+        .tk-block.tk-red { background:#fdf5f5; border-left-color:#c0392b; }
+        .tk-block.tk-empty { opacity:0.5; }
+        .tk-block-label { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:3px; font-family:'DM Mono',monospace; }
+        .tk-block-val { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:#1c3a1e; line-height:1.1; }
+        .tk-block-val.tk-dash { color:rgba(28,58,30,0.3); font-size:14px; }
+        .tk-block-sub { font-size:9px; color:rgba(28,58,30,0.45); margin-top:3px; font-family:'DM Mono',monospace; }
+        .tk-block-bono { font-size:10px; color:#2d5a30; margin-top:6px; padding-top:6px; border-top:1px solid rgba(28,58,30,0.12); font-family:'DM Mono',monospace; }
+      </style>
+      ${html}`;
+
+    setTimeout(() => window.print(), 300);
+  }
+</script>
+</body>
+</html>
