@@ -49,7 +49,7 @@
   .err-msg{font-size:0.6rem;color:#c0392b;margin-top:3px;display:none;}
   .field.error input,.field.error select{border-color:#c0392b;}
   .field.error .err-msg{display:block;}
-  footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);position:relative;}footer::after{content:"";display:block;position:fixed;bottom:0;left:0;right:0;height:env(safe-area-inset-bottom);background:var(--forest);z-index:0;}
+  footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);}html{background:var(--forest);}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
   .footer-brand span{color:var(--fern);}
   .footer-sub{font-size:0.54rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
@@ -152,7 +152,7 @@
         </select>
         <span class="err-msg">Requerido</span>
       </div>
-      <div class="field" id="f-puntaje"><label>Puntaje del cuestionario <span class="req">*</span></label><input type="number" id="puntaje" placeholder="0 – 32" min="0" max="32"><span class="err-msg">Requerido</span></div>
+      <div class="field" id="f-puntaje"><label>Puntaje del cuestionario <span class="req">*</span></label><input type="number" id="puntaje" placeholder="0 – 32" min="0" max="32" inputmode="numeric" pattern="[0-9]*" oninput="if(this.value>32)this.value=32;if(this.value<0)this.value=0;"><span class="err-msg">Requerido</span></div>
     </div>
   </div>
 
@@ -894,7 +894,16 @@
       pdf.setFontSize(6.5); pdf.setTextColor(180,180,180);
       pdf.text('Salvador Financiero no es casa de bolsa ni asesor certificado CNBV/AMIB. Las operaciones se realizan bajo mandato expreso del Inversionista.', W/2, H - 4, {align:'center'});
 
-      pdf.save(filename);
+      // iOS Safari compatible download
+      const blob = pdf.output('blob');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 3000);
     } finally {
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#a8c498"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg> Generar PDF del Contrato';
       btn.disabled = false;
