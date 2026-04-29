@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<title>Presupuesto Mensual · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:  #1c3a1e;
+    --pine:    #2d5a30;
+    --sage:    #5a7a4a;
+    --fern:    #a8c498;
+    --white:   #ffffff;
+    --cream:   #f5f3ee;
+    --rule:    #ddd8cc;
+    --mid:     #555;
+    --soft:    #999;
+    --c1: #2d6a8a; --c2: #4a7a2d; --c3: #8a5a2d;
+    --c4: #2d7a5a; --c5: #7a4a8a; --c6: #8a6a2d;
+    --c7: #8a2d2d; --c8: #5a2d8a; --c9: #2d5a8a; --c10: #3a7d44;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Instrument Serif',Georgia,serif;background:var(--cream);color:var(--forest);overflow-x:hidden;}
+
+  /* NAV */
+  nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+  .nav-logo span{color:var(--fern);}
+  .btn-pdf{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.12em;padding:10px 28px;background:var(--sage);color:var(--white);border:2px solid var(--sage);cursor:pointer;transition:all .2s;box-shadow:3px 3px 0 var(--pine);}
+  .btn-pdf:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-1px,-1px);}
+
+  /* HERO */
+  .page-header{
+    background:var(--forest);
+    background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+    background-size:36px 36px;
+    padding:40px 48px 32px;border-bottom:3px solid var(--sage);
+  }
+  .page-header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,5rem);color:var(--white);letter-spacing:0.04em;line-height:0.9;margin-bottom:20px;}
+  .page-header h1 span{color:var(--fern);}
+
+  /* Campos del encabezado */
+  .header-fields{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end;}
+  .hf-group label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.5);display:block;margin-bottom:6px;}
+  .hf-group input{
+    background:rgba(255,255,255,0.1);border:none;border-bottom:2px solid var(--fern);
+    color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;
+    padding:6px 10px;outline:none;min-width:180px;
+  }
+  .hf-group input::placeholder{color:rgba(255,255,255,0.25);}
+  .hf-group input:focus{background:rgba(255,255,255,0.15);}
+
+  /* INSTRUCCIONES */
+  .instrucciones{
+    background:var(--white);
+    border-left:4px solid var(--sage);
+    margin:28px 48px 0;
+    padding:16px 20px;
+    display:flex;align-items:flex-start;gap:14px;
+  }
+  .instr-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+  .instr-text{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;color:var(--mid);line-height:1.9;}
+  .instr-text strong{color:var(--forest);font-weight:500;}
+
+  /* MAIN */
+  .main{padding:20px 48px 48px;}
+
+  /* Grid de categorías */
+  .cats-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+  /* Card */
+  .cat-card{background:var(--white);border:1.5px solid var(--rule);overflow:hidden;}
+  .cat-header{display:grid;grid-template-columns:1fr 100px 100px;}
+  .cat-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.08em;color:var(--white);padding:10px 14px;}
+  .cat-col-lbl{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);padding:10px 8px;text-align:center;width:100px;display:flex;align-items:center;justify-content:center;}
+
+  /* Filas */
+  .cat-row{display:grid;grid-template-columns:1fr 100px 100px;border-top:1px solid var(--rule);align-items:center;}
+  .row-lbl{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--mid);padding:7px 14px;letter-spacing:0.03em;}
+  .row-lbl.empty{color:var(--rule);}
+  .cat-row input{
+    border:none;border-left:1px solid var(--rule);
+    padding:7px 8px;text-align:right;
+    font-family:'DM Mono',monospace;font-size:0.68rem;
+    color:var(--forest);background:transparent;outline:none;width:100%;
+    transition:background .15s;
+  }
+  .cat-row input:focus{background:rgba(90,122,74,0.07);}
+  .cat-row input::placeholder{color:var(--rule);font-size:0.6rem;}
+
+  /* Total por categoría */
+  .cat-total{display:grid;grid-template-columns:1fr 100px 100px;border-top:2px solid var(--rule);}
+  .total-lbl{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.08em;color:var(--forest);padding:8px 14px;}
+  .total-val{border-left:1px solid var(--rule);padding:8px 8px;text-align:right;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--forest);width:100px;}
+
+  /* RESUMEN — sticky flotante */
+  .resumen{
+    position:sticky;
+    bottom:0;
+    z-index:90;
+    background:var(--forest);
+    border-top:3px solid var(--sage);
+    padding:16px 48px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+    box-shadow:0 -4px 24px rgba(28,58,30,0.18);
+  }
+  .res-block label{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px;}
+  .res-val{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:var(--white);letter-spacing:0.02em;}
+  .res-hint{font-family:'DM Mono',monospace;font-size:0.5rem;color:rgba(255,255,255,0.3);margin-top:3px;letter-spacing:0.06em;}
+
+  /* FOOTER */
+  footer{background:var(--forest);padding:18px 48px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--sage);flex-wrap:wrap;gap:8px;}
+  .flogo{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
+  .flogo span{color:var(--fern);}
+  .ftext{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;}
+  .flinks a{font-family:'DM Mono',monospace;font-size:0.52rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-left:14px;}
+  .flinks a:hover{color:var(--fern);}
+
+  /* PRINT */
+  /* Header de marca — solo visible al imprimir, se repite en cada hoja */
+  .print-header{display:none;}
+  @media print {
+    .print-header{
+      display:block !important;
+      position:fixed;
+      top:0;left:0;right:0;
+      background:white;
+      padding:6px 0 8px 0;
+      border-bottom:3px solid #1c3a1e;
+      z-index:9999;
+    }
+    .ph-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .ph-logo{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.4rem;
+      letter-spacing:0.12em;
+      color:#1c3a1e;
+    }
+    .ph-logo span{color:#5a7a4a;}
+    .ph-tagline{
+      font-family:'DM Mono',monospace;
+      font-size:0.48rem;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:#aaa;
+      text-align:right;
+      line-height:1.6;
+    }
+    /* Empujar contenido para no quedar tapado por el header fijo */
+    body{ padding-top: 36px !important; }
+    .instrucciones,.btn-pdf,footer{display:none !important;}
+    nav{display:flex !important;position:static !important;}
+    body{background:white;}
+    .page-header{background:var(--forest) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .cat-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .resumen{-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static;box-shadow:none;}
+    .main{padding:12px 16px 16px;}
+    .cats-grid{gap:10px;}
+    @page{margin:8mm;size:A4;}
+  }
+
+  @media(max-width:768px){
+    nav,.page-header,.instrucciones,.main,footer{padding-left:20px;padding-right:20px;}
+    .cats-grid{grid-template-columns:1fr;}
+    .instrucciones{margin-left:20px;margin-right:20px;}
+    .resumen{grid-template-columns:1fr;gap:8px;padding:14px 20px;}
+    .res-val{font-size:1.5rem;}
+  }
+
+  /* Marcas de agua */
+  .cat-total { position: relative; }
+  .cat-wm {
+    position: absolute;
+    right: 210px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(28,58,30,0.12);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .resumen { position: relative; overflow: hidden; }
+  .resumen-wm {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.06);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  /* Marcas de agua */
+  .cat-total { position: relative; }
+  .cat-wm {
+    position: absolute;
+    right: 210px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(28,58,30,0.12);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .resumen { position: relative; overflow: hidden; }
+  .resumen-wm {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.07);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Salvador <span>Financiero</span></a>
+  <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+</nav>
+
+<div class="print-header"><div class="ph-inner"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tagline">Mentoría Patrimonial Independiente · salvadorfinanciero.github.io<br>Hecho con estrategia ✦</div></div></div>
+<div class="page-header">
+  <h1>Presupuesto<br><span>Mensual</span></h1>
+  <div class="header-fields">
+    <div class="hf-group">
+      <label>Mes que estás planeando</label>
+      <input type="text" placeholder="Ej. Abril 2025" id="mes">
+    </div>
+    <div class="hf-group">
+      <label>Tu ingreso mensual total</label>
+      <input type="text" placeholder="$0" id="ingreso" oninput="recalcular()">
+    </div>
+  </div>
+</div>
+
+<!-- Instrucciones -->
+<div class="instrucciones">
+  <div class="instr-icon">📋</div>
+  <div class="instr-text">
+    <strong>¿Cómo usar esta plantilla?</strong><br>
+    1. Escribe el mes y tu ingreso mensual arriba.<br>
+    2. En cada categoría, llena la columna <strong>Presupuestado</strong> con lo que planeas gastar.<br>
+    3. Al final del mes, regresa y llena la columna <strong>Gastado</strong> con lo que realmente gastaste.<br>
+    4. Al terminar, presiona <strong>"Descargar PDF"</strong> para guardar o imprimir tu presupuesto.
+  </div>
+</div>
+
+<div class="main">
+  <div class="cats-grid" id="cats-grid"></div>
+</div>
+
+<div class="resumen">
+  <div class="res-block">
+    <label>Total presupuestado</label>
+    <div class="res-val" id="res-p">$0</div>
+    <div class="res-hint">Lo que planeas gastar este mes</div>
+  </div>
+  <div class="res-block">
+    <label>Total gastado</label>
+    <div class="res-val" id="res-g">$0</div>
+    <div class="res-hint">Lo que realmente gastaste</div>
+  </div>
+  <div class="res-block">
+    <label>Diferencia</label>
+    <div class="res-val" id="res-d">—</div>
+    <div class="res-hint" id="res-d-hint">Verde = te sobró · Rojo = te pasaste</div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="flogo">Salvador <span>Financiero</span></a>
+  <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX · Hecho con estrategia ✦</div>
+  <div class="flinks">
+    <a href="terminos-y-condiciones.html">Términos</a>
+    <a href="aviso-de-privacidad.html">Privacidad</a>
+  </div>
+</footer>
+
+<script>
+const CATS = [
+  { id:1,  nombre:'1. Vivienda',            color:'var(--c1)',  items:['Renta','Pago de Crédito Hipotecario','Predial','Seguro de Casa','Mantenimiento','Otro',''] },
+  { id:2,  nombre:'2. Alimentación',        color:'var(--c2)',  items:['Supermercado','Tianguis / Mercado','Restaurantes','Otro',''] },
+  { id:3,  nombre:'3. Transporte',          color:'var(--c3)',  items:['Transporte Público','Taxi / Uber','Crédito Auto','Gasolina','Seguro de Auto','Tenencia','Estacionamientos'] },
+  { id:4,  nombre:'4. Servicios',           color:'var(--c4)',  items:['Luz / Electricidad','Gas','Agua','Internet / Teléfono','TV de Paga','Celular','Streaming (Netflix, etc.)'] },
+  { id:5,  nombre:'5. Gastos Personales',   color:'var(--c5)',  items:['Art. de Uso Personal','Gimnasio / Clases','Donativos','Otro',''] },
+  { id:6,  nombre:'6. Entretenimiento',     color:'var(--c6)',  items:['Restaurantes / Bares','Cine','Apps / Juegos','Otro'] },
+  { id:7,  nombre:'7. Salud',               color:'var(--c7)',  items:['Gastos Médicos','Consulta Médica','Consulta Dental','Medicamentos'] },
+  { id:8,  nombre:'8. Ropa',                color:'var(--c8)',  items:['Ropa y Calzado','Accesorios','Otro'] },
+  { id:9,  nombre:'9. Educación / Hijos',   color:'var(--c9)',  items:['Colegiatura','Útiles Escolares','Actividades Extra','Otro'] },
+  { id:10, nombre:'10. Inversión / Ahorro', color:'var(--c10)', items:['Inversión para Retiro','Ahorro para Viaje','Fondo de Emergencia','Otro'] },
+];
+
+const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
+const parse = s => { const n = parseFloat((s||'').replace(/[$,\s]/g,'')); return isNaN(n)?0:n; };
+
+function buildCats(){
+  document.getElementById('cats-grid').innerHTML = CATS.map(c => `
+    <div class="cat-card">
+      <div class="cat-header" style="background:${c.color};">
+        <div class="cat-title">${c.nombre}</div>
+        <div class="cat-col-lbl">Presupuestado</div>
+        <div class="cat-col-lbl">Gastado</div>
+      </div>
+      ${c.items.map((item,i) => `
+        <div class="cat-row">
+          <div class="row-lbl${item?'':' empty'}">${item||'Otro'}</div>
+          <input type="text" placeholder="$0" id="p${c.id}_${i}" oninput="recalcularCat(${c.id})">
+          <input type="text" placeholder="$0" id="g${c.id}_${i}" oninput="recalcularCat(${c.id})">
+        </div>
+      `).join('')}
+      <div class="cat-total">
+        <div class="total-lbl">Total</div>
+        <div class="total-val" id="tp${c.id}">—</div>
+        <div class="total-val" id="tg${c.id}">—</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function recalcularCat(id){
+  const c = CATS.find(x=>x.id===id);
+  let sp=0, sg=0;
+  c.items.forEach((_,i)=>{
+    sp += parse(document.getElementById(`p${id}_${i}`)?.value);
+    sg += parse(document.getElementById(`g${id}_${i}`)?.value);
+  });
+  document.getElementById(`tp${id}`).textContent = sp>0 ? fmt(sp) : '—';
+  document.getElementById(`tg${id}`).textContent = sg>0 ? fmt(sg) : '—';
+  recalcular();
+}
+
+function recalcular(){
+  let tp=0, tg=0;
+  CATS.forEach(c=>{
+    c.items.forEach((_,i)=>{
+      tp += parse(document.getElementById(`p${c.id}_${i}`)?.value);
+      tg += parse(document.getElementById(`g${c.id}_${i}`)?.value);
+    });
+  });
+  document.getElementById('res-p').textContent = tp>0 ? fmt(tp) : '$0';
+  document.getElementById('res-g').textContent = tg>0 ? fmt(tg) : '$0';
+  const dif = tp - tg;
+  const el = document.getElementById('res-d');
+  const hint = document.getElementById('res-d-hint');
+  if(tp===0 && tg===0){
+    el.textContent='—';
+    hint.textContent='Verde = te sobró · Rojo = te pasaste';
+  } else {
+    el.textContent = (dif>=0?'+':'')+fmt(dif);
+    hint.textContent = dif>=0 ? '¡Vas bien! Te sobran fondos.' : 'Superaste tu presupuesto.';
+  }
+}
+
+buildCats();
+
+  // Marca de agua en fila Total — solo texto, sin columna extra
+  document.querySelectorAll('.cat-total').forEach(function(row) {
+    var wm = document.createElement('div');
+    wm.className = 'cat-wm';
+    wm.textContent = 'Salvador Financiero';
+    row.appendChild(wm);
+  });
+
+  // Marca de agua en resumen — pegada a la derecha abajo
+  var reswm = document.createElement('div');
+  reswm.className = 'resumen-wm';
+  reswm.textContent = 'Salvador Financiero';
+  document.querySelector('.resumen').appendChild(reswm);
+
+  // Marca de agua junto al label Total (no agrega columna extra)
+  document.querySelectorAll('.cat-total').forEach(function(row) {
+    var wm = document.createElement('div');
+    wm.className = 'cat-wm';
+    wm.textContent = 'Salvador Financiero';
+    row.appendChild(wm);
+  });
+
+  // Marca de agua grande en resumen — abajo a la derecha
+  var reswm = document.createElement('div');
+  reswm.className = 'resumen-wm';
+  reswm.textContent = 'Salvador Financiero';
+  document.querySelector('.resumen').appendChild(reswm);
+
+</script>
+</body>
+</html>
