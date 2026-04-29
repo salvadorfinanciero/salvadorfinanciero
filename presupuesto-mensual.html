@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Presupuesto Mensual · Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -282,6 +282,13 @@
     .donut-wrap{ order:1; max-width:280px; margin:0 auto; }
     #donut-list-right{ order:3; display:block; }
     .donut-section{padding:20px;}
+  }
+
+  /* Prevenir zoom en iOS al tocar inputs */
+  @media(max-width:768px){
+    input, select, textarea {
+      font-size: 16px !important;
+    }
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
