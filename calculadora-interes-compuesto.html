@@ -35,7 +35,8 @@
   .nav-back{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
   .nav-back:hover{color:var(--fern);}
 
-  .hero-band{padding:64px 60px 56px;background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px;border-bottom:3px solid var(--sage);}
+  .hero-band{
+    padding-bottom:52px;padding:64px 60px 56px;background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px;}
   h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,7.5rem);line-height:0.88;color:var(--white);letter-spacing:0.01em;margin-bottom:24px;}
   h1 span{color:var(--fern);display:block;margin-top:0.18em;}
   .hero-rule{width:100%;max-width:560px;height:2px;background:var(--sage);margin-bottom:20px;}
@@ -135,7 +136,8 @@
 
   @media(max-width:768px){
     nav{padding:14px 20px;}
-    .hero-band{padding:40px 24px;}
+    .hero-band{
+    padding-bottom:52px;padding:40px 24px;}
     .main-grid{grid-template-columns:1fr;}
     .panel-inputs{border-right:none;border-bottom:3px solid var(--forest);padding:32px 24px;}
     .panel-results{padding:32px 24px;}
