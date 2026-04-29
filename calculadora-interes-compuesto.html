@@ -25,7 +25,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   *{max-width:100%;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;background:#1c3a1e;}
   body{overflow-x:hidden;max-width:100vw;}
 
 
@@ -154,6 +154,17 @@
     footer{flex-direction:column;gap:10px;padding:20px 24px;text-align:center;}
     .flinks{justify-content:center;}
   }
+
+  .nota-tecnica {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+    color: var(--soft);
+    line-height: 1.7;
+    padding: 10px 0 16px;
+    border-top: 1px solid var(--rule);
+    margin-top: 4px;
+  }
 </style>
 </head>
 <body>
@@ -274,6 +285,10 @@
           <button class="zp-btn active" id="zp-todo" data-desde="0" data-hasta="15">Todo</button>
         </div>
       </div>
+    </div>
+
+    <div class="nota-tecnica">
+      ✦ Los cálculos están basados en una tasa de interés anual compuesta mensualmente. Los resultados son orientativos y no constituyen asesoría financiera certificada.
     </div>
 
     <div class="cta-section">
