@@ -174,8 +174,8 @@
 
     <div class="input-group">
       <label class="input-label">Capital inicial</label>
-      <div class="input-value" id="display-capital">$10,000 <span>MXN</span></div>
-      <input type="range" id="slider-capital" min="1000" max="500000" step="1000" value="10000">
+      <div class="input-value" id="display-capital">— <span>MXN</span></div>
+      <input type="range" id="slider-capital" min="1000" max="500000" step="1000" value="1000">
       <div class="range-labels"><span>$1,000</span><span>$500,000</span></div>
       <div class="custom-input-wrap" style="margin-top:12px;">
         <label>Otro monto:</label>
@@ -186,10 +186,10 @@
 
     <div class="input-group">
       <label class="input-label">Aportación mensual aproximada</label>
-      <div class="input-value" id="display-mensual">$1,200 <span>MXN / mes · $300 a la semana</span></div>
+      <div class="input-value" id="display-mensual">— <span>MXN / mes</span></div>
       <div class="inversion-selector" id="inv-selector">
         <button class="inv-btn" data-val="1000">$1,000</button>
-        <button class="inv-btn active" data-val="1200">$1,200</button>
+        <button class="inv-btn " data-val="1200">$1,200</button>
         <button class="inv-btn" data-val="2000">$2,000</button>
         <button class="inv-btn" data-val="2500">$2,500</button>
         <button class="inv-btn" data-val="5000">$5,000</button>
@@ -207,15 +207,15 @@
 
     <div class="input-group">
       <label class="input-label">Rendimiento anual estimado</label>
-      <div class="input-value" id="display-tasa">10 <span>% anual</span></div>
-      <input type="range" id="slider-tasa" min="3" max="25" step="1" value="10">
+      <div class="input-value" id="display-tasa">5 <span>% anual</span></div>
+      <input type="range" id="slider-tasa" min="3" max="25" step="1" value="5">
       <div class="range-labels"><span>3%</span><span>25%</span></div>
     </div>
 
     <div class="input-group">
       <label class="input-label">Horizonte de inversión</label>
-      <div class="input-value" id="display-anos">15 <span>años</span></div>
-      <input type="range" id="slider-anos" min="1" max="40" step="1" value="15">
+      <div class="input-value" id="display-anos">5 <span>años</span></div>
+      <input type="range" id="slider-anos" min="1" max="40" step="1" value="5">
       <div class="range-labels"><span>1 año</span><span>40 años</span></div>
     </div>
 
@@ -297,7 +297,7 @@
 
 <script>
   const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
-  let capital = 10000, mensual = 1200, tasa = 10, anos = 15;
+  let capital = 0, mensual = 0, tasa = 5, anos = 5;
   let zoomDesde = 0, zoomHasta = 15;
   let chart;
   let fullData = { labels: [], dA: [], dT: [], dI: [] };
@@ -403,6 +403,16 @@
   }
 
   function calcular(){
+    if(capital === 0 && mensual === 0){
+      document.getElementById('res-aportado').textContent = '—';
+      document.getElementById('res-interes').textContent  = '—';
+      document.getElementById('res-total').textContent    = '—';
+      document.getElementById('res-sub').textContent = '';
+      document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
+      document.getElementById('insight-text').textContent = 'Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.';
+      if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.data.datasets[1].data=[]; chart.data.datasets[2].data=[]; chart.update('none'); }
+      return;
+    }
     const r = tasa / 100 / 12, n = anos * 12;
     const aportado = capital + mensual * n;
     let total = capital;
@@ -482,7 +492,8 @@
     });
   });
 
-  calcular();
+  // Inicio limpio — sin datos precargados
+  document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
 </script>
 </body>
 </html>
