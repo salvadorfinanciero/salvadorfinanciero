@@ -22,13 +22,14 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{font-family:'Instrument Serif',Georgia,serif;background:var(--cream);color:var(--forest);overflow-x:hidden;}
+  html{overflow-x:hidden;}
+  body{font-family:'Instrument Serif',Georgia,serif;background:var(--cream);color:var(--forest);}
 
   /* NAV */
-  nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:10px 32px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;gap:12px;flex-wrap:nowrap;}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;white-space:nowrap;}
   .nav-logo span{color:var(--fern);}
-  .btn-pdf{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.12em;padding:10px 28px;background:var(--sage);color:var(--white);border:2px solid var(--sage);cursor:pointer;transition:all .2s;box-shadow:3px 3px 0 var(--pine);}
+  .btn-pdf{font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;padding:7px 16px;background:var(--sage);color:var(--white);border:1.5px solid var(--sage);cursor:pointer;transition:all .2s;box-shadow:2px 2px 0 var(--pine);white-space:nowrap;flex-shrink:0;}
   .btn-pdf:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-1px,-1px);}
 
   /* HERO */
@@ -100,12 +101,13 @@
     position:sticky;
     bottom:0;
     z-index:90;
-    background:var(--forest);
-    border-top:3px solid var(--sage);
+    background:#1c3a1e;
+    border-top:3px solid #5a7a4a;
     padding:16px 48px;
     display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
-    box-shadow:0 -4px 24px rgba(28,58,30,0.18);
+    box-shadow:0 -6px 28px rgba(28,58,30,0.25);
   }
+  .resumen { position:sticky; } /* force sticky */
   .res-block label{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px;}
   .res-val{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:var(--white);letter-spacing:0.02em;}
   .res-hint{font-family:'DM Mono',monospace;font-size:0.5rem;color:rgba(255,255,255,0.3);margin-top:3px;letter-spacing:0.06em;}
@@ -188,19 +190,6 @@
     user-select: none;
     white-space: nowrap;
   }
-  .resumen { position: relative; overflow: hidden; }
-  .resumen-wm {
-    position: absolute;
-    bottom: 16px;
-    right: 24px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    letter-spacing: 0.16em;
-    color: rgba(255,255,255,0.06);
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
-  }
 
   /* Marcas de agua */
   .cat-total { position: relative; }
@@ -217,20 +206,83 @@
     user-select: none;
     white-space: nowrap;
   }
-  .resumen { position: relative; overflow: hidden; }
-  .resumen-wm {
-    position: absolute;
-    bottom: 16px;
-    right: 20px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    letter-spacing: 0.16em;
-    color: rgba(255,255,255,0.07);
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
+
+  /* Gráfica de dona + lista */
+  .donut-section{
+    background:var(--white);
+    border-top:2px solid var(--rule);
+    padding:28px 48px;
+  }
+  .donut-header{
+    margin-bottom:20px;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .donut-title{
+    font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
+    letter-spacing:0.08em;color:var(--forest);
+  }
+  .donut-sub{
+    font-family:'DM Mono',monospace;font-size:0.58rem;
+    letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);
+  }
+  .donut-body{
+    display:grid;
+    grid-template-columns:1fr 280px 1fr;
+    gap:24px;
+    align-items:start;
+  }
+  .donut-wrap{ width:100%; max-width:280px; }
+
+  /* Lista detallada */
+  .donut-list{ display:flex; flex-direction:column; gap:14px; }
+  .dl-cat{
+    border-left:3px solid var(--rule);
+    padding-left:12px;
+  }
+  .dl-cat-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:5px;gap:8px;
+  }
+  .dl-cat-dot{
+    width:10px;height:10px;border-radius:2px;flex-shrink:0;
+  }
+  .dl-cat-name{
+    font-family:'Bebas Neue',sans-serif;font-size:0.9rem;
+    letter-spacing:0.08em;color:var(--forest);flex:1;
+  }
+  .dl-cat-total{
+    font-family:'Bebas Neue',sans-serif;font-size:0.9rem;
+    color:var(--forest);letter-spacing:0.04em;
+  }
+  .dl-sub{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:2px 0;gap:8px;
+  }
+  .dl-sub-name{
+    font-family:'DM Mono',monospace;font-size:0.55rem;
+    color:var(--mid);letter-spacing:0.04em;
+  }
+  .dl-sub-val{
+    font-family:'DM Mono',monospace;font-size:0.55rem;
+    color:var(--soft);letter-spacing:0.04em;white-space:nowrap;
+  }
+  .dl-divider{
+    height:1px;background:var(--rule);margin:2px 0;
+  }
+
+  @media print {
+    .donut-section{display:block !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .donut-body{grid-template-columns:1fr 240px 1fr;gap:16px;}
+  }
+  @media(max-width:900px){
+    .donut-body{grid-template-columns:1fr; grid-template-rows:auto auto auto;}
+    #donut-list-left{ order:2; }
+    .donut-wrap{ order:1; max-width:280px; margin:0 auto; }
+    #donut-list-right{ order:3; display:block; }
+    .donut-section{padding:20px;}
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -249,7 +301,7 @@
     </div>
     <div class="hf-group">
       <label>Tu ingreso mensual total</label>
-      <input type="text" placeholder="$0" id="ingreso" oninput="recalcular()">
+      <input type="text" placeholder="$0" id="ingreso" oninput="formatInput(this);recalcular()">
     </div>
   </div>
 </div>
@@ -268,6 +320,21 @@
 
 <div class="main">
   <div class="cats-grid" id="cats-grid"></div>
+</div>
+
+<!-- Gráfica de dona + lista -->
+<div class="donut-section" id="donut-section" style="display:none;">
+  <div class="donut-header">
+    <span class="donut-title">¿A dónde se va tu dinero?</span>
+    <span class="donut-sub">Distribución del presupuesto por categoría</span>
+  </div>
+  <div class="donut-body">
+    <div class="donut-list" id="donut-list-left"></div>
+    <div class="donut-wrap">
+      <canvas id="donutChart"></canvas>
+    </div>
+    <div class="donut-list" id="donut-list-right"></div>
+  </div>
 </div>
 
 <div class="resumen">
@@ -314,6 +381,20 @@ const CATS = [
 const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
 const parse = s => { const n = parseFloat((s||'').replace(/[$,\s]/g,'')); return isNaN(n)?0:n; };
 
+  function formatInput(input){
+    var raw = input.value.replace(/[$,\s]/g,'');
+    if(raw==='' || raw==='-') return;
+    var n = parseFloat(raw);
+    if(isNaN(n)) return;
+    // Store cursor position
+    var pos = input.selectionStart;
+    var oldLen = input.value.length;
+    input.value = '$' + n.toLocaleString('es-MX', {minimumFractionDigits:0, maximumFractionDigits:0});
+    // Restore cursor
+    var newLen = input.value.length;
+    input.setSelectionRange(pos + (newLen - oldLen), pos + (newLen - oldLen));
+  }
+
 function buildCats(){
   document.getElementById('cats-grid').innerHTML = CATS.map(c => `
     <div class="cat-card">
@@ -350,6 +431,95 @@ function recalcularCat(id){
   recalcular();
 }
 
+  var donutChart = null;
+  var CAT_COLORS = ['#2d6a8a','#4a7a2d','#8a5a2d','#2d7a5a','#7a4a8a','#8a6a2d','#8a2d2d','#5a2d8a','#2d5a8a','#3a7d44'];
+
+  function updateDonut(){
+    var labels=[], data=[], colors=[], details=[];
+    CATS.forEach(function(c,idx){
+      var sum=0, subs=[];
+      c.items.forEach(function(item,i){
+        var el=document.getElementById('p'+c.id+'_'+i);
+        var val=parse(el ? el.value : '');
+        if(val>0 && item) subs.push(item+': '+fmt(val));
+        sum+=val;
+      });
+      if(sum>0){
+        labels.push(c.nombre.replace(/^\d+\. /,''));
+        data.push(sum);
+        colors.push(CAT_COLORS[idx]);
+        details.push(subs);
+      }
+    });
+    var section=document.getElementById('donut-section');
+    if(!section) return;
+    if(data.length===0){ section.style.display='none'; return; }
+    section.style.display='block';
+
+    // Render left/right lists
+    var leftEl  = document.getElementById('donut-list-left');
+    var rightEl = document.getElementById('donut-list-right');
+    if(leftEl && rightEl){
+      leftEl.innerHTML=''; rightEl.innerHTML='';
+      var half = Math.ceil(labels.length/2);
+      labels.forEach(function(lbl,idx){
+        var div=document.createElement('div');
+        div.className='dl-cat';
+        div.style.borderLeftColor=colors[idx];
+        var catTotal=data[idx];
+        var subsHtml=(details[idx]||[]).map(function(s){
+          return '<div class="dl-sub"><span class="dl-sub-name">'+s.split(':')[0]+'</span><span class="dl-sub-val">'+s.split(':').slice(1).join(':').trim()+'</span></div>';
+        }).join('<div class="dl-divider"></div>');
+        div.innerHTML='<div class="dl-cat-header">'
+          +'<div class="dl-cat-dot" style="background:'+colors[idx]+'"></div>'
+          +'<span class="dl-cat-name">'+lbl+'</span>'
+          +'<span class="dl-cat-total">'+fmt(catTotal)+'</span>'
+          +'</div>'+subsHtml;
+        if(idx<half) leftEl.appendChild(div);
+        else rightEl.appendChild(div);
+      });
+    }
+
+    if(donutChart){
+      donutChart.data.labels=labels;
+      donutChart.data.datasets[0].data=data;
+      donutChart.data.datasets[0].backgroundColor=colors;
+      donutChart._details=details;
+      donutChart.update();
+    } else {
+      var ctx=document.getElementById('donutChart').getContext('2d');
+      donutChart=new Chart(ctx,{
+        type:'doughnut',
+        data:{ labels:labels, datasets:[{ data:data, backgroundColor:colors, borderColor:'#f5f3ee', borderWidth:3, hoverOffset:8 }] },
+        options:{
+          responsive:true, cutout:'62%',
+          plugins:{
+            legend:{ display:false },
+            tooltip:{
+              backgroundColor:'#1c3a1e', titleColor:'#a8c498', bodyColor:'rgba(255,255,255,0.85)',
+              titleFont:{family:'Bebas Neue',size:13}, bodyFont:{family:'DM Mono',size:11},
+              padding:12,
+              callbacks:{
+                title: function(items){ return items[0].label; },
+                label: function(c){
+                  var total=data.reduce(function(a,b){return a+b;},0);
+                  return ' Total: '+fmt(c.raw)+' ('+Math.round(c.parsed/total*100)+'%)';
+                },
+                afterLabel: function(c){
+                  var d = donutChart._details || details;
+                  var subs = d[c.dataIndex] || [];
+                  return subs.map(function(s){ return '  · '+s; });
+                }
+              }
+            }
+          }
+        }
+      });
+      donutChart._details=details;
+    }
+  }
+
+
 function recalcular(){
   let tp=0, tg=0;
   CATS.forEach(c=>{
@@ -370,9 +540,15 @@ function recalcular(){
     el.textContent = (dif>=0?'+':'')+fmt(dif);
     hint.textContent = dif>=0 ? '¡Vas bien! Te sobran fondos.' : 'Superaste tu presupuesto.';
   }
+  updateDonut();
 }
 
 buildCats();
+
+  // Attach formatter to all category inputs
+  document.querySelectorAll('.cat-row input').forEach(function(inp){
+    attachFmt(inp);
+  });
 
   // Marca de agua en fila Total — solo texto, sin columna extra
   document.querySelectorAll('.cat-total').forEach(function(row) {
