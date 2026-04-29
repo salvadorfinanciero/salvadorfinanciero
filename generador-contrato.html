@@ -7,95 +7,52 @@
 <title>Generador de Contrato — Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --forest:#1c3a1e; --pine:#2d5a30; --sage:#5a7a4a;
-    --fern:#a8c498; --cream:#f5f3ee; --white:#ffffff;
-  }
+  :root { --forest:#1c3a1e; --pine:#2d5a30; --sage:#5a7a4a; --fern:#a8c498; --cream:#f5f3ee; --white:#ffffff; }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    background:var(--cream);
-    font-family:'DM Mono',monospace;
-    color:var(--forest);
-    min-height:100vh;
-    background-image:
-      linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);
-    background-size:36px 36px;
-  }
-
-  /* NAV */
+  body{background:var(--cream);font-family:'DM Mono',monospace;color:var(--forest);min-height:100vh;
+    background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);
+    background-size:36px 36px;}
   nav{background:var(--forest);padding:16px max(40px,env(safe-area-inset-right)) 16px max(40px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--sage);}
   .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-brand span{color:var(--fern);}
   .nav-back{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;}
-
-  /* HERO */
   .hero{background:var(--forest);padding:52px max(40px,env(safe-area-inset-right)) 40px max(40px,env(safe-area-inset-left));border-bottom:3px solid var(--sage);}
   .hero-eyebrow{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--fern);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
   .hero-eyebrow span{display:block;width:24px;height:2px;background:var(--fern);}
   .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,5rem);line-height:0.95;letter-spacing:0.03em;color:var(--white);margin-bottom:6px;}
   .hero h1 span{color:var(--fern);}
   .hero p{font-size:0.72rem;color:rgba(255,255,255,0.45);letter-spacing:0.06em;line-height:1.7;max-width:480px;margin-top:12px;}
-
-  /* CONTAINER */
   .container{max-width:820px;margin:0 auto;padding:40px max(40px,env(safe-area-inset-right)) 80px max(40px,env(safe-area-inset-left));display:flex;flex-direction:column;gap:20px;}
-
-  /* CARD */
   .card{background:var(--white);border-top:4px solid var(--sage);padding:36px;box-shadow:0 2px 16px rgba(28,58,30,0.07);}
   .card-label{font-size:0.65rem;letter-spacing:0.2em;color:rgba(28,58,30,0.4);margin-bottom:6px;text-transform:uppercase;}
   .card h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.06em;color:var(--sage);margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(28,58,30,0.1);}
-
-  /* GRID */
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .full{grid-column:1/-1;}
-
-  /* INPUT */
   .field{display:flex;flex-direction:column;gap:5px;}
   .field label{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(28,58,30,0.5);}
   .field label .req{color:#c0392b;}
-  input[type="text"],input[type="number"],input[type="email"],input[type="tel"],input[type="date"],select,textarea{
-    width:100%;background:var(--cream);border:1px solid rgba(28,58,30,0.18);
-    color:var(--forest);font-family:'DM Mono',monospace;font-size:0.88rem;
-    padding:11px 14px;outline:none;transition:border-color .18s;
-    -moz-appearance:textfield;
-    -webkit-appearance:none;
-    border-radius:0;
-  }
-  input:focus,select:focus,textarea:focus{border-color:var(--sage);}
+  input[type="text"],input[type="number"],input[type="email"],input[type="tel"],input[type="date"],select{
+    width:100%;background:var(--cream);border:1px solid rgba(28,58,30,0.18);color:var(--forest);
+    font-family:'DM Mono',monospace;font-size:0.88rem;padding:11px 14px;outline:none;
+    transition:border-color .18s;-moz-appearance:textfield;-webkit-appearance:none;border-radius:0;}
+  input:focus,select:focus{border-color:var(--sage);}
   select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a7a4a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
-  textarea{resize:vertical;min-height:80px;}
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
-
-  /* MENSUALIDAD AUTO */
+  input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
   .plan-preview{margin-top:10px;padding:14px 18px;background:rgba(90,122,74,0.08);border:1px solid rgba(90,122,74,0.2);display:none;}
   .plan-preview.visible{display:block;}
   .plan-preview .pp-label{font-size:0.56rem;letter-spacing:0.13em;text-transform:uppercase;color:rgba(28,58,30,0.4);margin-bottom:3px;}
   .plan-preview .pp-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--sage);}
-
-  /* BTN */
-  .btn-generar{
-    display:inline-flex;align-items:center;gap:10px;
-    background:var(--forest);color:var(--fern);
-    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
-    padding:16px 32px;border:none;cursor:pointer;transition:background .2s;width:100%;justify-content:center;
-    margin-top:8px;
-  }
+  .btn-generar{display:inline-flex;align-items:center;gap:10px;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;transition:background .2s;width:100%;justify-content:center;margin-top:8px;}
   .btn-generar:hover{background:var(--pine);}
   .btn-generar svg{width:16px;height:16px;fill:var(--fern);}
-
-  /* ERROR */
   .err-msg{font-size:0.6rem;color:#c0392b;margin-top:3px;display:none;}
   .field.error input,.field.error select{border-color:#c0392b;}
   .field.error .err-msg{display:block;}
-
-  /* FOOTER */
   footer{background:var(--forest);padding:20px max(40px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(40px,env(safe-area-inset-left));text-align:center;border-top:3px solid var(--sage);}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
   .footer-brand span{color:var(--fern);}
   .footer-sub{font-size:0.54rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
-
   @media(max-width:640px){
     nav{padding:13px max(20px,env(safe-area-inset-right)) 13px max(20px,env(safe-area-inset-left));}
     .hero{padding:36px max(20px,env(safe-area-inset-right)) 30px max(20px,env(safe-area-inset-left));}
@@ -106,12 +63,6 @@
     footer{padding:20px max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));}
   }
 
-  @media print{
-    body *{visibility:hidden;}
-    #print-area,#print-area *{visibility:visible;}
-    #print-area{position:fixed;top:0;left:0;width:100%;background:white;}
-    @page{margin:15mm;size:A4 portrait;}
-  }
 </style>
 </head>
 <body>
@@ -124,41 +75,20 @@
 <div class="hero">
   <div class="hero-eyebrow"><span></span>Uso Interno · Salvador Financiero<span></span></div>
   <h1>Generador<br><span>de Contrato</span></h1>
-  <p>Llena los datos del inversionista y genera el contrato listo para firmar en PDF.</p>
+  <p>Llena los datos del inversionista y genera el contrato completo listo para firmar en PDF.</p>
 </div>
 
 <div class="container">
 
-  <!-- DATOS DEL INVERSIONISTA -->
   <div class="card">
     <div class="card-label">Sección 01</div>
     <h2>Datos del Inversionista</h2>
     <div class="form-grid">
-      <div class="field" id="f-nombres">
-        <label>Nombre(s) <span class="req">*</span></label>
-        <input type="text" id="nombres" placeholder="Nombre(s)">
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-apellidos">
-        <label>Apellidos <span class="req">*</span></label>
-        <input type="text" id="apellidos" placeholder="Apellidos">
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-edad">
-        <label>Edad <span class="req">*</span></label>
-        <input type="number" id="edad" placeholder="Años" min="18" max="99">
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-telefono">
-        <label>Teléfono / WhatsApp <span class="req">*</span></label>
-        <input type="tel" id="telefono" placeholder="10 dígitos">
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field full" id="f-correo">
-        <label>Correo electrónico <span class="req">*</span></label>
-        <input type="email" id="correo" placeholder="correo@ejemplo.com">
-        <span class="err-msg">Campo requerido</span>
-      </div>
+      <div class="field" id="f-nombres"><label>Nombre(s) <span class="req">*</span></label><input type="text" id="nombres" placeholder="Nombre(s)"><span class="err-msg">Requerido</span></div>
+      <div class="field" id="f-apellidos"><label>Apellidos <span class="req">*</span></label><input type="text" id="apellidos" placeholder="Apellidos"><span class="err-msg">Requerido</span></div>
+      <div class="field" id="f-edad"><label>Edad <span class="req">*</span></label><input type="number" id="edad" placeholder="Años" min="18" max="99"><span class="err-msg">Requerido</span></div>
+      <div class="field" id="f-telefono"><label>Teléfono / WhatsApp <span class="req">*</span></label><input type="tel" id="telefono" placeholder="10 dígitos"><span class="err-msg">Requerido</span></div>
+      <div class="field full" id="f-correo"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="correo" placeholder="correo@ejemplo.com"><span class="err-msg">Requerido</span></div>
       <div class="field full" id="f-regimen">
         <label>Régimen Fiscal (SAT) <span class="req">*</span></label>
         <select id="regimen">
@@ -177,7 +107,7 @@
           <option>Régimen de Actividad Empresarial (PFAE)</option>
           <option>Otro</option>
         </select>
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
       <div class="field" id="f-broker">
         <label>Plataforma Bróker <span class="req">*</span></label>
@@ -192,10 +122,10 @@
           <option>Nu Invest</option>
           <option>Otro</option>
         </select>
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
       <div class="field" id="f-canal">
-        <label>Canal de comunicación <span class="req">*</span></label>
+        <label>Canal de comunicación oficial <span class="req">*</span></label>
         <select id="canal">
           <option value="">— Selecciona —</option>
           <option>WhatsApp</option>
@@ -203,12 +133,11 @@
           <option>Correo electrónico</option>
           <option>Videollamada</option>
         </select>
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
     </div>
   </div>
 
-  <!-- PERFIL DE INVERSIÓN -->
   <div class="card">
     <div class="card-label">Sección 02</div>
     <h2>Perfil de Inversión</h2>
@@ -221,17 +150,12 @@
           <option>Moderado</option>
           <option>Agresivo</option>
         </select>
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
-      <div class="field" id="f-puntaje">
-        <label>Puntaje del cuestionario <span class="req">*</span></label>
-        <input type="number" id="puntaje" placeholder="0 – 32" min="0" max="32">
-        <span class="err-msg">Campo requerido</span>
-      </div>
+      <div class="field" id="f-puntaje"><label>Puntaje del cuestionario <span class="req">*</span></label><input type="number" id="puntaje" placeholder="0 – 32" min="0" max="32"><span class="err-msg">Requerido</span></div>
     </div>
   </div>
 
-  <!-- CONDICIONES ECONÓMICAS -->
   <div class="card">
     <div class="card-label">Sección 03</div>
     <h2>Condiciones del Servicio</h2>
@@ -247,30 +171,10 @@
           <option value="Patrimonial|patrimonial">Patrimonial · $5,000+/sem → 7% anual s/ capital</option>
         </select>
         <div class="plan-preview" id="plan-preview">
-          <div class="pp-label">Mensualidad inicial</div>
+          <div class="pp-label">Mensualidad inicial referencial</div>
           <div class="pp-val" id="plan-preview-val">—</div>
         </div>
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-pago-metodo">
-        <label>Método de pago <span class="req">*</span></label>
-        <select id="pago-metodo">
-          <option value="">— Selecciona —</option>
-          <option>Transferencia SPEI</option>
-          <option>Efectivo</option>
-          <option>Otro</option>
-        </select>
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-pago-fecha">
-        <label>Fecha de primer pago <span class="req">*</span></label>
-        <input type="date" id="pago-fecha">
-        <span class="err-msg">Campo requerido</span>
-      </div>
-      <div class="field" id="f-corte-fecha">
-        <label>Fecha de corte anual <span class="req">*</span></label>
-        <input type="date" id="corte-fecha">
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
       <div class="field" id="f-presentacion">
         <label>Presentación inicial</label>
@@ -280,66 +184,41 @@
           <option value="No aplica">No aplica</option>
         </select>
       </div>
+      <div class="field" id="f-pago-metodo">
+        <label>Método de pago <span class="req">*</span></label>
+        <select id="pago-metodo">
+          <option value="">— Selecciona —</option>
+          <option>Transferencia SPEI</option>
+          <option>Efectivo</option>
+          <option>Otro</option>
+        </select>
+        <span class="err-msg">Requerido</span>
+      </div>
+      <div class="field" id="f-pago-fecha"><label>Fecha de primer pago <span class="req">*</span></label><input type="date" id="pago-fecha"><span class="err-msg">Requerido</span></div>
+      <div class="field" id="f-corte-fecha"><label>Fecha de corte anual <span class="req">*</span></label><input type="date" id="corte-fecha"><span class="err-msg">Requerido</span></div>
     </div>
   </div>
 
-  <!-- CONTRATO -->
   <div class="card">
     <div class="card-label">Sección 04</div>
     <h2>Datos del Contrato</h2>
     <div class="form-grid">
-      <div class="field" id="f-firma-fecha">
-        <label>Fecha de firma <span class="req">*</span></label>
-        <input type="date" id="firma-fecha">
-        <span class="err-msg">Campo requerido</span>
-      </div>
+      <div class="field" id="f-firma-fecha"><label>Fecha de firma <span class="req">*</span></label><input type="date" id="firma-fecha"><span class="err-msg">Requerido</span></div>
       <div class="field" id="f-estado">
-        <label>Estado / Ciudad <span class="req">*</span></label>
+        <label>Estado <span class="req">*</span></label>
         <select id="estado">
           <option value="">— Selecciona —</option>
-          <option>Ciudad de México</option>
-          <option>Aguascalientes</option>
-          <option>Baja California</option>
-          <option>Baja California Sur</option>
-          <option>Campeche</option>
-          <option>Chiapas</option>
-          <option>Chihuahua</option>
-          <option>Coahuila</option>
-          <option>Colima</option>
-          <option>Durango</option>
-          <option>Estado de México</option>
-          <option>Guanajuato</option>
-          <option>Guerrero</option>
-          <option>Hidalgo</option>
-          <option>Jalisco</option>
-          <option>Michoacán</option>
-          <option>Morelos</option>
-          <option>Nayarit</option>
-          <option>Nuevo León</option>
-          <option>Oaxaca</option>
-          <option>Puebla</option>
-          <option>Querétaro</option>
-          <option>Quintana Roo</option>
-          <option>San Luis Potosí</option>
-          <option>Sinaloa</option>
-          <option>Sonora</option>
-          <option>Tabasco</option>
-          <option>Tamaulipas</option>
-          <option>Tlaxcala</option>
-          <option>Veracruz</option>
-          <option>Yucatán</option>
-          <option>Zacatecas</option>
+          <option>Ciudad de México</option><option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option>
         </select>
-        <span class="err-msg">Campo requerido</span>
+        <span class="err-msg">Requerido</span>
       </div>
     </div>
   </div>
 
-  <!-- GENERAR -->
   <div class="card">
     <div class="card-label">Listo</div>
     <h2>Generar Contrato</h2>
-    <p style="font-size:0.7rem;color:rgba(28,58,30,0.55);line-height:1.7;margin-bottom:20px;">Verifica que todos los datos sean correctos antes de generar. El PDF se abrirá listo para imprimir o guardar — solo faltará la firma de ambas partes.</p>
+    <p style="font-size:0.7rem;color:rgba(28,58,30,0.55);line-height:1.7;margin-bottom:20px;">Verifica los datos antes de generar. El PDF saldrá con el contrato completo — solo faltará la firma de ambas partes.</p>
     <button class="btn-generar" onclick="generarContrato()">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg>
       Generar PDF del Contrato
@@ -357,274 +236,369 @@
 
 <script>
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-
-  function fmtFecha(val) {
-    if (!val) return '_______________';
-    const [y,m,d] = val.split('-');
-    return `${parseInt(d)} de ${meses[parseInt(m)-1]} de ${y}`;
-  }
-
-  function autoMensual() {
-    const sel = document.getElementById('plan').value;
-    const preview = document.getElementById('plan-preview');
-    const val = document.getElementById('plan-preview-val');
-    if (!sel) { preview.classList.remove('visible'); return; }
-    const [cat, monto] = sel.split('|');
-    val.textContent = monto === 'patrimonial' ? '7% anual sobre capital invertido' : `$${parseInt(monto).toLocaleString('es-MX')} MXN / mes`;
+  function fmtFecha(val){ if(!val)return'_______________'; const[y,m,d]=val.split('-'); return`${parseInt(d)} de ${meses[parseInt(m)-1]} de ${y}`; }
+  function g(id){ return document.getElementById(id)?.value?.trim()||''; }
+  function autoMensual(){
+    const sel=g('plan'); const preview=document.getElementById('plan-preview'); const val=document.getElementById('plan-preview-val');
+    if(!sel){preview.classList.remove('visible');return;}
+    const[,monto]=sel.split('|');
+    val.textContent=monto==='patrimonial'?'7% anual sobre capital invertido':`$${parseInt(monto).toLocaleString('es-MX')} MXN / mes`;
     preview.classList.add('visible');
   }
-
-  const required = ['nombres','apellidos','edad','telefono','correo','regimen','broker','canal','perfil','puntaje','plan','pago-metodo','pago-fecha','corte-fecha','firma-fecha','estado'];
-
-  function validate() {
-    let ok = true;
-    required.forEach(id => {
-      const el = document.getElementById(id);
-      const field = document.getElementById('f-' + id);
-      if (!el || !field) return;
-      if (!el.value || el.value.trim() === '') {
-        field.classList.add('error');
-        ok = false;
-      } else {
-        field.classList.remove('error');
-      }
+  const required=['nombres','apellidos','edad','telefono','correo','regimen','broker','canal','perfil','puntaje','plan','pago-metodo','pago-fecha','corte-fecha','firma-fecha','estado'];
+  function validate(){
+    let ok=true;
+    required.forEach(id=>{
+      const el=document.getElementById(id); const field=document.getElementById('f-'+id);
+      if(!el||!field)return;
+      if(!el.value||el.value.trim()===''){field.classList.add('error');ok=false;}
+      else field.classList.remove('error');
     });
     return ok;
   }
-
-  function g(id) { return document.getElementById(id)?.value?.trim() || ''; }
-
-  function planInfo() {
-    const raw = g('plan');
-    if (!raw) return { cat: '_______________', monto: '_______________' };
-    const [cat, monto] = raw.split('|');
-    return { cat, monto: monto === 'patrimonial' ? '7% anual sobre capital invertido' : `$${parseInt(monto).toLocaleString('es-MX')} MXN` };
+  function planInfo(){
+    const raw=g('plan'); if(!raw)return{cat:'_______________',monto:'_______________'};
+    const[cat,monto]=raw.split('|');
+    return{cat,monto:monto==='patrimonial'?'7% anual sobre capital invertido':`$${parseInt(monto).toLocaleString('es-MX')} MXN`};
   }
 
-  function generarContrato() {
-    if (!validate()) {
-      document.querySelector('.field.error')?.scrollIntoView({behavior:'smooth', block:'center'});
-      return;
-    }
+  function generarContrato(){
+    if(!validate()){document.querySelector('.field.error')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    const nombre=`${g('nombres')} ${g('apellidos')}`;
+    const plan=planInfo();
+    const firmaFecha=fmtFecha(g('firma-fecha'));
+    const pagoFecha=fmtFecha(g('pago-fecha'));
+    const corteFecha=fmtFecha(g('corte-fecha'));
+    const estado=g('estado');
+    const broker=g('broker');
+    const canal=g('canal');
+    const perfil=g('perfil');
 
-    const nombre = `${g('nombres')} ${g('apellidos')}`;
-    const plan = planInfo();
-    const firmaFecha = fmtFecha(g('firma-fecha'));
-    const pagoFecha = fmtFecha(g('pago-fecha'));
-    const corteFecha = fmtFecha(g('corte-fecha'));
-    const estado = g('estado');
+    const css=`
+      *{margin:0;padding:0;box-sizing:border-box;}
+      body{font-family:Georgia,serif;color:#1a1a1a;background:#fff;font-size:10pt;line-height:1.6;}
+      .page{max-width:100%;padding:0;}
+      .doc-header{background:#1c3a1e;padding:16px 28px 14px;}
+      .doc-brand{font-family:Arial,sans-serif;font-size:20pt;font-weight:bold;letter-spacing:2px;color:#fff;}
+      .doc-brand span{color:#a8c498;}
+      .doc-sub{font-size:7pt;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:3px;font-family:Arial,sans-serif;}
+      .doc-title-bar{background:#2d5a30;padding:10px 28px 9px;}
+      .doc-title{font-family:Arial,sans-serif;font-size:13pt;font-weight:bold;letter-spacing:1px;color:#a8c498;}
+      .doc-subtitle{font-size:7pt;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:2px;font-family:Arial,sans-serif;}
+      .doc-date{font-size:8pt;color:rgba(255,255,255,0.45);margin-top:5px;font-family:Arial,sans-serif;}
+      .body{padding:14px 28px 24px;}
+      h1{font-family:Arial,sans-serif;font-size:10.5pt;font-weight:bold;color:#1c3a1e;margin:16px 0 4px;padding-bottom:3px;border-bottom:2px solid #5a7a4a;letter-spacing:0.5px;text-transform:uppercase;}
+      h2{font-family:Arial,sans-serif;font-size:9pt;font-weight:bold;color:#5a7a4a;margin:10px 0 4px;letter-spacing:0.3px;}
+      p{font-size:8.5pt;line-height:1.65;color:#222;margin-bottom:6px;text-align:justify;}
+      .lv{display:flex;gap:6px;margin-bottom:3px;font-size:8.5pt;}
+      .lv b{color:#1c3a1e;min-width:210px;flex-shrink:0;font-family:Arial,sans-serif;}
+      .lv span{color:#333;}
+      ul{margin:4px 0 8px 0;padding-left:0;list-style:none;}
+      ul li{font-size:8.5pt;line-height:1.65;color:#222;padding-left:16px;position:relative;margin-bottom:2px;text-align:justify;}
+      ul li::before{content:'✦';position:absolute;left:0;color:#5a7a4a;font-size:6pt;top:3px;}
+      table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:8pt;}
+      th{background:#1c3a1e;color:#a8c498;padding:5px 8px;text-align:left;font-size:7pt;letter-spacing:0.8px;text-transform:uppercase;font-family:Arial,sans-serif;}
+      td{padding:5px 8px;border-bottom:1px solid rgba(28,58,30,0.1);color:#333;vertical-align:top;}
+      tr:nth-child(even) td{background:rgba(28,58,30,0.03);}
+      tr.hl td{background:rgba(90,122,74,0.12);color:#1c3a1e;font-weight:bold;}
+      tr.hl td:first-child{border-left:3px solid #5a7a4a;padding-left:6px;}
+      .alert{background:#f5f3ee;border-left:4px solid #5a7a4a;padding:8px 12px;margin:6px 0;font-size:8pt;line-height:1.6;color:#333;}
+      .sig-section{margin-top:36px;padding-top:16px;border-top:2px solid #5a7a4a;}
+      .sig-intro{font-size:9pt;color:#222;margin-bottom:20px;text-align:justify;}
+      .sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:24px;}
+      .sig-line{border-bottom:1.5px solid #1c3a1e;height:50px;margin-bottom:6px;}
+      .sig-name{font-size:8.5pt;color:#1c3a1e;font-weight:bold;font-family:Arial,sans-serif;}
+      .sig-role{font-size:7.5pt;color:#777;margin-top:2px;font-style:italic;}
+      .doc-footer{margin-top:28px;padding-top:12px;border-top:2px solid #5a7a4a;display:flex;justify-content:space-between;align-items:flex-start;}
+      .doc-footer-brand{font-family:Arial,sans-serif;font-size:9pt;font-weight:bold;letter-spacing:1px;color:#1c3a1e;}
+      .doc-footer-brand span{color:#5a7a4a;}
+      .doc-footer-note{font-size:6.5pt;color:#aaa;text-align:right;line-height:1.5;font-style:italic;}
+    `;
 
-    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>Contrato — ${nombre} — Salvador Financiero</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'DM Mono',monospace;color:#1c3a1e;background:#ffffff;padding:0;}
-  .page{max-width:780px;margin:0 auto;padding:40px 48px 48px;}
+    const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Contrato — ${nombre}</title>
+<style>${css}</style></head><body><div class="page">
 
-  /* HEADER */
-  .doc-header{background:#1c3a1e;padding:32px 40px;margin-bottom:0;}
-  .doc-brand{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:#ffffff;}
-  .doc-brand span{color:#a8c498;}
-  .doc-sub{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:4px;}
-  .doc-title-bar{background:#2d5a30;padding:20px 40px;margin-bottom:32px;}
-  .doc-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:#a8c498;}
-  .doc-subtitle{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:3px;}
-  .doc-date{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:6px;}
+<div class="doc-header">
+  <div class="doc-brand">SALVADOR <span>FINANCIERO</span></div>
+  <div class="doc-sub">Mentoría Patrimonial Independiente · CDMX, México</div>
+</div>
+<div class="doc-title-bar">
+  <div class="doc-title">CONTRATO DE PRESTACIÓN DE SERVICIOS</div>
+  <div class="doc-subtitle">Mentoría Patrimonial · Mandato de Ejecución · Bono de Éxito</div>
+  <div class="doc-date">${estado}, a ${firmaFecha}</div>
+</div>
 
-  /* SECTIONS */
-  h1{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:#1c3a1e;margin:28px 0 6px;padding-bottom:6px;border-bottom:2px solid #5a7a4a;}
-  h2{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.08em;color:#5a7a4a;margin:18px 0 6px;}
-  p{font-size:0.72rem;line-height:1.8;color:#2a2a2a;margin-bottom:10px;text-align:justify;}
-  .lv{display:flex;gap:8px;margin-bottom:5px;font-size:0.72rem;}
-  .lv b{color:#1c3a1e;min-width:220px;flex-shrink:0;}
-  .lv span{color:#333;}
+<div class="body">
 
-  /* CLAUSE */
-  .clause{display:flex;gap:10px;margin-bottom:8px;}
-  .clause-num{font-size:0.7rem;color:#5a7a4a;font-weight:600;min-width:24px;flex-shrink:0;padding-top:1px;}
-  .clause-text{font-size:0.72rem;line-height:1.75;color:#2a2a2a;text-align:justify;}
+<h1>I. Antecedentes</h1>
+<p>El presente instrumento es celebrado entre las partes que se identifican en la Sección II, con fundamento en los artículos 1793, 1794, 1796 y 2606 del Código Civil Federal de los Estados Unidos Mexicanos y demás disposiciones aplicables. Su objeto es regular la prestación de servicios de mentoría patrimonial, gestión operativa de valores bajo mandato expreso y acompañamiento financiero personalizado.</p>
 
-  /* TABLE */
-  table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:0.68rem;}
-  th{background:#1c3a1e;color:#a8c498;padding:8px 10px;text-align:left;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;}
-  td{padding:7px 10px;border-bottom:1px solid rgba(28,58,30,0.08);color:#333;}
-  tr:nth-child(even) td{background:rgba(28,58,30,0.03);}
-  tr.highlight td{background:rgba(90,122,74,0.12);color:#1c3a1e;font-weight:600;}
-  tr.highlight td:first-child{border-left:3px solid #5a7a4a;padding-left:7px;}
+<h1>II. Identificación de las Partes</h1>
+<h2>2.1 El Mentor Patrimonial</h2>
+<div class="lv"><b>Nombre completo:</b><span>Miguel Salvador Valdez Villegas</span></div>
+<div class="lv"><b>Denominación comercial:</b><span>Salvador Financiero</span></div>
+<div class="lv"><b>Sitio web:</b><span>salvadorfinanciero.github.io/salvadorfinanciero</span></div>
+<div class="lv"><b>Instagram:</b><span>@salvadorfinanciero</span></div>
+<div class="lv"><b>Correo electrónico:</b><span>info.salvadorfinanciero@gmail.com</span></div>
+<div class="lv"><b>Ciudad:</b><span>Ciudad de México, México</span></div>
 
-  /* ALERT */
-  .alert{background:#f5f3ee;border-left:4px solid #5a7a4a;padding:12px 16px;margin:10px 0;font-size:0.68rem;line-height:1.7;color:#333;}
+<h2>2.2 El Inversionista (Cliente)</h2>
+<div class="lv"><b>Nombre completo:</b><span>${nombre}</span></div>
+<div class="lv"><b>Edad:</b><span>${g('edad')} años</span></div>
+<div class="lv"><b>Teléfono / WhatsApp:</b><span>${g('telefono')}</span></div>
+<div class="lv"><b>Correo electrónico:</b><span>${g('correo')}</span></div>
+<div class="lv"><b>Régimen Fiscal (SAT):</b><span>${g('regimen')}</span></div>
+<div class="lv"><b>Plataforma de inversión (bróker):</b><span>${broker}</span></div>
+<div class="lv"><b>Canal de comunicación oficial:</b><span>${canal}</span></div>
+<div class="lv"><b>Perfil de riesgo determinado:</b><span>${perfil}</span></div>
+<div class="lv"><b>Puntaje del cuestionario:</b><span>${g('puntaje')} / 32 puntos</span></div>
 
-  /* SIGNATURES */
-  .sig-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;}
-  .sig-box{}
-  .sig-line{border-bottom:1.5px solid #1c3a1e;height:48px;margin-bottom:6px;}
-  .sig-name{font-size:0.68rem;color:#1c3a1e;font-weight:600;}
-  .sig-role{font-size:0.6rem;color:#777;margin-top:2px;font-style:italic;}
+<h1>III. Objeto del Contrato</h1>
+<p>El Mentor Patrimonial se obliga a prestar al Inversionista los servicios de mentoría patrimonial y gestión operativa de valores bajo mandato, que comprenden las actividades descritas en la Sección IV. El Inversionista, por su parte, se obliga a otorgar el mandato de ejecución necesario y a cubrir las contraprestaciones pactadas en la Sección VI.</p>
+<p>Los servicios aquí contratados tienen un carácter educativo, orientativo y de gestión operativa bajo instrucción del Inversionista. Salvador Financiero no es una casa de bolsa, institución financiera, ni asesor en inversiones certificado ante la CNBV o AMIB. El Inversionista conserva en todo momento la titularidad de su cuenta y sus recursos.</p>
 
-  /* FOOTER */
-  .doc-footer{margin-top:40px;padding-top:16px;border-top:2px solid #5a7a4a;display:flex;justify-content:space-between;align-items:center;}
-  .doc-footer-brand{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:#1c3a1e;}
-  .doc-footer-brand span{color:#5a7a4a;}
-  .doc-footer-note{font-size:0.55rem;color:#999;text-align:right;line-height:1.5;}
-  .page-note{font-size:0.58rem;color:#aaa;text-align:center;margin-top:12px;}
+<h1>IV. Descripción de los Servicios</h1>
+<h2>4.1 Presentación Inicial (Sesión de 90 minutos)</h2>
+<p>Previo al inicio de la relación de servicio continuo, el Inversionista podrá contratar una Presentación Inicial de 90 minutos en la que el Mentor Patrimonial:</p>
+<ul>
+  <li>Resuelve dudas y preguntas sobre el mundo de la inversión.</li>
+  <li>Presenta conceptos básicos de finanzas personales e inversión bursátil.</li>
+  <li>Expone el modelo de trabajo de Salvador Financiero y las condiciones del servicio.</li>
+</ul>
+<p>Estado de la Presentación Inicial: <b>${g('presentacion')}</b>. Esta presentación se liquida de forma independiente, sin necesidad de firmar el presente contrato previo a su realización. Si el Inversionista decide continuar con el servicio mensual, el contrato entrará en vigor a partir de la firma del mismo.</p>
 
-  @media print{
-    body{padding:0;}
-    .page{padding:20px 32px;}
-    @page{margin:10mm;size:A4 portrait;}
-  }
-</style></head><body>
-<div class="page">
+<h2>4.2 Servicio Mensual de Mentoría Patrimonial y Gestión Operativa</h2>
+<p>El servicio mensual incluye un mínimo garantizado de una (1) sesión de gestión operativa por mes, pudiendo realizarse hasta cuatro (4) sesiones en función de las condiciones del mercado y la estrategia vigente. La frecuencia exacta queda a criterio del Mentor Patrimonial, quien priorizará siempre la preservación del capital del Inversionista y actuará conforme a su perfil de riesgo.</p>
+<p>Cada sesión de gestión operativa comprende:</p>
+<ul>
+  <li>Aviso previo al Inversionista con al menos un (1) día natural de anticipación, indicando el día, el horario disponible para la sesión y el tipo de operación que se contempla realizar.</li>
+  <li>Coordinación en tiempo real: el Inversionista proporciona el token de acceso temporal (OTP) al Mentor Patrimonial en el horario confirmado a través de <b>${canal}</b>, constituyendo dicha entrega autorización expresa y comprobable para ejecutar las operaciones de esa sesión.</li>
+  <li>Ejecución de operaciones de compra y/o venta de valores conforme al perfil de riesgo <b>${perfil}</b> del Inversionista y la estrategia acordada, en los activos previamente identificados.</li>
+  <li>Envío de capturas de pantalla al Inversionista con el detalle de las operaciones realizadas y el estado actualizado de su portafolio al cierre de la sesión.</li>
+</ul>
+<p>Adicionalmente, el servicio mensual incluye de forma continua:</p>
+<ul>
+  <li>Disponibilidad del Mentor Patrimonial para atender dudas y consultas financieras del Inversionista relacionadas con su portafolio e inversiones, a través de ${canal}.</li>
+  <li>Monitoreo del mercado y análisis del portafolio del Inversionista, con ajuste de estrategia cuando las condiciones lo requieran.</li>
+  <li>Identificación de oportunidades de mercado fuera del calendario ordinario de sesiones. En estos casos, el Mentor Patrimonial notificará al Inversionista, le explicará la oportunidad detectada y solicitará autorización expresa antes de ejecutar cualquier operación. Si el Inversionista no otorga autorización, no se realizará ningún movimiento.</li>
+  <li>Transparencia total sobre los activos adquiridos: el Inversionista tendrá acceso en todo momento al detalle de los instrumentos en los que se ha invertido su capital a través de su propia cuenta en la plataforma <b>${broker}</b>, tanto en las sesiones iniciales como en las subsecuentes.</li>
+  <li>Simulaciones y proyecciones de interés compuesto a solicitud del Inversionista.</li>
+</ul>
 
-  <div class="doc-header">
-    <div class="doc-brand">SALVADOR <span>FINANCIERO</span></div>
-    <div class="doc-sub">Mentoría Patrimonial Independiente · CDMX, México</div>
-  </div>
-  <div class="doc-title-bar">
-    <div class="doc-title">CONTRATO DE PRESTACIÓN DE SERVICIOS</div>
-    <div class="doc-subtitle">Mentoría Patrimonial · Mandato de Ejecución · Bono de Éxito</div>
-    <div class="doc-date">${estado}, a ${firmaFecha}</div>
-  </div>
+<h2>4.3 Limitaciones Operativas Expresas</h2>
+<p>En ningún caso el Mentor Patrimonial podrá ni realizará las siguientes acciones:</p>
+<div class="alert">
+  (i) Retirar o transferir fondos de la cuenta del Inversionista a ninguna cuenta bancaria o electrónica, propia o de terceros. (ii) Almacenar, fotografiar o compartir con terceros las credenciales de acceso o tokens del Inversionista. (iii) Ejecutar operaciones fuera del horario expresamente acordado con el Inversionista en cada sesión. Cualquier movimiento de fondos hacia o desde la cuenta del bróker será gestionado exclusivamente por el Inversionista en sesión presencial o remota con acceso propio a su plataforma.
+</div>
 
-  <h1>I. ANTECEDENTES</h1>
-  <p>El presente instrumento es celebrado entre las partes que se identifican en la Sección II, con fundamento en los artículos 1793, 1794, 1796 y 2606 del Código Civil Federal de los Estados Unidos Mexicanos. Su objeto es regular la prestación de servicios de mentoría patrimonial, gestión operativa de valores bajo mandato expreso y acompañamiento financiero personalizado.</p>
+<h1>V. Mandato de Ejecución</h1>
+<p>El Inversionista otorga al Mentor Patrimonial un mandato de ejecución limitado y revocable para operar, exclusivamente con fines de compra y venta de valores, dentro de la cuenta de inversión del Inversionista en la plataforma <b>${broker}</b>.</p>
+<ul>
+  <li>El mandato se activa en cada sesión mediante la entrega voluntaria del token de acceso temporal (OTP) por parte del Inversionista en el horario previamente acordado. Dicho token tiene caducidad inmediata (aproximadamente 30 segundos en plataformas como GBM y otros sistemas OTP similares). Su envío a través de <b>${canal}</b> constituye autorización expresa, válida y comprobable para ejecutar las operaciones de esa sesión específica.</li>
+  <li>El mandato aplica exclusivamente a las operaciones de compra y venta de valores acordadas conforme al perfil de riesgo <b>${perfil}</b> del Inversionista. Para operaciones fuera del calendario ordinario o fuera del perfil de riesgo, se requerirá autorización expresa adicional del Inversionista antes de proceder.</li>
+  <li>El mandato no incluye en ningún supuesto la facultad de realizar retiros, transferencias o disposiciones de efectivo hacia cuenta alguna.</li>
+  <li>El Inversionista puede revocar el mandato en cualquier momento mediante aviso escrito al Mentor Patrimonial a través de los canales oficiales. La revocación no afecta las obligaciones económicas vigentes.</li>
+  <li>Los registros de comunicación entre ambas partes (${canal}) — incluyendo el envío del token en cada sesión — constituyen evidencia válida del mandato otorgado y las operaciones autorizadas.</li>
+</ul>
 
-  <h1>II. IDENTIFICACIÓN DE LAS PARTES</h1>
-  <h2>2.1 El Mentor Patrimonial</h2>
-  <div class="lv"><b>Nombre completo:</b><span>Miguel Salvador Valdez Villegas</span></div>
-  <div class="lv"><b>Denominación comercial:</b><span>Salvador Financiero</span></div>
-  <div class="lv"><b>Sitio web:</b><span>salvadorfinanciero.github.io/salvadorfinanciero</span></div>
-  <div class="lv"><b>Instagram:</b><span>@salvadorfinanciero</span></div>
-  <div class="lv"><b>Correo electrónico:</b><span>info.salvadorfinanciero@gmail.com</span></div>
+<h1>VI. Contraprestaciones y Esquema de Cobro</h1>
+<h2>6.1 Tabla de Planes y Tarifas</h2>
+<p>El plan aplicable al Inversionista se determina con base en su aportación semanal o mensual de inversión:</p>
+<table>
+  <thead><tr><th>Plan / Inversión Semanal</th><th>Mensualidad MXN</th><th>Presentación Inicial MXN</th></tr></thead>
+  <tbody>
+    <tr${plan.cat==='Iniciación'?' class="hl"':''}><td>INICIACIÓN · $300–$649/sem.</td><td>$299</td><td>$500</td></tr>
+    <tr${plan.cat==='Básico'?' class="hl"':''}><td>BÁSICO · $650–$1,249/sem.</td><td>$499</td><td>$500</td></tr>
+    <tr${plan.cat==='Crecimiento'?' class="hl"':''}><td>CRECIMIENTO · $1,250–$2,499/sem.</td><td>$650</td><td>$650</td></tr>
+    <tr${plan.cat==='Avanzado'?' class="hl"':''}><td>AVANZADO · $2,500–$4,999/sem.</td><td>$899</td><td>$899</td></tr>
+    <tr${plan.cat==='Patrimonial'?' class="hl"':''}><td>PATRIMONIAL · $5,000+/sem.</td><td>7% anual s/ capital</td><td>$1,500</td></tr>
+  </tbody>
+</table>
+<p>Nota: Los Inversionistas con aportación semanal menor a $300 MXN no califican para el servicio mensual. El Mentor Patrimonial podrá contactarlos de forma personal para orientarlos y ofrecerles la Presentación Inicial.</p>
 
-  <h2>2.2 El Inversionista (Cliente)</h2>
-  <div class="lv"><b>Nombre completo:</b><span>${nombre}</span></div>
-  <div class="lv"><b>Edad:</b><span>${g('edad')} años</span></div>
-  <div class="lv"><b>Teléfono / WhatsApp:</b><span>${g('telefono')}</span></div>
-  <div class="lv"><b>Correo electrónico:</b><span>${g('correo')}</span></div>
-  <div class="lv"><b>Régimen Fiscal (SAT):</b><span>${g('regimen')}</span></div>
-  <div class="lv"><b>Plataforma de inversión (bróker):</b><span>${g('broker')}</span></div>
-  <div class="lv"><b>Canal de comunicación oficial:</b><span>${g('canal')}</span></div>
-  <div class="lv"><b>Perfil de riesgo:</b><span>${g('perfil')}</span></div>
-  <div class="lv"><b>Puntaje del cuestionario:</b><span>${g('puntaje')} / 32 puntos</span></div>
+<h2>6.2 Mensualidad Variable: Mecanismo de Cálculo</h2>
+<p>La mensualidad de Salvador Financiero es de naturaleza <b>VARIABLE</b>. Se recalcula cada mes con base en el capital total aportado por el Inversionista durante ese periodo, conforme al siguiente criterio:</p>
+<ul>
+  <li>Al cierre de cada mes, se sumará el capital total invertido por el Inversionista durante ese periodo (suma de todas las aportaciones realizadas). El resultado determinará la categoría aplicable y, por ende, la mensualidad correspondiente al mes siguiente.</li>
+  <li>Ejemplo ilustrativo: si el Inversionista aportó $300 MXN semanales durante 4 semanas, el capital mensual es $1,200 MXN, lo que corresponde a la categoría Iniciación ($299/mes). Si en un mes posterior aporta $500 semanales x 4 semanas = $2,000 MXN, sigue en Iniciación. Pero si aporta $1,400 semanales x 4 semanas = $5,600 MXN, cambia a la categoría Crecimiento ($650/mes).</li>
+  <li>El Inversionista acepta expresamente que la mensualidad puede incrementarse o reducirse mes a mes en función de su nivel de aportación, y que esto no constituye una modificación al contrato sino la aplicación del mecanismo variable pactado desde el inicio.</li>
+  <li>Cláusula de equidad: si el Inversionista reduce deliberadamente sus aportaciones en el mes previo a un corte mensual con el fin de pagar una mensualidad menor sin que ello refleje su capacidad real de inversión, el Mentor Patrimonial se reserva el derecho de aplicar el promedio de aportaciones de los últimos 3 meses como base de cálculo.</li>
+  <li>El Mentor Patrimonial notificará al Inversionista la categoría y mensualidad aplicable al inicio de cada mes, con base en el cálculo del mes anterior.</li>
+  <li>Aviso previo por reducción de capital o baja de categoría: si el Inversionista anticipa que su aportación mensual caerá por debajo del mínimo de su categoría actual, o que caerá por debajo de $300 MXN semanales (capital bajo), deberá notificarlo al Mentor Patrimonial con un mínimo de 30 (treinta) días naturales de anticipación. Si no se emite dicho aviso en tiempo y forma, la mensualidad del mes en curso se cobrará conforme a la categoría que haya correspondido al cierre del mes anterior, independientemente de las aportaciones reales realizadas. La falta de aviso no exime al Inversionista de la obligación de pago, y el servicio continuará activo y siendo cobrado hasta que se regularice la situación o se emita el aviso con la anticipación requerida.</li>
+  <li>En caso de que el Inversionista caiga en categoría Capital Bajo (menos de $300 MXN semanales) y no haya avisado con anticipación, el servicio mensual continuará activo hasta el término del mes en curso y se cobrará la mensualidad correspondiente a la última categoría activa. A partir del mes siguiente, el servicio quedará suspendido hasta que el Inversionista retome una aportación que califique para alguna categoría de servicio.</li>
+</ul>
 
-  <h1>III. OBJETO DEL CONTRATO</h1>
-  <p>El Mentor Patrimonial se obliga a prestar al Inversionista los servicios de mentoría patrimonial y gestión operativa de valores bajo mandato, descritos en la Sección IV. El Inversionista se obliga a otorgar el mandato de ejecución necesario y a cubrir las contraprestaciones pactadas en la Sección VI. Los servicios tienen carácter educativo, orientativo y de gestión operativa bajo instrucción del Inversionista. Salvador Financiero no es casa de bolsa, institución financiera, ni asesor certificado ante la CNBV o AMIB.</p>
+<h2>6.3 Datos de Inicio del Contrato</h2>
+<div class="lv"><b>Categoría inicial al momento de firma:</b><span>${plan.cat}</span></div>
+<div class="lv"><b>Mensualidad inicial referencial (MXN):</b><span>${plan.monto} (sujeta a ajuste mensual)</span></div>
+<div class="lv"><b>Presentación Inicial:</b><span>${g('presentacion')}</span></div>
+<div class="lv"><b>Método de pago:</b><span>${g('pago-metodo')}</span></div>
+<div class="lv"><b>Fecha de primer pago:</b><span>${pagoFecha}</span></div>
 
-  <h1>IV. DESCRIPCIÓN DE LOS SERVICIOS</h1>
-  <h2>4.1 Presentación Inicial (Sesión de 90 minutos)</h2>
-  <p>Estado de la presentación inicial: <b>${g('presentacion')}</b>. La sesión cubre conceptos básicos de finanzas personales, el modelo de trabajo de Salvador Financiero y resolución de dudas.</p>
+<h2>6.4 Bono de Éxito Anual</h2>
+<p>Al cierre de cada año de servicio, se realizará un corte en la fecha pactada al inicio del contrato. Se calculará el rendimiento neto real generado sobre el capital total invertido que aparezca reflejado en la cuenta del bróker en dicha fecha. El Mentor Patrimonial tendrá derecho a cobrar una comisión sobre esa utilidad neta positiva, conforme a la siguiente tabla:</p>
+<table>
+  <thead><tr><th>Categoría</th><th>Capital Total al Corte Anual</th><th>Comisión sobre Utilidad Neta</th></tr></thead>
+  <tbody>
+    <tr><td>Iniciación</td><td>$5,000 – $49,999 MXN</td><td>15%</td></tr>
+    <tr><td>Básico</td><td>$50,000 – $249,999 MXN</td><td>13%</td></tr>
+    <tr><td>Crecimiento</td><td>$250,000 – $999,999 MXN</td><td>11%</td></tr>
+    <tr><td>Avanzado</td><td>$1,000,000 – $4,999,999 MXN</td><td>9%</td></tr>
+    <tr><td>Patrimonial</td><td>$5,000,000 MXN en adelante</td><td>8%</td></tr>
+  </tbody>
+</table>
+<p>La categoría aplicable se determinará con base en el capital total que aparezca en la cuenta al momento del corte anual.</p>
+<ul>
+  <li>Independencia entre mensualidad y bono: la mensualidad y el bono de éxito anual son contraprestaciones completamente independientes. La mensualidad depende del nivel de aportación semanal o mensual del Inversionista. El bono anual depende del capital total reflejado en la cuenta del bróker al momento del corte anual, sin importar su origen: capital semilla inicial aportado antes o durante el servicio, aportaciones periódicas, rendimientos acumulados o cualquier combinación de estos. Todo el capital presente en la cuenta al corte entra en la base de cálculo del bono, sin excepción.</li>
+  <li>Si al corte anual el portafolio no registra rendimiento neto positivo, no se cobrará bono de éxito en ese periodo.</li>
+  <li>El bono se calculará sobre la utilidad neta real, descontando comisiones del bróker y gastos directamente asociados a las operaciones ejecutadas durante el periodo.</li>
+  <li>La fecha exacta del corte anual es: <b>${corteFecha}</b>. Esta fecha queda fija desde el inicio del contrato y no podrá modificarse de manera unilateral.</li>
+  <li>Integridad del corte: el capital de referencia para calcular el bono será el saldo reflejado en la cuenta del bróker en la fecha de corte pactada. Retiros realizados por el Inversionista dentro de los 30 días naturales previos a la fecha de corte serán considerados en el cálculo como si el capital aún estuviera invertido, garantizando la equidad del esquema. Ambas partes aceptan este criterio expresamente al firmar este contrato.</li>
+  <li>El pago del bono se realizará dentro de los 15 (quince) días naturales siguientes al corte, previa presentación del estado de cuenta del bróker como comprobante.</li>
+</ul>
 
-  <h2>4.2 Servicio Mensual de Mentoría Patrimonial y Gestión Operativa</h2>
-  <p>El servicio mensual incluye un mínimo garantizado de una (1) sesión de gestión operativa por mes, pudiendo realizarse hasta cuatro (4) sesiones en función de las condiciones del mercado y la estrategia vigente.</p>
-  <div class="clause"><span class="clause-num">1.</span><span class="clause-text">Aviso previo al Inversionista con al menos un (1) día natural de anticipación, indicando el día, el horario y el tipo de operación contemplada.</span></div>
-  <div class="clause"><span class="clause-num">2.</span><span class="clause-text">Coordinación en tiempo real: el Inversionista proporciona el token de acceso temporal (OTP) al Mentor Patrimonial en el horario confirmado, constituyendo dicha entrega autorización expresa y comprobable para ejecutar las operaciones de esa sesión.</span></div>
-  <div class="clause"><span class="clause-num">3.</span><span class="clause-text">Ejecución de operaciones de compra y/o venta de valores conforme al perfil de riesgo (${g('perfil')}) y la estrategia acordada.</span></div>
-  <div class="clause"><span class="clause-num">4.</span><span class="clause-text">Envío de capturas de pantalla al Inversionista con el detalle de las operaciones realizadas y el estado actualizado de su portafolio al cierre de cada sesión.</span></div>
-  <div class="clause"><span class="clause-num">5.</span><span class="clause-text">Identificación de oportunidades de mercado fuera del calendario ordinario. En estos casos, el Mentor Patrimonial notificará al Inversionista y solicitará autorización expresa antes de ejecutar cualquier operación.</span></div>
-  <div class="clause"><span class="clause-num">6.</span><span class="clause-text">Transparencia total: el Inversionista tiene acceso en todo momento al detalle de los instrumentos en los que se ha invertido su capital, a través de su propia cuenta en la plataforma ${g('broker')}.</span></div>
-  <div class="clause"><span class="clause-num">7.</span><span class="clause-text">Disponibilidad para atender dudas y consultas financieras a través de ${g('canal')}.</span></div>
+<h2>6.5 Condiciones Generales de Pago</h2>
+<ul>
+  <li>La mensualidad deberá cubrirse dentro de los primeros 5 (cinco) días naturales de cada mes.</li>
+  <li>El incumplimiento en el pago por más de 15 (quince) días naturales faculta al Mentor Patrimonial a suspender el servicio hasta regularización del adeudo.</li>
+  <li>No se realizarán reembolsos de mensualidades ya iniciadas, salvo incumplimiento imputable al Mentor Patrimonial.</li>
+</ul>
 
-  <h2>4.3 Limitaciones operativas expresas</h2>
-  <div class="alert">El Mentor Patrimonial NO podrá en ningún caso: (i) retirar o transferir fondos de la cuenta del Inversionista a ninguna cuenta bancaria o electrónica; (ii) almacenar, fotografiar o compartir con terceros las credenciales o tokens del Inversionista; (iii) ejecutar operaciones fuera del horario expresamente acordado en cada sesión.</div>
+<h1>VII. Vigencia y Terminación</h1>
+<p>El presente contrato tendrá una vigencia de 12 (doce) meses a partir de la fecha de su firma (<b>${firmaFecha}</b>), renovándose automáticamente por períodos anuales iguales, salvo que cualquiera de las partes notifique por escrito su voluntad de no renovarlo con un mínimo de 15 (quince) días naturales de anticipación al vencimiento.</p>
+<h2>7.1 Causas de terminación anticipada</h2>
+<ul>
+  <li>Mutuo acuerdo de las partes, manifestado por escrito a través de los canales oficiales.</li>
+  <li>Incumplimiento grave de cualquiera de las partes respecto de las obligaciones aquí estipuladas.</li>
+  <li>Solicitud unilateral del Inversionista, con aviso previo de 7 (siete) días naturales. En este supuesto no procede devolución de la mensualidad en curso.</li>
+  <li>Caso fortuito o fuerza mayor que impida la prestación del servicio por un período superior a 30 días naturales.</li>
+</ul>
 
-  <h1>V. MANDATO DE EJECUCIÓN</h1>
-  <p>El Inversionista otorga al Mentor Patrimonial un mandato de ejecución limitado y revocable para operar, exclusivamente con fines de compra y venta de valores, dentro de la cuenta de inversión en la plataforma <b>${g('broker')}</b>.</p>
-  <div class="clause"><span class="clause-num">1.</span><span class="clause-text">El mandato se activa en cada sesión mediante la entrega voluntaria del token de acceso temporal (OTP) a través de <b>${g('canal')}</b> en el horario previamente acordado. Su envío constituye autorización expresa, válida y comprobable para ejecutar las operaciones de esa sesión específica.</span></div>
-  <div class="clause"><span class="clause-num">2.</span><span class="clause-text">Para operaciones fuera del calendario ordinario o fuera del perfil de riesgo <b>${g('perfil')}</b>, se requerirá autorización expresa adicional antes de proceder.</span></div>
-  <div class="clause"><span class="clause-num">3.</span><span class="clause-text">El mandato no incluye en ningún supuesto la facultad de realizar retiros, transferencias o disposiciones de efectivo hacia cuenta alguna.</span></div>
-  <div class="clause"><span class="clause-num">4.</span><span class="clause-text">Los registros de comunicación entre ambas partes —incluyendo el envío del token en cada sesión— constituyen evidencia válida del mandato otorgado y las operaciones autorizadas.</span></div>
+<h1>VIII. Declaraciones y Obligaciones de las Partes</h1>
+<h2>8.1 Declaraciones del Mentor Patrimonial</h2>
+<ul>
+  <li>Que prestará sus servicios con diligencia, buena fe y máxima transparencia.</li>
+  <li>Que ejecutará únicamente las operaciones acordadas con el Inversionista y dentro del horario pactado en cada sesión.</li>
+  <li>Que no tiene conflicto de interés con ninguna casa de bolsa, fondo de inversión o emisora al momento de la firma de este contrato.</li>
+  <li>Que mantendrá estricta confidencialidad sobre los datos personales, financieros y de acceso del Inversionista, conforme al Aviso de Privacidad de Salvador Financiero (LFPDPPP).</li>
+  <li>Que no almacenará ni compartirá con terceros las credenciales ni tokens de acceso del Inversionista.</li>
+</ul>
+<h2>8.2 Declaraciones y obligaciones del Inversionista</h2>
+<ul>
+  <li>Que ha comprendido que el servicio incluye la gestión operativa de compra y venta de valores bajo su mandato expreso, y que no implica captación de recursos ni retiro de fondos.</li>
+  <li>Que es mayor de 18 (dieciocho) años de edad y tiene plena capacidad legal para contratar.</li>
+  <li>Que asume plena responsabilidad sobre los riesgos inherentes a la inversión bursátil, entendiendo que los rendimientos pasados no garantizan rendimientos futuros.</li>
+  <li>Que los datos proporcionados en el cuestionario de perfil de riesgo y en este contrato son verídicos y completos.</li>
+  <li>Que se compromete a estar disponible en el horario acordado para proporcionar el token de acceso en cada sesión operativa.</li>
+  <li>Que leyó, comprendió y aceptó los Términos y Condiciones y el Aviso de Privacidad disponibles en el sitio web de Salvador Financiero.</li>
+</ul>
 
-  <h1>VI. CONTRAPRESTACIONES Y ESQUEMA DE COBRO</h1>
-  <h2>6.1 Tabla de planes y tarifas (referencia)</h2>
-  <table>
-    <thead><tr><th>Plan</th><th>Aportación semanal</th><th>Mensualidad</th><th>Presentación inicial</th></tr></thead>
-    <tbody>
-      <tr${plan.cat==='Iniciación'?' class="highlight"':''}><td>Iniciación</td><td>$300–$649</td><td>$299</td><td>$500</td></tr>
-      <tr${plan.cat==='Básico'?' class="highlight"':''}><td>Básico</td><td>$650–$1,249</td><td>$499</td><td>$500</td></tr>
-      <tr${plan.cat==='Crecimiento'?' class="highlight"':''}><td>Crecimiento</td><td>$1,250–$2,499</td><td>$650</td><td>$650</td></tr>
-      <tr${plan.cat==='Avanzado'?' class="highlight"':''}><td>Avanzado</td><td>$2,500–$4,999</td><td>$899</td><td>$899</td></tr>
-      <tr${plan.cat==='Patrimonial'?' class="highlight"':''}><td>Patrimonial</td><td>$5,000+</td><td>7% anual s/ capital</td><td>$1,500</td></tr>
-    </tbody>
-  </table>
+<h1>IX. Limitación de Responsabilidad</h1>
+<p>El Mentor Patrimonial no será responsable por pérdidas, minusvalías o resultados financieros adversos derivados de: (i) variaciones del mercado no previstas; (ii) información incorrecta o desactualizada proporcionada por el Inversionista; (iii) indisponibilidad de plataformas de terceros (bróker); (iv) cambios en la legislación fiscal o financiera; ni (v) circunstancias de caso fortuito o fuerza mayor.</p>
+<p>Las operaciones de compra y venta de valores se ejecutan bajo mandato expreso del Inversionista. La responsabilidad del Mentor Patrimonial se limita a ejecutar dichas operaciones de acuerdo con la estrategia pactada y dentro del horario acordado.</p>
 
-  <h2>6.2 Mensualidad variable — mecanismo de cálculo</h2>
-  <p>La mensualidad es de naturaleza <b>variable</b>. Se recalcula cada mes con base en el capital total aportado por el Inversionista durante ese periodo. La categoría inicial al momento de la firma es <b>${plan.cat}</b>, con mensualidad referencial de <b>${plan.monto}</b>, sujeta a ajuste mensual.</p>
-  <div class="clause"><span class="clause-num">1.</span><span class="clause-text">El Inversionista acepta expresamente que la mensualidad puede incrementarse o reducirse mes a mes en función de su nivel de aportación, sin que ello constituya una modificación al contrato.</span></div>
-  <div class="clause"><span class="clause-num">2.</span><span class="clause-text">Cláusula de equidad mensual: si el Inversionista reduce deliberadamente sus aportaciones antes del corte mensual, el Mentor Patrimonial se reserva el derecho de aplicar el promedio de aportaciones de los últimos 3 meses como base de cálculo.</span></div>
-  <div class="clause"><span class="clause-num">3.</span><span class="clause-text">Aviso previo de baja de categoría: si el Inversionista anticipa una reducción en su aportación mensual, deberá notificarlo con mínimo 30 días naturales de anticipación. Sin dicho aviso, la mensualidad se cobrará conforme a la categoría que haya correspondido al cierre del mes anterior, y el servicio continuará activo y siendo cobrado hasta que se regularice la situación.</span></div>
+<h1>X. Confidencialidad y Protección de Datos Personales</h1>
+<p>El tratamiento de los datos personales del Inversionista se realizará conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), su Reglamento, y el Aviso de Privacidad de Salvador Financiero, disponible en:</p>
+<p style="text-align:center;color:#5a7a4a;font-family:monospace;margin:8px 0;">salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html</p>
+<p>El Inversionista podrá ejercer sus derechos ARCO (Acceso, Rectificación, Cancelación y Oposición) contactando a info.salvadorfinanciero@gmail.com. La respuesta se emitirá en un plazo máximo de 20 días hábiles.</p>
+<p>Los datos financieros y de acceso (tokens) del Inversionista serán tratados con el máximo nivel de confidencialidad y no serán almacenados ni compartidos con terceros bajo ninguna circunstancia.</p>
 
-  <h2>6.3 Datos de inicio del contrato</h2>
-  <div class="lv"><b>Categoría inicial:</b><span>${plan.cat}</span></div>
-  <div class="lv"><b>Mensualidad inicial referencial:</b><span>${plan.monto} (sujeta a ajuste mensual)</span></div>
-  <div class="lv"><b>Presentación inicial:</b><span>${g('presentacion')}</span></div>
-  <div class="lv"><b>Método de pago:</b><span>${g('pago-metodo')}</span></div>
-  <div class="lv"><b>Fecha de primer pago:</b><span>${pagoFecha}</span></div>
+<h1>XI. Propiedad Intelectual</h1>
+<p>Todos los análisis, modelos, simulaciones, materiales educativos y entregables elaborados por el Mentor Patrimonial para el Inversionista son de uso exclusivo y personal de este último. El Inversionista no podrá reproducirlos, distribuirlos ni comercializarlos sin autorización escrita previa de Salvador Financiero.</p>
 
-  <h2>6.4 Bono de Éxito Anual</h2>
-  <p>Al cierre de cada año de servicio, se realizará un corte en la fecha pactada. La fecha exacta del corte anual es: <b>${corteFecha}</b>. Esta fecha queda fija desde el inicio del contrato.</p>
-  <table>
-    <thead><tr><th>Categoría</th><th>Capital total al corte</th><th>Comisión s/ utilidad neta</th></tr></thead>
-    <tbody>
-      <tr><td>Iniciación</td><td>$5,000–$49,999 MXN</td><td>15%</td></tr>
-      <tr><td>Básico</td><td>$50,000–$249,999 MXN</td><td>13%</td></tr>
-      <tr><td>Crecimiento</td><td>$250,000–$999,999 MXN</td><td>11%</td></tr>
-      <tr><td>Avanzado</td><td>$1,000,000–$4,999,999 MXN</td><td>9%</td></tr>
-      <tr><td>Patrimonial</td><td>$5,000,000 MXN o más</td><td>8%</td></tr>
-    </tbody>
-  </table>
-  <div class="clause"><span class="clause-num">1.</span><span class="clause-text">Independencia entre mensualidad y bono: son contraprestaciones completamente independientes. El bono anual depende del capital total reflejado en la cuenta del bróker al corte, sin importar su origen: capital semilla inicial, aportaciones periódicas, rendimientos acumulados o cualquier combinación de estos. Todo el capital presente en la cuenta al corte entra en la base de cálculo, sin excepción.</span></div>
-  <div class="clause"><span class="clause-num">2.</span><span class="clause-text">Si al corte anual el portafolio no registra rendimiento neto positivo, no se cobrará bono de éxito en ese periodo.</span></div>
-  <div class="clause"><span class="clause-num">3.</span><span class="clause-text">Integridad del corte: retiros realizados por el Inversionista dentro de los 30 días naturales previos a la fecha de corte serán considerados en el cálculo como si el capital aún estuviera invertido, garantizando la equidad del esquema. Ambas partes aceptan este criterio expresamente.</span></div>
+<h1>XII. Resolución de Controversias</h1>
+<p>Las partes se comprometen a resolver cualquier diferencia de forma amistosa en primera instancia. De no alcanzar acuerdo en 30 días naturales, se someterán a la jurisdicción de los tribunales competentes de <b>${estado}</b>, renunciando a cualquier otro fuero que pudiera corresponderles por razón de sus domicilios presentes o futuros.</p>
 
-  <h1>VII. VIGENCIA</h1>
-  <p>El presente contrato tendrá una vigencia de 12 meses a partir de la fecha de firma (<b>${firmaFecha}</b>), renovándose automáticamente por períodos anuales, salvo que cualquiera de las partes notifique por escrito su voluntad de no renovarlo con un mínimo de 15 días naturales de anticipación.</p>
+<h1>XIII. Disposiciones Generales</h1>
+<ul>
+  <li>Este contrato constituye el acuerdo íntegro entre las partes respecto de su objeto y deja sin efecto cualquier negociación o acuerdo previo sobre la misma materia.</li>
+  <li>Cualquier modificación deberá constar por escrito y estar firmada por ambas partes para ser válida.</li>
+  <li>La nulidad de alguna cláusula no afecta la validez del resto del contrato.</li>
+  <li>Las comunicaciones por ${canal} tienen plena validez para los avisos, autorizaciones y mandatos previstos en este contrato.</li>
+  <li>Se elaboran dos ejemplares de idéntico tenor y valor legal, quedando uno en poder de cada parte.</li>
+</ul>
 
-  <h1>VIII. DECLARACIONES Y OBLIGACIONES</h1>
-  <p>El Inversionista declara: (i) haber comprendido que el servicio incluye gestión operativa de compra y venta de valores bajo su mandato expreso y no implica captación de recursos; (ii) ser mayor de 18 años con plena capacidad legal; (iii) asumir plena responsabilidad sobre los riesgos inherentes a la inversión bursátil; (iv) que los datos proporcionados son verídicos; (v) haber leído y aceptado los Términos y Condiciones y el Aviso de Privacidad de Salvador Financiero.</p>
-
-  <h1>IX. LIMITACIÓN DE RESPONSABILIDAD</h1>
-  <p>El Mentor Patrimonial no será responsable por pérdidas o minusvalías derivadas de: variaciones del mercado, información incorrecta proporcionada por el Inversionista, indisponibilidad de plataformas de terceros, cambios en legislación fiscal o financiera, ni circunstancias de caso fortuito o fuerza mayor.</p>
-
-  <h1>X. RESOLUCIÓN DE CONTROVERSIAS</h1>
-  <p>Las partes se comprometen a resolver cualquier diferencia de forma amistosa en primera instancia. De no alcanzar acuerdo en 30 días naturales, se someterán a la jurisdicción de los tribunales competentes de ${estado}, renunciando a cualquier otro fuero.</p>
-
-  <h1>XI. FIRMAS</h1>
-  <p>Leído y comprendido el presente contrato, las partes lo firman de conformidad en <b>${estado}</b>, el <b>${firmaFecha}</b>.</p>
-
-  <div class="sig-row">
-    <div class="sig-box">
+<h1>XIV. Firmas</h1>
+<div class="sig-section">
+  <p class="sig-intro">Leído y comprendido el presente contrato en todas sus partes, las partes lo firman de conformidad en <b>${estado}</b>, el <b>${firmaFecha}</b>.</p>
+  <div class="sig-grid">
+    <div>
       <div class="sig-line"></div>
       <div class="sig-name">Miguel Salvador Valdez Villegas</div>
       <div class="sig-role">El Mentor Patrimonial · Salvador Financiero</div>
     </div>
-    <div class="sig-box">
+    <div>
       <div class="sig-line"></div>
       <div class="sig-name">${nombre}</div>
       <div class="sig-role">El Inversionista</div>
-      <div class="sig-role" style="margin-top:4px;">CURP / INE: ________________________________</div>
+      <div class="sig-role" style="margin-top:6px;">CURP / INE No.: ________________________________</div>
     </div>
   </div>
-
   <div class="doc-footer">
     <div class="doc-footer-brand">SALVADOR <span>FINANCIERO</span></div>
-    <div class="doc-footer-note">
-      Salvador Financiero no es casa de bolsa ni asesor certificado CNBV/AMIB.<br>
-      Las operaciones se realizan bajo mandato expreso del Inversionista.
-    </div>
+    <div class="doc-footer-note">Salvador Financiero no es casa de bolsa ni asesor certificado CNBV/AMIB.<br>Las operaciones se realizan bajo mandato expreso del Inversionista.</div>
   </div>
-  <div class="page-note">salvadorfinanciero.github.io/salvadorfinanciero</div>
-
 </div>
-</body></html>`;
 
-    const pa = document.getElementById('print-area');
-    pa.style.display = 'block';
-    pa.innerHTML = html;
-    setTimeout(() => { window.print(); pa.style.display = 'none'; }, 400);
+</div></div></body></html>`;
+
+    // Render HTML into hidden iframe then use jsPDF
+    descargarPDF(html, `Contrato_${nombre.replace(/\s+/g,'_')}.pdf`);
+  }
+
+  async function descargarPDF(htmlContent, filename) {
+    const btn = document.querySelector('.btn-generar');
+    btn.textContent = 'Generando PDF...';
+    btn.disabled = true;
+
+    // Create hidden container
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:white;z-index:-1;';
+    container.innerHTML = htmlContent;
+    document.body.appendChild(container);
+
+    // Wait for fonts/images
+    await new Promise(r => setTimeout(r, 800));
+
+    try {
+      const { jsPDF } = window.jspdf;
+      const canvas = await html2canvas(container, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 794,
+        windowWidth: 794
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+      const imgW = pdfW;
+      const imgH = (canvas.height * pdfW) / canvas.width;
+
+      let yPos = 0;
+      let remaining = imgH;
+
+      while (remaining > 0) {
+        if (yPos > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -yPos, imgW, imgH);
+        yPos += pdfH;
+        remaining -= pdfH;
+      }
+
+      pdf.save(filename);
+    } finally {
+      document.body.removeChild(container);
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#a8c498"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg> Generar PDF del Contrato';
+      btn.disabled = false;
+    }
   }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
