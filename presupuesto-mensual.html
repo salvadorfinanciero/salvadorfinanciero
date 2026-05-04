@@ -104,8 +104,9 @@
     background:#1c3a1e;
     border-top:3px solid #5a7a4a;
     padding:16px 48px;
-    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
     box-shadow:0 -6px 28px rgba(28,58,30,0.25);
+    transition:background .6s ease, border-color .6s ease;
   }
   .resumen { position:sticky; } /* force sticky */
   .res-block label{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px;}
@@ -161,7 +162,7 @@
     body{background:white;}
     .page-header{background:var(--forest) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .cat-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .resumen{-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static;box-shadow:none;}
+    .resumen{-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static;box-shadow:none;grid-template-columns:repeat(4,1fr);}
     .main{padding:12px 16px 16px;}
     .cats-grid{gap:10px;}
     @page{margin:8mm;size:A4;}
@@ -290,42 +291,197 @@
       font-size: 16px !important;
     }
   }
+
+  .row-lbl-input{
+    border:none;border-bottom:1px dashed var(--rule);
+    background:transparent;outline:none;
+    font-family:'DM Mono',monospace;font-size:0.58rem;
+    color:var(--forest);letter-spacing:0.04em;
+    padding:7px 14px;width:100%;
+    transition:border-color .15s;
+  }
+  .row-lbl-input:focus{border-color:var(--sage);}
+  .row-lbl-input::placeholder{color:var(--rule);font-style:italic;}
+
+  /* Barras de progreso en resumen */
+  .res-bar-wrap{
+    height:6px;
+    background:rgba(255,255,255,0.12);
+    border-radius:3px;
+    margin-top:10px;
+    overflow:hidden;
+    width:100%;
+  }
+  .res-bar{
+    height:100%;
+    border-radius:3px;
+    transition:width .5s ease, background .5s ease;
+    width:0%;
+  }
+  /* Transición de fondo del resumen */
+  .resumen{
+    transition:background .5s ease, border-top-color .5s ease;
+  }
+
+  /* Modal de bienvenida */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:999;
+    background:rgba(10,25,12,0.95);
+    backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    animation:fadeIn .3s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .modal-box{
+    background:var(--white);
+    max-width:520px;width:100%;
+    position:relative;
+    border-top:4px solid var(--sage);
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    animation:slideUp .35s ease;
+  }
+  @keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .modal-header{
+    background:var(--forest);
+    padding:24px 28px 20px;
+    position:relative;
+  }
+  .modal-logo{
+    font-family:'Bebas Neue',sans-serif;font-size:1.1rem;
+    letter-spacing:0.1em;color:var(--white);margin-bottom:8px;
+  }
+  .modal-logo span{color:var(--fern);}
+  .modal-title{
+    font-family:'Bebas Neue',sans-serif;font-size:2rem;
+    letter-spacing:0.06em;color:var(--white);line-height:0.95;
+  }
+  .modal-title span{color:var(--fern);}
+  .modal-close{
+    position:absolute;top:16px;right:16px;
+    width:32px;height:32px;
+    background:rgba(255,255,255,0.1);border:none;
+    color:rgba(255,255,255,0.7);font-size:1.1rem;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:all .2s;
+  }
+  .modal-close:hover{background:rgba(255,255,255,0.2);color:var(--white);}
+  .modal-body{padding:24px 28px;}
+  .modal-step{
+    display:flex;gap:14px;align-items:flex-start;
+    margin-bottom:16px;
+  }
+  .modal-step:last-of-type{margin-bottom:0;}
+  .modal-num{
+    font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+    color:var(--sage);line-height:1;flex-shrink:0;
+    width:24px;text-align:center;
+  }
+  .modal-step-text{
+    font-family:'DM Mono',monospace;font-size:0.62rem;
+    letter-spacing:0.06em;color:var(--mid);line-height:1.7;
+  }
+  .modal-step-text strong{color:var(--forest);}
+  .modal-footer{
+    padding:20px 28px 24px;
+    border-top:1px solid var(--rule);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .modal-hint{
+    font-family:'DM Mono',monospace;font-size:0.52rem;
+    letter-spacing:0.08em;color:var(--soft);
+  }
+  .modal-btn{
+    font-family:'Bebas Neue',sans-serif;font-size:1rem;
+    letter-spacing:0.12em;padding:12px 32px;
+    background:var(--sage);color:var(--white);
+    border:none;cursor:pointer;
+    box-shadow:3px 3px 0 var(--pine);
+    transition:all .2s;white-space:nowrap;
+  }
+  .modal-btn:hover{background:var(--forest);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--pine);}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
+
+<!-- Modal de bienvenida -->
+<div class="modal-overlay" id="modal-bienvenida">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-logo">Salvador <span>Financiero</span></div>
+      <div class="modal-title">Presupuesto<br><span>Mensual</span></div>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step">
+        <div class="modal-num">1</div>
+        <div class="modal-step-text">Escribe el <strong>mes</strong> y tu <strong>ingreso mensual total</strong> en el encabezado.</div>
+      </div>
+      <div class="modal-step">
+        <div class="modal-num">2</div>
+        <div class="modal-step-text">Llena la columna <strong>Presupuestado</strong> en cada categoría con lo que planeas gastar.</div>
+      </div>
+      <div class="modal-step">
+        <div class="modal-num">3</div>
+        <div class="modal-step-text">En las filas <strong>Otro...</strong> puedes escribir una categoría personalizada.</div>
+      </div>
+      <div class="modal-step">
+        <div class="modal-num">4</div>
+        <div class="modal-step-text">La barra de abajo cambia de color: <strong style="color:#4a9e6a;">verde</strong> = bien · <strong style="color:#c47d0e;">ámbar</strong> = cuidado · <strong style="color:#e07070;">rojo</strong> = alerta.</div>
+      </div>
+      <div class="modal-step">
+        <div class="modal-num">5</div>
+        <div class="modal-step-text">Al final del mes, regresa y llena la columna <strong>Gastado</strong> para ver cómo te fue.</div>
+      </div>
+      <div class="modal-step">
+        <div class="modal-num">6</div>
+        <div class="modal-step-text">Presiona <strong>"Descargar PDF"</strong> para guardar o compartir tu presupuesto.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-hint">✦ Hecho con estrategia ✦ &nbsp;·&nbsp; @salvadorfinanciero</span>
+      <button class="modal-btn" onclick="cerrarModal()">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
 
 <nav>
   <a href="index.html" class="nav-logo">Salvador <span>Financiero</span></a>
   <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
 </nav>
 
-<div class="print-header"><div class="ph-inner"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tagline">Mentoría Patrimonial Independiente · salvadorfinanciero.github.io<br>Hecho con estrategia ✦</div></div></div>
+<div class="print-header"><div class="ph-inner"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tagline">Mentoría Patrimonial Independiente · salvadorfinanciero.github.io<br>✦ Hecho con estrategia ✦</div></div></div>
 <div class="page-header">
   <h1>Presupuesto<br><span>Mensual</span></h1>
   <div class="header-fields">
     <div class="hf-group">
       <label>Mes que estás planeando</label>
-      <input type="text" placeholder="Ej. Abril 2025" id="mes">
+      <select id="mes" style="background:rgba(255,255,255,0.1);border:none;border-bottom:2px solid var(--fern);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;padding:6px 10px;outline:none;min-width:180px;cursor:pointer;appearance:none;-webkit-appearance:none;">
+  <option value="" style="background:#1c3a1e;color:rgba(255,255,255,0.4);">Selecciona el mes</option>
+  <option value="" style="background:#1c3a1e;color:rgba(255,255,255,0.4);">Selecciona el mes</option>
+  <option value="Enero" style="background:#1c3a1e;">Enero</option>
+  <option value="Febrero" style="background:#1c3a1e;">Febrero</option>
+  <option value="Marzo" style="background:#1c3a1e;">Marzo</option>
+  <option value="Abril" style="background:#1c3a1e;">Abril</option>
+  <option value="Mayo" style="background:#1c3a1e;">Mayo</option>
+  <option value="Junio" style="background:#1c3a1e;">Junio</option>
+  <option value="Julio" style="background:#1c3a1e;">Julio</option>
+  <option value="Agosto" style="background:#1c3a1e;">Agosto</option>
+  <option value="Septiembre" style="background:#1c3a1e;">Septiembre</option>
+  <option value="Octubre" style="background:#1c3a1e;">Octubre</option>
+  <option value="Noviembre" style="background:#1c3a1e;">Noviembre</option>
+  <option value="Diciembre" style="background:#1c3a1e;">Diciembre</option>
+</select>
     </div>
     <div class="hf-group">
       <label>Tu ingreso mensual total</label>
-      <input type="text" placeholder="$0" inputmode="numeric" id="ingreso" oninput="formatInput(this);recalcular()">
+      <input type="text" placeholder="$0" inputmode="numeric" id="ingreso" inputmode="numeric" oninput="formatInput(this);recalcular()">
     </div>
   </div>
 </div>
 
-<!-- Instrucciones -->
-<div class="instrucciones">
-  <div class="instr-icon">📋</div>
-  <div class="instr-text">
-    <strong>¿Cómo usar esta plantilla?</strong><br>
-    1. Escribe el mes y tu ingreso mensual arriba.<br>
-    2. En cada categoría, llena la columna <strong>Presupuestado</strong> con lo que planeas gastar.<br>
-    3. Al final del mes, regresa y llena la columna <strong>Gastado</strong> con lo que realmente gastaste.<br>
-    4. Al terminar, presiona <strong>"Descargar PDF"</strong> para guardar o imprimir tu presupuesto.
-  </div>
-</div>
 
 <div class="main">
   <div class="cats-grid" id="cats-grid"></div>
@@ -350,15 +506,22 @@
   <div class="res-block">
     <label>Total presupuestado</label>
     <div class="res-val" id="res-p">$0</div>
-    <div class="res-hint">Lo que planeas gastar este mes</div>
+    <div class="res-hint">Lo que planeas gastar</div>
+    <div class="res-bar-wrap"><div class="res-bar" id="bar-p"></div></div>
   </div>
   <div class="res-block">
+    <label>Ingreso vs Presupuesto</label>
+    <div class="res-val" id="res-ip">—</div>
+    <div class="res-hint" id="res-ip-hint">Lo que te sobra antes de gastar</div>
+  </div>
+  <div class="res-block" id="block-gastado" style="display:none;">
     <label>Total gastado</label>
     <div class="res-val" id="res-g">$0</div>
-    <div class="res-hint">Lo que realmente gastaste</div>
+    <div class="res-hint">Lo que llevas gastado</div>
+    <div class="res-bar-wrap"><div class="res-bar" id="bar-g"></div></div>
   </div>
-  <div class="res-block">
-    <label>Diferencia</label>
+  <div class="res-block" id="block-dif" style="display:none;">
+    <label>Presupuesto vs Gasto</label>
     <div class="res-val" id="res-d">—</div>
     <div class="res-hint" id="res-d-hint">Verde = te sobró · Rojo = te pasaste</div>
   </div>
@@ -366,7 +529,7 @@
 
 <footer>
   <a href="index.html" class="flogo">Salvador <span>Financiero</span></a>
-  <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX · Hecho con estrategia ✦</div>
+  <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX · ✦ Hecho con estrategia ✦</div>
   <div class="flinks">
     <a href="terminos-y-condiciones.html">Términos</a>
     <a href="aviso-de-privacidad.html">Privacidad</a>
@@ -375,16 +538,16 @@
 
 <script>
 const CATS = [
-  { id:1,  nombre:'1. Vivienda',            color:'var(--c1)',  items:['Renta','Pago de Crédito Hipotecario','Predial','Seguro de Casa','Mantenimiento','Otro',''] },
-  { id:2,  nombre:'2. Alimentación',        color:'var(--c2)',  items:['Supermercado','Tianguis / Mercado','Restaurantes','Otro',''] },
-  { id:3,  nombre:'3. Transporte',          color:'var(--c3)',  items:['Transporte Público','Taxi / Uber','Crédito Auto','Gasolina','Seguro de Auto','Tenencia','Estacionamientos'] },
-  { id:4,  nombre:'4. Servicios',           color:'var(--c4)',  items:['Luz / Electricidad','Gas','Agua','Internet / Teléfono','TV de Paga','Celular','Streaming (Netflix, etc.)'] },
-  { id:5,  nombre:'5. Gastos Personales',   color:'var(--c5)',  items:['Art. de Uso Personal','Gimnasio / Clases','Donativos','Otro',''] },
-  { id:6,  nombre:'6. Entretenimiento',     color:'var(--c6)',  items:['Restaurantes / Bares','Cine','Apps / Juegos','Otro'] },
-  { id:7,  nombre:'7. Salud',               color:'var(--c7)',  items:['Gastos Médicos','Consulta Médica','Consulta Dental','Medicamentos'] },
-  { id:8,  nombre:'8. Ropa',                color:'var(--c8)',  items:['Ropa y Calzado','Accesorios','Otro'] },
-  { id:9,  nombre:'9. Educación / Hijos',   color:'var(--c9)',  items:['Colegiatura','Útiles Escolares','Actividades Extra','Otro'] },
-  { id:10, nombre:'10. Inversión / Ahorro', color:'var(--c10)', items:['Inversión para Retiro','Ahorro para Viaje','Fondo de Emergencia','Otro'] },
+  { id:1,  nombre:'1. Vivienda',            color:'var(--c1)',  items:['Renta','Pago de Crédito Hipotecario','Predial','Seguro de Casa','Mantenimiento','',''] },
+  { id:2,  nombre:'2. Alimentación',        color:'var(--c2)',  items:['Supermercado','Tianguis / Mercado','Restaurantes','',''] },
+  { id:3,  nombre:'3. Transporte',          color:'var(--c3)',  items:['Transporte Público','Taxi / Uber','Crédito Auto','Gasolina','Seguro de Auto','Tenencia','Estacionamientos','',''] },
+  { id:4,  nombre:'4. Servicios',           color:'var(--c4)',  items:['Luz / Electricidad','Gas','Agua','Internet / Teléfono','TV de Paga','Celular','Streaming (Netflix, etc.)','',''] },
+  { id:5,  nombre:'5. Gastos Personales',   color:'var(--c5)',  items:['Art. de Uso Personal','Gimnasio / Clases','Donativos','',''] },
+  { id:6,  nombre:'6. Entretenimiento',     color:'var(--c6)',  items:['Restaurantes / Bares','Cine','Apps / Juegos','',''] },
+  { id:7,  nombre:'7. Salud',               color:'var(--c7)',  items:['Gastos Médicos','Consulta Médica','Consulta Dental','Medicamentos','',''] },
+  { id:8,  nombre:'8. Ropa',                color:'var(--c8)',  items:['Ropa y Calzado','Accesorios','',''] },
+  { id:9,  nombre:'9. Educación / Hijos',   color:'var(--c9)',  items:['Colegiatura','Útiles Escolares','Actividades Extra','',''] },
+  { id:10, nombre:'10. Inversión / Ahorro', color:'var(--c10)', items:['Inversión para Retiro','Ahorro para Viaje','Fondo de Emergencia','',''] },
 ];
 
 const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
@@ -414,9 +577,12 @@ function buildCats(){
       </div>
       ${c.items.map((item,i) => `
         <div class="cat-row">
-          <div class="row-lbl${item?'':' empty'}">${item||'Otro'}</div>
-          <input type="text" placeholder="$0" inputmode="numeric" id="p${c.id}_${i}" inputmode="numeric" oninput="recalcularCat(${c.id})">
-          <input type="text" placeholder="$0" inputmode="numeric" id="g${c.id}_${i}" inputmode="numeric" oninput="recalcularCat(${c.id})">
+          ${item
+            ? `<div class="row-lbl">${item}</div>`
+            : `<input type="text" class="row-lbl-input" placeholder="Otro..." id="lbl${c.id}_${i}" autocomplete="off" spellcheck="false" oninput="updateDonut()">`
+          }
+          <input type="text" placeholder="$0" inputmode="numeric" id="p${c.id}_${i}" oninput="recalcularCat(${c.id})">
+          <input type="text" placeholder="$0" inputmode="numeric" id="g${c.id}_${i}" oninput="recalcularCat(${c.id})">
         </div>
       `).join('')}
       <div class="cat-total">
@@ -448,9 +614,13 @@ function recalcularCat(id){
     CATS.forEach(function(c,idx){
       var sum=0, subs=[];
       c.items.forEach(function(item,i){
-        var el=document.getElementById('p'+c.id+'_'+i);
-        var val=parse(el ? el.value : '');
-        if(val>0 && item) subs.push(item+': '+fmt(val));
+        var pEl=document.getElementById('p'+c.id+'_'+i);
+        var val=parse(pEl ? pEl.value : '');
+        if(val>0){
+          var labelEl=document.getElementById('lbl'+c.id+'_'+i);
+          var nombre = item ? item : (labelEl && labelEl.value.trim() ? labelEl.value.trim() : 'Otro');
+          subs.push({ name: nombre, val: val });
+        }
         sum+=val;
       });
       if(sum>0){
@@ -477,7 +647,7 @@ function recalcularCat(id){
         div.style.borderLeftColor=colors[idx];
         var catTotal=data[idx];
         var subsHtml=(details[idx]||[]).map(function(s){
-          return '<div class="dl-sub"><span class="dl-sub-name">'+s.split(':')[0]+'</span><span class="dl-sub-val">'+s.split(':').slice(1).join(':').trim()+'</span></div>';
+          return '<div class="dl-sub"><span class="dl-sub-name">'+s.name+'</span><span class="dl-sub-val">'+fmt(s.val)+'</span></div>';
         }).join('<div class="dl-divider"></div>');
         div.innerHTML='<div class="dl-cat-header">'
           +'<div class="dl-cat-dot" style="background:'+colors[idx]+'"></div>'
@@ -515,9 +685,8 @@ function recalcularCat(id){
                   return ' Total: '+fmt(c.raw)+' ('+Math.round(c.parsed/total*100)+'%)';
                 },
                 afterLabel: function(c){
-                  var d = donutChart._details || details;
-                  var subs = d[c.dataIndex] || [];
-                  return subs.map(function(s){ return '  · '+s; });
+                  var subs = details[c.dataIndex] || [];
+                  return subs.map(function(s){ return '  · '+s.name+': '+fmt(s.val); });
                 }
               }
             }
@@ -538,7 +707,63 @@ function recalcular(){
     });
   });
   document.getElementById('res-p').textContent = tp>0 ? fmt(tp) : '$0';
-  document.getElementById('res-g').textContent = tg>0 ? fmt(tg) : '$0';
+
+  // Barras de progreso
+  var ingresoBar = parse(document.getElementById('ingreso').value);
+  var resumenEl = document.querySelector('.resumen');
+  function setBar(id, val, max){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var pct = max > 0 ? Math.min((val/max)*100, 100) : 0;
+    var color = pct < 70 ? '#4a9e6a' : pct < 90 ? '#c47d0e' : '#e07070';
+    el.style.width = pct + '%';
+    el.style.background = color;
+    return pct;
+  }
+  var pctP = setBar('bar-p', tp, ingresoBar || tp);
+  setBar('bar-g', tg, ingresoBar || tp);
+
+  // Cambiar color de fondo del resumen según semáforo
+  if(resumenEl && ingresoBar > 0 && tp > 0){
+    if(pctP < 70){
+      resumenEl.style.background = '#1c3a1e';
+      resumenEl.style.borderTopColor = '#5a7a4a';
+    } else if(pctP < 90){
+      resumenEl.style.background = '#4a2e05';
+      resumenEl.style.borderTopColor = '#c47d0e';
+    } else {
+      resumenEl.style.background = '#4a0f0f';
+      resumenEl.style.borderTopColor = '#e07070';
+    }
+  } else if(resumenEl){
+    resumenEl.style.background = '#1c3a1e';
+    resumenEl.style.borderTopColor = '#5a7a4a';
+  }
+  var blockG = document.getElementById('block-gastado');
+  var blockD = document.getElementById('block-dif');
+  if(tg > 0){
+    blockG.style.display = 'block';
+    blockD.style.display = 'block';
+    document.getElementById('res-g').textContent = fmt(tg);
+  } else {
+    blockG.style.display = 'none';
+    blockD.style.display = 'none';
+  }
+
+  // Ingreso vs Presupuesto
+  var ingresoRaw = parse(document.getElementById('ingreso').value);
+  var ipEl = document.getElementById('res-ip');
+  var ipHint = document.getElementById('res-ip-hint');
+  if(ingresoRaw > 0 && tp > 0){
+    var difIP = ingresoRaw - tp;
+    ipEl.setAttribute('style','font-family:Bebas Neue,sans-serif;font-size:1.9rem;letter-spacing:0.02em;color:'+(difIP>=0?'#a8c498':'#e07070')+';');
+    ipEl.textContent = (difIP>=0?'+':'')+fmt(difIP);
+    ipHint.textContent = difIP>=0 ? '¡Tu presupuesto cabe en tu ingreso!' : 'Tu presupuesto supera tu ingreso.';
+  } else {
+    ipEl.setAttribute('style','font-family:Bebas Neue,sans-serif;font-size:1.9rem;letter-spacing:0.02em;color:#a8c498;');
+    ipEl.textContent = '—';
+    ipHint.textContent = 'Ingresa tu ingreso y presupuesto';
+  }
   const dif = tp - tg;
   const el = document.getElementById('res-d');
   const hint = document.getElementById('res-d-hint');
@@ -554,8 +779,8 @@ function recalcular(){
 
 buildCats();
 
-  // Attach formatter to all category inputs
-  document.querySelectorAll('.cat-row input').forEach(function(inp){
+  // Attach formatter only to money inputs (not label inputs)
+  document.querySelectorAll('.cat-row input[inputmode="numeric"]').forEach(function(inp){
     attachFmt(inp);
   });
 
@@ -618,6 +843,18 @@ buildCats();
       }
     }, 150);
   });
+
+  function cerrarModal(){
+    var m = document.getElementById('modal-bienvenida');
+    if(m){
+      m.style.animation = 'fadeOut .25s ease forwards';
+      setTimeout(function(){ m.style.display='none'; }, 250);
+    }
+  }
+  // CSS for fadeOut
+  var style = document.createElement('style');
+  style.textContent = '@keyframes fadeOut{from{opacity:1;}to{opacity:0;}}';
+  document.head.appendChild(style);
 
 </script>
 </body>
