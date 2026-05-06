@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Preguntas Frecuentes — Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--forest:#1c3a1e;--pine:#2d5a30;--sage:#5a7a4a;--fern:#a8c498;--cream:#f5f3ee;--paper:#eceae2;--white:#ffffff;--ink:#1a1a1a;--mid:#555;--rule:#ccc8bc;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+  body{background:var(--cream);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--forest);padding:16px 56px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--sage);}
+  .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+  .nav-brand span{color:var(--fern);}
+  .nav-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;transition:color .2s;}
+  .nav-back:hover{color:var(--white);}
+
+  /* HERO */
+  .hero{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;padding:80px 60px 72px;border-bottom:3px solid var(--sage);text-align:center;}
+  .hero-eyebrow{justify-content:center;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);margin-bottom:20px;}
+  .hero-eyebrow::before{content:'';display:block;width:22px;height:2px;background:var(--fern);}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,10vw,9rem);line-height:0.9;color:var(--white);letter-spacing:0.01em;margin-bottom:20px;}
+  .hero h1 span{color:var(--fern);}
+  .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.4rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:480px;margin:0 auto;}
+  .hero-right{display:flex;flex-direction:column;gap:12px;}
+  .hero-stat{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);padding:20px 24px;display:flex;align-items:center;gap:16px;}
+  .hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--fern);line-height:1;flex-shrink:0;}
+  .hero-stat-txt{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);line-height:1.5;}
+
+  /* TICKER */
+  .ticker-wrapper{background:#2d5a30;overflow:hidden;padding:16px 0;white-space:nowrap;border-top:2px solid var(--forest);border-bottom:2px solid var(--forest);}
+  .ticker-inner{display:inline-flex;animation:ticker 32s linear infinite;will-change:transform;}
+  .ticker-item{font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;display:inline-flex;align-items:center;white-space:nowrap;}
+  .ticker-sep{color:var(--fern);margin:0 4px;}
+  @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+  /* CAT NAV */
+  .cat-nav{background:var(--forest);padding:20px 60px;display:flex;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--sage);position:sticky;top:67px;z-index:90;justify-content:center;}
+  .cat-btn{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 20px 10px 20px;border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);background:transparent;cursor:pointer;transition:all .2s;}
+  .cat-btn:hover{border-color:rgba(255,255,255,0.5);color:var(--white);}
+  .cat-btn.active{border-color:var(--fern);color:var(--fern);background:rgba(168,196,152,0.12);box-shadow:3px 3px 0 var(--sage);}
+
+  /* SECCIONES */
+  .cat-section{padding:64px 60px;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.12) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.12) 1px,transparent 1px);background-size:36px 36px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .cat-label{justify-content:center;}
+  .faq-list{width:100%;max-width:720px;text-align:left;}
+  .cat-label{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:10px;}
+  .cat-label::before{content:'';display:block;width:20px;height:2px;background:var(--sage);}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);line-height:1;letter-spacing:0.02em;color:var(--forest);margin-bottom:36px;}
+
+  /* FAQ */
+  .faq-list{display:flex;flex-direction:column;gap:10px;max-width:720px;}
+  .faq-item{border:2px solid rgba(28,58,30,0.25);background:var(--white);transition:all .2s;}
+  .faq-item:hover{border-color:var(--sage);}
+  .faq-item.open{border-color:var(--forest);box-shadow:5px 5px 0 var(--sage);}
+  .faq-q{width:100%;background:none;border:none;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;cursor:pointer;text-align:left;}
+  .faq-q-text{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:0.05em;line-height:1.2;flex:1;color:var(--forest);}
+  .faq-item.open .faq-q-text{color:var(--forest);}
+  .faq-icon{font-family:'DM Mono',monospace;font-size:1.2rem;color:var(--sage);flex-shrink:0;transition:transform .25s;line-height:1;margin-top:1px;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);color:var(--forest);}
+  .faq-a{display:none;padding:0 24px 28px;}
+  .faq-item.open .faq-a{display:block;}
+  .faq-divider{width:40px;height:2px;background:var(--sage);margin-bottom:18px;}
+  .faq-a p{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;line-height:1.9;color:var(--mid);margin-bottom:12px;}
+  .faq-a p:last-child{margin-bottom:0;}
+  .faq-a strong{color:var(--sage);font-style:normal;font-weight:700;}
+
+  /* CTA */
+  .cta-wrap{background:var(--forest);border-top:3px solid var(--sage);padding:88px 60px;text-align:center;position:relative;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;}
+  .cta-deco{position:absolute;font-size:1rem;color:var(--sage);opacity:0.3;pointer-events:none;}
+  .cta-deco.tl{top:28px;left:60px;}
+  .cta-deco.tr{top:28px;right:60px;}
+  .cta-deco.bot{bottom:28px;left:50%;transform:translateX(-50%);letter-spacing:0.3em;}
+  .cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--white);line-height:0.95;letter-spacing:0.02em;margin-bottom:16px;}
+  .cta-title span{color:var(--fern);}
+  .cta-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.55);margin-bottom:40px;line-height:1.7;}
+  .cta-btn{display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 52px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;}
+  .cta-btn:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--sage);}
+
+  /* FOOTER */
+  footer{background:var(--forest);padding:24px 60px;text-align:center;border-top:3px solid var(--sage);}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
+  .footer-brand span{color:var(--fern);}
+  .footer-sub{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;}
+  .footer-links{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);}
+  .footer-links a{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin:0 8px;}
+  .disclaimer{font-size:0.58rem;color:rgba(255,255,255,0.2);line-height:1.6;margin-top:10px;font-style:italic;font-family:'Instrument Serif',serif;}
+
+  @media(max-width:768px){
+    nav{padding:14px 20px;}
+    .cat-nav{padding:14px 20px;top:57px;}
+    .hero{grid-template-columns:1fr;padding:48px 24px 40px;gap:32px;}
+    .hero-right{display:none;}
+    .cat-section{padding:48px 24px;}
+    .cta-wrap{padding:60px 24px;}
+    footer{padding:20px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Regresar</a>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">Todo lo que necesitas saber</div>
+    <h1>Preguntas<br><span>Frecuentes</span></h1>
+    <p class="hero-sub">Lo que más nos preguntan antes de dar el primer paso.</p>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrapper">
+  <div class="ticker-inner">
+    <span class="ticker-item">Tu dinero siempre en tu cuenta&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Transparencia total&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Sin letra chica&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Bono solo si hay rendimiento&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Contrato desde el primer día&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Retira cuando quieras&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Tu dinero, tu liquidez&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Sin candados ni plazos forzosos&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Invierte con dirección&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Tú decides cuándo y cuánto&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Tu dinero siempre en tu cuenta&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Transparencia total&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Sin letra chica&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Bono solo si hay rendimiento&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Contrato desde el primer día&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Retira cuando quieras&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Tu dinero, tu liquidez&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Sin candados ni plazos forzosos&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Invierte con dirección&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+    <span class="ticker-item">Tú decides cuándo y cuánto&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- CAT NAV -->
+<div class="cat-nav">
+  <button class="cat-btn active" onclick="filterCat('all',this)">Todas</button>
+  <button class="cat-btn" onclick="filterCat('dinero',this)">Tu dinero</button>
+  <button class="cat-btn" onclick="filterCat('servicio',this)">El servicio</button>
+  <button class="cat-btn" onclick="filterCat('costos',this)">Costos</button>
+  <button class="cat-btn" onclick="filterCat('confianza',this)">Confianza y legal</button>
+  <button class="cat-btn" onclick="filterCat('inicio',this)">¿Por dónde empiezo?</button>
+</div>
+
+<div class="cat-section" data-cat="dinero">
+  <div class="cat-label">Tu dinero</div>
+  <div class="section-title">Seguridad y control</div>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Mi dinero está seguro? ¿Tú lo tienes en tus manos?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Tu dinero <strong>nunca pasa por mis manos</strong>. Siempre está en tu cuenta, en la plataforma que tú eliges y <strong>a tu nombre</strong>.</p><p>Esto es algo que vale la pena subrayar: <strong>puedes retirar tu dinero cuando quieras</strong>, sin candados, sin penalizaciones, sin plazos forzosos. No somos una AFORE, no somos un plan de retiro, no hay letra chica que te ate.</p><p>Yo opero bajo <strong>tu autorización directa</strong> en cada movimiento. Si en cualquier momento decides salir, tu dinero está ahí — intacto y disponible.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Puedo retirar mi dinero cuando quiera?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Sí, en cualquier momento. Tu cuenta es tuya y <strong>solo tú puedes hacer retiros</strong>. Yo únicamente ejecuto compras y ventas de valores — <strong>nunca transferencias a cuentas externas</strong>.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Qué pasa si el mercado baja? ¿Pierdo todo?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Las inversiones <strong>bien diversificadas no van a cero</strong>. Lo que puede pasar es que en ciertos periodos el valor baje temporalmente — eso es normal y es parte de invertir. La estrategia que diseñamos juntos considera tu tolerancia al riesgo precisamente <strong>para que puedas dormir tranquilo</strong> aunque el mercado tenga volatilidad.</p></div></div>
+  </div>
+</div>
+
+<div class="cat-section" data-cat="servicio">
+  <div class="cat-label">El servicio</div>
+  <div class="section-title">Cómo trabajamos</div>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Cómo funciona exactamente el servicio? ¿Qué haces tú y qué hago yo?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Tú fondeas tu cuenta <strong>semana a semana</strong> según tu plan. Lo hacemos así porque invertir de forma constante es lo que realmente construye patrimonio — una sola aportación al mes hace muy fácil que el hábito se pierda.</p><p>Yo te recuerdo cada semana, analizo el mercado, decido qué comprar, te aviso y <strong>ejecuto la operación con tu autorización</strong>. Tú no necesitas saber de inversiones — para eso estoy yo.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Cuánto tiempo me va a tomar esto a mí? ¿Es complicado?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Prácticamente nada. Fondear tu cuenta es <strong>simplemente hacer una transferencia desde tu celular</strong> — toma minutos. El resto lo manejo yo. No necesitas estar pegado a gráficas ni entender el mercado — eso es exactamente lo que resuelve el servicio.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿En qué plataforma o bróker invierto? ¿Tú me dices cuál usar?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Sí, te recomiendo opciones según tu perfil y situación. Trabajamos con <strong>plataformas reguladas en México</strong> que te dan acceso a <strong>mercados nacionales e internacionales</strong>. Tú abres la cuenta a tu nombre — siempre.</p></div></div>
+  </div>
+</div>
+
+<div class="cat-section" data-cat="costos">
+  <div class="cat-label">Costos</div>
+  <div class="section-title">¿Cuánto cuesta?</div>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Cuánto cuesta? ¿Cómo funciona el cobro?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Hay dos partes: una <strong>suscripción mensual variable</strong> que se adapta a tu ritmo de inversión — parte desde $299 MXN y se ajusta naturalmente a lo que aportas cada mes.</p><p>Es un precio que acompaña tu día a día: si un mes puedes más, se refleja; si fue un mes más tranquilo, también. <strong>Siempre en proporción a lo que estás construyendo.</strong></p><p>Además hay un <strong>bono de éxito anual</strong> — un porcentaje sobre la ganancia real del año. Si no hubo ganancia, no hay bono. Simple.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Por qué no puedo contratar el servicio si aporto menos de $300 semanales?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>No es que no puedas invertir — es que con menos de esa cantidad, mi mensualidad representaría casi todo lo que estás metiendo, y <strong>no tendría sentido económico para ti</strong>. Lo que sí puedo ofrecerte es la presentación inicial, donde aprendes los conceptos clave y te preparas — en caso de que en algún momento quieras dar ese paso y yo pueda acompañarte.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">Si no gano dinero, ¿de todas formas me cobras?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>La suscripción mensual sí se cobra — es por el acompañamiento continuo. Pero el <strong>bono de éxito anual solo se cobra si tu inversión generó rendimiento positivo</strong>. Si el año cerró sin ganancias, ese bono es cero. Punto.</p></div></div>
+  </div>
+</div>
+
+<div class="cat-section" data-cat="confianza">
+  <div class="cat-label">Confianza y legal</div>
+  <div class="section-title">Respaldo y garantías</div>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Estás regulado o certificado?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Cuento con <strong>Maestría en Administración</strong>, segunda carrera en Finanzas (en formación), <strong>Diplomado en Educación Financiera</strong> por la CONDUSEF y cursos especializados en la Bolsa Mexicana de Valores.</p><p>Salvador Financiero no es una casa de bolsa ni está regulado por la CNBV — ofrezco servicios de mentoría patrimonial y gestión operativa <strong>bajo mandato expreso del cliente</strong>, respaldado legalmente por el contrato que firmamos.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Hay un contrato? ¿Qué dice?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Sí, siempre. Al inicio de nuestra relación firmamos un <strong>Contrato de Prestación de Servicios</strong> y una <strong>Carta Poder</strong> — ambos tienen validez durante todo el año y se renuevan anualmente.</p><p>Ahí queda documentado el alcance del servicio, el mandato que me das para operar, el esquema de cobro y <strong>los derechos de ambos</strong>.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Cómo sé que puedo confiar en ti?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p><strong>Tu dinero nunca sale de tu cuenta.</strong> Tienes acceso a cada movimiento en tiempo real desde tu plataforma. Firmamos un contrato legal. Y si en cualquier momento quieres salir, <strong>puedes hacerlo sin penalizaciones</strong>. La transparencia es la base de cómo trabajo.</p></div></div>
+  </div>
+</div>
+
+<div class="cat-section" data-cat="inicio">
+  <div class="cat-label">¿Por dónde empiezo?</div>
+  <div class="section-title">El primer paso</div>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Por dónde empiezo? ¿Qué sigue después del cuestionario?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>El primer paso es completar el <strong>cuestionario de perfil de riesgo</strong> — 8 preguntas, 3 minutos.</p><p>Conocer tu perfil no es un trámite: es la base de cualquier estrategia seria. Sin saber cuánto riesgo puedes tolerar, qué horizonte tienes y qué buscas, cualquier decisión de inversión es como sentarse a jugar póker sin conocer las cartas. <strong>Tu perfil es el mapa; sin él, no hay ruta.</strong></p><p>Con base en tus respuestas, me pongo en contacto contigo personalmente para platicar tu situación y definir el siguiente paso juntos.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Para qué sirve la presentación y cuánto cuesta?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>La presentación es una <strong>sesión de 90 minutos</strong> donde construimos juntos la base que necesitas para <strong>invertir con criterio</strong> — desde los conceptos fundamentales hasta lo que realmente mueve los mercados.</p><p>Antes de invertir un solo peso, es importante saber a qué juego estás entrando y cómo funcionan las reglas. Esa claridad es lo que hace la diferencia entre <strong>invertir con dirección</strong> e invertir a la suerte.</p><p>Es una <strong>plática abierta</strong> — puedes preguntarme lo que quieras, sin límite. El costo parte desde <strong>$399 MXN</strong> y varía según tu perfil, porque el nivel de detalle y profundidad también se adapta a ti.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggle(this)"><span class="faq-q-text">¿Cuánto dinero necesito para comenzar?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-divider"></div><p>Invertir se puede hacer desde cualquier cantidad y en cualquier momento. Pero <strong>invertir bien es otra historia</strong> — requiere una base sólida: conocer tu perfil, entender los instrumentos y tener una estrategia clara.</p><p>Tomar decisiones sin esa base es como sentarse a jugar póker sin conocer las reglas — puedes tener suerte, pero no es una estrategia.</p><p>Para que la inversión realmente trabaje a tu favor, en Salvador Financiero el mínimo sugerido es <strong>$300 MXN semanales de aportación</strong> — es la cantidad mínima para que el acompañamiento tenga sentido real y los resultados sean tangibles para ti.</p><p>Si aún no llegas a ese nivel, la presentación inicial es el mejor primer paso: te da la base para que cuando llegues, llegues listo.</p></div></div>
+  </div>
+</div>
+
+<div class="cta-wrap">
+  <span class="cta-deco tl">✦</span><span class="cta-deco tr">✦</span>
+  <span class="cta-deco bot">✦ &nbsp; ✦ &nbsp; ✦</span>
+  <h2 class="cta-title">Platicamos<br><span>cuando quieras.</span></h2>
+  <p class="cta-sub">Escríbeme sin compromiso — respondo yo, sin asistentes ni bots.</p>
+  <a href="https://instagram.com/salvadorfinanciero" target="_blank" class="cta-btn">✦ Contáctame por Instagram ✦</a>
+</div>
+
+<footer>
+  <div class="footer-brand">Salvador <span>Financiero</span></div>
+  <div class="footer-sub">Mentoría Patrimonial Independiente · CDMX · 2026</div>
+  <div class="footer-links">
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/terminos-y-condiciones.html">Términos y Condiciones</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html">Aviso de Privacidad</a>
+  </div>
+  <div class="disclaimer">Salvador Financiero ofrece servicios de consultoría y mentoría educativa. La ejecución de operaciones en plataformas de terceros se realiza bajo el mandato, supervisión y autorización expresa del cliente. No se realiza captación de recursos ni gestión de cartera institucional.</div>
+</footer>
+
+<script>
+function toggle(btn){const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));if(!isOpen)item.classList.add('open');}
+function filterCat(cat,btn){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.cat-section').forEach(g=>{g.style.display=(cat==='all'||g.dataset.cat===cat)?'block':'none';});document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));if(cat!=='all'){const t=document.querySelector('.cat-section[data-cat="'+cat+'"]');if(t)setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),50);}}
+</script>
+</body>
+</html>
