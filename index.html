@@ -55,6 +55,9 @@
   .hero-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:rgba(255,255,255,0.72);max-width:420px;line-height:1.7;margin-bottom:38px;}
   .hero-cta{display:inline-block;align-self:flex-start;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 38px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:4px 4px 0 var(--pine);}
   .hero-cta:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pine);}
+  @media(max-width:768px){
+    .hero-cta{font-size:0.85rem;letter-spacing:0.08em;padding:12px 20px;white-space:nowrap;}
+  }
 
   .hero-right{
     background:var(--forest);
@@ -215,8 +218,8 @@
 
   /* TICKER */
   .ticker-wrapper{background:#2d5a30 !important;overflow:hidden;max-width:100vw;padding:18px 0;white-space:nowrap;border-top:2px solid var(--forest);border-bottom:2px solid var(--forest);line-height:1.2;}
-  .ticker-inner{display:inline-flex;animation:ticker 8s linear infinite;}
-  .ticker-item{font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#ffffff !important;display:inline;white-space:nowrap;}
+  .ticker-inner{display:inline-flex;animation:ticker 8s linear infinite;will-change:transform;}
+  .ticker-item{font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#ffffff !important;display:inline-flex;align-items:center;white-space:nowrap;}
   .ticker-sep{color:var(--fern);}
   @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
@@ -416,6 +419,8 @@
   @media(max-width:768px){
     #modelo{padding:60px 24px;}
     .modelo-grid{grid-template-columns:1fr;}
+    .modelo-cards-grid{grid-template-columns:1fr !important;overflow:visible !important;}
+    .modelo-cards-grid > div{padding:24px !important;}
   }
 
 
@@ -525,7 +530,7 @@
   @media (max-width: 768px) {
     html, body { overflow-x: hidden !important; }
     #hero { grid-template-columns: 1fr !important; }
-    .hero-left { min-height: auto !important; border-right: none !important; border-bottom: 3px solid var(--sage); }
+    .hero-left { min-height: auto !important; border-right: none !important; border-bottom: none !important; }
     .hero-right { height: 260px !important; }
     .stats-inner { grid-template-columns: 1fr !important; }
     .stat-block { border-right: none !important; border-bottom: 2px solid var(--forest); }
@@ -574,7 +579,7 @@
     <h1 class="hero-title">Crece tu dinero<br>con confianza.<br><span class="hi">Invierte con dirección.</span></h1>
     <div class="hero-rule"></div>
     <p class="hero-subtitle">Mentoría patrimonial · Acceso a mercados internacionales y nacionales · Tu dinero, siempre en tu cuenta</p>
-    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="hero-cta">Descubre tu Perfil de Riesgo ✦</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="hero-cta">✦ Descubre tu Perfil de Riesgo ✦</a>
     
     
   </div>
@@ -608,6 +613,7 @@
     <span class="ticker-item">Flujo Pasivo&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Seguimiento Mensual&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Estrategia Patrimonial&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Interés Compuesto&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Análisis de Portafolio&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Perfil de Riesgo&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Mercados Internacionales&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
@@ -615,6 +621,15 @@
     <span class="ticker-item">Flujo Pasivo&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Seguimiento Mensual&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
     <span class="ticker-item">Estrategia Patrimonial&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Interés Compuesto&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Análisis de Portafolio&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Perfil de Riesgo&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Mercados Internacionales&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Sesión de Diagnóstico&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Flujo Pasivo&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Seguimiento Mensual&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Estrategia Patrimonial&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-item">Interés Compuesto&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
   </div>
 </div>
 
@@ -645,15 +660,15 @@
     <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
     <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;">
-    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;" class="modelo-cards-grid">
+    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.45);padding:36px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">01</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:white;margin-bottom:14px;">Suscripción mensual</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:12px;">Una vez que empiezas a fondear tu cuenta (en la casa de bolsa de tu elección), te acompaño estratégicamente en tu portafolio semana a semana — colocando órdenes de compra con un análisis previo, personalizado a tus objetivos y horizonte de inversión.</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.85);line-height:1.65;margin-bottom:18px;">Pagas una suscripción mensual fija, como Netflix, pero para tu patrimonio.</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">Desde $299 / mes · según tu nivel de inversión</div>
     </div>
-    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;">
+    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.45);padding:36px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">02</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:white;margin-bottom:14px;">Bono de éxito anual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;">Solo si hay rendimiento</span></div>
       <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:18px;">Al cierre del año revisamos cuánto creció tu inversión. Si hubo rendimiento, cobro un porcentaje únicamente sobre esa ganancia. Si no ganaste, yo no cobro ese bono. Así los dos tenemos el mismo objetivo: que tu dinero crezca.</div>
@@ -792,21 +807,23 @@
 </section>
 
 
-<!-- CONTACTO LEYENDA -->
-<div style="background:var(--white);padding:28px 60px;border-top:2px solid var(--rule);background-image:linear-gradient(rgba(28,58,30,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);background-size:36px 36px;">
-  <div style="max-width:700px;margin:0 auto;text-align:center;">
-    <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:var(--forest);line-height:1.7;margin-bottom:20px;">Completa el cuestionario de perfil de riesgo o envíame un mensaje por Instagram para platicar tus metas — me pondré en contacto contigo a la brevedad.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="perfil-riesgo.html" style="display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.12em;padding:12px 28px;text-decoration:none;border:2px solid var(--forest);box-shadow:3px 3px 0 var(--sage);">Cuestionario de perfil →</a>
-      <a href="https://instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:transparent;color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.12em;padding:12px 28px;text-decoration:none;border:2px solid var(--forest);">Instagram @salvadorfinanciero →</a>
-    </div>
-  </div>
+<!-- CIERRE FINAL CTA -->
+<div class="reveal" style="background:var(--forest);border-top:3px solid var(--sage);padding:96px 60px;text-align:center;position:relative;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;">
+  <div style="position:absolute;top:32px;left:60px;font-size:1.2rem;color:var(--sage);opacity:0.4;pointer-events:none;">✦</div>
+  <div style="position:absolute;top:32px;right:60px;font-size:1.2rem;color:var(--sage);opacity:0.4;pointer-events:none;">✦</div>
+  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:0.9rem;color:var(--sage);opacity:0.25;pointer-events:none;letter-spacing:0.3em;">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,6rem);color:var(--white);line-height:0.92;letter-spacing:0.01em;margin-bottom:24px;">¿Listo para que<br><span style="color:var(--fern);">tu dinero trabaje?</span></h2>
+
+  <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 48px;line-height:1.7;">Descubre cuánto puede crecer tu dinero con el tiempo —<br>ponle números a tu futuro.</p>
+
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/calculadora-interes-compuesto.html" target="_blank" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 56px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='9px 9px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 var(--sage)'">✦ Simula tu inversión ✦</a>
 </div>
 
 <footer>
   <a href="#hero" class="flogo" style="text-decoration:none;color:var(--white);">Salvador <span>Financiero</span></a>
   <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX, México</div>
-  <div class="ftext">Hecho con estrategia ✦</div>
+  <div class="ftext">✦ Hecho con estrategia ✦</div>
   <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
     <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/terminos-y-condiciones.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Términos y Condiciones</a><a href="https://salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">Aviso de Privacidad</a>
   </div>
