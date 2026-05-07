@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Inversión desde el Día 1 — Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1c3a1e;--pine:#2d5a30;--sage:#5a7a4a;--fern:#a8c498;--mist:#d4e8c8;
+    --cream:#f5f3ee;--paper:#eceae2;--white:#ffffff;--ink:#1a1a1a;--mid:#555;--rule:#ccc8bc;
+    --warm:#f0ebe0;--gold:#c8a96e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--cream);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--forest);padding:16px 56px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--sage);}
+  .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+  .nav-brand span{color:var(--fern);}
+  .nav-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;transition:color .2s;}
+  .nav-back:hover{color:var(--white);}
+
+  /* HERO */
+  .hero{
+    background:var(--white);
+    padding:100px 60px 80px;
+    border-bottom:3px solid var(--sage);
+    overflow:hidden;
+  }
+  .hero-inner{max-width:700px;margin:0 auto;text-align:center;}
+  .hero-eyebrow{display:inline-flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:28px;}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,7.5rem);line-height:0.92;color:var(--forest);letter-spacing:0.01em;margin-bottom:32px;}
+  .hero h1 em{color:var(--sage);font-style:normal;display:block;}
+  .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:var(--mid);line-height:1.8;max-width:500px;margin:0 auto 40px;}
+  .hero-cta{display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 40px;text-decoration:none;border:2px solid var(--forest);box-shadow:5px 5px 0 var(--sage);transition:all .2s;}
+  .hero-cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--sage);}
+
+  /* HERO EDAD */
+  .hero-edad-wrap{background:rgba(90,122,74,0.07);border:2px solid var(--fern);padding:20px 24px;margin-top:28px;border-radius:40px;}
+  .hero-edad-label{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:var(--forest);margin-bottom:4px;}
+  .hero-edad-val{color:var(--sage);font-weight:500;}
+  .hero-edad-sublabel{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px;}
+  .hero-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.2);outline:none;border-radius:2px;}
+  .hero-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--forest);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}
+
+  /* TICKER */
+  .ticker-wrapper{background:var(--pine);overflow:hidden;padding:14px 0;white-space:nowrap;border-bottom:3px solid var(--forest);}
+  .ticker-inner{display:inline-flex;animation:ticker 30s linear infinite;will-change:transform;}
+  .ticker-item{font-family:'DM Mono',monospace;font-size:0.78rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);display:inline-flex;align-items:center;white-space:nowrap;}
+  .ticker-sep{color:var(--fern);margin:0 16px;}
+  @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+  /* ETAPAS DE VIDA */
+  .etapas-section{background:var(--white);padding:80px 60px;border-bottom:3px solid var(--rule);}
+  .etapas-inner{max-width:960px;margin:0 auto;}
+  .etapas-header{margin-bottom:56px;}
+  .etapas-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .etapas-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}
+  .etapas-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--forest);line-height:0.95;margin-bottom:16px;}
+  .etapas-title span{color:var(--sage);}
+  .etapas-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.75;max-width:560px;}
+  .etapas-timeline{position:relative;padding-left:140px;}
+  .etapas-timeline::before{content:'';position:absolute;left:116px;top:12px;bottom:12px;width:3px;background:linear-gradient(to bottom, var(--mist), var(--sage), var(--forest));border-radius:2px;}
+  .etapa-item{position:relative;display:flex;align-items:flex-start;gap:28px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--rule);}
+  .etapa-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .etapa-anio{position:absolute;left:-140px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);padding-top:4px;width:100px;text-align:right;}
+  .etapa-dot{position:absolute;left:-28px;top:8px;width:14px;height:14px;background:var(--fern);border:3px solid var(--white);border-radius:50%;box-shadow:0 0 0 2px var(--sage);}
+  .etapa-dot-special{background:var(--sage);box-shadow:0 0 0 2px var(--sage),0 0 0 5px rgba(90,122,74,0.2);}
+  .etapa-dot-final{background:var(--forest);box-shadow:0 0 0 2px var(--forest),0 0 0 5px rgba(28,58,30,0.15);width:18px;height:18px;left:-30px;top:6px;}
+  .etapa-content{flex:1;}
+  .etapa-nombre{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:4px;}
+  .etapa-monto{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--sage);letter-spacing:0.02em;line-height:1;margin-bottom:6px;}
+  .etapa-monto-final{color:var(--forest);font-size:2.5rem;}
+  .etapa-desc{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:var(--mid);line-height:1.65;}
+  .etapas-nota{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-top:32px;display:flex;align-items:center;gap:8px;}
+  .etapas-nota span{color:var(--fern);}
+
+  .etapa-dot-pasada{background:var(--rule);box-shadow:none;}
+  .etapa-pasada{opacity:0.6;}
+  .etapa-proxima{background:rgba(168,196,152,0.08);border-left:3px solid var(--fern);padding-left:16px;margin-left:-16px;}
+  .etapa-badge{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;margin-bottom:6px;}
+  .etapa-tiempo{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;}
+
+  /* CALCULADORA */
+  .calc-section{background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.08) 1px,transparent 1px);background-size:36px 36px;border-bottom:3px solid var(--rule);padding:80px 60px;}
+  .calc-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .calc-label-top{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .calc-label-top::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}
+  .calc-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,3.8rem);color:var(--forest);line-height:0.95;margin-bottom:20px;}
+  .calc-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.75;margin-bottom:0;}
+
+  /* Sliders */
+  .calc-controls{display:flex;flex-direction:column;gap:32px;}
+  .ctrl-group{}
+  .ctrl-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--forest);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .ctrl-value{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--sage);letter-spacing:0.05em;}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.15);outline:none;border-radius:2px;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}
+  .ctrl-range-labels{display:flex;justify-content:space-between;margin-top:4px;}
+  .ctrl-range-labels span{font-family:'DM Mono',monospace;font-size:0.52rem;color:rgba(28,58,30,0.35);}
+
+  /* Resultado */
+  .calc-result{background:var(--forest);padding:40px;border:none;position:relative;overflow:hidden;}
+  .calc-result::before{content:'✦';position:absolute;top:16px;right:20px;font-size:1rem;color:var(--fern);opacity:0.3;}
+  .result-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:8px;}
+  .result-amount{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);color:var(--fern);line-height:1;letter-spacing:0.01em;margin-bottom:4px;}
+  .result-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.45);margin-bottom:28px;}
+  .result-breakdown{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;flex-direction:column;gap:10px;}
+  .result-row{display:flex;justify-content:space-between;align-items:center;}
+  .result-row-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+  .result-row-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.05em;}
+  .result-row-val.green{color:var(--fern);}
+  .result-row-val.white{color:rgba(255,255,255,0.7);}
+  .result-note{font-family:'DM Mono',monospace;font-size:0.52rem;color:rgba(255,255,255,0.25);letter-spacing:0.08em;margin-top:20px;line-height:1.6;text-transform:uppercase;}
+
+  /* POR QUÉ HOY */
+  .why-section{background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;padding:80px 60px;border-bottom:3px solid var(--rule);}
+  .why-inner{max-width:960px;margin:0 auto;}
+  .why-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .why-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}
+  .why-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--forest);line-height:0.95;margin-bottom:48px;}
+  .why-title span{color:var(--sage);}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--rule);}
+  .why-card{background:var(--white);padding:36px 32px;}
+  .why-num{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--mist);line-height:1;margin-bottom:12px;}
+  .why-card-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:10px;}
+  .why-card-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
+
+  /* CÓMO FUNCIONA */
+  .how-section{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;padding:80px 60px;border-bottom:3px solid var(--sage);}
+  .how-inner{max-width:960px;margin:0 auto;}
+  .how-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .how-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--fern);}
+  .how-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--white);line-height:0.95;margin-bottom:48px;}
+  .how-title span{color:var(--fern);}
+  .how-steps{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:rgba(255,255,255,0.06);}
+  .how-step{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);padding:36px 32px;}
+  .how-step-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:rgba(168,196,152,0.15);line-height:1;margin-bottom:10px;}
+  .how-step-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--white);margin-bottom:10px;}
+  .how-step-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.75;}
+  .how-step strong{color:var(--fern);font-style:normal;}
+
+  /* RENOVACIÓN ANUAL */
+  .renew-section{background:var(--paper);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;padding:72px 60px;border-bottom:3px solid var(--rule);}
+  .renew-inner{max-width:760px;margin:0 auto;text-align:center;}
+  .renew-icon{font-size:2.5rem;margin-bottom:16px;opacity:0.6;}
+  .renew-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3rem);color:var(--forest);margin-bottom:16px;line-height:1;}
+  .renew-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--mid);line-height:1.8;max-width:560px;margin:0 auto 28px;}
+  .renew-text strong{color:var(--pine);font-style:normal;}
+
+  /* CTA FINAL */
+  .cta-section{background:var(--forest);border-top:3px solid var(--sage);padding:80px 60px;text-align:center;position:relative;overflow:hidden;}
+  .cta-deco{position:absolute;font-size:1rem;color:var(--sage);opacity:0.25;pointer-events:none;}
+  .cta-deco.tl{top:28px;left:60px;}
+  .cta-deco.tr{top:28px;right:60px;}
+  .cta-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .cta-eyebrow::before,.cta-eyebrow::after{content:'';display:block;width:18px;height:2px;background:var(--fern);}
+  .cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.5rem);color:var(--white);line-height:0.92;margin-bottom:16px;}
+  .cta-title span{color:var(--fern);}
+  .cta-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.55);margin-bottom:36px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto;}
+  .cta-btn{display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 52px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;}
+  .cta-btn:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--sage);}
+
+  /* FOOTER */
+  footer{background:var(--forest);padding:24px 60px;text-align:center;border-top:3px solid var(--sage);}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}
+  .footer-brand span{color:var(--fern);}
+  .footer-sub{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;}
+  .footer-links{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);}
+  .footer-links a{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin:0 10px;}
+  .disclaimer{font-size:0.58rem;color:rgba(255,255,255,0.2);line-height:1.6;margin-top:10px;font-style:italic;font-family:'Instrument Serif',serif;}
+
+  @media(max-width:768px){
+    nav{padding:14px 20px;}
+    .hero{padding:48px 24px 0;}
+    .hero-inner{grid-template-columns:1fr;gap:40px;}
+    .hero-visual{display:none;}
+    .hero-sub{margin-bottom:28px;}
+    .hero-cta{margin-bottom:48px;}
+    .calc-section{padding:56px 24px;}
+    .calc-inner{grid-template-columns:1fr;gap:40px;}
+    .why-section{padding:56px 24px;}
+    .why-grid{grid-template-columns:1fr;}
+    .how-section{padding:56px 24px;}
+    .how-steps{grid-template-columns:1fr;}
+    .renew-section{padding:56px 24px;}
+    .cta-section{padding:60px 24px;}
+    footer{padding:20px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Inicio</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">-PATRIMONIO FAMILIAR-</div>
+    <div id="heroEmoji" style="font-size:5rem;margin-bottom:16px;line-height:1;">🍼</div>
+    <h1>Inversión<br>desde el<br><em id="heroTitulo">Día 1.</em></h1>
+    <p class="hero-sub">El mejor momento para empezar a invertir por tu hijo fue el día que nació. El segundo mejor momento es hoy.</p>
+
+    <!-- EDAD EN EL HERO -->
+    <div class="hero-edad-wrap">
+      <div class="hero-edad-label">¿Cuántos años tiene tu hijo? <span id="labelEdad" class="hero-edad-val">Recién nacido</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
+        <div>
+          <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo">0</span></div>
+          <input type="range" min="0" max="17" step="1" value="0" id="sliderAniosHijo" oninput="syncEdad(1)" class="hero-slider">
+        </div>
+        <div id="mesesWrap">
+          <div class="hero-edad-sublabel">Meses: <span id="labelMesesHijo">0</span></div>
+          <input type="range" min="0" max="11" step="1" value="0" id="sliderMesesHijo" oninput="syncEdad(1)" class="hero-slider">
+        </div>
+      </div>
+    </div>
+
+    <a href="#simulador" class="hero-cta" style="margin-top:32px;">✦ Ver el simulador ✦</a>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrapper">
+  <div class="ticker-inner">
+    <span class="ticker-item">El tiempo es tu mejor aliado<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Interés compuesto desde el día 1<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Tu dinero siempre en tu cuenta<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">18 años de crecimiento constante<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Una decisión hoy, una vida mañana<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Sin candados ni plazos forzosos<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">El tiempo es tu mejor aliado<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Interés compuesto desde el día 1<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Tu dinero siempre en tu cuenta<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">18 años de crecimiento constante<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Una decisión hoy, una vida mañana<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Sin candados ni plazos forzosos<span class="ticker-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- CALCULADORA -->
+<div class="calc-section" id="simulador">
+  <div class="calc-inner">
+    <div>
+      <div class="calc-label-top">Simulador</div>
+      <div id="calcEmoji" style="font-size:4rem;line-height:1;margin-bottom:12px;">🍼</div>
+      <div class="calc-title">Mira crecer el<br>dinero de<br><em style="color:var(--sage);font-style:normal;">tu hijo.</em></div>
+      <p class="calc-sub">Define cuánto puedes aportar — el timeline de su vida se actualiza automáticamente.</p>
+
+      <!-- EDAD REPETIDA EN SIMULADOR -->
+      <div class="hero-edad-wrap" style="margin-top:24px;">
+        <div class="hero-edad-label" id="calcEdadLabel">¿Cuántos años tiene? <span id="labelEdad2" class="hero-edad-val">Recién nacido</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
+          <div>
+            <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo2">0</span></div>
+            <input type="range" min="0" max="17" step="1" value="0" id="sliderAniosHijo2" oninput="syncEdad(2)" class="hero-slider">
+          </div>
+          <div id="mesesWrap2">
+            <div class="hero-edad-sublabel">Meses: <span id="labelMesesHijo2">0</span></div>
+            <input type="range" min="0" max="11" step="1" value="0" id="sliderMesesHijo2" oninput="syncEdad(2)" class="hero-slider">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="calc-controls">
+        <div class="ctrl-group">
+          <div class="ctrl-label">Aportación semanal <span class="ctrl-value" id="labelSemanal">$300</span></div>
+          <input type="range" min="100" max="10000" step="50" value="300" id="sliderSemanal" oninput="calcular()">
+          <div class="ctrl-range-labels"><span>$100</span><span>$10,000</span></div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);margin-top:6px;">≈ mensual: <span id="labelMensual">$1,300</span></div>
+        </div>
+        <div class="ctrl-group">
+          <div class="ctrl-label">Rendimiento anual estimado <span class="ctrl-value" id="labelRend">8%</span></div>
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sliderRend" oninput="calcular()">
+          <div class="ctrl-range-labels"><span>3%</span><span>25%</span></div>
+        </div>
+      </div>
+
+      <div class="calc-result" style="margin-top:32px;">
+        <div class="result-label" id="resultLabel">Tu hijo tendría a los 18 años</div>
+        <div class="result-amount" id="resultTotal">$0</div>
+        <div class="result-sub" id="resultSub">en su portafolio de inversión</div>
+        <div class="result-breakdown">
+          <div class="result-row">
+            <span class="result-row-label">Lo que aportarías</span>
+            <span class="result-row-val white" id="resultAportado">$0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Lo que genera el mercado</span>
+            <span class="result-row-val green" id="resultGanancia">$0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Tiempo restante</span>
+            <span class="result-row-val white" id="resultTiempo">18 años</span>
+          </div>
+        </div>
+        <div class="result-note">Simulación referencial · Los rendimientos pasados no garantizan resultados futuros · Basado en interés compuesto semanal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ETAPAS DE VIDA -->
+<div class="etapas-section">
+  <div class="etapas-inner">
+    <div class="etapas-header">
+      <div class="etapas-eyebrow">El tiempo no espera</div>
+      <div class="etapas-title">Cada etapa llega.<br><span>¿Estarás listo?</span></div>
+      <p class="etapas-sub">Las grandes etapas de tu hijo van a pasar de todas formas. La pregunta no es si van a llegar — es si van a llegar con un respaldo detrás.</p>
+    </div>
+    <div class="etapas-timeline" id="etapasTimeline">
+      <!-- Se genera dinámicamente con JS -->
+    </div>
+    <div class="etapas-nota">
+      <span>✦</span> Los montos se actualizan según tus parámetros · Ajusta los sliders de arriba
+    </div>
+  </div>
+</div>
+
+<!-- POR QUÉ HOY -->
+<div class="why-section">
+  <div class="why-inner">
+    <div class="why-eyebrow">El factor tiempo</div>
+    <div class="why-title">Por qué cada año<br><span>que esperas importa</span></div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">01</div>
+        <div class="why-card-title">El interés compuesto no descansa</div>
+        <p class="why-card-text">Cada semana que fondeas, los rendimientos se reinvierten y generan sus propios rendimientos. Con el tiempo, el dinero que pone el mercado supera al dinero que tú aportas.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02</div>
+        <div class="why-card-title">Empezar tarde cuesta más de lo que crees</div>
+        <p class="why-card-text">Cada año que pasa sin invertir no es solo un año menos — es un año de rendimientos que ya no van a volver. El dinero que el mercado hubiera generado por ti simplemente desaparece.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03</div>
+        <div class="why-card-title">Pequeñas cantidades, grandes resultados</div>
+        <p class="why-card-text">No necesitas una fortuna para empezar. $300 semanales durante 18 años, con un rendimiento conservador, pueden generar más de $600,000 MXN para cuando tu hijo entre a la universidad.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RENOVACIÓN ANUAL -->
+<div class="renew-section">
+  <div class="renew-inner">
+    <div style="font-size:2.5rem;letter-spacing:0.1em;margin-bottom:20px;line-height:1;">🌱 🌿 🌳</div>
+    <div class="renew-title">Semana a semana,<br>año tras año</div>
+    <p class="renew-text">Estoy al pendiente cada semana — te recuerdo fondear tu cuenta, analizo el mercado y ejecuto las órdenes con tu autorización. Y cada año nos reunimos para revisar juntos cómo creció el portafolio y renovar el contrato.</p>
+    <p class="renew-text" style="margin-top:16px;">Igual que una planta — con constancia, agua y tiempo, crece sola. <strong>Tú pones la intención, yo pongo el cuidado.</strong></p>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <span class="cta-deco tl">✦</span>
+  <span class="cta-deco tr">✦</span>
+  <div class="cta-eyebrow">El mejor momento es hoy</div>
+  <div id="ctaEmoji" style="font-size:4.5rem;margin-bottom:16px;line-height:1;">🍼</div>
+  <h2 class="cta-title">Dale a tu hijo<br><span>el regalo del tiempo.</span></h2>
+  <p class="cta-sub">Empieza con el cuestionario de perfil de riesgo — gratuito, 3 minutos. Me pongo en contacto contigo personalmente.</p>
+  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="cta-btn">✦ Comenzar cuestionario ✦</a>
+</div>
+
+<!-- BOTÓN FLOTANTE -->
+<div id="floatBtn" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;background:var(--forest);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:16px 20px;border:2px solid var(--fern);box-shadow:4px 4px 0 var(--sage);cursor:pointer;white-space:nowrap;transition:opacity .4s;border-radius:50px;text-align:center;">
+  <span id="floatBtnText">🍼 &nbsp;Mueve el simulador</span>
+</div>
+
+<footer>
+  <div class="footer-brand">Salvador <span>Financiero</span></div>
+  <div class="footer-sub">Mentoría Patrimonial Independiente · CDMX · 2026</div>
+  <div class="footer-links">
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/terminos-y-condiciones.html">Términos y Condiciones</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/aviso-de-privacidad.html">Aviso de Privacidad</a>
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/preguntas-frecuentes.html">FAQ</a>
+  </div>
+  <div class="disclaimer">Salvador Financiero ofrece servicios de consultoría y mentoría educativa. La cuenta de inversión se abre a nombre del titular adulto. La ejecución de operaciones se realiza bajo mandato, supervisión y autorización expresa del cliente. No se realiza captación de recursos ni gestión de cartera institucional.</div>
+</footer>
+
+<script>
+let simuladorUsado = false;
+
+function syncEdad(source){
+  if(source === 1){
+    document.getElementById('sliderAniosHijo2').value = document.getElementById('sliderAniosHijo').value;
+    document.getElementById('sliderMesesHijo2').value = document.getElementById('sliderMesesHijo').value;
+  } else {
+    document.getElementById('sliderAniosHijo').value = document.getElementById('sliderAniosHijo2').value;
+    document.getElementById('sliderMesesHijo').value = document.getElementById('sliderMesesHijo2').value;
+  }
+  simuladorUsado = true;
+  const btn = document.getElementById('floatBtn');
+  if(btn){ btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
+  calcular();
+}
+
+function fmt(n){
+  if(n>=1000000) return '$'+(n/1000000).toFixed(2)+'M';
+  if(n>=1000) return '$'+(n/1000).toFixed(0)+'K';
+  return '$'+Math.round(n).toLocaleString('es-MX');
+}
+
+function calcularMonto(semanal, rendSem, anios){
+  if(anios<=0) return 0;
+  const s = anios*52;
+  return semanal*((Math.pow(1+rendSem,s)-1)/rendSem);
+}
+
+const ETAPAS = [
+  { nombre:'🎒 Preescolar', edadInicio:3, edadFin:6, dot:'', desc:(anios)=> anios<=2?'⚡ ¡Está a la vuelta de la esquina! Cada mes que pasa sin invertir es tiempo que no recuperas.':'Los primeros años de formación. Una base sólida empieza aquí, mucho antes de que llegue ese día.' },
+  { nombre:'📚 Primaria', edadInicio:6, edadFin:12, dot:'', desc:(anios)=> anios<=2?'⚡ Quedan muy pocos años. El interés compuesto necesita tiempo — empieza hoy.':'Seis años de crecimiento silencioso. El portafolio ya empieza a tomar una forma que sorprende.' },
+  { nombre:'🔬 Secundaria', edadInicio:12, edadFin:15, dot:'', desc:(anios)=> anios<=2?'⚡ Muy cerca. Aún hay tiempo para que el portafolio crezca significativamente.':'El interés compuesto ya lleva años trabajando para ti. Los números empiezan a ser los protagonistas.' },
+  { nombre:'🎓 Preparatoria & los 15 años', edadInicio:15, edadFin:18, dot:'etapa-dot-special', desc:(anios)=> anios<=2?'⚡ Muy cerca. Un portafolio sólido puede cubrir esta etapa con total tranquilidad.':'La preparatoria arranca aquí. Con un buen portafolio, estos años se viven sin presión económica — y los 15 se celebran como se merecen.' },
+  { nombre:'🎓 Universidad', edadInicio:18, edadFin:22, dot:'etapa-dot-final', desc:(anios)=> anios<=3?'⚡ Llegó el momento. Lo que acumules ahora puede marcar la diferencia entre universidad con o sin deuda.':'Tu hijo entra a la universidad sin que eso sea una carga para nadie. Eso es lo que años de constancia construyen.' },
+];
+
+function calcular(){
+  const aniosHijo = parseInt(document.getElementById('sliderAniosHijo').value);
+  const mesesHijo = aniosHijo <= 3 ? parseInt(document.getElementById('sliderMesesHijo').value) : 0;
+  const edadHijoDecimal = aniosHijo + mesesHijo/12;
+  const edadHijo = Math.floor(edadHijoDecimal);
+
+  // Show/hide meses slider
+  document.getElementById('mesesWrap').style.display = aniosHijo <= 3 ? 'block' : 'none';
+
+  // Sync both slider sets visually
+  document.getElementById('sliderAniosHijo2').value = aniosHijo;
+  document.getElementById('sliderMesesHijo2').value = mesesHijo;
+
+  // Labels
+  document.getElementById('labelAniosHijo').textContent = aniosHijo;
+  document.getElementById('labelAniosHijo2').textContent = aniosHijo;
+  document.getElementById('labelMesesHijo').textContent = mesesHijo;
+  document.getElementById('labelMesesHijo2').textContent = mesesHijo;
+  document.getElementById('mesesWrap2').style.display = aniosHijo <= 3 ? 'block' : 'none';
+  let edadLabel = '';
+  if(aniosHijo === 0 && mesesHijo === 0) edadLabel = 'Recién nacido';
+  else if(aniosHijo === 0) edadLabel = mesesHijo+' mes'+(mesesHijo>1?'es':'');
+  else if(mesesHijo === 0) edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'');
+  else edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'')+' y '+mesesHijo+' mes'+(mesesHijo>1?'es':'');
+  document.getElementById('labelEdad').textContent = edadLabel;
+  if(document.getElementById('labelEdad2')) document.getElementById('labelEdad2').textContent = edadLabel;
+
+  // Dynamic emoji based on age
+  let emoji = '🍼';
+  if(edadHijoDecimal >= 15) emoji = '🎓';
+  else if(edadHijoDecimal >= 12) emoji = '🔬';
+  else if(edadHijoDecimal >= 6) emoji = '📚';
+  else if(edadHijoDecimal >= 3) emoji = '🎒';
+  else if(edadHijoDecimal >= 1) emoji = '🧸';
+  else emoji = '🍼';
+  document.getElementById('heroEmoji').textContent = emoji;
+  document.getElementById('ctaEmoji').textContent = emoji;
+  document.getElementById('calcEmoji').textContent = emoji;
+
+  // Dynamic title
+  let titulo = 'Día 1.';
+  if(aniosHijo === 0 && mesesHijo === 0) titulo = 'Día 1.';
+  else if(aniosHijo === 0) titulo = 'Mes '+mesesHijo+'.';
+  else titulo = 'Año '+aniosHijo+'.';
+  document.getElementById('heroTitulo').textContent = titulo;
+
+  const semanal = parseFloat(document.getElementById('sliderSemanal').value)||300;
+  const rendAnual = parseFloat(document.getElementById('sliderRend').value)/100;
+  const rendSem = Math.pow(1+rendAnual, 1/52)-1;
+  const mensual = Math.round(semanal * 52 / 12);
+
+  document.getElementById('labelSemanal').textContent = '$'+semanal.toLocaleString('es-MX');
+  document.getElementById('labelMensual').textContent = '$'+mensual.toLocaleString('es-MX');
+  document.getElementById('labelRend').textContent = parseFloat(document.getElementById('sliderRend').value)+'%';
+
+  const aniosHastaUniv = Math.max(0, 18 - edadHijoDecimal);
+  const total = calcularMonto(semanal, rendSem, aniosHastaUniv);
+  const aportado = semanal * aniosHastaUniv * 52;
+  const ganancia = total - aportado;
+
+  document.getElementById('resultLabel').textContent = 'Tu hijo tendría a los 18 años';
+  document.getElementById('resultTotal').textContent = fmt(total);
+  document.getElementById('resultSub').textContent = 'en '+ Math.round(aniosHastaUniv*10)/10 +' años de inversión constante';
+  document.getElementById('resultAportado').textContent = fmt(aportado);
+  document.getElementById('resultGanancia').textContent = '+'+fmt(ganancia);
+  document.getElementById('resultTiempo').textContent = aniosHastaUniv > 0 ? Math.round(aniosHastaUniv*10)/10+' años por delante' : 'La universidad está aquí';
+
+  const tl = document.getElementById('etapasTimeline');
+  tl.innerHTML = '';
+
+  ETAPAS.forEach((e, idx) => {
+    const esFinal = idx === ETAPAS.length - 1;
+    const yaPaso = edadHijoDecimal >= e.edadFin;
+    const esActual = edadHijoDecimal >= e.edadInicio && edadHijoDecimal < e.edadFin;
+    const esFutura = edadHijoDecimal < e.edadInicio;
+
+    if(yaPaso){
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item etapa-pasada">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot etapa-dot-pasada"></div>
+        <div class="etapa-content">
+          <div class="etapa-nombre" style="opacity:0.4;">${e.nombre}</div>
+          <div class="etapa-monto" style="opacity:0.3;font-size:1.2rem;">Ya pasó</div>
+          <div class="etapa-desc" style="opacity:0.35;">Esta etapa ya quedó atrás — pero las que siguen todavía están a tiempo.</div>
+        </div>
+      </div>`);
+
+    } else if(esActual){
+      const aniosHastaFin = e.edadFin - edadHijoDecimal;
+      const monto = calcularMonto(semanal, rendSem, aniosHastaFin);
+      const anosEnt = Math.floor(aniosHastaFin);
+      const mesesR = Math.round((aniosHastaFin - anosEnt)*12);
+      let tiempoRestante = anosEnt===0 ? mesesR+' mes'+(mesesR!==1?'es':'') : mesesR===0 ? anosEnt+' año'+(anosEnt!==1?'s':'') : anosEnt+' año'+(anosEnt!==1?'s':'')+' y '+mesesR+' mes'+(mesesR!==1?'es':'');
+      const dotClass = (e.dot + (esFinal ? ' etapa-dot-final' : '')).trim();
+      const progreso = (edadHijoDecimal - e.edadInicio) / (e.edadFin - e.edadInicio); // 0 a 1
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item etapa-proxima" id="etapaActual" style="border-left:4px solid var(--sage);background:rgba(168,196,152,0.08);padding-left:20px;margin-left:-20px;position:relative;">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot ${dotClass}" style="background:rgba(168,196,152,0.15);border-color:var(--fern);"></div>
+        <div id="estrella" style="position:absolute;left:-44px;font-size:2rem;line-height:1;pointer-events:none;z-index:10;" data-progreso="${progreso}">⭐</div>
+        <div class="etapa-content">
+          <div class="etapa-badge">Tu hijo está aquí · Faltan ${tiempoRestante} para la siguiente etapa</div>
+          <div class="etapa-nombre">${e.nombre}</div>
+          <div class="etapa-monto etapa-monto-actual">${fmt(monto)}</div>
+          <div class="etapa-desc" style="font-size:0.88rem;color:var(--mid);">Con ${fmt(monto)} acumulado al terminar esta etapa, el siguiente paso se vive sin presión.</div>
+        </div>
+      </div>`);
+
+    } else {
+      const aniosHastaInicio = e.edadInicio - edadHijoDecimal;
+      const monto = calcularMonto(semanal, rendSem, aniosHastaInicio);
+      const urgencia = aniosHastaInicio <= 3 ? '⚠️ ' : '';
+      const anosEnt = Math.floor(aniosHastaInicio);
+      const mesesR = Math.round((aniosHastaInicio - anosEnt)*12);
+      let tiempoRestante = anosEnt===0 ? mesesR+' mes'+(mesesR!==1?'es':'') : mesesR===0 ? anosEnt+' año'+(anosEnt!==1?'s':'') : anosEnt+' año'+(anosEnt!==1?'s':'')+' y '+mesesR+' mes'+(mesesR!==1?'es':'');
+      const dotClass = (e.dot + (esFinal ? ' etapa-dot-final' : '')).trim();
+      const descripcion = e.desc(aniosHastaInicio);
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot ${dotClass}"></div>
+        <div class="etapa-content">
+          <div class="etapa-nombre">${urgencia}${e.nombre}</div>
+          <div class="etapa-tiempo">Empieza en ${tiempoRestante}</div>
+          <div class="etapa-monto ${esFinal ? 'etapa-monto-final' : ''}">${fmt(monto)}</div>
+          <div class="etapa-desc">${descripcion}</div>
+        </div>
+      </div>`);
+    }
+  });
+
+  // Posicionar estrella proporcionalmente en la línea
+  requestAnimationFrame(() => {
+    const estrella = document.getElementById('estrella');
+    const etapaActual = document.getElementById('etapaActual');
+    if(estrella && etapaActual){
+      const progreso = parseFloat(estrella.dataset.progreso);
+      const h = etapaActual.getBoundingClientRect().height;
+      const topPx = progreso * h;
+      estrella.style.top = Math.max(0, topPx - 16) + 'px';
+    }
+  });
+}
+
+calcular();
+</script>
+</body>
+</html>
