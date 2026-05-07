@@ -367,7 +367,7 @@
   <p class="cta-sub">Empieza con el cuestionario de perfil de riesgo — gratuito, 3 minutos. Me pongo en contacto contigo personalmente.</p>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
     <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="cta-btn">✦ Comenzar cuestionario ✦</a>
-    <a href="https://instagram.com/salvadorfinanciero" target="_blank" class="cta-btn" style="background:transparent;color:var(--fern);border-color:var(--fern);">✦ Escribir a Salvador ✦</a>
+    <a href="https://ig.me/m/salvadorfinanciero" target="_blank" class="cta-btn" style="background:transparent;color:var(--fern);border-color:var(--fern);">✦ Mandar mensaje a @salvadorfinanciero ✦</a>
   </div>
 </div>
 
@@ -390,6 +390,7 @@
 <script>
 let simuladorUsado = false;
 let aportacionMovida = false;
+let edadMovida = false;
 
 function syncEdad(source){
   if(source === 1){
@@ -400,6 +401,7 @@ function syncEdad(source){
     document.getElementById('sliderMesesHijo').value = document.getElementById('sliderMesesHijo2').value;
   }
   simuladorUsado = true;
+  edadMovida = true;
   const btn = document.getElementById('floatBtn');
   if(btn){ btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
   calcular();
@@ -497,8 +499,8 @@ function calcular(){
 
   const tl = document.getElementById('etapasTimeline');
   tl.innerHTML = '';
-  if(!aportacionMovida){
-    tl.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🔒</div><div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:var(--forest);letter-spacing:0.06em;margin-bottom:8px;">Mueve la aportación semanal</div><p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1rem;color:var(--mid);">Define cuánto puedes aportar y descubre cuánto tendrá tu hijo en cada etapa de su vida.</p></div>';
+  if(!aportacionMovida || !edadMovida){
+    tl.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🔒</div><div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:var(--forest);letter-spacing:0.06em;margin-bottom:8px;">Ajusta los dos parámetros</div><p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1rem;color:var(--mid);">Mueve la edad de tu hijo y la aportación semanal para descubrir cuánto tendrá en cada etapa de su vida.</p></div>';
     return;
   }
 
