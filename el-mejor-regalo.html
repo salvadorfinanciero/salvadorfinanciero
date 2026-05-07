@@ -220,7 +220,7 @@
       </div>
     </div>
 
-    <a href="#simulador" class="hero-cta" style="margin-top:32px;">✦ Ver el simulador ✦</a>
+    <a href="#calc-section-anchor" class="hero-cta" style="margin-top:32px;">✦ Ver el simulador ✦</a>
   </div>
 </div>
 
@@ -243,7 +243,7 @@
 </div>
 
 <!-- CALCULADORA -->
-<div class="calc-section" id="simulador">
+<div class="calc-section" id="calc-section-anchor">
   <div class="calc-inner">
     <div>
       <div class="calc-label-top">Simulador</div>
@@ -372,7 +372,7 @@
 </div>
 
 <!-- BOTÓN FLOTANTE -->
-<div id="floatBtn" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;background:var(--forest);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:16px 20px;border:2px solid var(--fern);box-shadow:4px 4px 0 var(--sage);cursor:pointer;white-space:nowrap;transition:opacity .4s;border-radius:50px;text-align:center;">
+<div id="floatBtn" onclick="document.getElementById('calc-section-anchor').scrollIntoView({behavior:'smooth'})" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;background:var(--forest);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:16px 20px;border:2px solid var(--fern);box-shadow:4px 4px 0 var(--sage);cursor:pointer;white-space:nowrap;transition:opacity .4s;border-radius:50px;text-align:center;">
   <span id="floatBtnText">⭐ &nbsp;Mueve el simulador</span>
 </div>
 
@@ -577,7 +577,9 @@ function calcular(){
 }
 
 calcular();
-window.scrollTo(0,0);
+// Force page to top on load, prevent anchor scroll
+if(window.location.hash) history.replaceState(null, null, ' ');
+window.addEventListener('load', () => { setTimeout(() => window.scrollTo(0,0), 50); });
 </script>
 </body>
 </html>
