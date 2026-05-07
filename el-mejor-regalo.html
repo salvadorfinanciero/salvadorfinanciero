@@ -269,14 +269,14 @@
     <div>
       <div class="calc-controls">
         <div class="ctrl-group">
-          <div class="ctrl-label">Aportación semanal <span class="ctrl-value" id="labelSemanal">$300</span></div>
-          <input type="range" min="100" max="10000" step="50" value="300" id="sliderSemanal" oninput="aportacionMovida=true;calcular()">
-          <div class="ctrl-range-labels"><span>$100</span><span>$10,000</span></div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--sage);margin-top:8px;">≈ al mes serían: <span id="labelMensual" style="font-size:1.4rem;">$1,300</span></div>
+          <div class="ctrl-label">Aportación semanal <span class="ctrl-value" id="labelSemanal">$0 MXN</span></div>
+          <input type="range" min="0" max="10000" step="50" value="0" id="sliderSemanal" oninput="aportacionMovida=true;document.getElementById('semaналHint') && (document.getElementById('semaналHint').style.display='none');calcular()">
+          <div class="ctrl-range-labels"><span>$0</span><span>$10,000</span></div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--sage);margin-top:8px;" id="mensualWrap">≈ al mes serían: <span id="labelMensual" style="font-size:1.4rem;">$0 MXN</span></div><div id="semaналHint" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);margin-top:6px;display:flex;align-items:center;gap:6px;"><span>←</span> Mueve este valor para ver los resultados</div>
         </div>
         <div class="ctrl-group">
           <div class="ctrl-label">Rendimiento anual estimado <span class="ctrl-value" id="labelRend">8%</span></div>
-          <input type="range" min="3" max="25" step="0.5" value="7" id="sliderRend" oninput="calcular()">
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sliderRend" oninput="calcular()">
           <div class="ctrl-range-labels"><span>3%</span><span>25%</span></div>
         </div>
       </div>
@@ -480,9 +480,13 @@ function calcular(){
   const rendAnual = parseFloat(document.getElementById('sliderRend').value)/100;
   const rendSem = Math.pow(1+rendAnual, 1/52)-1;
   const mensual = semanal * 4;
+  const hint = document.getElementById("semaналHint");
+  if(hint) hint.style.display = semanal > 0 ? "none" : "flex";
 
-  document.getElementById('labelSemanal').textContent = '$'+semanal.toLocaleString('es-MX');
-  document.getElementById('labelMensual').textContent = '$'+mensual.toLocaleString('es-MX');
+  document.getElementById('labelSemanal').textContent = semanal === 0 ? '$0 MXN' : '$'+semanal.toLocaleString('es-MX')+' MXN';
+  const mensualWrapEl = document.getElementById('mensualWrap');
+if(mensualWrapEl) mensualWrapEl.style.display = semanal === 0 ? 'none' : 'block';
+document.getElementById('labelMensual').textContent = '$'+mensual.toLocaleString('es-MX')+' MXN';
   document.getElementById('labelRend').textContent = parseFloat(document.getElementById('sliderRend').value)+'%';
 
   const aniosHastaUniv = Math.max(0, 18 - edadHijoDecimal);
@@ -576,7 +580,11 @@ function calcular(){
   });
 }
 
-calcular();
+// Set initial labels to 0 without calling calcular
+document.getElementById("labelSemanal").textContent = "$0 MXN";
+document.getElementById("labelMensual").textContent = "$0 MXN";
+const mw = document.getElementById("mensualWrap"); if(mw) mw.style.display = "none";
+document.getElementById("labelRend").textContent = "8%";
 // Force page to top on load, prevent anchor scroll
 if(window.location.hash) history.replaceState(null, null, ' ');
 window.addEventListener('load', () => { setTimeout(() => window.scrollTo(0,0), 50); });
