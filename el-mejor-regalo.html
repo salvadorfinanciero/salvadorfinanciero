@@ -13,10 +13,10 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{background:var(--cream);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
+  body{background:var(--forest);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
 
   /* NAV */
-  nav{position:sticky;top:0;z-index:100;background:var(--forest);padding:16px 56px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--sage);}
+  nav{position:sticky;top:0;z-index:100;background:var(--forest);padding:16px 56px;display:flex;align-items:center;justify-content:center;border-bottom:3px solid var(--sage);}
   .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-brand span{color:var(--fern);}
   .nav-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;transition:color .2s;}
@@ -195,7 +195,6 @@
 
 <nav>
   <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-brand">Salvador <span>Financiero</span></a>
-  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero" class="nav-back">← Inicio</a>
 </nav>
 
 <!-- HERO -->
@@ -208,7 +207,7 @@
 
     <!-- EDAD EN EL HERO -->
     <div class="hero-edad-wrap">
-      <div class="hero-edad-label">¿Cuántos años tiene tu hijo? <span id="labelEdad" class="hero-edad-val">Recién nacido</span></div>
+      <div class="hero-edad-label">¿Cuántos años tiene tu hijo? <span id="labelEdad" class="hero-edad-val"></span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
         <div>
           <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo">0</span></div>
@@ -254,7 +253,7 @@
 
       <!-- EDAD REPETIDA EN SIMULADOR -->
       <div class="hero-edad-wrap" style="margin-top:24px;">
-        <div class="hero-edad-label" id="calcEdadLabel">¿Cuántos años tiene? <span id="labelEdad2" class="hero-edad-val">Recién nacido</span></div>
+        <div class="hero-edad-label" id="calcEdadLabel">¿Cuántos años tiene? <span id="labelEdad2" class="hero-edad-val"></span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
           <div>
             <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo2">0</span></div>
@@ -271,13 +270,13 @@
       <div class="calc-controls">
         <div class="ctrl-group">
           <div class="ctrl-label">Aportación semanal <span class="ctrl-value" id="labelSemanal">$300</span></div>
-          <input type="range" min="100" max="10000" step="50" value="300" id="sliderSemanal" oninput="calcular()">
+          <input type="range" min="100" max="10000" step="50" value="300" id="sliderSemanal" oninput="aportacionMovida=true;calcular()">
           <div class="ctrl-range-labels"><span>$100</span><span>$10,000</span></div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);margin-top:6px;">≈ mensual: <span id="labelMensual">$1,300</span></div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--sage);margin-top:8px;">≈ al mes serían: <span id="labelMensual" style="font-size:1.4rem;">$1,300</span></div>
         </div>
         <div class="ctrl-group">
           <div class="ctrl-label">Rendimiento anual estimado <span class="ctrl-value" id="labelRend">8%</span></div>
-          <input type="range" min="3" max="25" step="0.5" value="8" id="sliderRend" oninput="calcular()">
+          <input type="range" min="3" max="25" step="0.5" value="7" id="sliderRend" oninput="calcular()">
           <div class="ctrl-range-labels"><span>3%</span><span>25%</span></div>
         </div>
       </div>
@@ -366,12 +365,15 @@
   <div id="ctaEmoji" style="font-size:4.5rem;margin-bottom:16px;line-height:1;">🍼</div>
   <h2 class="cta-title">Dale a tu hijo<br><span>el regalo del tiempo.</span></h2>
   <p class="cta-sub">Empieza con el cuestionario de perfil de riesgo — gratuito, 3 minutos. Me pongo en contacto contigo personalmente.</p>
-  <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="cta-btn">✦ Comenzar cuestionario ✦</a>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://salvadorfinanciero.github.io/salvadorfinanciero/perfil-riesgo.html" target="_blank" class="cta-btn">✦ Comenzar cuestionario ✦</a>
+    <a href="https://instagram.com/salvadorfinanciero" target="_blank" class="cta-btn" style="background:transparent;color:var(--fern);border-color:var(--fern);">✦ Escribir a Salvador ✦</a>
+  </div>
 </div>
 
 <!-- BOTÓN FLOTANTE -->
 <div id="floatBtn" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;background:var(--forest);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:16px 20px;border:2px solid var(--fern);box-shadow:4px 4px 0 var(--sage);cursor:pointer;white-space:nowrap;transition:opacity .4s;border-radius:50px;text-align:center;">
-  <span id="floatBtnText">🍼 &nbsp;Mueve el simulador</span>
+  <span id="floatBtnText">⭐ &nbsp;Mueve el simulador</span>
 </div>
 
 <footer>
@@ -387,6 +389,7 @@
 
 <script>
 let simuladorUsado = false;
+let aportacionMovida = false;
 
 function syncEdad(source){
   if(source === 1){
@@ -442,10 +445,12 @@ function calcular(){
   document.getElementById('labelMesesHijo2').textContent = mesesHijo;
   document.getElementById('mesesWrap2').style.display = aniosHijo <= 3 ? 'block' : 'none';
   let edadLabel = '';
-  if(aniosHijo === 0 && mesesHijo === 0) edadLabel = 'Recién nacido';
-  else if(aniosHijo === 0) edadLabel = mesesHijo+' mes'+(mesesHijo>1?'es':'');
-  else if(mesesHijo === 0) edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'');
-  else edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'')+' y '+mesesHijo+' mes'+(mesesHijo>1?'es':'');
+  if(simuladorUsado){
+    if(aniosHijo === 0 && mesesHijo === 0) edadLabel = 'Recién nacido';
+    else if(aniosHijo === 0) edadLabel = mesesHijo+' mes'+(mesesHijo>1?'es':'');
+    else if(mesesHijo === 0) edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'');
+    else edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'')+' y '+mesesHijo+' mes'+(mesesHijo>1?'es':'');
+  }
   document.getElementById('labelEdad').textContent = edadLabel;
   if(document.getElementById('labelEdad2')) document.getElementById('labelEdad2').textContent = edadLabel;
 
@@ -472,7 +477,7 @@ function calcular(){
   const semanal = parseFloat(document.getElementById('sliderSemanal').value)||300;
   const rendAnual = parseFloat(document.getElementById('sliderRend').value)/100;
   const rendSem = Math.pow(1+rendAnual, 1/52)-1;
-  const mensual = Math.round(semanal * 52 / 12);
+  const mensual = semanal * 4;
 
   document.getElementById('labelSemanal').textContent = '$'+semanal.toLocaleString('es-MX');
   document.getElementById('labelMensual').textContent = '$'+mensual.toLocaleString('es-MX');
@@ -492,6 +497,10 @@ function calcular(){
 
   const tl = document.getElementById('etapasTimeline');
   tl.innerHTML = '';
+  if(!aportacionMovida){
+    tl.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🔒</div><div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:var(--forest);letter-spacing:0.06em;margin-bottom:8px;">Mueve la aportación semanal</div><p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1rem;color:var(--mid);">Define cuánto puedes aportar y descubre cuánto tendrá tu hijo en cada etapa de su vida.</p></div>';
+    return;
+  }
 
   ETAPAS.forEach((e, idx) => {
     const esFinal = idx === ETAPAS.length - 1;
@@ -566,6 +575,7 @@ function calcular(){
 }
 
 calcular();
+window.scrollTo(0,0);
 </script>
 </body>
 </html>
