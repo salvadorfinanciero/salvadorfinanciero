@@ -25,12 +25,15 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .btn-pdf:hover{background:var(--fern);color:var(--forest);}
 
 /* HERO */
-.hero{background:var(--forest);padding:48px 40px 40px;border-bottom:3px solid var(--sage);}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);color:var(--white);letter-spacing:0.04em;line-height:0.88;margin-bottom:28px;}
+.hero{background:var(--forest);padding:36px 40px 36px;border-bottom:3px solid var(--sage);}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);color:var(--white);letter-spacing:0.04em;line-height:0.88;margin-bottom:22px;}
 .hero h1 span{color:var(--fern);}
-.hero-fields{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end;}
-.hf label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;}
-.hf input,.hf select{background:rgba(255,255,255,0.08);border:none;border-bottom:2px solid var(--fern);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;padding:6px 10px;outline:none;min-width:160px;border-radius:0;}
+.hero-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px 20px;display:flex;gap:0;overflow:hidden;}
+.hf{flex:1;padding:0 16px;border-right:1px solid rgba(255,255,255,0.1);}
+.hf:first-child{padding-left:0;}
+.hf:last-child{border-right:none;}
+.hf label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;}
+.hf input,.hf select{background:transparent;border:none;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.05em;padding:0;outline:none;width:100%;border-radius:0;}
 .hf select{cursor:pointer;appearance:none;}
 .hf select option{background:var(--forest);font-size:1rem;}
 .hf input::placeholder{color:rgba(255,255,255,0.2);}
@@ -210,13 +213,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--fore
 .chart-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
 .chart-hd{background:var(--forest);padding:16px 24px;}
 .chart-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:var(--white);}
-.chart-body{padding:36px 28px;display:flex;flex-direction:column;align-items:center;gap:28px;}
-.chart-wrap{position:relative;width:280px;height:280px;}
+.chart-body{padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.chart-wrap{position:relative;width:260px;height:260px;}
 .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
 .chart-center-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--forest);line-height:1;}
 .chart-center-lbl{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-top:2px;}
-.chart-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 20px;width:100%;}
-.legend-item{display:flex;align-items:center;gap:8px;}
+.chart-legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;width:100%;}
+.legend-item{display:flex;align-items:flex-start;gap:8px;}
 .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
 .legend-name{font-size:0.68rem;color:var(--mid);}
 .legend-val{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--forest);}
@@ -242,30 +245,32 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--fore
 .res-hint{font-size:0.58rem;color:rgba(255,255,255,0.3);margin-top:2px;}
 .res-wm{position:absolute;right:16px;bottom:6px;font-size:0.45rem;letter-spacing:0.12em;color:rgba(255,255,255,0.08);pointer-events:none;user-select:none;}
 
-/* FOOTER */
-footer{background:var(--forest);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--pine);flex-wrap:wrap;gap:12px;}
+/* FOOTER — siempre verde, nunca hereda color */
+footer{background:var(--forest) !important;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--pine);flex-wrap:wrap;gap:12px;}
 .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
 .flogo span{color:var(--fern);}
 .ftext{font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(10,25,12,0.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;}
-.modal-box{background:var(--white);max-width:520px;width:100%;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
-.modal-hd{background:var(--forest);padding:28px 30px 22px;position:relative;}
-.modal-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--white);margin-bottom:8px;}
+/* MODAL — adaptado a móvil */
+.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(10,25,12,0.92);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;padding:0;}
+@media(min-width:600px){.modal-overlay{align-items:center;padding:24px;}}
+.modal-box{background:var(--white);max-width:520px;width:100%;border-radius:20px 20px 0 0;overflow:hidden;box-shadow:0 -8px 40px rgba(0,0,0,0.3);max-height:92vh;overflow-y:auto;}
+@media(min-width:600px){.modal-box{border-radius:20px;max-height:none;}}
+.modal-hd{background:var(--forest);padding:22px 24px 18px;position:relative;}
+.modal-logo{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--white);margin-bottom:6px;}
 .modal-logo span{color:var(--fern);}
-.modal-ttl{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.05em;color:var(--white);line-height:0.9;}
+.modal-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.05em;color:var(--white);line-height:0.9;}
 .modal-ttl span{color:var(--fern);}
-.modal-x{position:absolute;top:18px;right:18px;width:32px;height:32px;background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.modal-x{position:absolute;top:16px;right:16px;width:32px;height:32px;background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;}
 .modal-x:hover{background:rgba(255,255,255,0.2);color:var(--white);}
-.modal-body{padding:24px 30px;}
-.modal-step{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
-.modal-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--sage);line-height:1;flex-shrink:0;width:24px;}
-.modal-step-text{font-size:0.74rem;letter-spacing:0.03em;color:var(--mid);line-height:1.75;}
+.modal-body{padding:20px 24px;}
+.modal-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.modal-num{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--sage);line-height:1;flex-shrink:0;width:22px;}
+.modal-step-text{font-size:0.78rem;letter-spacing:0.02em;color:var(--mid);line-height:1.7;}
 .modal-step-text strong{color:var(--forest);}
-.modal-ft{padding:20px 30px 24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:12px;}
-.modal-hint{font-size:0.62rem;letter-spacing:0.06em;color:var(--soft);}
-.modal-btn{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 32px;background:var(--sage);color:var(--white);border:none;cursor:pointer;border-radius:8px;transition:background .2s;}
+.modal-ft{padding:16px 24px 20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.modal-hint{font-size:0.6rem;letter-spacing:0.06em;color:var(--soft);}
+.modal-btn{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 28px;background:var(--sage);color:var(--white);border:none;cursor:pointer;border-radius:8px;transition:background .2s;}
 .modal-btn:hover{background:var(--forest);}
 
 /* PRINT */
@@ -288,15 +293,19 @@ footer{background:var(--forest);padding:16px 40px;display:flex;align-items:cente
 @media(max-width:1100px){.grid3{grid-template-columns:1fr 1fr;}.meta-kpis{grid-template-columns:1fr 1fr;}.esc-kpis{grid-template-columns:1fr 1fr;}.chart-legend{grid-template-columns:1fr 1fr;}}
 @media(max-width:768px){
   .grid3{grid-template-columns:1fr;}
-  nav,.hero,.banner,.main,footer{padding-left:20px;padding-right:20px;}
-  .banner{margin-left:20px;margin-right:20px;}
-  .resumen{grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px;}
+  nav,.hero,.banner,.main,footer{padding-left:16px;padding-right:16px;}
+  .banner{margin-left:16px;margin-right:16px;}
+  .resumen{grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px;}
   .res-val{font-size:1.4rem;}.res-hint{display:none;}
   .donde-grid{grid-template-columns:1fr;}
   .donde-opt{border-right:none !important;}
   .donde-opt:nth-child(odd){border-right:none;}
-  .chart-wrap{width:240px;height:240px;}
+  .chart-wrap{width:220px;height:220px;}
   .chart-legend{grid-template-columns:1fr 1fr;}
+  .hero-card{flex-direction:column;gap:0;padding:14px 16px;}
+  .hf{padding:10px 0;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .hf:last-child{border-bottom:none;}
+  .hf input,.hf select{font-size:1.3rem !important;}
   input,select{font-size:16px !important;}
 }
 @media(max-width:480px){
@@ -343,7 +352,7 @@ footer{background:var(--forest);padding:16px 40px;display:flex;align-items:cente
 
 <div class="hero">
   <h1>Fondo de<br><span>Emergencia</span></h1>
-  <div class="hero-fields">
+  <div class="hero-card">
     <div class="hf"><label>Nombre</label><input type="text" id="nombre" placeholder="Tu nombre" autocomplete="off"></div>
     <div class="hf">
       <label>Año</label>
@@ -540,7 +549,7 @@ footer{background:var(--forest);padding:16px 40px;display:flex;align-items:cente
     <div class="chart-hd"><div class="chart-ttl">Distribución de Gastos Esenciales</div></div>
     <div class="chart-body">
       <div class="chart-wrap">
-        <canvas id="donutChart" width="280" height="280"></canvas>
+        <canvas id="donutChart" width="260" height="260"></canvas>
         <div class="chart-center">
           <div class="chart-center-val" id="donut-center">$0</div>
           <div class="chart-center-lbl">total / mes</div>
