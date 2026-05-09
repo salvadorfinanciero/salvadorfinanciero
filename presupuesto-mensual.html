@@ -499,42 +499,123 @@ const parse = s => { const n = parseFloat((s||'').replace(/[$,\s]/g,'')); return
     input.setSelectionRange(pos + (newLen - oldLen), pos + (newLen - oldLen));
   }
 
+// Estilos para botón agregar y eliminar filas
+(function(){
+  var s=document.createElement('style');
+  s.textContent=`
+    .btn-add-row{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(90,122,74,0.04);border:none;border-top:1px dashed rgba(90,122,74,0.3);font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.06em;color:var(--sage);cursor:pointer;width:100%;text-align:left;transition:background .15s;}
+    .btn-add-row:hover{background:rgba(90,122,74,0.1);}
+    .btn-add-icon{width:18px;height:18px;border:1.5px solid var(--sage);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;}
+    .row-remove{width:28px;height:28px;background:none;border:none;color:#ccc;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .15s;padding:0;}
+    .row-remove:hover{color:#e07070;}
+    .cat-row.custom-row{grid-template-columns:1fr 100px 100px 28px;}
+  `;
+  document.head.appendChild(s);
+})();
+
+// Contador global de filas custom por categoría
+var customCounts = {};
+
 function buildCats(){
-  document.getElementById('cats-grid').innerHTML = CATS.map(c => `
-    <div class="cat-card">
-      <div class="cat-header" style="background:${c.color};">
-        <div class="cat-title">${c.nombre}</div>
-        <div class="cat-col-lbl">Presupuestado</div>
-        <div class="cat-col-lbl">Gastado</div>
-      </div>
-      ${c.items.map((item,i) => `
-        <div class="cat-row">
-          ${item
-            ? `<div class="row-lbl">${item}</div>`
-            : `<input type="text" class="row-lbl-input" placeholder="Otro..." id="lbl${c.id}_${i}" autocomplete="off" spellcheck="false" oninput="updateDonut()">`
-          }
-          <input type="text" placeholder="$0" inputmode="numeric" id="p${c.id}_${i}" oninput="recalcularCat(${c.id})">
-          <input type="text" placeholder="$0" inputmode="numeric" id="g${c.id}_${i}" oninput="recalcularCat(${c.id})">
-        </div>
-      `).join('')}
-      <div class="cat-total">
-        <div class="total-lbl">Total</div>
-        <div class="total-val" id="tp${c.id}">—</div>
-        <div class="total-val" id="tg${c.id}">—</div>
-      </div>
-    </div>
-  `).join('');
+  var grid = document.getElementById('cats-grid');
+  grid.innerHTML = '';
+  CATS.forEach(function(c){
+    customCounts[c.id] = 0;
+    var card = document.createElement('div');
+    card.className = 'cat-card';
+    card.id = 'cat-card-'+c.id;
+
+    // Header
+    var hdr = document.createElement('div');
+    hdr.className = 'cat-header';
+    hdr.style.background = c.color;
+    hdr.innerHTML = '<div class="cat-title">'+c.nombre+'</div>'
+      +'<div class="cat-col-lbl">Presupuestado</div>'
+      +'<div class="cat-col-lbl">Gastado</div>';
+    card.appendChild(hdr);
+
+    // Filas fijas
+    var rowsContainer = document.createElement('div');
+    rowsContainer.id = 'rows-'+c.id;
+    c.items.forEach(function(item, i){
+      if(item === '') return; // las vacías se ignoran — usaremos el botón +
+      var row = document.createElement('div');
+      row.className = 'cat-row';
+      row.innerHTML = '<div class="row-lbl">'+item+'</div>'
+        +'<input type="text" placeholder="$0" inputmode="numeric" id="p'+c.id+'_f'+i+'" oninput="recalcularCat('+c.id+')">'
+        +'<input type="text" placeholder="$0" inputmode="numeric" id="g'+c.id+'_f'+i+'" oninput="recalcularCat('+c.id+')">';
+      rowsContainer.appendChild(row);
+    });
+    card.appendChild(rowsContainer);
+
+    // Botón agregar fila
+    var btnAdd = document.createElement('button');
+    btnAdd.className = 'btn-add-row';
+    btnAdd.innerHTML = '<div class="btn-add-icon">+</div> Agregar otro';
+    btnAdd.addEventListener('click', function(){ addCustomRow(c.id); });
+    card.appendChild(btnAdd);
+
+    // Total
+    var tot = document.createElement('div');
+    tot.className = 'cat-total';
+    tot.innerHTML = '<div class="total-lbl">Total</div>'
+      +'<div class="total-val" id="tp'+c.id+'">—</div>'
+      +'<div class="total-val" id="tg'+c.id+'">—</div>';
+    card.appendChild(tot);
+
+    grid.appendChild(card);
+  });
+
+  // Formatear inputs de dinero
+  document.querySelectorAll('.cat-row input[inputmode="numeric"]').forEach(function(inp){
+    attachFmt(inp);
+  });
+  // Marcas de agua
+  document.querySelectorAll('.cat-total').forEach(function(row){
+    var wm=document.createElement('div');wm.className='cat-wm';wm.textContent='Salvador Financiero';row.appendChild(wm);
+  });
+}
+
+function addCustomRow(catId){
+  var container = document.getElementById('rows-'+catId);
+  var count = ++customCounts[catId];
+  var uid = catId+'_c'+count;
+
+  var row = document.createElement('div');
+  row.className = 'cat-row custom-row';
+  row.id = 'customrow-'+uid;
+  row.style.gridTemplateColumns = '1fr 100px 100px 28px';
+  row.innerHTML = '<input type="text" class="row-lbl-input" placeholder="Otro..." id="lbl'+uid+'" autocomplete="off" spellcheck="false" oninput="updateDonut()">'
+    +'<input type="text" placeholder="$0" inputmode="numeric" id="p'+uid+'" oninput="recalcularCat('+catId+')">'
+    +'<input type="text" placeholder="$0" inputmode="numeric" id="g'+uid+'" oninput="recalcularCat('+catId+')">'
+    +'<button class="row-remove" title="Eliminar">×</button>';
+
+  row.querySelector('.row-remove').addEventListener('click', function(){
+    row.remove();
+    recalcularCat(catId);
+  });
+
+  // Insertar antes del botón +
+  var btnAdd = container.parentNode.querySelector('.btn-add-row');
+  container.parentNode.insertBefore(row, btnAdd);
+
+  // Formatear los nuevos inputs
+  row.querySelectorAll('input[inputmode="numeric"]').forEach(function(inp){
+    attachFmt(inp);
+  });
+
+  row.querySelector('.row-lbl-input').focus();
 }
 
 function recalcularCat(id){
-  const c = CATS.find(x=>x.id===id);
-  let sp=0, sg=0;
-  c.items.forEach((_,i)=>{
-    sp += parse(document.getElementById(`p${id}_${i}`)?.value);
-    sg += parse(document.getElementById(`g${id}_${i}`)?.value);
-  });
-  document.getElementById(`tp${id}`).textContent = sp>0 ? fmt(sp) : '—';
-  document.getElementById(`tg${id}`).textContent = sg>0 ? fmt(sg) : '—';
+  var card = document.getElementById('cat-card-'+id);
+  var inputs_p = card.querySelectorAll('input[id^="p'+id+'_"]');
+  var inputs_g = card.querySelectorAll('input[id^="g'+id+'_"]');
+  var sp=0, sg=0;
+  inputs_p.forEach(function(el){ sp+=parse(el.value); });
+  inputs_g.forEach(function(el){ sg+=parse(el.value); });
+  document.getElementById('tp'+id).textContent = sp>0?fmt(sp):'—';
+  document.getElementById('tg'+id).textContent = sg>0?fmt(sg):'—';
   recalcular();
 }
 
@@ -544,14 +625,24 @@ function recalcularCat(id){
   function updateDonut(){
     var labels=[], data=[], colors=[], details=[];
     CATS.forEach(function(c,idx){
+      var card=document.getElementById('cat-card-'+c.id);
+      if(!card) return;
       var sum=0, subs=[];
-      c.items.forEach(function(item,i){
-        var pEl=document.getElementById('p'+c.id+'_'+i);
-        var val=parse(pEl ? pEl.value : '');
+      // Filas fijas
+      card.querySelectorAll('input[id^="p'+c.id+'_f"]').forEach(function(inp){
+        var val=parse(inp.value);
         if(val>0){
-          var labelEl=document.getElementById('lbl'+c.id+'_'+i);
-          var nombre = item ? item : (labelEl && labelEl.value.trim() ? labelEl.value.trim() : 'Otro');
-          subs.push({ name: nombre, val: val });
+          var rowLbl=inp.closest('.cat-row').querySelector('.row-lbl');
+          subs.push({name:rowLbl?rowLbl.textContent:'Item',val:val});
+        }
+        sum+=val;
+      });
+      // Filas custom
+      card.querySelectorAll('input[id^="p'+c.id+'_c"]').forEach(function(inp){
+        var val=parse(inp.value);
+        if(val>0){
+          var lblInp=inp.closest('.cat-row').querySelector('.row-lbl-input');
+          subs.push({name:lblInp&&lblInp.value.trim()?lblInp.value.trim():'Otro',val:val});
         }
         sum+=val;
       });
@@ -631,12 +722,12 @@ function recalcularCat(id){
 
 
 function recalcular(){
-  let tp=0, tg=0;
-  CATS.forEach(c=>{
-    c.items.forEach((_,i)=>{
-      tp += parse(document.getElementById(`p${c.id}_${i}`)?.value);
-      tg += parse(document.getElementById(`g${c.id}_${i}`)?.value);
-    });
+  var tp=0, tg=0;
+  CATS.forEach(function(c){
+    var card=document.getElementById('cat-card-'+c.id);
+    if(!card) return;
+    card.querySelectorAll('input[id^="p'+c.id+'_"]').forEach(function(el){ tp+=parse(el.value); });
+    card.querySelectorAll('input[id^="g'+c.id+'_"]').forEach(function(el){ tg+=parse(el.value); });
   });
   document.getElementById('res-p').textContent = tp>0 ? fmt(tp) : '$0';
 
@@ -710,39 +801,6 @@ function recalcular(){
 }
 
 buildCats();
-
-  // Attach formatter only to money inputs (not label inputs)
-  document.querySelectorAll('.cat-row input[inputmode="numeric"]').forEach(function(inp){
-    attachFmt(inp);
-  });
-
-  // Marca de agua en fila Total — solo texto, sin columna extra
-  document.querySelectorAll('.cat-total').forEach(function(row) {
-    var wm = document.createElement('div');
-    wm.className = 'cat-wm';
-    wm.textContent = 'Salvador Financiero';
-    row.appendChild(wm);
-  });
-
-  // Marca de agua en resumen — pegada a la derecha abajo
-  var reswm = document.createElement('div');
-  reswm.className = 'resumen-wm';
-  reswm.textContent = 'Salvador Financiero';
-  document.querySelector('.resumen').appendChild(reswm);
-
-  // Marca de agua junto al label Total (no agrega columna extra)
-  document.querySelectorAll('.cat-total').forEach(function(row) {
-    var wm = document.createElement('div');
-    wm.className = 'cat-wm';
-    wm.textContent = 'Salvador Financiero';
-    row.appendChild(wm);
-  });
-
-  // Marca de agua grande en resumen — abajo a la derecha
-  var reswm = document.createElement('div');
-  reswm.className = 'resumen-wm';
-  reswm.textContent = 'Salvador Financiero';
-  document.querySelector('.resumen').appendChild(reswm);
 
   // Ocultar resumen sticky cuando el teclado está abierto en móvil
   if(window.visualViewport){
