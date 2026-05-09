@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="theme-color" content="#1c3a1e">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Fondo de Emergencia · Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -14,8 +16,8 @@
   --radius:16px;--radius-sm:10px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
-body{font-family:'DM Mono',monospace;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);background-size:36px 36px;color:var(--forest);font-size:15px;}
+html{scroll-behavior:smooth;overflow-x:hidden;background:var(--forest);}
+body{transition:overflow .1s;font-family:'DM Mono',monospace;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);background-size:36px 36px;color:var(--forest);font-size:15px;}
 
 /* NAV */
 nav{display:flex;justify-content:space-between;align-items:center;padding:14px 40px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;}
@@ -879,6 +881,8 @@ function validar(){
 function cerrar(){
   var m=document.getElementById('modal');
   m.style.transition='opacity .25s';m.style.opacity='0';m.style.pointerEvents='none';
+  document.body.style.overflow='';
+  document.documentElement.style.overflow='';
   setTimeout(function(){m.style.display='none';},260);
 }
 
@@ -911,6 +915,8 @@ for(var y=anioActual;y<=anioActual+10;y++){
 // Detectar mes actual
 document.getElementById('mes-inicio').value=new Date().getMonth();
 
+document.body.style.overflow='hidden';
+document.documentElement.style.overflow='hidden';
 document.getElementById('btn-x').addEventListener('click',cerrar);
 document.getElementById('btn-comenzar').addEventListener('click',cerrar);
 document.getElementById('btn-pdf').addEventListener('click',validar);
