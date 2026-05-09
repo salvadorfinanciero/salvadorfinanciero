@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Fondo de Emergencia · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --forest:#1c3a1e;--pine:#2d5a30;--sage:#5a7a4a;--fern:#a8c498;
+  --white:#fff;--cream:#f4f2ed;--rule:#e0dbd0;--mid:#444;--soft:#888;
+  --amber:#c47d0e;--red:#d96060;--green:#3d9160;
+  --radius:16px;--radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:'DM Mono',monospace;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);background-size:36px 36px;color:var(--forest);font-size:15px;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 40px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--fern);}
+.btn-pdf{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:9px 22px;background:transparent;color:var(--fern);border:1.5px solid var(--fern);cursor:pointer;border-radius:6px;transition:all .2s;}
+.btn-pdf:hover{background:var(--fern);color:var(--forest);}
+
+/* HERO */
+.hero{background:var(--forest);padding:48px 40px 40px;border-bottom:3px solid var(--sage);}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);color:var(--white);letter-spacing:0.04em;line-height:0.88;margin-bottom:28px;}
+.hero h1 span{color:var(--fern);}
+.hero-fields{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end;}
+.hf label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;}
+.hf input,.hf select{background:rgba(255,255,255,0.08);border:none;border-bottom:2px solid var(--fern);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;padding:6px 10px;outline:none;min-width:160px;border-radius:0;}
+.hf select{cursor:pointer;appearance:none;}
+.hf select option{background:var(--forest);font-size:1rem;}
+.hf input::placeholder{color:rgba(255,255,255,0.2);}
+
+/* BANNERS */
+.banner{margin:20px 40px 0;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;border-radius:var(--radius-sm);}
+.banner.light{background:var(--white);border:1px solid var(--rule);}
+.banner.dark{background:var(--forest);border:1px solid var(--pine);}
+.banner-icon{font-size:1.6rem;flex-shrink:0;line-height:1.2;}
+.banner-content{flex:1;}
+.banner-toggle{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px;}
+.banner-toggle strong{font-size:0.8rem;letter-spacing:0.04em;}
+.banner.light .banner-toggle strong{color:var(--forest);}
+.banner.dark .banner-toggle strong{color:var(--fern);}
+.toggle-btn{font-size:0.65rem;letter-spacing:0.1em;color:var(--sage);white-space:nowrap;padding:3px 10px;border:1px solid var(--sage);border-radius:4px;cursor:pointer;flex-shrink:0;}
+.banner-body{font-size:0.75rem;letter-spacing:0.03em;line-height:1.85;margin-top:10px;}
+.banner.light .banner-body{color:var(--mid);}
+.banner.dark .banner-body{color:rgba(255,255,255,0.75);}
+.banner-body strong{font-weight:500;}
+.banner.light .banner-body strong{color:var(--forest);}
+.banner.dark .banner-body strong{color:var(--fern);}
+.banner-link{color:var(--sage);text-decoration:none;border-bottom:1px solid var(--sage);}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#4a0f0f;color:var(--white);font-size:0.75rem;letter-spacing:0.06em;padding:12px 24px;border-left:4px solid var(--red);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;border-radius:4px;}
+.toast.show{opacity:1;}
+
+/* MAIN */
+.main{padding:32px 40px 52px;}
+
+/* MESES */
+.section-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;}
+.meses-selector{display:flex;gap:12px;margin-bottom:28px;}
+/* MESES — más grandes */
+.mes-btn{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.08em;padding:18px 20px;background:var(--white);border:1.5px solid var(--rule);color:var(--soft);cursor:pointer;transition:all .2s;flex:1;text-align:center;line-height:1;border-radius:var(--radius-sm);}
+.mes-btn:hover{border-color:var(--sage);color:var(--forest);}
+.mes-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);box-shadow:0 4px 16px rgba(28,58,30,0.25);}
+.mes-btn-sub{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);display:block;margin-top:6px;}
+.mes-btn.active .mes-btn-sub{color:var(--fern);}
+
+/* GRID 3 COLS */
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:20px;align-items:start;}
+
+/* SECCIÓN — títulos más grandes */
+.section{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;}
+.section-hd{padding:18px 20px 14px;border-bottom:2px solid var(--rule);background:rgba(28,58,30,0.02);}
+.section-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.08em;color:var(--forest);}
+.section-sub{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);margin-top:4px;}
+
+/* FILAS DE GASTOS — labels en verde, más contraste */
+.gasto-row{display:flex;align-items:center;border-bottom:1px solid var(--rule);}
+.gasto-row:nth-child(odd){background:rgba(90,122,74,0.03);}
+.gasto-lbl{font-size:0.78rem;color:var(--sage);padding:12px 14px;flex:1;letter-spacing:0.02em;font-weight:500;}
+.gasto-inp{border:none;border-left:1px solid var(--rule);padding:12px 12px;text-align:right;font-size:0.85rem;color:var(--forest);background:transparent;outline:none;width:110px;transition:background .15s;}
+.gasto-inp:focus{background:rgba(90,122,74,0.06);}
+.gasto-inp::placeholder{color:#ccc;}
+.gasto-lbl-inp{border:none;padding:12px 14px;font-size:0.75rem;color:var(--sage);background:transparent;outline:none;flex:1;border-right:1px solid var(--rule);}
+.gasto-lbl-inp::placeholder{color:#bbb;font-style:italic;}
+.gasto-remove{width:32px;height:32px;background:none;border:none;color:#ccc;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .15s;}
+.gasto-remove:hover{color:var(--red);}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 14px;background:rgba(28,58,30,0.04);border-top:2px solid var(--rule);}
+.total-lbl{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--forest);}
+.total-val{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--forest);}
+.btn-add{display:flex;align-items:center;gap:8px;padding:11px 14px;border-top:1px dashed rgba(90,122,74,0.3);background:rgba(90,122,74,0.03);border-bottom:none;border-left:none;border-right:none;font-size:0.72rem;letter-spacing:0.08em;color:var(--sage);cursor:pointer;width:100%;transition:background .15s;text-align:left;}
+.btn-add:hover{background:rgba(90,122,74,0.08);}
+.btn-add-icon{width:20px;height:20px;border:1.5px solid var(--sage);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
+
+/* GUIÑO INLINE — dentro del header */
+.guino-inline{margin-top:12px;border-top:1px dashed rgba(90,122,74,0.25);padding-top:10px;}
+.guino-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.guino-icon{font-size:1rem;flex-shrink:0;line-height:1;}
+.guino-text-short{font-size:0.7rem;color:var(--sage);letter-spacing:0.03em;flex:1;}
+.toggle-btn-sm{font-size:0.6rem;letter-spacing:0.08em;color:var(--sage);white-space:nowrap;padding:2px 8px;border:1px solid rgba(90,122,74,0.4);border-radius:4px;flex-shrink:0;}
+.guino-body{margin-top:8px;padding-top:8px;}
+.guino-text{font-size:0.7rem;letter-spacing:0.03em;color:var(--mid);line-height:1.75;}
+.guino-text strong{color:var(--forest);}
+.guino-text a{color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(90,122,74,0.3);}
+
+/* MARCA DE AGUA EN CHART */
+.chart-wm{position:absolute;bottom:50%;left:50%;transform:translate(-50%,50%);pointer-events:none;user-select:none;text-align:center;margin-top:8px;}
+.chart-watermark{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.18em;color:rgba(28,58,30,0.12);text-transform:uppercase;white-space:nowrap;margin-top:148px;display:block;}
+
+/* SLIDERS */
+.slider-block{padding:18px 20px;}
+.slider-block+.slider-block{border-top:1px solid var(--rule);}
+.slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+.slider-emoji{font-size:1.4rem;line-height:1;}
+.slider-lbl{font-size:0.72rem;color:var(--mid);letter-spacing:0.03em;display:flex;align-items:center;gap:8px;}
+.slider-big{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--forest);letter-spacing:0.02em;}
+.slider-note{font-size:0.62rem;color:var(--soft);margin-top:8px;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:rgba(90,122,74,0.15);border-radius:3px;outline:none;cursor:pointer;margin:8px 0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--forest);border-radius:50%;cursor:pointer;box-shadow:0 2px 8px rgba(28,58,30,0.3);}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--forest);border-radius:50%;cursor:pointer;border:none;}
+.txt-inp{border:1.5px solid var(--rule);padding:9px 12px;font-size:0.78rem;color:var(--forest);outline:none;width:100%;background:transparent;transition:border-color .15s;margin-top:8px;border-radius:var(--radius-sm);}
+.txt-inp:focus{border-color:var(--sage);}
+
+/* TASA */
+.tasa-block{padding:16px 20px;border-top:1px solid var(--rule);}
+.tasa-label{font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;}
+.tasa-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+.tasa-inp{font-size:0.95rem;color:var(--forest);border:1.5px solid var(--rule);padding:8px 14px;outline:none;width:80px;text-align:center;background:transparent;border-radius:var(--radius-sm);transition:border-color .15s;}
+.tasa-inp:focus{border-color:var(--sage);}
+.tasa-suf{font-size:0.75rem;color:var(--mid);}
+.tasa-note{font-size:0.65rem;color:var(--soft);line-height:1.8;}
+.rend-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule);}
+.rend-block{padding:14px 20px;}
+.rend-block:first-child{border-right:1px solid var(--rule);}
+.rend-block label{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:5px;}
+.rend-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--green);}
+.rend-hint{font-size:0.6rem;color:var(--soft);margin-top:3px;}
+
+/* DONDE */
+.donde-grid{display:grid;grid-template-columns:1fr 1fr;}
+.donde-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .15s;position:relative;}
+.donde-opt:nth-child(odd){border-right:1px solid var(--rule);}
+.donde-opt input[type=checkbox]{width:17px;height:17px;accent-color:var(--sage);cursor:pointer;flex-shrink:0;}
+.donde-logo-wrap{width:38px;height:38px;flex-shrink:0;border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:white;display:flex;align-items:center;justify-content:center;}
+.donde-logo-img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.donde-logo-fb{width:100%;height:100%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;color:var(--fern);}
+.donde-opt.checked{background:rgba(90,122,74,0.05);}
+.donde-opt.checked .donde-logo-wrap{border-color:var(--sage);}
+.donde-opt-name{font-size:0.75rem;color:var(--forest);font-weight:500;letter-spacing:0.02em;}
+.donde-opt-link{font-size:0.6rem;color:var(--soft);margin-top:2px;}
+.donde-opt-link a{color:var(--sage);text-decoration:none;}
+.donde-alerta{display:none;padding:12px 16px;background:rgba(196,125,14,0.07);border-top:1px solid rgba(196,125,14,0.2);}
+.donde-alerta.visible{display:block;}
+.donde-alerta p{font-size:0.68rem;color:#7a4a00;line-height:1.7;}
+.donde-nota{padding:12px 16px;border-top:1px solid var(--rule);background:rgba(90,122,74,0.03);}
+.donde-nota p{font-size:0.65rem;color:var(--soft);line-height:1.8;}
+.donde-nota strong{color:var(--forest);}
+
+/* META CARD */
+.meta-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.meta-hd{background:var(--forest);padding:18px 24px;}
+.meta-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);}
+.meta-kpis{display:grid;grid-template-columns:repeat(4,1fr);}
+.kpi{padding:22px 20px 16px;border-right:1px solid var(--rule);}
+.kpi:last-child{border-right:none;}
+.kpi label{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:8px;}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--forest);line-height:1;}
+.kpi-val.hi{color:var(--sage);}
+.kpi-val.danger{color:var(--red);}
+.kpi-val.ok{color:var(--green);}
+.kpi-hint{font-size:0.62rem;color:var(--soft);margin-top:5px;}
+
+/* PROGRESO */
+.prog-wrap{padding:20px 24px;border-top:1px solid var(--rule);}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);}
+.prog-pct{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--forest);}
+.prog-track{height:12px;background:rgba(90,122,74,0.1);overflow:hidden;margin-bottom:8px;border-radius:6px;}
+.prog-bar{height:100%;width:0%;transition:width .8s cubic-bezier(.4,0,.2,1),background .5s;border-radius:6px;}
+.prog-miles{display:flex;justify-content:space-between;}
+.prog-mile{font-size:0.58rem;color:var(--soft);}
+.formula-strip{padding:14px 24px;border-top:1px solid var(--rule);background:rgba(90,122,74,0.04);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.formula-eq{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--sage);letter-spacing:0.06em;white-space:nowrap;}
+.formula-txt{font-size:0.68rem;color:var(--mid);line-height:1.6;}
+.formula-txt strong{color:var(--forest);}
+
+/* ESCENARIO */
+.esc-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.esc-hd{background:var(--pine);padding:16px 24px;}
+.esc-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:var(--white);}
+.esc-sub{font-size:0.6rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-top:2px;}
+.esc-kpis{display:grid;grid-template-columns:repeat(3,1fr);}
+.esc-kpi{padding:20px;border-right:1px solid var(--rule);}
+.esc-kpi:last-child{border-right:none;}
+.esc-kpi label{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:8px;}
+.esc-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--forest);line-height:1;}
+.esc-val.green{color:var(--green);}
+.esc-hint{font-size:0.62rem;color:var(--soft);margin-top:5px;}
+.esc-nota{padding:14px 24px;border-top:1px solid var(--rule);background:rgba(45,90,48,0.04);}
+.esc-nota p{font-size:0.68rem;color:var(--mid);line-height:1.8;}
+.esc-nota strong{color:var(--forest);}
+
+/* CHART */
+.chart-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.chart-hd{background:var(--forest);padding:16px 24px;}
+.chart-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:var(--white);}
+.chart-body{padding:36px 28px;display:flex;flex-direction:column;align-items:center;gap:28px;}
+.chart-wrap{position:relative;width:280px;height:280px;}
+.chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.chart-center-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--forest);line-height:1;}
+.chart-center-lbl{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-top:2px;}
+.chart-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 20px;width:100%;}
+.legend-item{display:flex;align-items:center;gap:8px;}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.legend-name{font-size:0.68rem;color:var(--mid);}
+.legend-val{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--forest);}
+
+/* PROYECCIÓN */
+.proy-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;}
+.proy-hd{background:var(--forest);padding:16px 24px;}
+.proy-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:var(--white);}
+.proy-table{width:100%;border-collapse:collapse;}
+.proy-table th{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);padding:12px 18px;text-align:left;border-bottom:1.5px solid var(--rule);}
+.proy-table th:not(:first-child){text-align:right;}
+.proy-table td{font-size:0.72rem;color:var(--mid);padding:11px 18px;border-bottom:1px solid var(--rule);}
+.proy-table td:not(:first-child){text-align:right;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--forest);}
+.proy-table tr.reached td{background:rgba(61,145,96,0.06);}
+.proy-table tr.reached td:first-child{color:var(--green);}
+.proy-badge{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.65rem;padding:2px 8px;background:var(--green);color:var(--white);margin-left:8px;vertical-align:middle;border-radius:10px;}
+.proy-empty{text-align:center;color:var(--soft);padding:32px;font-size:0.72rem;}
+
+/* RESUMEN STICKY */
+.resumen{position:sticky;bottom:0;z-index:90;background:var(--forest);border-top:3px solid var(--sage);padding:16px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;box-shadow:0 -8px 32px rgba(28,58,30,0.2);transition:background .5s,border-color .5s;}
+.res-block label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:4px;}
+.res-val{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:var(--white);}
+.res-hint{font-size:0.58rem;color:rgba(255,255,255,0.3);margin-top:2px;}
+.res-wm{position:absolute;right:16px;bottom:6px;font-size:0.45rem;letter-spacing:0.12em;color:rgba(255,255,255,0.08);pointer-events:none;user-select:none;}
+
+/* FOOTER */
+footer{background:var(--forest);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--pine);flex-wrap:wrap;gap:12px;}
+.flogo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
+.flogo span{color:var(--fern);}
+.ftext{font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(10,25,12,0.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;}
+.modal-box{background:var(--white);max-width:520px;width:100%;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
+.modal-hd{background:var(--forest);padding:28px 30px 22px;position:relative;}
+.modal-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--white);margin-bottom:8px;}
+.modal-logo span{color:var(--fern);}
+.modal-ttl{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.05em;color:var(--white);line-height:0.9;}
+.modal-ttl span{color:var(--fern);}
+.modal-x{position:absolute;top:18px;right:18px;width:32px;height:32px;background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.modal-x:hover{background:rgba(255,255,255,0.2);color:var(--white);}
+.modal-body{padding:24px 30px;}
+.modal-step{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
+.modal-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--sage);line-height:1;flex-shrink:0;width:24px;}
+.modal-step-text{font-size:0.74rem;letter-spacing:0.03em;color:var(--mid);line-height:1.75;}
+.modal-step-text strong{color:var(--forest);}
+.modal-ft{padding:20px 30px 24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.modal-hint{font-size:0.62rem;letter-spacing:0.06em;color:var(--soft);}
+.modal-btn{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 32px;background:var(--sage);color:var(--white);border:none;cursor:pointer;border-radius:8px;transition:background .2s;}
+.modal-btn:hover{background:var(--forest);}
+
+/* PRINT */
+.print-header{display:none;}
+@media print{
+  .print-header{display:block !important;position:fixed;top:0;left:0;right:0;background:white;padding:6px 24px 8px;border-bottom:2px solid #1c3a1e;z-index:9999;display:flex;justify-content:space-between;align-items:center;}
+  .ph-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#1c3a1e;}
+  .ph-logo span{color:#5a7a4a;}
+  .ph-tag{font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;text-align:right;}
+  body{padding-top:40px !important;background:white;}
+  .banner,.btn-pdf,.modal-overlay,footer,.toast{display:none !important;}
+  nav{position:static !important;}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .resumen{-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static !important;box-shadow:none;}
+  .main{padding:12px 16px 16px;}
+  @page{margin:8mm;size:A4;}
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.grid3{grid-template-columns:1fr 1fr;}.meta-kpis{grid-template-columns:1fr 1fr;}.esc-kpis{grid-template-columns:1fr 1fr;}.chart-legend{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){
+  .grid3{grid-template-columns:1fr;}
+  nav,.hero,.banner,.main,footer{padding-left:20px;padding-right:20px;}
+  .banner{margin-left:20px;margin-right:20px;}
+  .resumen{grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px;}
+  .res-val{font-size:1.4rem;}.res-hint{display:none;}
+  .donde-grid{grid-template-columns:1fr;}
+  .donde-opt{border-right:none !important;}
+  .donde-opt:nth-child(odd){border-right:none;}
+  .chart-wrap{width:240px;height:240px;}
+  .chart-legend{grid-template-columns:1fr 1fr;}
+  input,select{font-size:16px !important;}
+}
+@media(max-width:480px){
+  .meta-kpis{grid-template-columns:1fr 1fr;}
+  .esc-kpis{grid-template-columns:1fr;}
+  .meses-selector{gap:8px;}
+  .chart-wrap{width:200px;height:200px;}
+  .chart-legend{grid-template-columns:1fr;}
+  .resumen{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="print-header"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tag">Fondo de Emergencia<br>@salvadorfinanciero</div></div>
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-logo">Salvador <span>Financiero</span></div>
+      <div class="modal-ttl">Fondo de<br><span>Emergencia</span></div>
+      <button class="modal-x" id="btn-x">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step"><div class="modal-num">1</div><div class="modal-step-text">Elige cuántos meses quieres cubrir: <strong>3 (mínimo)</strong>, <strong>6 (recomendado)</strong> o <strong>12 (blindaje total)</strong>.</div></div>
+      <div class="modal-step"><div class="modal-num">2</div><div class="modal-step-text">Llena tus <strong>gastos esenciales</strong> — solo lo que pagarías si perdieras tu ingreso. ¿No los tienes claros? Tómalos de tu <strong>Plantilla de Presupuesto Mensual</strong>.</div></div>
+      <div class="modal-step"><div class="modal-num">3</div><div class="modal-step-text">Indica <strong>cuánto tienes ahorrado hoy</strong> y cuánto puedes depositar cada mes — ambos van a la misma cuenta.</div></div>
+      <div class="modal-step"><div class="modal-num">4</div><div class="modal-step-text">Elige <strong>dónde guardarás tu fondo</strong> e ingresa la tasa de rendimiento para ver cuánto crece.</div></div>
+      <div class="modal-step"><div class="modal-num">5</div><div class="modal-step-text">Verás tu <strong>meta exacta</strong>, tu progreso y la <strong>fecha en que llegas</strong> mes a mes.</div></div>
+    </div>
+    <div class="modal-ft">
+      <span class="modal-hint">✦ @salvadorfinanciero</span>
+      <button class="modal-btn" id="btn-comenzar">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a class="nav-logo" href="#">Salvador <span>Financiero</span></a>
+  <button class="btn-pdf" id="btn-pdf">⬇ Descargar PDF</button>
+</nav>
+
+<div class="hero">
+  <h1>Fondo de<br><span>Emergencia</span></h1>
+  <div class="hero-fields">
+    <div class="hf"><label>Nombre</label><input type="text" id="nombre" placeholder="Tu nombre" autocomplete="off"></div>
+    <div class="hf">
+      <label>Año</label>
+      <select id="anio">
+        <option value="">Seleccionar año</option>
+      </select>
+    </div>
+    <div class="hf">
+      <label>Mes de inicio</label>
+      <select id="mes-inicio">
+        <option value="">Seleccionar mes</option>
+        <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option>
+        <option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option>
+        <option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option>
+        <option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="banner light" id="ban1">
+  <div class="banner-icon">🛡️</div>
+  <div class="banner-content">
+    <div class="banner-toggle">
+      <strong>¿Qué es el fondo de emergencia?</strong>
+      <span class="toggle-btn" id="ban1-btn">Ver más ▾</span>
+    </div>
+    <div class="banner-body" id="ban1-body" style="display:none;">
+      Dinero líquido para imprevistos: pérdida de empleo, gastos médicos, reparaciones urgentes. Solo incluye <strong>gastos esenciales</strong> — lo mínimo si un día dejas de tener ingresos.<br>
+      ¿Quieres saber exactamente a dónde va tu dinero? <a class="banner-link" href="presupuesto-mensual.html">Complementa con la Plantilla de Presupuesto Mensual →</a>
+    </div>
+  </div>
+</div>
+
+<div class="banner dark" id="ban2">
+  <div class="banner-icon">💡</div>
+  <div class="banner-content">
+    <div class="banner-toggle">
+      <strong>El dinero parado pierde valor.</strong>
+      <span class="toggle-btn" id="ban2-btn" style="border-color:rgba(168,196,152,0.4);color:rgba(168,196,152,0.7);">Ver menos ▴</span>
+    </div>
+    <div class="banner-body" id="ban2-body" style="display:block;">
+      Tu fondo no debe estar en una cuenta sin rendimiento ni en plazos fijos que no puedas tocar. Busca opciones con <strong>liquidez inmediata</strong> — retiro en cualquier momento — y que generen rendimiento por encima de la inflación.
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="section-label">¿Cuántos meses quieres cubrir?</div>
+  <div class="meses-selector">
+    <button class="mes-btn" data-meses="3">3<span class="mes-btn-sub">Mínimo</span></button>
+    <button class="mes-btn active" data-meses="6">6<span class="mes-btn-sub">Recomendado</span></button>
+    <button class="mes-btn" data-meses="12">12<span class="mes-btn-sub">Blindaje total</span></button>
+  </div>
+
+  <div class="grid3">
+
+    <!-- COL 1: GASTOS -->
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-ttl">Gastos Esenciales</div>
+        <div class="section-sub">Solo lo que no puedes dejar de pagar</div>
+        <div class="guino guino-inline" id="guino-gastos">
+          <div class="guino-toggle" id="guino-gastos-toggle">
+            <span class="guino-icon">📋</span>
+            <span class="guino-text-short">¿No tienes claros tus gastos?</span>
+            <span class="toggle-btn-sm" id="guino-gastos-btn">Ver más ▾</span>
+          </div>
+          <div class="guino-body" id="guino-gastos-body" style="display:none;">
+            <div class="guino-text">Si ya tienes tu <strong>Plantilla de Presupuesto Mensual de Salvador Financiero</strong>, <a href="presupuesto-mensual.html">toma los números de ahí →</a> Es la forma más rápida de conocer tus gastos reales y evitar que se te escape alguno.</div>
+          </div>
+        </div>
+      </div>
+      <div id="gastos-body"></div>
+      <button class="btn-add" id="btn-add-gasto">
+        <div class="btn-add-icon">+</div>
+        Agregar gasto esencial
+      </button>
+      <div class="total-row">
+        <span class="total-lbl">Total mensual</span>
+        <span class="total-val" id="total-gastos">$0</span>
+      </div>
+    </div>
+
+    <!-- COL 2: SITUACIÓN ACTUAL + TASA -->
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-ttl">Tu Situación Actual</div>
+        <div class="section-sub">¿Cuánto tienes y cuánto puedes separar?</div>
+      </div>
+      <div class="slider-block">
+        <div class="slider-top">
+          <span class="slider-lbl"><span class="slider-emoji">💰</span> Tengo ahorrado hoy</span>
+          <span class="slider-big" id="val-actual">$0</span>
+        </div>
+        <input type="range" id="slider-actual" min="0" max="200000" step="500" value="0">
+        <div class="slider-note">Mueve el control o escribe abajo</div>
+        <input type="text" class="txt-inp" id="input-actual" inputmode="numeric" placeholder="Escribe el monto exacto">
+      </div>
+      <div class="slider-block">
+        <div class="slider-top">
+          <span class="slider-lbl"><span class="slider-emoji">📅</span> Puedo depositar al mes</span>
+          <span class="slider-big" id="val-mensual">$0</span>
+        </div>
+        <input type="range" id="slider-mensual" min="0" max="20000" step="100" value="0">
+        <div class="slider-note">Se deposita en la cuenta que elijas</div>
+        <input type="text" class="txt-inp" id="input-mensual" inputmode="numeric" placeholder="Escribe el monto exacto">
+      </div>
+      <div class="tasa-block">
+        <div class="tasa-label">Tasa de rendimiento anual</div>
+        <div class="tasa-row">
+          <input type="text" class="tasa-inp" id="tasa" inputmode="numeric" placeholder="0.0">
+          <span class="tasa-suf">% anual</span>
+        </div>
+        <div class="tasa-note">Consulta la tasa vigente en el sitio que elegiste. Sin rendimiento deja en 0.</div>
+      </div>
+      <div class="rend-grid">
+        <div class="rend-block">
+          <label>Rendimiento / año (saldo)</label>
+          <div class="rend-val" id="rend-actual">$0</div>
+          <div class="rend-hint" id="rend-actual-hint">Ingresa ahorro y tasa</div>
+        </div>
+        <div class="rend-block">
+          <label>Rendimiento / año (aportaciones)</label>
+          <div class="rend-val" id="rend-aport">$0</div>
+          <div class="rend-hint" id="rend-aport-hint">Ingresa aportación y tasa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 3: DONDE -->
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-ttl">¿Dónde lo Guardarás?</div>
+        <div class="section-sub">Elige una opción con liquidez inmediata</div>
+        <div class="guino guino-inline" id="guino-donde">
+          <div class="guino-toggle" id="guino-donde-toggle">
+            <span class="guino-icon">💡</span>
+            <span class="guino-text-short">¿Por qué importa la liquidez inmediata?</span>
+            <span class="toggle-btn-sm" id="guino-donde-btn">Ver más ▾</span>
+          </div>
+          <div class="guino-body" id="guino-donde-body" style="display:none;">
+            <div class="guino-text">Tu fondo debe ser accesible en cualquier momento sin penalizaciones. Prioriza cuentas con <strong>retiro inmediato</strong> y rendimiento por encima de la inflación. Evita plazos forzosos — en una emergencia no puedes esperar.</div>
+          </div>
+        </div>
+      </div>
+      <div class="donde-grid" id="donde-opts"></div>
+      <div class="donde-alerta" id="donde-alerta">
+        <p>⚠ <strong>Atención:</strong> Esta opción puede tener plazos forzosos. Para un fondo de emergencia lo ideal es <strong>liquidez inmediata</strong> — retiro en cualquier momento.</p>
+      </div>
+      <div class="donde-nota">
+        <p>✦ Tasas cambian constantemente — consulta siempre la vigente.<br>✦ Prioriza: <strong>liquidez inmediata + rendimiento sobre inflación.</strong></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- META -->
+  <div class="meta-card" id="meta-card" style="display:none;">
+    <div class="meta-hd"><div class="meta-ttl">Tu Meta de Fondo de Emergencia</div></div>
+    <div class="meta-kpis">
+      <div class="kpi"><label>Meta total</label><div class="kpi-val hi" id="meta-total">$0</div><div class="kpi-hint" id="meta-hint">Para 6 meses de gastos</div></div>
+      <div class="kpi"><label>Ya tienes</label><div class="kpi-val" id="meta-tienes">$0</div><div class="kpi-hint" id="meta-pct-txt">0% de tu meta</div></div>
+      <div class="kpi" id="kpi-falta"><label>Te falta</label><div class="kpi-val danger" id="meta-falta">$0</div><div class="kpi-hint">Monto por acumular</div></div>
+      <div class="kpi"><label>Llegas en</label><div class="kpi-val" id="meta-tiempo">—</div><div class="kpi-hint" id="meta-fecha">Ingresa tus datos</div></div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-top"><span class="prog-lbl">Progreso hacia tu meta</span><span class="prog-pct" id="prog-pct">0%</span></div>
+      <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+      <div class="prog-miles"><span class="prog-mile">0%</span><span class="prog-mile">25%</span><span class="prog-mile">50%</span><span class="prog-mile">75%</span><span class="prog-mile">100%</span></div>
+    </div>
+    <div class="formula-strip">
+      <span class="formula-eq" id="formula-eq">$0 × 6 meses = $0</span>
+      <span class="formula-txt">Tu meta = <strong>gastos esenciales al mes × meses de cobertura</strong>. Cambia cualquier dato y se recalcula al instante.</span>
+    </div>
+  </div>
+
+  <!-- ESCENARIO (solo visible cuando hay tasa) -->
+  <div class="esc-card" id="esc-card" style="display:none;">
+    <div class="esc-hd">
+      <div class="esc-ttl">Escenario con Rendimiento</div>
+      <div class="esc-sub">Lo que acumularías si depositas y dejas crecer tu fondo</div>
+    </div>
+    <div class="esc-kpis">
+      <div class="esc-kpi"><label>Solo con lo que ya tienes</label><div class="esc-val green" id="esc-actual">$0</div><div class="esc-hint" id="esc-actual-hint">Sin aportar más</div></div>
+      <div class="esc-kpi"><label>Aportando cada mes, sin rendimiento</label><div class="esc-val" id="esc-sin">$0</div><div class="esc-hint" id="esc-sin-hint">Solo disciplina</div></div>
+      <div class="esc-kpi"><label>Aportando cada mes + rendimiento</label><div class="esc-val green" id="esc-con">$0</div><div class="esc-hint" id="esc-con-hint">Interés compuesto trabajando</div></div>
+    </div>
+    <div class="esc-nota"><p>💡 La diferencia entre sin y con rendimiento es lo que el <strong>interés compuesto trabaja por ti</strong>. Entre más temprano empieces y mejor tasa obtengas, mayor será esa diferencia.</p></div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-card">
+    <div class="chart-hd"><div class="chart-ttl">Distribución de Gastos Esenciales</div></div>
+    <div class="chart-body">
+      <div class="chart-wrap">
+        <canvas id="donutChart" width="280" height="280"></canvas>
+        <div class="chart-center">
+          <div class="chart-center-val" id="donut-center">$0</div>
+          <div class="chart-center-lbl">total / mes</div>
+        </div>
+        <span class="chart-watermark">Salvador Financiero</span>
+      </div>
+      <div class="chart-legend" id="chart-legend"><div style="color:var(--soft);font-size:0.72rem;">Ingresa tus gastos para ver la distribución</div></div>
+    </div>
+  </div>
+
+  <!-- PROYECCIÓN -->
+  <div class="proy-card">
+    <div class="proy-hd"><div class="proy-ttl">Proyección Mes a Mes · Hacia tu Meta</div></div>
+    <div style="overflow-x:auto;">
+      <table class="proy-table">
+        <thead><tr><th>Mes</th><th>Aportación</th><th>Interés</th><th>Acumulado</th><th>Avance</th></tr></thead>
+        <tbody id="proy-body"><tr><td colspan="5" class="proy-empty">Ingresa tus gastos y aportación mensual para ver la proyección</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="resumen" id="resumen">
+  <div class="res-block"><label>Gasto esencial / mes</label><div class="res-val" id="res-gasto">$0</div><div class="res-hint">Tu piso mínimo</div></div>
+  <div class="res-block"><label>Meta (<span id="res-meses-n">6</span> meses)</label><div class="res-val" id="res-meta">$0</div><div class="res-hint">Lo que necesitas</div></div>
+  <div class="res-block"><label>Tienes ahorrado</label><div class="res-val" id="res-tienes">$0</div><div class="res-hint" id="res-tienes-hint">0% de tu meta</div></div>
+  <div class="res-block"><label>Llegas en</label><div class="res-val" id="res-tiempo">—</div><div class="res-hint" id="res-tiempo-hint">Completa tus datos</div></div>
+  <div class="res-wm">Salvador Financiero · @salvadorfinanciero</div>
+</div>
+
+<footer>
+  <a class="flogo" href="#">Salvador <span>Financiero</span></a>
+  <div class="ftext">Mentor Patrimonial · @salvadorfinanciero · Herramienta educativa, no asesoría certificada.</div>
+</footer>
+
+<script>
+var GASTOS_BASE=[
+  {id:'renta',label:'Renta o hipoteca'},
+  {id:'comida',label:'Despensa / alimentación'},
+  {id:'servicios',label:'Servicios (luz, agua, gas)'},
+  {id:'internet',label:'Internet y telefonía'},
+  {id:'transporte',label:'Transporte (gasolina / metro)'},
+  {id:'salud',label:'Seguro / medicamentos'},
+  {id:'deudas',label:'Pagos mínimos de deuda'}
+];
+var DONDE=[
+  {id:'cetes',name:'CETES / Cetesdirecto',url:'https://www.cetesdirecto.com',plazo:true},
+  {id:'nu',name:'Nu México',url:'https://nu.com.mx',plazo:false},
+  {id:'finsus',name:'Finsus (SOFIPO)',url:'https://www.finsus.app',plazo:false},
+  {id:'merpago',name:'Mercado Pago',url:'https://www.mercadopago.com.mx',plazo:false},
+  {id:'revolut',name:'Revolut',url:'https://www.revolut.com/es-MX/',plazo:false},
+  {id:'bbva',name:'BBVA Ahorro',url:'https://www.bbva.mx',plazo:false},
+  {id:'banorte',name:'Banorte Digital',url:'https://www.banorte.com',plazo:false},
+  {id:'santander',name:'Santander México',url:'https://www.santander.com.mx',plazo:false}
+];
+var COLORS=['#3d7a5a','#5a7a4a','#8a5a2d','#2d6a8a','#7a4a8a','#8a6a2d','#8a2d4a','#2d5a8a','#4a8a2d'];
+var MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var mesesObj=6, donutChart=null, customCount=0;
+
+function parse(v){if(!v)return 0;return parseFloat(String(v).replace(/[^0-9.]/g,''))||0;}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-MX');}
+function fmtInp(inp){var r=parse(inp.value);if(r>0)inp.value=fmt(r);}
+function getActual(){return Math.max(parse(document.getElementById('input-actual').value),parseInt(document.getElementById('slider-actual').value)||0);}
+function getMensual(){return Math.max(parse(document.getElementById('input-mensual').value),parseInt(document.getElementById('slider-mensual').value)||0);}
+
+function syncSl(key){
+  var v=parseInt(document.getElementById('slider-'+key).value)||0;
+  document.getElementById('val-'+key).textContent=fmt(v);
+  var inp=document.getElementById('input-'+key);inp.value=v>0?fmt(v):'';
+  recalc();
+}
+function syncInp(key){
+  var inp=document.getElementById('input-'+key);fmtInp(inp);
+  var v=parse(inp.value);
+  document.getElementById('val-'+key).textContent=fmt(v);
+  var sl=document.getElementById('slider-'+key);
+  if(v>parseInt(sl.max))sl.max=Math.ceil(v*1.5);
+  sl.value=v;recalc();
+}
+
+function buildGastos(){
+  var body=document.getElementById('gastos-body');
+  body.innerHTML='';
+  GASTOS_BASE.forEach(function(g){
+    addGastoRow(body,g.id,g.label,false);
+  });
+  // 2 custom por default
+  addGastoRow(body,'custom_0','',true);
+  addGastoRow(body,'custom_1','',true);
+}
+
+function addGastoRow(container,id,label,isCustom){
+  var row=document.createElement('div');
+  row.className='gasto-row';
+  row.id='grow-'+id;
+  if(isCustom){
+    row.innerHTML='<input type="text" class="gasto-lbl-inp" placeholder="Otro gasto esencial…" id="glbl-'+id+'">'
+      +'<input type="text" class="gasto-inp" id="g_'+id+'" inputmode="numeric" placeholder="$0">'
+      +'<button class="gasto-remove" data-id="'+id+'" title="Quitar">×</button>';
+  } else {
+    row.innerHTML='<div class="gasto-lbl">'+label+'</div>'
+      +'<input type="text" class="gasto-inp" id="g_'+id+'" inputmode="numeric" placeholder="$0">';
+  }
+  container.appendChild(row);
+  var inp=document.getElementById('g_'+id);
+  inp.addEventListener('input',function(){fmtInp(this);recalc();});
+  if(isCustom){
+    row.querySelector('.gasto-remove').addEventListener('click',function(){
+      var rid=this.dataset.id;
+      document.getElementById('grow-'+rid).remove();
+      recalc();
+    });
+  }
+}
+
+function addCustomGasto(){
+  var id='custom_'+Date.now();
+  customCount++;
+  var body=document.getElementById('gastos-body');
+  var addBtn=document.getElementById('btn-add-gasto');
+  addGastoRow(body,id,'',true);
+  // move add button after new row — already at end since we insert before total
+  recalc();
+}
+
+function getAllGastos(){
+  var total=0,labels=[],data=[];
+  document.querySelectorAll('.gasto-inp').forEach(function(inp,i){
+    var v=parse(inp.value);total+=v;
+    var id=inp.id.replace('g_','');
+    var lbl=document.getElementById('glbl-'+id)?document.getElementById('glbl-'+id).value||'Otro':'';
+    if(!lbl){
+      var lrow=inp.previousElementSibling;
+      if(lrow&&lrow.classList.contains('gasto-lbl')) lbl=lrow.textContent;
+    }
+    labels.push(lbl||'Gasto '+(i+1));
+    data.push(v);
+  });
+  return {total:total,labels:labels,data:data};
+}
+
+function buildDonde(){
+  var c=document.getElementById('donde-opts');c.innerHTML='';
+  DONDE.forEach(function(d){
+    var initials=d.name.replace(/[^A-Z]/g,'').slice(0,3)||d.name.slice(0,2).toUpperCase();
+    var div=document.createElement('div');
+    div.className='donde-opt';div.id='dopt-'+d.id;
+    div.innerHTML='<input type="checkbox" id="dchk-'+d.id+'">'
+      +'<div class="donde-logo-wrap">'
+      +'<img class="donde-logo-img" src="https://www.google.com/s2/favicons?sz=64&domain='+new URL(d.url).hostname+'" alt="'+d.name+'" onerror="this.style.display=\'none\';document.getElementById(\'dfb-'+d.id+'\').style.display=\'flex\'">'
+      +'<div class="donde-logo-fb" id="dfb-'+d.id+'" style="display:none;">'+initials+'</div>'
+      +'</div>'
+      +'<div><div class="donde-opt-name">'+d.name+'</div>'
+      +'<div class="donde-opt-link"><a href="'+d.url+'" target="_blank">Ver tasas vigentes →</a></div></div>';
+    div.querySelector('input').addEventListener('change',function(){
+      div.classList.toggle('checked',this.checked);checkAlerta();
+    });
+    c.appendChild(div);
+  });
+}
+
+function checkAlerta(){
+  var al=false;
+  DONDE.forEach(function(d){var c=document.getElementById('dchk-'+d.id);if(c&&c.checked&&d.plazo)al=true;});
+  document.getElementById('donde-alerta').classList.toggle('visible',al);
+}
+
+function setMeses(n,btn){
+  mesesObj=n;
+  document.querySelectorAll('.mes-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('res-meses-n').textContent=n;
+  recalc();
+}
+
+function updateDonut(labels,data){
+  var total=data.reduce(function(a,b){return a+b;},0);
+  document.getElementById('donut-center').textContent=fmt(total);
+  var leg=document.getElementById('chart-legend');leg.innerHTML='';
+  var hasData=false;
+  var fl={labels:[],data:[],colors:[]};
+  labels.forEach(function(l,i){
+    if(data[i]<=0)return;hasData=true;
+    var pct=total>0?Math.round(data[i]/total*100):0;
+    fl.labels.push(l);fl.data.push(data[i]);fl.colors.push(COLORS[i%COLORS.length]);
+    leg.innerHTML+='<div class="legend-item"><div class="legend-dot" style="background:'+COLORS[i%COLORS.length]+'"></div>'
+      +'<div><div class="legend-name">'+l+'</div><div class="legend-val">'+fmt(data[i])+' <span style="font-size:0.55rem;color:var(--soft);">'+pct+'%</span></div></div></div>';
+  });
+  if(!hasData){leg.innerHTML='<div style="color:var(--soft);font-size:0.72rem;">Ingresa tus gastos para ver la distribución</div>';if(donutChart){donutChart.destroy();donutChart=null;}return;}
+  if(donutChart)donutChart.destroy();
+  donutChart=new Chart(document.getElementById('donutChart').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:fl.labels,datasets:[{data:fl.data,backgroundColor:fl.colors,borderColor:'#f4f2ed',borderWidth:4,hoverOffset:10}]},
+    options:{responsive:false,cutout:'58%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c3a1e',titleColor:'#a8c498',bodyColor:'rgba(255,255,255,0.85)',titleFont:{family:'Bebas Neue',size:14},bodyFont:{family:'DM Mono',size:11},padding:12,callbacks:{label:function(c){var t=fl.data.reduce(function(a,b){return a+b;},0);return ' '+fmt(c.raw)+' ('+Math.round(c.parsed/t*100)+'%)';}}}}}
+  });
+}
+
+function buildProy(actual,mensual,meta,tasa){
+  var tbody=document.getElementById('proy-body');
+  if(meta<=0||mensual<=0){tbody.innerHTML='<tr><td colspan="5" class="proy-empty">Ingresa tu meta y aportación mensual para ver la proyección</td></tr>';return;}
+  var tm=tasa>0?(Math.pow(1+tasa/100,1/12)-1):0;
+  var acum=actual,rows='',reached=false;
+  var mesI=parseInt(document.getElementById('mes-inicio').value)||0;
+  var anioI=parseInt(document.getElementById('anio').value)||new Date().getFullYear();
+  for(var i=1;i<=60;i++){
+    var intr=acum*tm;acum+=mensual+intr;
+    var pct=Math.min(Math.round(acum/meta*100),100);
+    var mIdx=(mesI+i-1)%12,anY=anioI+Math.floor((mesI+i-1)/12);
+    var isR=!reached&&acum>=meta;if(isR)reached=true;
+    rows+='<tr'+(isR?' class="reached"':'')+'>'
+      +'<td>'+MESES[mIdx]+' '+anY+(isR?'<span class="proy-badge">✓ Meta</span>':'')+'</td>'
+      +'<td>'+fmt(mensual)+'</td><td>'+fmt(intr)+'</td><td>'+fmt(Math.min(acum,meta*1.05))+'</td>'
+      +'<td><div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;">'
+      +'<div style="width:52px;height:6px;background:rgba(90,122,74,0.12);overflow:hidden;border-radius:3px;">'
+      +'<div style="width:'+pct+'%;height:100%;background:'+(pct>=100?'#3d9160':'#5a7a4a')+';border-radius:3px;"></div></div>'
+      +'<span style="font-family:Bebas Neue,sans-serif;font-size:0.9rem;">'+pct+'%</span></div></td></tr>';
+    if(acum>=meta&&i>2)break;
+  }
+  if(!reached)rows+='<tr><td colspan="5" style="text-align:center;color:var(--soft);padding:16px;font-size:0.68rem;">Aumenta tu aportación para alcanzar la meta en menos de 5 años.</td></tr>';
+  tbody.innerHTML=rows;
+}
+
+function recalc(){
+  var g=getAllGastos();
+  document.getElementById('total-gastos').textContent=fmt(g.total);
+  var meta=g.total*mesesObj;
+  var actual=getActual(),mensual=getMensual(),tasa=parse(document.getElementById('tasa').value);
+  var falta=Math.max(meta-actual,0);
+  var pct=meta>0?Math.min(Math.round(actual/meta*100),100):0;
+  // Rendimiento
+  var rendActual=tasa>0?actual*(Math.pow(1+tasa/100,1)-1):0;
+  var rendAport=tasa>0?mensual*12*(tasa/100/2):0;
+  document.getElementById('rend-actual').textContent=fmt(rendActual);
+  document.getElementById('rend-actual-hint').textContent=rendActual>0?'En 1 año sobre tu saldo':'Ingresa ahorro y tasa';
+  document.getElementById('rend-aport').textContent=fmt(rendAport);
+  document.getElementById('rend-aport-hint').textContent=rendAport>0?'Aprox en 1 año':'Ingresa aportación y tasa';
+
+  // Tiempo
+  var mesesN='—',fechaF='Ingresa tus datos';
+  var nMeses=0;
+  if(mensual>0&&falta>0){
+    var tm=tasa>0?(Math.pow(1+tasa/100,1/12)-1):0;
+    var n=tm>0?Math.log(1+falta*tm/mensual)/Math.log(1+tm):falta/mensual;
+    n=Math.ceil(n);nMeses=n;
+    mesesN=n+(n===1?' mes':' meses');
+    var mesI=parseInt(document.getElementById('mes-inicio').value)||0;
+    var anioI=parseInt(document.getElementById('anio').value)||new Date().getFullYear();
+    fechaF=MESES[(mesI+n)%12]+' '+(anioI+Math.floor((mesI+n)/12));
+  } else if(falta<=0&&meta>0){
+    mesesN='Fondo completo';
+    fechaF='Tu fondo de emergencia está listo ✦';
+  }
+
+  // Escenario — solo si hay tasa
+  var escCard=document.getElementById('esc-card');
+  if(tasa>0&&mensual>0&&meta>0){
+    escCard.style.display='block';
+    var tm2=Math.pow(1+tasa/100,1/12)-1;
+    var soloActual=actual*Math.pow(1+tasa/100,nMeses/12);
+    var sinRend=actual+mensual*nMeses;
+    var conRend=actual;
+    for(var i=0;i<nMeses;i++){conRend=conRend*(1+tm2)+mensual;}
+    document.getElementById('esc-actual').textContent=fmt(soloActual);
+    document.getElementById('esc-actual-hint').textContent='En '+nMeses+' meses, solo con rendimiento';
+    document.getElementById('esc-sin').textContent=fmt(sinRend);
+    document.getElementById('esc-sin-hint').textContent='En '+nMeses+' meses';
+    document.getElementById('esc-con').textContent=fmt(conRend);
+    document.getElementById('esc-con-hint').textContent='En '+nMeses+' meses · '+fmt(conRend-sinRend)+' extra';
+  } else {escCard.style.display='none';}
+
+  // Meta card — ocultar si no hay datos
+  var metaCard=document.getElementById('meta-card');
+  if(meta<=0){metaCard.style.display='none';return;}
+  metaCard.style.display='block';
+
+  document.getElementById('meta-total').textContent=fmt(meta);
+  document.getElementById('meta-hint').textContent='Para '+mesesObj+' meses de gastos esenciales';
+  document.getElementById('meta-tienes').textContent=fmt(actual);
+  document.getElementById('meta-pct-txt').textContent=pct+'% de tu meta';
+
+  // "Te falta" — ocultar si meta está completa o si actual es 0
+  var kpiFalta=document.getElementById('kpi-falta');
+  if(falta<=0||actual===0){
+    kpiFalta.style.display='none';
+  } else {
+    kpiFalta.style.display='block';
+    document.getElementById('meta-falta').textContent=fmt(falta);
+    document.getElementById('meta-falta').className='kpi-val danger';
+  }
+
+  document.getElementById('meta-tiempo').textContent=mesesN;
+  document.getElementById('meta-fecha').textContent=fechaF;
+  document.getElementById('formula-eq').textContent=fmt(g.total)+' × '+mesesObj+' meses = '+fmt(meta);
+
+  // Progreso
+  var barColor=pct>=100?'#3d9160':pct>=50?'#5a7a4a':pct>=25?'#c47d0e':'#d96060';
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-bar').style.background=barColor;
+  document.getElementById('prog-pct').textContent=pct+'%';
+
+  // Resumen sticky
+  var res=document.getElementById('resumen');
+  if(pct>=100){res.style.background='#163318';res.style.borderTopColor='#3d9160';}
+  else if(pct>=50){res.style.background='#1c3a1e';res.style.borderTopColor='#5a7a4a';}
+  else if(pct>=25){res.style.background='#3a2c05';res.style.borderTopColor='#c47d0e';}
+  else if(pct>0){res.style.background='#3a0f0f';res.style.borderTopColor='#d96060';}
+  else{res.style.background='#1c3a1e';res.style.borderTopColor='#5a7a4a';}
+  document.getElementById('res-gasto').textContent=fmt(g.total);
+  document.getElementById('res-meta').textContent=fmt(meta);
+  document.getElementById('res-tienes').textContent=fmt(actual);
+  document.getElementById('res-tienes-hint').textContent=pct+'% de tu meta';
+  document.getElementById('res-tiempo').textContent=mesesN;
+  document.getElementById('res-tiempo-hint').textContent=fechaF;
+
+  updateDonut(g.labels,g.data);
+  buildProy(actual,mensual,meta,tasa);
+}
+
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3500);}
+function validar(){
+  var g=getAllGastos();
+  if(g.total<=0){toast('⚠ Ingresa al menos un gasto esencial');return;}
+  if(getMensual()<=0){toast('⚠ Ingresa cuánto puedes depositar al mes');return;}
+  window.print();
+}
+function cerrar(){
+  var m=document.getElementById('modal');
+  m.style.transition='opacity .25s';m.style.opacity='0';m.style.pointerEvents='none';
+  setTimeout(function(){m.style.display='none';},260);
+}
+
+// Colapsables
+function setupBanner(id,bodyId,btnId,defaultOpen){
+  var parent=document.getElementById(id);
+  var body=document.getElementById(bodyId);
+  var btn=document.getElementById(btnId);
+  if(!parent||!body||!btn)return;
+  parent.addEventListener('click',function(e){
+    if(e.target.tagName==='A')return;
+    var open=body.style.display==='block';
+    body.style.display=open?'none':'block';
+    btn.textContent=open?'Ver más ▾':'Ver menos ▴';
+  });
+}
+
+// INIT
+buildGastos();
+buildDonde();
+// Poblar años
+var anioSel=document.getElementById('anio');
+var anioActual=new Date().getFullYear();
+for(var y=anioActual;y<=anioActual+10;y++){
+  var opt=document.createElement('option');
+  opt.value=y;opt.textContent=y;
+  if(y===anioActual)opt.selected=true;
+  anioSel.appendChild(opt);
+}
+// Detectar mes actual
+document.getElementById('mes-inicio').value=new Date().getMonth();
+
+document.getElementById('btn-x').addEventListener('click',cerrar);
+document.getElementById('btn-comenzar').addEventListener('click',cerrar);
+document.getElementById('btn-pdf').addEventListener('click',validar);
+document.getElementById('btn-add-gasto').addEventListener('click',addCustomGasto);
+document.getElementById('slider-actual').addEventListener('input',function(){syncSl('actual');});
+document.getElementById('slider-mensual').addEventListener('input',function(){syncSl('mensual');});
+document.getElementById('input-actual').addEventListener('input',function(){syncInp('actual');});
+document.getElementById('input-mensual').addEventListener('input',function(){syncInp('mensual');});
+document.getElementById('tasa').addEventListener('input',recalc);
+document.getElementById('mes-inicio').addEventListener('change',recalc);
+document.getElementById('anio').addEventListener('change',recalc);
+document.querySelectorAll('.mes-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){setMeses(parseInt(this.dataset.meses),this);});
+});
+setupBanner('ban1','ban1-body','ban1-btn',false);
+setupBanner('ban2','ban2-body','ban2-btn',true);
+
+// Guiños colapsables inline
+function setupGuino(toggleId, bodyId, btnId){
+  var toggle=document.getElementById(toggleId);
+  var body=document.getElementById(bodyId);
+  var btn=document.getElementById(btnId);
+  if(!toggle||!body||!btn)return;
+  toggle.addEventListener('click',function(){
+    var open=body.style.display==='block';
+    body.style.display=open?'none':'block';
+    btn.textContent=open?'Ver más ▾':'Ver menos ▴';
+  });
+}
+setupGuino('guino-gastos-toggle','guino-gastos-body','guino-gastos-btn');
+setupGuino('guino-donde-toggle','guino-donde-body','guino-donde-btn');
+
+recalc();
+if(window.visualViewport){
+  var resEl=document.querySelector('.resumen');
+  var lastH=window.visualViewport.height;
+  window.visualViewport.addEventListener('resize',function(){
+    var curr=window.visualViewport.height;
+    resEl.style.display=(lastH-curr>150)?'none':'';lastH=curr;
+  });
+}
+</script>
+</body>
+</html>
