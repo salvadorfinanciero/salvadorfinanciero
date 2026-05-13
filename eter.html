@@ -26,14 +26,14 @@ body::before{content:'';position:fixed;inset:0;background:
   pointer-events:none;z-index:0}
 
 /* ── HEADER ── */
-header{position:sticky;top:0;z-index:50;height:46px;padding:0 1.6rem;background:rgba(6,5,15,.88);backdrop-filter:blur(24px);border-bottom:1px solid rgba(139,92,246,.1);display:flex;align-items:center;justify-content:space-between;gap:.8rem}
-.logo-wrap{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
-.logo-orb{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 10px rgba(139,92,246,.5)}
-.logo-name{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;letter-spacing:.01em}
+header{position:sticky;top:0;z-index:50;height:58px;padding:0 1.8rem;background:rgba(6,5,15,.88);backdrop-filter:blur(24px);border-bottom:1px solid rgba(139,92,246,.1);display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.logo-wrap{display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.logo-orb{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 12px rgba(139,92,246,.5)}
+.logo-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:.01em}
 .logo-name em{color:var(--accent2);font-style:italic}
-.bcount{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);border:1px solid var(--border);padding:.13rem .4rem;border-radius:20px;letter-spacing:.08em}
+.bcount{font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);border:1px solid var(--border);padding:.15rem .45rem;border-radius:20px;letter-spacing:.08em}
 .nav{display:flex;gap:.08rem}
-.ntab{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .65rem;border-radius:5px;cursor:pointer;transition:all .18s}
+.ntab{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:.35rem .78rem;border-radius:5px;cursor:pointer;transition:all .18s}
 .ntab:hover{color:var(--text);background:var(--glow)}
 .ntab.active{color:var(--accent2);background:var(--glow)}
 .hdr-r{display:flex;align-items:center;gap:.42rem}
@@ -118,7 +118,7 @@ header{position:sticky;top:0;z-index:50;height:46px;padding:0 1.6rem;background:
 .mag-word{position:absolute;touch-action:none;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:.2rem .52rem;border-radius:2px;cursor:grab;transition:color .2s,border-color .2s,box-shadow .2s;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;letter-spacing:.04em;box-shadow:1px 1px 0 rgba(0,0,0,.5);white-space:nowrap;z-index:1;-webkit-touch-callout:none}
 .mag-word:active{cursor:grabbing}
 .mag-word:hover,.mag-word.active{color:var(--accent2);border-color:var(--accent);box-shadow:0 0 10px rgba(139,92,246,.3),1px 1px 0 rgba(0,0,0,.5)}
-.exp-panel{position:relative;z-index:2;padding:1.8rem 2rem;max-width:760px;margin:0 auto;pointer-events:none;background:transparent}
+.exp-panel{position:relative;z-index:10;padding:1.8rem 2rem;max-width:760px;margin:0 auto;pointer-events:none;background:transparent}
 .exp-panel>*{pointer-events:all}
 .exp-hero{margin-bottom:1.3rem}
 .exp-hero h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.28rem}
@@ -367,10 +367,16 @@ canvas{-webkit-user-select:none;user-select:none}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 @media(max-width:768px){
-  header{padding:0 .75rem;height:48px;gap:.3rem}
+  header{padding:0 .75rem;height:56px;gap:.3rem}
+  .logo-name{font-size:1.1rem}
+  .logo-orb{width:22px;height:22px}
+  .ntab{font-size:.58rem;padding:.35rem .6rem}
   .bcount{display:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
-  .ntab{font-size:.48rem;padding:.28rem .5rem}
+  .hdr-r{gap:.35rem}
+  .btic{width:34px;height:34px;font-size:.85rem}
+  .g-tools .btic{width:48px;height:48px;font-size:1.2rem;border-radius:10px}
+  .g-tools{gap:.5rem}
   .hdr-r{gap:.3rem}
   .hsearch{display:none}
   .btn-add{font-size:.5rem;padding:.32rem .7rem}
@@ -439,7 +445,6 @@ canvas{-webkit-user-select:none;user-select:none}
     <button class="ntab" onclick="gotoV('graph',this)">Galaxia</button>
     <button class="ntab" onclick="gotoV('explore',this)">Explorar</button>
     <button class="ntab" onclick="gotoV('bitacora',this)">Bitácora</button>
-    <button class="ntab" onclick="gotoV('sistema',this)">Sistema</button>
   </nav>
   <div class="hdr-r">
     <div class="hsearch"><span class="hsi">⌕</span><input id="searchIn" type="text" placeholder="Buscar…" oninput="onSearch(this.value)"></div>
@@ -526,7 +531,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="margin-top:1.5rem">
           <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.7rem">
             <span style="font-size:1rem;opacity:.5">💾</span>
-            Exportar, importar y herramientas avanzadas → pestaña <strong style="color:var(--accent2)">Sistema</strong>
+            Exportar, importar y herramientas avanzadas → botón <strong style="color:var(--accent2)">⚙ Configuración</strong>
           </div>
         </div>
       </div>
@@ -777,6 +782,29 @@ canvas{-webkit-user-select:none;user-select:none}
       </div>
     </div>
     <div style="margin-top:.65rem;text-align:center;font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);letter-spacing:.08em">ÉTER v1.0 — BIBLIOTECA MENTAL · TODOS LOS DERECHOS RESERVADOS</div>
+  </div>
+  <div class="set-s">
+    <h3>💾 Datos & Respaldo</h3>
+    <div id="storageInfo" style="font-size:.68rem;color:var(--muted);line-height:1.65;margin-bottom:.75rem">Calculando…</div>
+    <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.6rem">
+      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()">⬇ Exportar JSON</button>
+      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportPDF()">⬇ Exportar PDF</button>
+    </div>
+    <label style="display:inline-flex;align-items:center;gap:.5rem;background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer">
+      📂 Importar JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+    </label>
+    <div style="font-size:.62rem;color:var(--err);margin-top:.35rem">⚠ Importar reemplaza la biblioteca actual.</div>
+  </div>
+  <div class="set-s">
+    <h3>✦ Herramientas IA</h3>
+    <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.5rem">
+      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)" id="btnCollisionSettings">💥 Colisión de ideas</button>
+      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)" id="btnHorizonSettings">🔭 Horizonte de sucesos</button>
+    </div>
+  </div>
+  <div class="set-s">
+    <h3 style="color:rgba(248,113,113,.7)">☢ Zona de peligro</h3>
+    <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s">☢ Borrar todo y reiniciar</button>
   </div>
   <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')">Cerrar</button><button class="btn-ok" onclick="saveSettings()">Guardar</button></div>
 </div>
@@ -1129,7 +1157,9 @@ function updateWishBadge(){
 // ══════════════════════════
 function openSettings(){
   document.getElementById('apiKeyIn').value=cfg.apiKey||'';
-  selProv(cfg.provider||'anthropic',false);updateApiSt();showModal('mSettings');
+  selProv(cfg.provider||'anthropic',false);updateApiSt();
+  updateStorageInfo();
+  showModal('mSettings');
 }
 function selProv(p,_=true){
   cfg.provider=p;
@@ -1376,8 +1406,9 @@ function buildMagWords(){
     // Always randomize fresh — no saved positions (cleared on view enter)
     const elW=120, elH=30;
     let tries=0;
-    // Use visible area minus panel height at top (~180px for search panel)
-    const topPad=200, pad=12;
+    // Measure actual panel height so words never overlap it
+    const panel=document.querySelector('.exp-panel');
+    const topPad=(panel?panel.offsetHeight:180)+24, pad=12;
     do{
       x=Math.random()*(Math.max(W-elW-pad*2,100))+pad;
       y=Math.random()*(Math.max(H-elH-topPad-pad,100))+topPad;
@@ -1396,7 +1427,7 @@ function buildMagWords(){
     el.style.setProperty('--dur',dur+'s');
     el.style.setProperty('--delay',(Math.random()*3)+'s');
 
-    // DRAG functionality
+    // DRAG functionality — mouse
     let dragStartX,dragStartY,origLeft,origTop,dragging=false;
     el.onmousedown=e=>{
       e.preventDefault();
@@ -1416,15 +1447,15 @@ function buildMagWords(){
         document.removeEventListener('mouseup',onUp);
         el.style.zIndex='';
         const newX=parseFloat(el.style.left),newY=parseFloat(el.style.top);
-        // Keep within bounds
         const bW=bg.offsetWidth||window.innerWidth;
         const bH=bg.offsetHeight||window.innerHeight;
+        const panel2=document.querySelector('.exp-panel');
+        const minY=(panel2?panel2.offsetHeight:180)+8;
         const bx=Math.min(Math.max(newX,8),bW-130);
-        const by=Math.min(Math.max(newY,8),bH-36);
+        const by=Math.min(Math.max(newY,minY),bH-36);
         el.style.left=bx+'px'; el.style.top=by+'px';
         appState.magPositions[word]={x:bx,y:by};persistState();
         if(!dragging){
-          // click = search
           document.querySelectorAll('.mag-word').forEach(w=>w.classList.remove('active'));
           el.classList.add('active');
           document.getElementById('expIn').value=word;onExplore();
@@ -1433,6 +1464,43 @@ function buildMagWords(){
       document.addEventListener('mousemove',onMove);
       document.addEventListener('mouseup',onUp);
     };
+
+    // DRAG functionality — touch (mobile)
+    el.addEventListener('touchstart',e=>{
+      e.stopPropagation();
+      const t=e.touches[0];
+      dragging=false;
+      dragStartX=t.clientX;dragStartY=t.clientY;
+      origLeft=parseFloat(el.style.left)||0;origTop=parseFloat(el.style.top)||0;
+      el.style.zIndex=100;
+      el.style.animation='none';
+    },{passive:true});
+    el.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const t=e.touches[0];
+      const dx=t.clientX-dragStartX,dy=t.clientY-dragStartY;
+      if(Math.abs(dx)>4||Math.abs(dy)>4)dragging=true;
+      if(dragging){el.style.left=(origLeft+dx)+'px';el.style.top=(origTop+dy)+'px';}
+    },{passive:false});
+    el.addEventListener('touchend',e=>{
+      e.stopPropagation();
+      el.style.zIndex='';
+      const newX=parseFloat(el.style.left),newY=parseFloat(el.style.top);
+      const bW=bg.offsetWidth||window.innerWidth;
+      const bH=bg.offsetHeight||window.innerHeight;
+      const panel3=document.querySelector('.exp-panel');
+      const minY2=(panel3?panel3.offsetHeight:180)+8;
+      const bx=Math.min(Math.max(newX,8),bW-130);
+      const by=Math.min(Math.max(newY,minY2),bH-36);
+      el.style.left=bx+'px'; el.style.top=by+'px';
+      appState.magPositions[word]={x:bx,y:by};persistState();
+      if(!dragging){
+        document.querySelectorAll('.mag-word').forEach(w=>w.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('expIn').value=word;onExplore();
+      }
+    },{passive:true});
     bg.appendChild(el);
   });
 
@@ -2416,31 +2484,21 @@ function importJSON(event){
 // ══════════════════════════
 // DEMO BOOKS
 // ══════════════════════════
-const DEMOS=[
-  {title:"La ganancia es primero",author:"Mike Michalowicz",category:"Finanzas",keywords:["flujo de caja","finanzas","emprendimiento"]},
-  {title:"Más astuto que el diablo",author:"Napoleon Hill",category:"Filosofía",keywords:["mentalidad","éxito","autodisciplina"]},
-  {title:"Conversaciones cruciales",author:"Kerry Patterson",category:"Psicología",keywords:["comunicación","conflicto","relaciones"]},
-  {title:"Pensar rápido pensar despacio",author:"Daniel Kahneman",category:"Psicología",keywords:["cognición","sesgo","decisiones"]},
-  {title:"The Creative Act",author:"Rick Rubin",category:"Filosofía",keywords:["creatividad","arte","proceso"]}
-];
+// ══════════════════════════
+// INIT — empty library
+// ══════════════════════════
 async function loadDemos(){
-  // Also check old storage keys and migrate
+  // Migrate from old storage keys if they exist
   if(lib.length===0){
     const oldKeys=['synapsis_v1','synapsis2','eter_v1','biblioteca_v3'];
     for(const k of oldKeys){
       try{
         const old=JSON.parse(localStorage.getItem(k)||'[]');
-        if(old.length>0){lib=old;persist();console.log('Migrated from',k);break;}
+        if(old.length>0){lib=old;persist();break;}
       }catch(e){}
     }
   }
-  if(lib.length>0){renderSidebar();renderLib();return;}
-  for(const d of DEMOS){
-    const cover=await fetchCover(d.title,d.author);
-    lib.push({id:Date.now()+Math.random(),title:d.title,author:d.author,description:'',cover,category:d.category,keywords:d.keywords,notes:[],isWishlist:false,added:new Date().toISOString()});
-    await new Promise(r=>setTimeout(r,350));
-  }
-  persist();renderSidebar();renderLib();
+  renderSidebar();renderLib();
 }
 
 // ══════════════════════════
