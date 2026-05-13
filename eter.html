@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Éter — Biblioteca Mental</title>
+<title>Éter — Biblioteca Mental v23</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -1276,7 +1276,6 @@ function renderNotes(b, query='', newIdx=-1){
   });
 }
 
-let _noteSearchQuery='';
 function filterNotes(bookId, val){
   _noteSearchQuery=val;
   const b=lib.find(x=>x.id===bookId);if(!b)return;
