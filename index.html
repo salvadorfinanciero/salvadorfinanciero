@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="theme-color" content="#1c3a1e">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.3, user-scalable=yes">
 <title>Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -21,6 +23,9 @@
     --mid:      #555;
     --soft:     #999;
     --rule:     #ccc8bc;
+    --r: 16px;
+    --r-sm: 8px;
+    --r-xs: 6px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -53,8 +58,8 @@
   .hero-title .hi{color:var(--fern);display:block;}
   .hero-rule{width:100%;height:2px;background:var(--sage);margin:26px 0;}
   .hero-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:rgba(255,255,255,0.72);max-width:420px;line-height:1.7;margin-bottom:38px;}
-  .hero-cta{display:inline-block;align-self:flex-start;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 38px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:4px 4px 0 var(--pine);}
-  .hero-cta:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pine);}
+  .hero-cta{display:inline-block;align-self:flex-start;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 38px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:0 4px 20px rgba(28,58,30,0.35);border-radius:var(--r-sm);}
+  .hero-cta:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translateY(-2px);box-shadow:0 8px 28px rgba(28,58,30,0.4);}
   @media(max-width:768px){
     .hero-cta{font-size:0.85rem;letter-spacing:0.08em;padding:12px 20px;white-space:nowrap;}
   }
@@ -232,7 +237,7 @@
   .stat-number{font-family:'Bebas Neue',sans-serif;font-size:3.6rem;color:var(--forest);line-height:1;letter-spacing:0.01em;}
   .stat-number.green{color:var(--pine);}
   .stat-unit{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--mid);margin-top:6px;}
-  .stat-badge{position:absolute;top:14px;right:16px;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.55rem;padding:3px 9px;letter-spacing:0.1em;transform:rotate(1.5deg);}
+  .stat-badge{position:absolute;top:14px;right:16px;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.55rem;padding:3px 9px;letter-spacing:0.1em;border-radius:20px;}
 
   /* ABOUT */
   #about{padding:96px 60px;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(28,58,30,0.045) 1px, transparent 1px); background-size: 36px 36px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
@@ -247,13 +252,7 @@
     position:relative;
     display:inline-block;
   }
-  .about-grad-img{
-    width:100%;
-    max-width:420px;
-    display:block;
-    filter:drop-shadow(0 8px 24px rgba(0,0,0,0.18));
-    transform:rotate(-1.5deg);
-  }
+  .about-grad-img{width:100%;max-width:420px;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.18));border-radius:var(--r);}
   .about-grad-caption{
     font-family:'DM Mono',monospace;
     font-size:0.6rem;
@@ -264,8 +263,8 @@
     transform:rotate(-1.5deg);
   }
 
-  .dark-card{background:var(--forest);color:var(--white);padding:44px;position:relative;transform:rotate(-1.2deg);box-shadow:10px 10px 0 var(--sage);}
-  .dark-card::before{content:'';position:absolute;top:-7px;left:0;right:0;height:10px;background:var(--cream);clip-path:polygon(0% 100%,2% 0%,4% 100%,6% 0%,8% 100%,10% 0%,12% 100%,14% 0%,16% 100%,18% 0%,20% 100%,22% 0%,24% 100%,26% 0%,28% 100%,30% 0%,32% 100%,34% 0%,36% 100%,38% 0%,40% 100%,42% 0%,44% 100%,46% 0%,48% 100%,50% 0%,52% 100%,54% 0%,56% 100%,58% 0%,60% 100%,62% 0%,64% 100%,66% 0%,68% 100%,70% 0%,72% 100%,74% 0%,76% 100%,78% 0%,80% 100%,82% 0%,84% 100%,86% 0%,88% 100%,90% 0%,92% 100%,94% 0%,96% 100%,98% 0%,100% 100%);}
+  .dark-card{background:var(--forest);color:var(--white);padding:44px;position:relative;transform:rotate(-1.2deg);box-shadow:0 12px 40px rgba(28,58,30,0.3);border-radius:var(--r);}
+  
   .card-hl{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:0.1em;color:var(--fern);margin-bottom:22px;}
   .svc-list{list-style:none;display:flex;flex-direction:column;gap:13px;}
   .svc-list li{display:flex;align-items:flex-start;gap:10px;font-family:'DM Mono',monospace;font-size:0.78rem;line-height:1.5;color:rgba(255,255,255,0.75);}
@@ -274,14 +273,14 @@
   /* TESTIMONIOS — sage green bg */
   #testimonios{background:var(--pine);padding:88px 60px;position:relative;overflow:hidden;background-image:linear-gradient(rgba(28,58,30,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(28,58,30,0.055) 1px, transparent 1px);background-size:36px 36px;border-top:3px solid var(--forest);border-bottom:3px solid var(--forest);}
   .section-header{text-align:center;margin-bottom:56px;}
-  .section-tag{display:inline-block;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;transform:rotate(-0.4deg);}
+  .section-tag{display:inline-block;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;}
   .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:var(--white);letter-spacing:0.04em;line-height:1;}
   .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
-  .tcard{background:rgba(255,255,255,0.08);padding:30px;border:2px solid rgba(255,255,255,0.18);position:relative;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;}
-  .tcard:nth-child(1){transform:rotate(-0.9deg);}
-  .tcard:nth-child(2){transform:rotate(0.7deg);margin-top:18px;}
-  .tcard:nth-child(3){transform:rotate(-0.4deg);}
-  .tcard:hover{transform:rotate(0) translateY(-4px) !important;box-shadow:6px 6px 0 var(--sage);background:rgba(255,255,255,0.13);border-color:var(--fern);}
+  .tcard{background:rgba(255,255,255,0.08);padding:30px;border:1.5px solid rgba(255,255,255,0.15);position:relative;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;border-radius:var(--r);}
+  .tcard:nth-child(1){transform:rotate(0);}
+  .tcard:nth-child(2){transform:rotate(0);margin-top:0;}
+  .tcard:nth-child(3){transform:rotate(0);}
+  .tcard:hover{transform:translateY(-6px) !important;box-shadow:0 16px 40px rgba(0,0,0,0.25);background:rgba(255,255,255,0.13);border-color:var(--fern);}
   .qmark{font-family:'Playfair Display',serif;font-size:4.5rem;color:var(--fern);line-height:0.55;margin-bottom:12px;display:block;}
   .ttext{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.25rem !important;line-height:1.8;color:rgba(255,255,255,0.92);margin-bottom:20px;}
   .tauthor{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;}
@@ -291,20 +290,20 @@
 
   /* PERFIL — grey-green / mist */
   #perfil{padding:100px 60px;background:#d4e8d0;position:relative;overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;}
-  .p-tag{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 14px;margin-bottom:20px;transform:rotate(0.8deg);}
+  .p-tag{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 14px;margin-bottom:20px;border-radius:20px;}
   .p-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);line-height:0.92;color:var(--forest);letter-spacing:0.01em;margin-bottom:20px;}
   .p-desc{font-size:1rem;line-height:1.72;color:var(--forest);opacity:0.8;max-width:460px;margin-bottom:36px;}
-  .p-btn{display:inline-block;position:relative;z-index:2;margin-top:28px;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:15px 44px;text-decoration:none;border:3px solid var(--forest);transition:all .2s;box-shadow:5px 5px 0 var(--pine);}
-  .p-btn:hover{background:var(--pine);border-color:var(--pine);transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--pine);}
+  .p-btn{display:inline-block;position:relative;z-index:2;margin-top:28px;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:15px 44px;text-decoration:none;border:2px solid var(--forest);transition:all .2s;box-shadow:0 6px 24px rgba(28,58,30,0.3);border-radius:var(--r-sm);}
+  .p-btn:hover{background:var(--pine);border-color:var(--pine);transform:translateY(-2px);box-shadow:0 10px 32px rgba(28,58,30,0.4);}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;margin-bottom:8px;position:relative;z-index:2;}
-  .chip{padding:6px 16px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid var(--pine);color:var(--forest);}
+  .chip{padding:6px 16px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid var(--pine);color:var(--forest);border-radius:20px;}
   .chip.hi{background:var(--forest);color:var(--fern);border-color:var(--forest);}
-  .qprev{background:var(--white);border:3px solid var(--forest);padding:28px;transform:rotate(2deg);box-shadow:8px 8px 0 var(--pine);}
+  .qprev{background:var(--white);border:2px solid var(--forest);padding:28px;box-shadow:0 8px 32px rgba(28,58,30,0.15);border-radius:var(--r);}
   .qph{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--forest);border-bottom:2px solid var(--forest);padding-bottom:8px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
-  .qstep{font-family:'DM Mono',monospace;font-size:0.6rem;background:var(--pine);padding:2px 8px;color:var(--white);}
+  .qstep{font-family:'DM Mono',monospace;font-size:0.6rem;background:var(--pine);padding:2px 8px;color:var(--white);border-radius:4px;}
   .qq{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:var(--ink);margin-bottom:14px;line-height:1.45;}
   .qopts{display:flex;flex-direction:column;gap:8px;}
-  .qopt{padding:9px 14px;border:1.5px solid var(--rule);font-size:0.78rem;font-family:'DM Mono',monospace;color:var(--mid);transition:all .15s;}
+  .qopt{padding:9px 14px;border:1.5px solid var(--rule);font-size:0.78rem;font-family:'DM Mono',monospace;color:var(--mid);transition:all .15s;border-radius:var(--r-xs);}
   .qopt.on{border-color:var(--pine);background:var(--mist);color:var(--forest);font-weight:600;}
 
   /* CONTACTO — white / cream */
@@ -313,16 +312,16 @@
   .c-title span{color:var(--fern);}
   .c-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.72;max-width:380px;}
   .ccards{display:flex;flex-direction:column;gap:14px;width:100%;}
-  .ccard{border:2px solid var(--forest);padding:16px 20px;display:flex;align-items:center;gap:12px;transition:all .2s;text-decoration:none;background:var(--cream);overflow:hidden;}
-  .ccard:hover{background:var(--forest);border-color:var(--forest);transform:translateX(4px);}
+  .ccard{border:1.5px solid var(--rule);padding:16px 20px;display:flex;align-items:center;gap:12px;transition:all .2s;text-decoration:none;background:var(--white);overflow:hidden;border-radius:var(--r-sm);}
+  .ccard:hover{background:var(--forest);border-color:var(--forest);transform:translateY(-2px);box-shadow:0 8px 24px rgba(28,58,30,0.2);}
   .ccard:hover .cicon{background:var(--sage);}
   .ccard:hover .clabel{color:var(--fern);}
   .ccard:hover .cval{color:var(--white);}
-  .cicon{width:42px;height:42px;background:var(--forest);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;flex-shrink:0;transition:all .2s;}
+  .cicon{width:42px;height:42px;background:var(--forest);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;flex-shrink:0;transition:all .2s;border-radius:var(--r-xs);}
   .clabel{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--soft);margin-bottom:3px;transition:color .2s;}
   .cval{font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--forest);font-weight:500;transition:color .2s;}
 
-  footer{background:var(--forest);padding:22px 60px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--sage);}
+  footer{background:var(--forest) !important;padding:16px 40px;display:flex;justify-content:center;align-items:center;border-top:2px solid var(--pine);gap:24px;flex-wrap:wrap;text-align:center;}
   .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);letter-spacing:0.1em;}
   .flogo span{color:var(--fern);}
   .ftext{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;}
@@ -402,15 +401,15 @@
     border-top:3px solid var(--sage); border-bottom:3px solid var(--sage);
   }
   .modelo-header{text-align:center;margin-bottom:52px;}
-  .section-tag-light{display:inline-block;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;transform:rotate(-0.4deg);}
+  .section-tag-light{display:inline-block;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;}
   .modelo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--white);letter-spacing:0.04em;line-height:1;margin-bottom:10px;}
   .modelo-subtitle{font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--fern);letter-spacing:0.1em;}
   .modelo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;}
-  .modelo-card{background:#1e4220;border:2px solid rgba(255,255,255,0.18);padding:36px;transition:border-color .2s,background .2s;}
+  .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;transition:border-color .2s,background .2s;border-radius:var(--r);}
   .modelo-card:hover{background:rgba(255,255,255,0.1);border-color:var(--fern);}
   .mc-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--sage);line-height:1;margin-bottom:12px;}
   .mc-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .mc-tag{background:var(--pine);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;padding:3px 8px;text-transform:uppercase;font-weight:500;}
+  .mc-tag{background:var(--pine);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;padding:3px 8px;text-transform:uppercase;font-weight:500;border-radius:20px;}
   .mc-desc{font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.65;margin-bottom:18px;}
   .mc-note{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;letter-spacing:0.04em;}
   .mc-note-green{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;letter-spacing:0.04em;font-weight:500;}
@@ -655,23 +654,23 @@
   </div>
 </section>
 
-<section id="modelo" style="background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
+<section id="modelo" style="background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
   <div style="text-align:center;margin-bottom:52px;">
-    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;">Cómo trabajamos ✦</div>
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Cómo trabajamos ✦</div>
     <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
     <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;" class="modelo-cards-grid">
-    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.45);padding:36px;">
+    <div style="background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;border-radius:16px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">01</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:white;margin-bottom:14px;">Suscripción mensual</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:white;margin-bottom:14px;">Suscripción mensual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;border-radius:20px;">Variable</span></div>
       <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:12px;">Una vez que empiezas a fondear tu cuenta (en la casa de bolsa de tu elección), te acompaño estratégicamente en tu portafolio semana a semana — colocando órdenes de compra con un análisis previo, personalizado a tus objetivos y horizonte de inversión.</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.85);line-height:1.65;margin-bottom:18px;">Pagas una suscripción mensual fija, como Netflix, pero para tu patrimonio.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.85);line-height:1.65;margin-bottom:18px;">Pagas una suscripción mensual variable según tu nivel de inversión — entre más capital gestionamos, mayor es el acompañamiento.</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">Desde $299 / mes · según tu nivel de inversión</div>
     </div>
-    <div style="background:#1e4220;border:2px solid rgba(255,255,255,0.45);padding:36px;">
+    <div style="background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;border-radius:16px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">02</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:white;margin-bottom:14px;">Bono de éxito anual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;">Solo si hay rendimiento</span></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:white;margin-bottom:14px;">Bono de éxito anual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;border-radius:20px;">Solo si hay rendimiento</span></div>
       <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:18px;">Al cierre del año revisamos cuánto creció tu inversión. Si hubo rendimiento, cobro un porcentaje únicamente sobre esa ganancia. Si no ganaste, yo no cobro ese bono. Así los dos tenemos el mismo objetivo: que tu dinero crezca.</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;font-weight:500;">Si no hay rendimiento, no hay bono. Punto.</div>
     </div>
