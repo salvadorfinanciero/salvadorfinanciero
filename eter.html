@@ -118,10 +118,27 @@ header{position:sticky;top:0;z-index:50;height:58px;padding:0 1.8rem;background:
 
 /* ── EXPLORE — MAGNETIC WORDS ── */
 #viewExplore{min-height:calc(100vh - 58px);overflow-y:auto;overflow-x:hidden;position:relative}
-.exp-bg{position:relative;width:100%;min-height:calc(100vh - 200px)}.mag-words-flow{display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem 1.5rem 4rem;position:relative;z-index:1}
-.mag-word{font-family:.DM Mono.,monospace;font-size:.7rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:.2rem .52rem;border-radius:2px;cursor:pointer;transition:color .2s,border-color .2s,box-shadow .2s;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;letter-spacing:.04em;box-shadow:1px 1px 0 rgba(0,0,0,.5);white-space:nowrap;z-index:1;-webkit-touch-callout:none}
-.mag-word:active{cursor:grabbing}
-.mag-word:hover,.mag-word.active{color:var(--accent2);border-color:var(--accent);box-shadow:0 0 10px rgba(139,92,246,.3),1px 1px 0 rgba(0,0,0,.5)}
+.exp-bg{position:relative;width:100%;min-height:calc(100vh - 200px)}
+.mag-words-flow{position:relative;padding:1.2rem 1.5rem 4rem;min-height:280px}
+@keyframes magFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-5px) rotate(var(--r,0deg))}}
+@keyframes magIn{from{opacity:0;transform:scale(.85) rotate(var(--r,0deg))}to{opacity:1;transform:scale(1) rotate(var(--r,0deg))}}
+.mag-word{
+  position:absolute;
+  font-family:'DM Mono',monospace;font-size:.7rem;
+  color:var(--muted);background:var(--surface);
+  border:1px solid var(--border);
+  padding:.22rem .58rem;border-radius:2px;
+  cursor:grab;
+  user-select:none;-webkit-user-select:none;
+  letter-spacing:.04em;
+  box-shadow:1px 1px 0 rgba(0,0,0,.5);
+  white-space:nowrap;z-index:1;
+  -webkit-touch-callout:none;touch-action:none;
+  animation:magFloat var(--dur,5s) var(--delay,0s) ease-in-out infinite, magIn .35s ease both;
+  transition:color .2s,border-color .2s,box-shadow .2s;
+}
+.mag-word:active{cursor:grabbing;animation:none}
+.mag-word:hover,.mag-word.active{color:var(--accent2);border-color:var(--accent);box-shadow:0 0 12px rgba(139,92,246,.4),1px 1px 0 rgba(0,0,0,.5)}
 .exp-panel{position:relative;z-index:10;padding:1.8rem 2rem;max-width:760px;margin:0 auto;pointer-events:none;background:transparent}
 .exp-panel>*{pointer-events:all}
 .exp-hero{margin-bottom:1.3rem}
@@ -224,43 +241,62 @@ header{position:sticky;top:0;z-index:50;height:58px;padding:0 1.8rem;background:
 .wish-toggle input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;cursor:pointer}
 .wish-toggle label{font-size:.7rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:.3rem}
 
-/* BOOK DETAIL MODAL */
-#mBook{width:900px;max-width:96vw;max-height:90vh;padding:0;overflow:hidden;display:flex;flex-direction:column}
-.bm-top{display:flex;flex-shrink:0;border-bottom:1px solid var(--border);position:relative;min-height:0}
-/* No cover — full-width info panel */
+/* ── BOOK MODAL HEADER ── */
 .bm-header{
-  width:100%;padding:1.8rem 2rem 1.4rem;
-  display:flex;flex-direction:column;justify-content:flex-end;
+  width:100%;padding:1.5rem 1.8rem 1.3rem;
+  display:flex;gap:1.2rem;align-items:flex-start;
   position:relative;overflow:hidden;
   background:linear-gradient(160deg,var(--card2) 0%,var(--surface) 100%);
+  flex-shrink:0;
 }
 .bm-header::before{
   content:'';position:absolute;inset:0;
-  background:var(--bm-cat-glow,rgba(139,92,246,.12));
+  background:var(--bm-cat-glow,rgba(139,92,246,.1));
   pointer-events:none;
 }
 .bm-header-orb{
-  position:absolute;top:-60px;right:-60px;
-  width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle,var(--bm-cat-color,rgba(139,92,246,.25)) 0%,transparent 70%);
+  position:absolute;top:-40px;right:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--bm-cat-color,rgba(139,92,246,.2)) 0%,transparent 70%);
   pointer-events:none;
 }
+/* Mini cover column: cover + edit button stacked */
+.bm-cover-col{
+  flex-shrink:0;display:flex;flex-direction:column;gap:.5rem;
+  align-items:center;position:relative;z-index:1;
+}
+.bm-mini-cover{
+  width:76px;height:118px;border-radius:5px;
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.55),3px 0 0 rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.07);
+  background:var(--card2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;color:rgba(255,255,255,.2);
+}
+.bm-mini-cover img{width:100%;height:100%;object-fit:cover;display:block}
+/* Info column: top to bottom — cat / title / author / tags / meta */
+.bm-info-col{
+  flex:1;min-width:0;position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding-top:.1rem;
+}
 .bm-close{
-  position:absolute;top:.85rem;right:.85rem;
+  position:absolute;top:.75rem;right:.75rem;
   background:rgba(6,5,15,.75);border:1.5px solid var(--border2);
-  color:var(--text);width:34px;height:34px;border-radius:8px;
-  cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;
+  color:var(--text);width:32px;height:32px;border-radius:8px;
+  cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;
   transition:all .15s;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.6);
   backdrop-filter:blur(6px);
 }
 .bm-close:hover{border-color:var(--accent);color:var(--accent2);background:var(--glow)}
-.bm-cat{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:.5rem;opacity:.85}
-.bm-title{font-family:'Playfair Display',serif;font-size:1.65rem;font-weight:700;line-height:1.22;margin-bottom:.3rem;color:var(--text)}
-.bm-author{font-size:.78rem;color:var(--muted);margin-bottom:.75rem;font-weight:300}
-.bm-meta-row{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:.6rem}
-.bm-tags{display:flex;gap:.22rem;flex-wrap:wrap;margin-bottom:.6rem}
-.bm-actions-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.1rem}
-.bm-edit{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.28);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.28rem .68rem;border-radius:6px;cursor:pointer;transition:all .15s}
+.bm-cat{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem;opacity:.75}
+.bm-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;line-height:1.18;margin-bottom:.2rem;color:var(--text)}
+.bm-author{font-size:.74rem;color:var(--muted);margin-bottom:.55rem;font-weight:300;letter-spacing:.02em}
+.bm-tags{display:flex;gap:.18rem;flex-wrap:wrap;margin-bottom:.5rem}
+.bm-meta-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.4rem}
+.bm-actions-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.bm-edit{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.28);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.24rem .6rem;border-radius:5px;cursor:pointer;transition:all .15s;width:100%}
 .bm-edit:hover{background:rgba(139,92,246,.22);border-color:var(--accent)}
 .bm-body{flex:1;overflow-y:auto;padding:1.4rem 1.8rem;display:grid;grid-template-columns:1.6fr 1fr;gap:1.4rem}
 .bm-body::-webkit-scrollbar{width:3px}
@@ -400,10 +436,11 @@ canvas{-webkit-user-select:none;user-select:none}
     flex-direction:column;margin:0;
   }
   #mBook.open{transform:none!important}
-  .bm-header{padding:1.2rem 1.1rem 1rem}
+  .bm-header{padding:1.1rem 1rem 1rem;gap:.9rem}
+  .bm-mini-cover{width:58px;height:87px}
   .bm-title{font-size:1.25rem}
-  .bm-author{font-size:.72rem;margin-bottom:.5rem}
-  .bm-meta-row{gap:.75rem}
+  .bm-author{font-size:.68rem;margin-bottom:.4rem}
+  .bm-meta-row{gap:.6rem}
   .bm-close{
     position:fixed;top:.6rem;right:.75rem;
     width:36px;height:36px;font-size:.9rem;
@@ -822,15 +859,27 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div class="set-s">
     <h3>💾 Datos & Respaldo</h3>
-    <div id="storageInfo" style="font-size:.68rem;color:var(--muted);line-height:1.65;margin-bottom:.75rem">Calculando…</div>
-    <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.6rem">
-      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()">⬇ Exportar JSON</button>
-      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportPDF()">⬇ Exportar PDF</button>
+    <p style="font-size:.64rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem">Tu biblioteca vive <strong style="color:var(--text)">solo en este navegador</strong> — ningún servidor la guarda. Si cambias de dispositivo o borras el historial, podrías perderla. <span style="color:var(--accent2)">El respaldo es tu seguro de vida.</span> Descárgalo seguido.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.6rem">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem">📦 JSON — Respaldo real</div>
+        <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem">Todos tus libros, notas y keywords en un archivo ligero. <strong style="color:var(--text)">Puedes reimportarlo</strong> aquí en cualquier dispositivo al instante.</p>
+        <button class="btn-gen" style="font-size:.5rem;padding:.28rem .65rem;width:100%" onclick="exportJSON()">⬇ Descargar JSON</button>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem">📄 PDF — Para leer e imprimir</div>
+        <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem">Versión visual de tu biblioteca. <strong style="color:var(--text)">No sirve para restaurar</strong>, pero es ideal para archivar, compartir o imprimir.</p>
+        <button class="btn-gen" style="font-size:.5rem;padding:.28rem .65rem;width:100%" onclick="exportPDF()">⬇ Descargar PDF</button>
+      </div>
     </div>
-    <label style="display:inline-flex;align-items:center;gap:.5rem;background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer">
-      📂 Importar JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
-    </label>
-    <div style="font-size:.62rem;color:var(--err);margin-top:.35rem">⚠ Importar reemplaza la biblioteca actual.</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
+      <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem">📂 Restaurar desde JSON</div>
+      <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem">¿Cambiaste de dispositivo? Sube tu archivo JSON y tu galaxia aparece al instante. <strong style="color:var(--err)">⚠ Reemplaza los datos actuales.</strong></p>
+      <label style="display:inline-flex;align-items:center;gap:.4rem;background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.3rem .75rem;border-radius:6px;cursor:pointer">
+        📂 Seleccionar archivo<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+      </label>
+    </div>
+    <div id="storageInfo" style="margin-top:.45rem;font-size:.6rem;color:var(--dim);line-height:1.6">💾 Calculando…</div>
   </div>
   <div class="set-s">
     <h3>✦ Herramientas IA</h3>
@@ -1302,6 +1351,8 @@ function updateWishBadge(){
   const n=lib.filter(b=>b.isWishlist).length;
   document.getElementById('rocketBadge').className='rocket-badge'+(n>0?' has-items':'');
   document.getElementById('sbWishN').textContent=n;
+  const lbl=document.getElementById('fabWishLabel');
+  if(lbl)lbl.textContent=n>0?`Ver wishlist (${n})`:'Agregar a Wishlist';
 }
 
 // ══════════════════════════
@@ -1540,7 +1591,7 @@ function renderKw(b){
 }
 
 // ══════════════════════════
-// EXPLORE — FLOW MAGNETIC WORDS
+// EXPLORE — FLOATING + DRAGGABLE WORDS
 // ══════════════════════════
 function buildMagWords(){
   const container=document.getElementById('magWordsFlow');
@@ -1550,26 +1601,98 @@ function buildMagWords(){
     (b.keywords||[]).forEach(k=>wordSet.add(k));
     (b.notes||[]).forEach(n=>{(n.keywords||[]).forEach(k=>wordSet.add(k));if(n.mood)wordSet.add(n.mood);});
   });
-  const words=[...wordSet].slice(0,60);
-  if(!words.length){container.innerHTML='<div style="color:var(--dim);font-size:.72rem;font-style:italic;padding:.5rem">Agrega libros y notas para ver tus ideas aquí.</div>';return;}
+  const words=[...wordSet].slice(0,55);
+  if(!words.length){
+    container.style.minHeight='60px';
+    container.innerHTML='<div style="color:var(--dim);font-size:.72rem;font-style:italic;padding:.5rem">Agrega libros y notas para ver tus ideas aquí.</div>';
+    return;
+  }
 
+  // Layout: use container width, spread words across multiple rows
+  // We measure after a brief delay so the container is rendered
   container.innerHTML='';
-  words.forEach(word=>{
+  const viewW=container.offsetWidth||window.innerWidth-40;
+  const pad=14, wordH=30, gapY=18, gapX=10;
+  const rows=[];let rowX=pad,rowY=pad,rowH=wordH;
+
+  // First pass: estimate widths (avg 9px per char + padding)
+  const wordData=words.map(w=>({w,estW:Math.max(60,w.length*8+24)}));
+
+  // Pack into rows
+  wordData.forEach(d=>{
+    if(rowX+d.estW>viewW-pad&&rowX>pad){rowX=pad;rowY+=rowH+gapY;rowH=wordH;}
+    rows.push({word:d.w,x:rowX+((Math.random()-0.5)*18),y:rowY+((Math.random()-0.5)*8),w:d.estW});
+    rowX+=d.estW+gapX+Math.random()*14;
+  });
+
+  const totalH=rowY+rowH+80;
+  container.style.minHeight=totalH+'px';
+
+  rows.forEach((item,idx)=>{
     const el=document.createElement('div');
     el.className='mag-word';
-    el.textContent=word;
-    el.dataset.word=word;
-    // slight random rotation for visual variety
-    const rot=(Math.random()-0.5)*8;
+    el.textContent=item.word;
+    el.dataset.word=item.word;
+    const rot=(Math.random()-0.5)*6;
+    const dur=3.5+Math.random()*2.5;
+    el.style.left=item.x+'px';
+    el.style.top=item.y+'px';
+    el.style.setProperty('--r',rot+'deg');
+    el.style.setProperty('--dur',dur+'s');
+    el.style.setProperty('--delay',(idx*0.06)+'s');
     el.style.transform=`rotate(${rot}deg)`;
-    el.onclick=()=>{
-      document.querySelectorAll('.mag-word').forEach(w=>w.classList.remove('active'));
-      el.classList.add('active');
-      document.getElementById('expIn').value=word;
-      onExplore();
-    };
+
+    // DRAG + CLICK — mouse
+    let dragStartX,dragStartY,origLeft,origTop,dragging=false;
+    el.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      dragging=false;
+      dragStartX=e.clientX;dragStartY=e.clientY;
+      origLeft=parseFloat(el.style.left)||0;origTop=parseFloat(el.style.top)||0;
+      el.style.zIndex=100;el.style.animationPlayState='paused';
+      const onMove=ev=>{
+        const dx=ev.clientX-dragStartX,dy=ev.clientY-dragStartY;
+        if(Math.abs(dx)>4||Math.abs(dy)>4)dragging=true;
+        if(dragging){el.style.left=(origLeft+dx)+'px';el.style.top=(origTop+dy)+'px';}
+      };
+      const onUp=()=>{
+        document.removeEventListener('mousemove',onMove);
+        document.removeEventListener('mouseup',onUp);
+        el.style.zIndex='';el.style.animationPlayState='';
+        if(!dragging){activateWord(el,item.word);}
+      };
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onUp);
+    });
+
+    // DRAG + TAP — touch
+    el.addEventListener('touchstart',e=>{
+      dragging=false;
+      const t=e.touches[0];
+      dragStartX=t.clientX;dragStartY=t.clientY;
+      origLeft=parseFloat(el.style.left)||0;origTop=parseFloat(el.style.top)||0;
+      el.style.zIndex=100;el.style.animationPlayState='paused';
+    },{passive:true});
+    el.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      const t=e.touches[0];
+      const dx=t.clientX-dragStartX,dy=t.clientY-dragStartY;
+      if(Math.abs(dx)>5||Math.abs(dy)>5)dragging=true;
+      if(dragging){el.style.left=(origLeft+dx)+'px';el.style.top=(origTop+dy)+'px';}
+    },{passive:false});
+    el.addEventListener('touchend',()=>{
+      el.style.zIndex='';el.style.animationPlayState='';
+      if(!dragging)activateWord(el,item.word);
+    });
+
     container.appendChild(el);
   });
+}
+function activateWord(el,word){
+  document.querySelectorAll('.mag-word').forEach(w=>w.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('expIn').value=word;
+  onExplore();
 }
 
 function onExplore(){
@@ -1910,42 +2033,48 @@ function drawGraph(){
   drawStars(ctx,W,H);
   ctx.save();ctx.translate(gOff.x,gOff.y);ctx.scale(gSc,gSc);
 
-  // Orbit rings — medium visibility, clearly below constellation lines
+  // ── ORBIT RINGS — drawn first so they appear behind everything ──
+  // Category-sun planet orbit rings
   gSystems.forEach(sys=>{
-    const sunNode=gNodes.find(n=>n.id==='sun_'+sys.cat);
+    const sunNode=gNodes.find(n=>n.id===sys.sysId);
     if(!sunNode)return;
-    const col=cc(sys.cat);
-    const rings=[...new Set(gNodes.filter(n=>n.type==='planet'&&n.orbitSun==='sun_'+sys.cat).map(n=>n.orbitR))];
+    const galColor=sunNode.galColor;
+    const col=galColor||cc(sys.cat);
+    const rings=[...new Set(
+      gNodes.filter(n=>n.type==='planet'&&n.orbitSun===sys.sysId).map(n=>n.orbitR)
+    )];
     rings.forEach(r=>{
-      // Orbit: dashed, colored, clearly visible but softer than constellation lines
+      if(r<8)return;
+      // Soft glow halo
       ctx.beginPath();ctx.arc(sunNode.x,sunNode.y,r,0,Math.PI*2);
-      ctx.strokeStyle=col.glow+'0.22)';ctx.lineWidth=.9;ctx.setLineDash([3,10]);ctx.stroke();ctx.setLineDash([]);
+      ctx.strokeStyle=col.glow+'0.06)';ctx.lineWidth=5;ctx.setLineDash([]);ctx.stroke();
+      // Dashed orbit line
+      ctx.beginPath();ctx.arc(sunNode.x,sunNode.y,r,0,Math.PI*2);
+      ctx.strokeStyle=col.glow+'0.28)';ctx.lineWidth=.85;ctx.setLineDash([4,12]);ctx.stroke();
+      ctx.setLineDash([]);
     });
   });
-  // Main library orbit ring — clearly visible
-  const mnLib=gNodes.find(n=>n.id==='__main__');
-  if(mnLib&&gSystems.length>1){
-    // Use actual distance from main to first sun as orbit radius
-    const firstSun=gNodes.find(n=>n.type==='sun');
-    const orbitR=firstSun
-      ? Math.hypot(firstSun.x-mnLib.x, firstSun.y-mnLib.y)
-      : (gSystems[0]?.orbitR||0);
-    if(orbitR>20){
-      // Glow halo
-      ctx.beginPath();ctx.arc(mnLib.x,mnLib.y,orbitR,0,Math.PI*2);
-      ctx.strokeStyle='rgba(139,92,246,.04)';ctx.lineWidth=4;ctx.setLineDash([]);ctx.stroke();
-      // Main dashed line
-      ctx.beginPath();ctx.arc(mnLib.x,mnLib.y,orbitR,0,Math.PI*2);
-      ctx.strokeStyle='rgba(196,181,253,.18)';ctx.lineWidth=.9;ctx.setLineDash([6,10]);ctx.stroke();
-      ctx.setLineDash([]);
-    }
-  }
+  // Main library orbit ring (suns orbiting the central sun)
+  gNodes.filter(n=>n.type==='main').forEach(mn=>{
+    const suns=gNodes.filter(n=>n.type==='sun'&&n.galIdx===mn.galIdx);
+    if(suns.length<2)return; // only show ring when multiple suns
+    const orbitR=Math.hypot(suns[0].x-mn.x,suns[0].y-mn.y);
+    if(orbitR<20)return;
+    const col=mn.galColor;
+    // Glow halo
+    ctx.beginPath();ctx.arc(mn.x,mn.y,orbitR,0,Math.PI*2);
+    ctx.strokeStyle=col?col.glow+'0.05)':'rgba(139,92,246,.05)';ctx.lineWidth=6;ctx.setLineDash([]);ctx.stroke();
+    // Dashed ring
+    ctx.beginPath();ctx.arc(mn.x,mn.y,orbitR,0,Math.PI*2);
+    ctx.strokeStyle=col?col.glow+'0.22)':'rgba(196,181,253,.22)';ctx.lineWidth=1;ctx.setLineDash([7,14]);ctx.stroke();
+    ctx.setLineDash([]);
+  });
 
-  // Sun-to-planet connector lines (faint, shows orbital membership)
+  // Sun-to-planet faint connector (shows membership)
   gNodes.filter(n=>n.type==='planet').forEach(node=>{
     const sunNode=gNodes.find(n2=>n2.id===node.orbitSun);
     if(!sunNode)return;
-    const col=cc(node.cat);
+    const col=node.galColor||cc(node.cat);
     ctx.beginPath();ctx.moveTo(sunNode.x,sunNode.y);ctx.lineTo(node.x,node.y);
     ctx.strokeStyle=col.glow+'0.04)';ctx.lineWidth=.35;ctx.stroke();
   });
@@ -2239,31 +2368,31 @@ function openBook(id){
         ?`<span style="font-size:.58rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">✅ TERMINADO</span>`:'';
 
   document.getElementById('bmTop').innerHTML=`
-    <div class="bm-header" style="--bm-cat-color:${catCol.sun}33;--bm-cat-glow:${catCol.glow}0.1)">
-      <div class="bm-header-orb" style="background:radial-gradient(circle,${catCol.sun}44 0%,transparent 70%)"></div>
+    <div class="bm-header" style="--bm-cat-color:${catCol.sun}33;--bm-cat-glow:${catCol.glow}0.08)">
+      <div class="bm-header-orb" style="background:radial-gradient(circle,${catCol.sun}33 0%,transparent 70%)"></div>
       <button class="bm-close" onclick="closeModal('mBook')">✕</button>
-      <div style="position:relative;z-index:1">
+      ${b.cover
+        ?`<div class="bm-cover-col"><div class="bm-mini-cover"><img src="${b.cover}" alt="${b.title}"></div><button class="bm-edit" onclick="closeModal('mBook');setTimeout(()=>openEdit(${b.id}),180)">✎ Editar</button></div>`
+        :`<div class="bm-cover-col"><div class="bm-mini-cover">📖</div><button class="bm-edit" onclick="closeModal('mBook');setTimeout(()=>openEdit(${b.id}),180)">✎ Editar</button></div>`}
+      <div class="bm-info-col">
         ${b.category?`<div class="bm-cat">${b.category}</div>`:''}
         <div class="bm-title">${b.title}</div>
         <div class="bm-author">${b.author}</div>
-        <div class="bm-tags" id="bmTags">${(b.keywords||[]).slice(0,6).map(k=>`<span class="pill">${k}</span>`).join('')}</div>
+        <div class="bm-tags" id="bmTags">${(b.keywords||[]).slice(0,5).map(k=>`<span class="pill">${k}</span>`).join('')}</div>
         <div class="bm-meta-row">
           ${statusBadge?statusBadge+'&nbsp;':''}
-          <div style="display:flex;align-items:center;gap:.45rem">
-            <span style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Progreso</span>
-            <select id="bmProgress" onchange="saveProgress(${b.id},this.value)" style="background:rgba(26,23,48,.9);border:1px solid var(--border2);color:var(--text);font-family:'DM Mono',monospace;font-size:.56rem;padding:.22rem .5rem;border-radius:5px;outline:none;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Progreso</span>
+            <select id="bmProgress" onchange="saveProgress(${b.id},this.value)" style="background:rgba(26,23,48,.9);border:1px solid var(--border2);color:var(--text);font-family:'DM Mono',monospace;font-size:.54rem;padding:.2rem .45rem;border-radius:5px;outline:none;cursor:pointer">
               <option value="pending" ${(b.readingStatus||'pending')==='pending'?'selected':''}>⏳ Pendiente</option>
               <option value="reading" ${(b.readingStatus||'')==='reading'?'selected':''}>📖 Leyendo</option>
               <option value="done" ${(b.readingStatus||'')==='done'?'selected':''}>✅ Terminado</option>
             </select>
           </div>
-          <div style="display:flex;align-items:center;gap:.3rem">
-            <span style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Rating</span>
+          <div style="display:flex;align-items:center;gap:.28rem">
+            <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Rating</span>
             <div class="star-rating" id="bmStars">${[1,2,3,4,5].map(n=>`<span class="star${n<=(b.rating||0)?' on':''}" onclick="saveRating(${b.id},${n})">★</span>`).join('')}</div>
           </div>
-        </div>
-        <div class="bm-actions-row">
-          <button class="bm-edit" onclick="closeModal('mBook');setTimeout(()=>openEdit(${b.id}),180)">✎ Editar libro</button>
         </div>
       </div>
     </div>`;
@@ -2809,7 +2938,7 @@ document.addEventListener('click',e=>{
       <button class="fab-item-btn" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">📚</button>
     </div>
     <div class="fab-item" onclick="toggleFab();openWishlist()">
-      <div class="fab-item-label">Ver wishlist</div>
+      <div class="fab-item-label" id="fabWishLabel">Ver wishlist</div>
       <button class="fab-item-btn" style="background:linear-gradient(135deg,#92400e,#b45309)">🚀</button>
     </div>
     <div class="fab-item" onclick="toggleFab();document.querySelectorAll('.ntab')[2]?.click()">
