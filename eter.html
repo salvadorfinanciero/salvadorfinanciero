@@ -6,6 +6,9 @@
   <meta name="theme-color" content="#06050f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Lock to portrait on mobile -->
+<style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}</style>
+<div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:rgba(196,181,253,.7);font-family:DM Mono,monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;gap:.75rem"><div style="font-size:2rem">↩</div><div>Gira el teléfono<br>para usar Éter</div></div>
 <title>Éter — Biblioteca Mental v23</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -309,9 +312,13 @@ header{position:sticky;top:0;z-index:50;height:58px;padding:0 1.8rem;background:
   font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;
   padding:.38rem .85rem;border-radius:7px;cursor:pointer;
   box-shadow:0 2px 12px rgba(139,92,246,.4);z-index:10;
-  transition:all .18s;
+  transition:all .18s;display:flex;align-items:center;gap:.3rem;
 }
 .bm-edit-fixed:hover{opacity:.88;box-shadow:0 4px 18px rgba(139,92,246,.55)}
+@media(max-width:768px){
+  .bm-edit-text{display:none}
+  .bm-edit-fixed{padding:.42rem .52rem;font-size:.75rem}
+}
 .bm-cat{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem;opacity:.75}
 .bm-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;line-height:1.15;margin-bottom:.22rem;color:var(--text)}
 .bm-author{font-size:.84rem;color:var(--muted);margin-bottom:.6rem;font-weight:300;letter-spacing:.02em}
@@ -458,11 +465,13 @@ canvas{-webkit-user-select:none;user-select:none}
     flex-direction:column;margin:0;
   }
   #mBook.open{transform:none!important}
-  .bm-header{padding:1.1rem 1rem 1rem;gap:.9rem}
+  .bm-header{padding:1rem .9rem .9rem;gap:.8rem}
   .bm-mini-cover{width:58px;height:87px}
-  .bm-title{font-size:1.25rem}
+  .bm-title{font-size:1.15rem}
   .bm-author{font-size:.68rem;margin-bottom:.4rem}
-  .bm-meta-row{gap:.6rem}
+  .bm-meta-row{gap:.5rem}
+  .bm-edit-fixed{bottom:.65rem;right:.65rem;padding:.52rem .62rem;font-size:1rem;border-radius:9px}
+  .bm-edit-text{display:none}
   .bm-close{
     position:fixed;top:.6rem;right:.75rem;
     width:36px;height:36px;font-size:.9rem;
@@ -1166,16 +1175,19 @@ function stepPhysics(){
   const container=document.getElementById('magWordsFlow');
   if(!container){physicsRAF=null;return;}
   const W=container.offsetWidth||window.innerWidth;
-  // Calculate the real floor: distance from container top to bottom of viewport
+  // Floor = full viewport height minus the container's top offset
   const rect=container.getBoundingClientRect();
-  const H=Math.max(window.innerHeight-rect.top-8, 200);
-  const gx=gyroX*0.3;
-  const bounce=0.38,friction=0.85;
+  const containerTop=Math.max(rect.top,0);
+  const H=window.innerHeight - containerTop - 10;
+  // Also expand container so words have room
+  if(container.style.minHeight!==H+'px') container.style.minHeight=H+'px';
+  const gx=gyroX*0.4;
+  const bounce=0.38,friction=0.84;
   wordPhysics.forEach(p=>{
     p.vx=(p.vx+gx)*friction;
-    p.vy=(p.vy+0.55)*friction;
+    p.vy=(p.vy+0.6)*friction;
     p.x+=p.vx;p.y+=p.vy;
-    if(p.y+p.h>H-4){p.y=H-p.h-4;p.vy*=-bounce;p.vx*=0.88;}
+    if(p.y+p.h>=H-2){p.y=H-p.h-2;p.vy*=-bounce;p.vx*=0.88;}
     if(p.y<0){p.y=0;p.vy*=-bounce;}
     if(p.x<0){p.x=0;p.vx*=-bounce;}
     if(p.x+p.w>W-4){p.x=W-p.w-4;p.vx*=-bounce;}
@@ -1185,7 +1197,8 @@ function stepPhysics(){
 }
 window.addEventListener('deviceorientation',e=>{
   if(!gravityOn)return;
-  gyroX=(e.gamma||0)/90*5;
+  // In portrait: gamma = left/right tilt (-90 to 90)
+  gyroX=(e.gamma||0)/45*3; // map to -3..3 acceleration units
 },{passive:true});
 
 function gotoV(v,btn){
@@ -1979,7 +1992,6 @@ function initGraph(){
   friendGalaxies.filter(f=>activeGalaxies.includes(f.id)).forEach(f=>toRender.push(f));
 
   if(!toRender.length){
-    drawStars(ctx,W,H);
     ctx.fillStyle='rgba(196,181,253,.3)';ctx.font='13px Inter';ctx.textAlign='center';
     ctx.fillText('Activa una galaxia para verla.',W/2,H/2);return;
   }
@@ -2011,7 +2023,7 @@ function initGraph(){
     realBooks.forEach(b=>{const c=b.category||'';if(!groups[c])groups[c]=[];groups[c].push(b);});
     const cats=Object.keys(groups);
     const numSystems=cats.length;
-    const sysOrbitR=numSystems<=1 ? maxR*.52 : maxR*(numSystems<=3?.55:.65);
+    const sysOrbitR=numSystems<=1 ? maxR*.55 : maxR*(numSystems<=3?.62:.72);
     const totalMass=realBooks.length+cats.length*2;
     const mainR=Math.max(26,Math.min(48,26+totalMass*1.4));
 
@@ -2028,7 +2040,7 @@ function initGraph(){
       gSystems.push({cx,cy,cat,books:groups[cat],baseAngle:angle,orbitR:sysOrbitR,galIdx:gi,sysId});
       gNodes.push({id:sysId,title:cat||'Sin cat.',x:cx,y:cy,type:'sun',cat,r:Math.max(16,Math.min(34,16+groups[cat].length*2.2+catNotes*.4)),galIdx:gi,galColor});
 
-      const planetOrbitRadii=[maxR*.28,maxR*.38,maxR*.48,maxR*.56];
+      const planetOrbitRadii=[maxR*.32,maxR*.44,maxR*.56,maxR*.66];
       groups[cat].forEach((b,bi)=>{
         const ring=Math.floor(bi/5);
         const r=planetOrbitRadii[Math.min(ring,planetOrbitRadii.length-1)];
@@ -2177,7 +2189,7 @@ function drawGraph(){
   const ctx=cv.getContext('2d');
   const W=cv.width/dpr, H=cv.height/dpr;
   ctx.clearRect(0,0,cv.width,cv.height);
-  drawStars(ctx,W,H);
+  // Stars are drawn by the fixed starCanvas — no duplicate here
   ctx.save();ctx.translate(gOff.x,gOff.y);ctx.scale(gSc,gSc);
 
   // ── ORBIT RINGS — tenue pero visible ──
@@ -2305,11 +2317,19 @@ function drawGraph(){
       ctx.strokeStyle=col.sun+'99';ctx.lineWidth=.9;
     }
     ctx.stroke();
-    if(gSc>.4){
+    if(gSc>.35){
       ctx.textAlign='center';ctx.fillStyle='rgba(240,238,255,.82)';
       ctx.font=`${Math.max(7,8.5*gSc)}px Inter`;
-      const words=node.title.split(' ');
-      ctx.fillText(words.slice(0,2).join(' '),node.x,node.y+r+11);
+      // Show full title, wrapping long ones
+      const title=node.title||'';
+      const words=title.split(' ');
+      if(words.length<=3||gSc>.7){
+        ctx.fillText(title,node.x,node.y+r+13);
+      } else {
+        const mid=Math.ceil(words.length/2);
+        ctx.fillText(words.slice(0,mid).join(' '),node.x,node.y+r+12);
+        ctx.fillText(words.slice(mid).join(' '),node.x,node.y+r+22);
+      }
     }
   });
 
@@ -2525,13 +2545,16 @@ function openBook(id){
               <option value="done" ${(b.readingStatus||'')==='done'?'selected':''}>✅ Terminado</option>
             </select>
           </div>
-          <div style="display:flex;align-items:center;gap:.28rem">
-            <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Rating</span>
-            <div class="star-rating" id="bmStars">${[1,2,3,4,5].map(n=>`<span class="star${n<=(b.rating||0)?' on':''}" onclick="saveRating(${b.id},${n})">★</span>`).join('')}</div>
-          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.28rem;margin-bottom:.35rem">
+          <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Rating</span>
+          <div class="star-rating" id="bmStars">${[1,2,3,4,5].map(n=>`<span class="star${n<=(b.rating||0)?' on':''}" onclick="saveRating(${b.id},${n})">★</span>`).join('')}</div>
         </div>
       </div>
-      <button class="bm-edit-fixed" onclick="closeModal('mBook');setTimeout(()=>openEdit(${b.id}),180)">✎ Editar libro</button>
+      <button class="bm-edit-fixed" onclick="closeModal('mBook');setTimeout(()=>openEdit(${b.id}),180)">
+        <span class="bm-edit-icon">✎</span>
+        <span class="bm-edit-text"> Editar libro</span>
+      </button>
     </div>`;
 
   const related=getRelated(b);
