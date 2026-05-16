@@ -608,7 +608,7 @@ canvas{-webkit-user-select:none;user-select:none}
 <div id="splash">
   <div class="splash-orb"></div>
   <div class="splash-name" style="margin-top:0">ALINEA</div>
-  <div class="splash-lib" id="splashLib">Tu Universo de Conocimiento</div>
+  <div class="splash-lib" id="splashLib">Hagamos visible lo invisible.</div>
 </div>
 
 <!-- TOP HEADER LIMPIO -->
@@ -1013,6 +1013,8 @@ canvas{-webkit-user-select:none;user-select:none}
   <div id="spage1">
     <div class="set-s">
       <h3>🎨 Apariencia</h3>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Nombre de tu biblioteca</div>
+      <input class="fin" type="text" id="libNameSettings" placeholder="Mi Biblioteca…" oninput="syncLibName(this.value)" style="margin-bottom:.9rem">
       <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Color de acento</div>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem" id="accentPalette">
         <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:2px solid #c4b5fd;cursor:pointer;box-shadow:0 0 8px rgba(139,92,246,.6);transition:transform .15s" title="Morado"></button>
@@ -1034,6 +1036,23 @@ canvas{-webkit-user-select:none;user-select:none}
     <div class="set-s">
       <h3>🌐 <span data-i18n="langTitle">Idioma</span></h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.35rem" id="langGrid"></div>
+    </div>
+    <div class="set-s" style="border:none;margin-top:.2rem">
+      <h3 style="display:flex;align-items:center;gap:.5rem">✦ Nota del autor</h3>
+      <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
+        <p style="font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.75rem;font-style:italic">¿Y si pudieras ver tu conocimiento?</p>
+        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no la retengamos, sino porque no podemos cargar físicamente todos los libros, aunque nos encantaría.</p>
+        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
+        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
+        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni sabías que tenías. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en tu mundo.</p>
+        <p style="font-family:'Playfair Display',serif;font-size:.78rem;font-style:italic;color:var(--accent2);line-height:1.6;margin-bottom:.75rem">Volver visible lo invisible. Ver las miles de conexiones que existen entre tus libros. Eso es ALINEA.</p>
+        <div onclick="exportJSON()" style="background:var(--glow);border:1px solid var(--accent);border-radius:8px;padding:.65rem .8rem;margin-bottom:.75rem;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(139,92,246,.18)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.background='var(--glow)';this.style.borderColor='var(--accent)'">
+          <p style="font-size:.67rem;color:rgba(240,238,255,.82);line-height:1.8;margin:0"><strong style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase">Una cosa importante —</strong><br>Tus datos nunca salen de tu dispositivo. Ni yo puedo verlos. ALINEA jamás tendrá tu información. Lo único que te pido es que <span style="color:var(--accent2);text-decoration:underline;text-underline-offset:3px;font-weight:500">descargues tu respaldo</span> — ese archivo JSON es tu biblioteca entera, vive donde tú quieras, y con él puedes volver a tu galaxia en cualquier momento y en cualquier dispositivo.</p>
+          <div style="margin-top:.5rem;display:flex;align-items:center;gap:.35rem;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase">⬇ Descargar respaldo ahora</div>
+        </div>
+        <p style="font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.06em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
+      </div>
     </div>
     <div class="set-s" style="border:none">
       <h3>Desarrollado por</h3>
@@ -1140,6 +1159,29 @@ canvas{-webkit-user-select:none;user-select:none}
   <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
 </div>
 
+
+<!-- WELCOME / AUTHOR NOTE MODAL -->
+<div class="modal" id="mWelcome" style="width:540px;max-width:94vw">
+  <button onclick="closeModal('mWelcome')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
+  <div style="text-align:center;margin-bottom:1.1rem">
+    <div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 20px rgba(139,92,246,.5);margin:0 auto .75rem"></div>
+    <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2)">ALINEA</span>
+  </div>
+  <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden;margin-bottom:1rem">
+    <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
+    <p style="font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.7rem;font-style:italic">¿Y si pudieras ver tu conocimiento?</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no la retengamos, sino porque no podemos cargar físicamente todos los libros, aunque nos encantaría.</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
+    <p style="font-family:'Playfair Display',serif;font-size:.78rem;font-style:italic;color:var(--accent2);line-height:1.6;margin-bottom:.7rem">Volver visible lo invisible. Ver las miles de conexiones que existen entre tus libros. Eso es ALINEA.</p>
+    <p style="font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
+  </div>
+  <div style="display:flex;gap:.6rem;align-items:center">
+    <button class="btn-ok" style="flex:1" onclick="closeModal('mWelcome');setTimeout(()=>document.querySelector('.fab')?.click(),300)">✦ Agregar mi primer libro</button>
+    <button class="btn-ghost" onclick="closeModal('mWelcome')">Explorar primero</button>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════
 // STATE
@@ -1165,7 +1207,7 @@ let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
-const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish'];
+const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mWelcome'];
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
 const persistCfg=()=>localStorage.setItem('eter2_cfg',JSON.stringify(cfg));
@@ -1281,6 +1323,13 @@ function cc(cat){return CAT_COLORS[cat]||CAT_COLORS[''];}
 // ══════════════════════════
 // SETTINGS TABS
 // ══════════════════════════
+function syncLibName(val){
+  appState.libName=val;
+  persistState();
+  const galInput=document.getElementById('libNameInput');
+  if(galInput){galInput.value=val;onLibName(val);}
+  if(typeof initGraph==='function'&&document.getElementById('viewGraph')?.classList.contains('active'))initGraph();
+}
 function switchSettingsTab(n){
   [1,2,3].forEach(i=>{
     const page=document.getElementById('spage'+i);
@@ -1310,6 +1359,7 @@ function openSettings(tab){
   const _ep=document.getElementById('customEndpointIn');if(_ep)_ep.value=cfg.customEndpoint||'';
   const _cm=document.getElementById('customModelIn');if(_cm)_cm.value=cfg.customModel||'';
   if(typeof updateApiSt==='function')updateApiSt();
+  const _lns=document.getElementById('libNameSettings');if(_lns)_lns.value=appState.libName||'';
 }
 
 
@@ -2157,7 +2207,7 @@ function showFriendBookTooltip(node){
 // ══════════════════════════
 const LANGS={
 es:{name:'Español',t:{
-  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Tu Universo de Conocimiento',
+  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Hagamos visible lo invisible.',
   addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
   galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
   exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
@@ -2211,7 +2261,7 @@ es:{name:'Español',t:{
   ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
 }},
 en:{name:'English',t:{
-  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Your Universe of Knowledge',
+  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
   addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
   galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
   exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
@@ -2265,7 +2315,7 @@ en:{name:'English',t:{
   ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
 }},
 pt:{name:'Português',t:{
-  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Seu Universo do Conhecimento',
+  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
   addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
   galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
   exploreTitle:'Explorar ideias',exploreSubtitle:'Toque para explorar · Arraste para mover · Incline o telefone',
@@ -2319,7 +2369,7 @@ pt:{name:'Português',t:{
   ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
 }},
 fr:{name:'Français',t:{
-  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Votre Univers de Connaissance',
+  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Visible lo invisible.',
   addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
   galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
   exploreTitle:'Explorer les idées',exploreSubtitle:'Toucher pour explorer · Glisser pour déplacer · Incliner le téléphone',
@@ -2481,7 +2531,7 @@ it:{name:'Italiano',t:{
   ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
 }},
 ja:{name:'日本語',t:{
-  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'あなたの知識の宇宙',
+  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
   addBook:'＋ 本を追加',search:'検索…',settings:'設定',wishlistBtn:'ウィッシュリスト',
   galaxyHint:'太陽系 · ドラッグ · スクロール = ズーム · クリック = 本 · アニメーション軌道',
   exploreTitle:'アイデアを探す',exploreSubtitle:'タップして探索 · ドラッグして移動 · 電話を傾ける',
@@ -4594,7 +4644,7 @@ function initSplash(){
   const _isDefault=!_stored||_defaults.includes(_stored);
   // If user set a custom name, show it; otherwise show translated default
   const libName=_isDefault
-    ?(lib.length>0?(t('myLibrary')||'Mi Biblioteca').replace('…',''):(t('splashSub')||'Tu Universo de Conocimiento'))
+    ?(lib.length>0?(t('myLibrary')||'Mi Biblioteca').replace('…',''):(t('splashSub')||'Hagamos visible lo invisible.'))
     :_stored;
   const splashLib=document.getElementById('splashLib');
   if(splashLib)splashLib.textContent=libName;
@@ -4604,7 +4654,18 @@ function initSplash(){
   },2600);
 }
 
-updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);setTimeout(updateWishGalBtn,400);
+updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);maybeShowWelcome();
+// ══════════════════════════
+// WELCOME MODAL
+// ══════════════════════════
+function maybeShowWelcome(){
+  if(lib.length===0){
+    setTimeout(()=>{
+      showModal('mWelcome');
+    },1200);
+  }
+}
+
 // ══════════════════════════
 // DRAGGABLE G-TOOLS PANEL
 // ══════════════════════════
