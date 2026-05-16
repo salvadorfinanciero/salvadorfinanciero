@@ -508,7 +508,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .star-display{display:flex;gap:.1rem}
 
 /* ── FAB ── */
-.fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 80px);right:1.4rem;z-index:400;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
+.fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 80px);right:1.4rem;z-index:300;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
 .fab{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;color:#fff;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,92,246,.5);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
 .fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(139,92,246,.65)}
 .fab.open{transform:rotate(45deg)}
@@ -1003,13 +1003,140 @@ canvas{-webkit-user-select:none;user-select:none}
   <button onclick="closeModal('mSettings')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
   <h2 data-i18n="settingsTitle" style="margin-bottom:.8rem">Configuración</h2>
   <!-- TABS -->
-  <div style="display:flex;gap:.3rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
-    <button class="stab active" id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">🎨 Apariencia</button>
-    <button class="stab" id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">💾 Datos & Galaxia</button>
-    <button class="stab" id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">✦ Herramientas IA</button>
+  <div style="display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
+    <button id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">🎨 Apariencia</button>
+    <button id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">💾 Datos</button>
+    <button id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">✦ IA</button>
   </div>
+
   <!-- TAB 1: APARIENCIA -->
-  <div id="spage1" class="spage">
+  <div id="spage1">
+    <div class="set-s">
+      <h3>🎨 Apariencia</h3>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Color de acento</div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem" id="accentPalette">
+        <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:2px solid #c4b5fd;cursor:pointer;box-shadow:0 0 8px rgba(139,92,246,.6);transition:transform .15s" title="Morado"></button>
+        <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Azul"></button>
+        <button class="accent-swatch" data-theme="green" onclick="setAccentTheme('green',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#047857,#10b981);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Verde"></button>
+        <button class="accent-swatch" data-theme="pink" onclick="setAccentTheme('pink',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#9d174d,#ec4899);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Rosa"></button>
+        <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Naranja"></button>
+        <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Amarillo"></button>
+        <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Rojo"></button>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Tamaño de texto</div>
+      <div style="display:flex;gap:.3rem">
+        <button onclick="setFontSize('small')" id="fsSmall" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Pequeño</button>
+        <button onclick="setFontSize('normal')" id="fsNormal" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Normal</button>
+        <button onclick="setFontSize('large')" id="fsLarge" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Grande</button>
+        <button onclick="setFontSize('xl')" id="fsXL" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">XL</button>
+      </div>
+    </div>
+    <div class="set-s">
+      <h3>🌐 <span data-i18n="langTitle">Idioma</span></h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.35rem" id="langGrid"></div>
+    </div>
+    <div class="set-s" style="border:none">
+      <h3>Desarrollado por</h3>
+      <div style="display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
+        <div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 10px rgba(139,92,246,.5);flex-shrink:0"></div>
+        <div>
+          <div style="font-size:.8rem;font-weight:500;color:var(--text)">Miguel Valdez</div>
+          <a href="https://instagram.com/miguelvaldezv" target="_blank" style="font-size:.66rem;color:var(--accent2);text-decoration:none">@miguelvaldezv</a>
+          <div style="margin-top:.35rem">
+            <a href="https://instagram.com/miguelvaldezv" target="_blank" style="font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:.15rem .45rem;border-radius:4px">Instagram ↗</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim)">ALINEA · Biblioteca Mental · Todos los derechos reservados</div>
+    </div>
+  </div>
+
+  <!-- TAB 2: DATOS & GALAXIA -->
+  <div id="spage2" style="display:none">
+    <div class="set-s">
+      <h3>💾 Datos & Respaldo</h3>
+      <p style="font-size:.64rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem">Tu biblioteca vive solo en este navegador. Respalda para no perderla.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
+          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">JSON — Respaldo real</div>
+          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem">Todos tus libros, notas y keywords.</p>
+          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportJSON()">Descargar JSON</button>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
+          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">PDF — Para leer</div>
+          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem">Versión visual para archivar o imprimir.</p>
+          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportPDF()">Descargar PDF</button>
+        </div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.4rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">Restaurar desde JSON</div>
+        <label style="display:inline-flex;align-items:center;gap:.35rem;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.28rem .7rem;border-radius:6px;cursor:pointer">
+          Seleccionar archivo<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+        </label>
+      </div>
+      <div id="storageInfo" style="font-size:.58rem;color:var(--dim);line-height:1.6">Calculando…</div>
+    </div>
+    <div class="set-s">
+      <h3>🌌 <span data-i18n="friendsTitle">Galaxias de amigos</span></h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem">Pega el JSON de un amigo para ver su galaxia junto a la tuya.</p>
+      <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.6rem" id="friendGalList"></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem">Agregar galaxia</div>
+        <input class="fin" type="text" id="friendNameIn" placeholder="Nombre del amigo" style="margin-bottom:.35rem">
+        <textarea id="friendJsonIn" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.58rem;padding:.55rem;border-radius:6px;outline:none;resize:vertical;min-height:65px;margin-bottom:.35rem" placeholder="Pega el JSON aquí"></textarea>
+        <div style="display:flex;gap:.4rem;align-items:center">
+          <button class="btn-gen" style="font-size:.52rem;padding:.3rem .75rem" onclick="addFriendGalaxy()">Agregar</button>
+          <span id="friendAddMsg" style="font-size:.6rem;display:none"></span>
+        </div>
+      </div>
+      <div style="margin-top:.55rem;display:flex;gap:.4rem;align-items:center">
+        <button class="btn-ghost" style="font-size:.5rem;padding:.22rem .6rem" onclick="copyMyCode()">Copiar mi código para compartir</button>
+        <span id="copyMsg" style="font-size:.56rem;color:var(--ok);display:none">¡Copiado!</span>
+      </div>
+    </div>
+    <div class="set-s" style="border:none">
+      <h3 style="color:rgba(248,113,113,.7)">⚠ Zona de peligro</h3>
+      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer">Borrar todo y reiniciar</button>
+    </div>
+  </div>
+
+  <!-- TAB 3: HERRAMIENTAS IA -->
+  <div id="spage3" style="display:none">
+    <div class="set-s">
+      <h3 data-i18n="providerLabel">Proveedor IA</h3>
+      <div class="prow" style="flex-wrap:wrap;gap:.3rem;margin-bottom:.55rem">
+        <button class="pbtn active" id="provA" onclick="selProv('anthropic')">Claude</button>
+        <button class="pbtn" id="provO" onclick="selProv('openai')">GPT-4o</button>
+        <button class="pbtn" id="provG" onclick="selProv('gemini')">Gemini</button>
+        <button class="pbtn" id="provX" onclick="selProv('grok')">Grok</button>
+        <button class="pbtn" id="provC" onclick="selProv('custom')">Otro</button>
+      </div>
+      <div id="customEndpointWrap" style="display:none;margin-bottom:.45rem">
+        <label class="flbl">Endpoint URL</label>
+        <input class="fin" type="text" id="customEndpointIn" placeholder="https://api.ejemplo.com/v1/chat/completions" style="margin-bottom:.28rem">
+        <label class="flbl">Modelo</label>
+        <input class="fin" type="text" id="customModelIn" placeholder="llama-3, mistral, etc.">
+      </div>
+      <label class="flbl" data-i18n="apiKeyLabel">API Key</label>
+      <input class="fin" type="password" id="apiKeyIn" placeholder="sk-ant-… o sk-…">
+      <div class="api-st none" id="apiSt">○ Sin API key</div><br>
+      <button class="btn-test" onclick="testKey()" data-i18n="verifyConn">Verificar conexión</button>
+      <div class="api-guide" id="apiGuide"></div>
+    </div>
+    <div class="set-s">
+      <h3>✦ Herramientas IA</h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem">Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.</p>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)">Colisión de ideas</button>
+        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)">Horizonte de sucesos</button>
+      </div>
+    </div>
+    <div class="set-s" style="border:none;background:var(--card2);border-radius:8px;padding:.7rem;border:1px solid var(--border)">
+      <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">🚧 Próximamente</div>
+      <p style="font-size:.6rem;color:var(--dim);line-height:1.55">Mapas de conceptos, análisis de tendencias, resúmenes automáticos y recomendaciones personalizadas.</p>
+    </div>
+  </div>
+
   <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
 </div>
 
