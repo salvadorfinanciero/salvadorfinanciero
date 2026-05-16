@@ -157,7 +157,7 @@ body::before{content:'';position:fixed;inset:0;background:
 @keyframes cardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .bcard:hover{transform:translateY(-6px)}
 .bcover{width:100%;aspect-ratio:2/3;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:relative;transition:border-color .2s,box-shadow .2s}
-.bcard:hover .bcover{border-color:var(--accent);border-width:2px;box-shadow:0 12px 40px rgba(139,92,246,.35),0 0 0 1px var(--accent),inset 0 0 20px rgba(139,92,246,.05)}
+.bcard:hover .bcover{border-color:var(--accent);border-width:2px;box-shadow:0 12px 40px rgba(139,92,246,.35),0 0 0 2px var(--accent),0 0 20px rgba(139,92,246,.2),inset 0 0 16px rgba(139,92,246,.06)}
 .bcover img{width:100%;height:100%;object-fit:cover}
 .cph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem;text-align:center;background:linear-gradient(145deg,var(--card),var(--card2))}
 .cph span{font-size:1.4rem;opacity:.13;margin-bottom:.4rem;display:block}
@@ -522,13 +522,13 @@ canvas{-webkit-user-select:none;user-select:none}
   header{padding:0 .75rem;height:56px;gap:.3rem}
   .logo-name{font-size:1.1rem}
   .logo-orb{width:22px;height:22px}
-  .ntab{font-size:.58rem;padding:.35rem .6rem}
+  .ntab{font-size:.55rem;padding:.3rem .55rem}
   .bcount{display:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
-  .btic{width:34px;height:34px;font-size:.85rem}
-  .g-tools .btic{width:58px;height:58px;font-size:1.5rem;border-radius:13px;box-shadow:0 2px 16px rgba(0,0,0,.5)}
-  .g-tools{gap:.55rem}
+  .btic{width:32px;height:32px;font-size:.8rem}
+  .g-tools{position:fixed!important;top:auto!important;right:auto!important;bottom:calc(env(safe-area-inset-bottom) + 82px)!important;left:50%!important;transform:translateX(-50%)!important;flex-direction:row!important;gap:.4rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:20px;padding:.3rem .4rem;backdrop-filter:blur(24px);z-index:10}
+  .g-tools .btic{width:44px;height:44px;font-size:1.2rem;border-radius:10px;box-shadow:none}
   .hdr-r{gap:.3rem}
   .hsearch{display:none}
   .btn-add{font-size:.5rem;padding:.32rem .7rem}
@@ -539,15 +539,15 @@ canvas{-webkit-user-select:none;user-select:none}
   .books-area{padding:.9rem}
   .bgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.9rem}
 
-  /* BOOK MODAL — mobile full screen */
+  /* BOOK MODAL — mobile compact */
   #mBook{
-    width:100vw;max-width:100vw;
-    height:100dvh;max-height:100dvh;
-    top:0;left:0;transform:none!important;
-    border-radius:0;border:none;
+    width:96vw;max-width:96vw;
+    height:88dvh;max-height:88dvh;
+    top:50%;left:50%;transform:translate(-50%,-50%)!important;
+    border-radius:12px;
     flex-direction:column;margin:0;
   }
-  #mBook.open{transform:none!important}
+  #mBook.open{transform:translate(-50%,-50%)!important}
   .bm-header{
     padding-top:calc(env(safe-area-inset-top) + 1rem);
     padding-left:.9rem;padding-right:.9rem;padding-bottom:.9rem;
@@ -560,8 +560,8 @@ canvas{-webkit-user-select:none;user-select:none}
   .bm-edit-fixed{bottom:.65rem;right:.65rem;padding:.52rem .62rem;font-size:1rem;border-radius:9px}
   .bm-edit-text{display:none}
   .bm-close{
-    position:fixed;top:calc(env(safe-area-inset-top) + .5rem);right:.75rem;
-    width:38px;height:38px;font-size:.9rem;
+    position:absolute;top:.6rem;right:.6rem;
+    width:34px;height:34px;font-size:.85rem;
     background:rgba(6,5,15,.95);
     border:1.5px solid var(--border2);
     z-index:600;box-shadow:0 2px 12px rgba(0,0,0,.7);
@@ -579,7 +579,7 @@ canvas{-webkit-user-select:none;user-select:none}
     max-width:100%;
   }
   .bit-grid{grid-template-columns:1fr 1fr}
-  .modal{width:97vw;padding:1.2rem;max-height:90vh}
+  .modal{width:94vw;padding:1rem;max-height:82vh;overflow-y:auto;overflow-x:hidden}
 
   /* SISTEMA — fix right-drift */
   #viewSistema .bit-card,
@@ -595,8 +595,7 @@ canvas{-webkit-user-select:none;user-select:none}
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-orb"></div>
-  <div class="splash-title">Bienvenido a</div>
-  <div class="splash-name">ALINEA</div>
+  <div class="splash-name" style="margin-top:0">ALINEA</div>
   <div class="splash-lib" id="splashLib">Tu Universo de Conocimiento</div>
 </div>
 
@@ -698,6 +697,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btic" onclick="gZoom(1.2)">＋</button>
         <button class="btic" onclick="gZoom(.83)">－</button>
         <button class="btic" onclick="toggleCatFilterPanel()" title="Filtrar categorías" id="catFilterBtn" style="font-size:.85rem">⊜</button>
+        <button class="btic" onclick="toggleGalaxyWishlist()" title="Mostrar/ocultar wishlist" id="wishGalBtn" style="font-size:.85rem">🚀</button>
       </div>
       <!-- Category filter panel -->
       <div id="catFilterPanel" style="display:none;position:absolute;top:.9rem;left:.9rem;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:10;min-width:200px;max-width:260px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.6)">
@@ -1122,6 +1122,8 @@ const persistActiveGal=()=>localStorage.setItem('eter2_activegal',JSON.stringify
 // Hidden categories in galaxy view
 let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
+let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
+const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
 const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish'];
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
@@ -1236,6 +1238,80 @@ Object.entries(CAT_TAXONOMY).forEach(([parent,data])=>{
 function cc(cat){return CAT_COLORS[cat]||CAT_COLORS[''];}
 
 // ══════════════════════════
+// CATEGORY I18N
+// ══════════════════════════
+const CAT_I18N={
+  en:{
+    'Negocios y Finanzas':'Business & Finance',
+    'Finanzas Personales':'Personal Finance','Inversiones':'Investments',
+    'Bienes Raíces y FIBRAs':'Real Estate','Emprendimiento':'Entrepreneurship',
+    'Management y Liderazgo':'Management & Leadership','Marketing y Ventas':'Marketing & Sales',
+    'Economía':'Economics','Negocios Internacionales':'International Business',
+    'Desarrollo Personal y Psicología':'Personal Development & Psychology',
+    'Autoayuda y Superación':'Self-Help','Psicología':'Psychology',
+    'Productividad':'Productivity','Espiritualidad':'Spirituality',
+    'Relaciones y Comunicación':'Relationships & Communication',
+    'Inteligencia Emocional':'Emotional Intelligence','Neurociencia':'Neuroscience',
+    'Amor y Familia':'Love & Family','Amor y Romance':'Love & Romance',
+    'Maternidad y Paternidad':'Parenting','Familia y Crianza':'Family & Upbringing',
+    'Duelo y Resiliencia':'Grief & Resilience',
+    'Humanidades y Ciencias Sociales':'Humanities & Social Sciences',
+    'Filosofía':'Philosophy','Historia Universal':'World History','Política':'Politics',
+    'Sociología':'Sociology','Antropología':'Anthropology','Educación':'Education',
+    'Derecho y Leyes':'Law & Legal','Religión y Mitología':'Religion & Mythology',
+    'Ciencia y Tecnología':'Science & Technology',
+    'Divulgación Científica':'Popular Science','Física y Astrofísica':'Physics & Astrophysics',
+    'Biología y Salud':'Biology & Health','Informática e IA':'Computing & AI',
+    'Matemáticas':'Mathematics',
+    'Narrativa y Ficción':'Fiction & Literature',
+    'Novela Contemporánea':'Contemporary Novel','Ciencia Ficción':'Science Fiction',
+    'Fantasía':'Fantasy','Misterio y Thriller':'Mystery & Thriller',
+    'True Crime':'True Crime','Clásicos Literarios':'Literary Classics',
+    'Poesía':'Poetry','Ensayo':'Essay','Novela Gráfica y Cómic':'Graphic Novel & Comics',
+    'Biografías y Memorias':'Biographies & Memoirs',
+    'Biografía':'Biography','Autobiografía y Memorias':'Autobiography & Memoirs',
+    'Crónica y Periodismo':'Chronicle & Journalism',
+    'Salud y Estilo de Vida':'Health & Lifestyle',
+    'Salud y Fitness':'Health & Fitness','Nutrición y Dietética':'Nutrition & Diet',
+    'Salud Mental':'Mental Health','Yoga y Mindfulness':'Yoga & Mindfulness',
+    'Gastronomía':'Gastronomy','Viajes y Crónica de Viaje':'Travel',
+    'Arte y Entretenimiento':'Art & Entertainment',
+    'Arquitectura y Diseño':'Architecture & Design','Historia del Arte':'Art History',
+    'Fotografía':'Photography','Música':'Music','Cine y Teatro':'Cinema & Theater',
+    'Humor y Sátira':'Humor & Satire',
+    'Otros':'Others','Idiomas':'Languages','Referencia y Consulta':'Reference'
+  },
+  pt:{
+    'Negocios y Finanzas':'Negócios e Finanças','Filosofía':'Filosofia',
+    'Historia Universal':'História Universal','Psicología':'Psicologia',
+    'Ciencia y Tecnología':'Ciência e Tecnologia','Narrativa y Ficción':'Ficção',
+    'Biografías y Memorias':'Biografias e Memórias','Salud y Estilo de Vida':'Saúde e Estilo de Vida',
+    'Arte y Entretenimiento':'Arte e Entretenimento','Amor y Familia':'Amor e Família',
+    'Humanidades y Ciencias Sociales':'Humanidades e Ciências Sociais',
+    'Desarrollo Personal y Psicología':'Desenvolvimento Pessoal e Psicologia',
+    'Productividad':'Produtividade','Economía':'Economia','Música':'Música',
+    'Ciencia Ficción':'Ficção Científica','Fantasía':'Fantasia','Otros':'Outros'
+  },
+  fr:{
+    'Negocios y Finanzas':'Affaires et Finance','Filosofía':'Philosophie',
+    'Historia Universal':'Histoire Universelle','Psicología':'Psychologie',
+    'Ciencia y Tecnología':'Science et Technologie','Narrativa y Ficción':'Fiction',
+    'Biografías y Memorias':'Biographies et Mémoires','Salud y Estilo de Vida':'Santé et Mode de Vie',
+    'Arte y Entretenimiento':'Art et Divertissement','Amor y Familia':'Amour et Famille',
+    'Humanidades y Ciencias Sociales':'Sciences Humaines et Sociales',
+    'Desarrollo Personal y Psicología':'Développement Personnel et Psychologie',
+    'Productividad':'Productivité','Economía':'Économie','Música':'Musique',
+    'Ciencia Ficción':'Science-Fiction','Fantasía':'Fantaisie','Otros':'Autres'
+  }
+};
+function translateCat(cat){
+  if(!cat)return cat;
+  const map=CAT_I18N[currentLang];
+  return(map&&map[cat])||cat;
+}
+
+
+// ══════════════════════════
 // ACCENT THEME SYSTEM
 // ══════════════════════════
 const ACCENT_THEMES={
@@ -1284,7 +1360,7 @@ function applyAccentTheme(name){
     .dock-btn:hover{background:${t.glow}!important}
     .dock-btn.active{background:${t.glow.replace('.15)','.22)')}!important;color:${t.accent2}!important}
     .dock-btn.active::after{background:${t.accent2}!important}
-    .bcard:hover .bcover{border-color:${t.accent}!important;box-shadow:0 12px 40px ${t.glow.replace('.15)','.4)')},0 0 0 1px ${t.accent},inset 0 0 20px ${t.glow}!important}
+    .bcard:hover .bcover{border-color:${t.accent}!important;box-shadow:0 12px 40px ${t.glow.replace('.15)','.4)')},0 0 0 2px ${t.accent},0 0 20px ${t.glow.replace('.15)','.25)')},inset 0 0 16px ${t.glow}!important}
     .bcard:hover .spine{box-shadow:0 0 8px ${t.accent}!important}
     .fab:hover{box-shadow:0 6px 28px ${t.glow.replace('.15)','.7)')}!important}
     .modal{border-color:${t.accent}!important;box-shadow:0 30px 90px rgba(0,0,0,.85),0 0 40px ${t.glow},inset 0 0 0 1px rgba(255,255,255,.04)!important}
@@ -1296,6 +1372,8 @@ function applyAccentTheme(name){
     .btn-ok{background:linear-gradient(135deg,${t.accent3},${t.accent})!important}
     .splash-orb{background:radial-gradient(circle at 35% 30%,${t.accent2},${t.accent3})!important}
     .fab-item-btn[style*="7c3aed"]{background:linear-gradient(135deg,${t.accent3},${t.accent})!important}
+    .bm-edit-fixed{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;box-shadow:0 2px 12px ${t.glow.replace(".15)",".4)")}!important}
+    .bm-edit-fixed:hover{box-shadow:0 4px 18px ${t.glow.replace(".15)",".6)")}!important}
   `;
   // Update swatch active state
   document.querySelectorAll('.accent-swatch').forEach(sw=>{
@@ -1313,7 +1391,8 @@ function setAccentTheme(name,btn){
 }
 
 function setFontSize(size){
-  const sizes={small:'14px',normal:'16px',large:'18px',xl:'20px'};
+  const isMobile=window.innerWidth<768;
+  const sizes=isMobile?{small:'13px',normal:'15px',large:'16px',xl:'17px'}:{small:'14px',normal:'16px',large:'18px',xl:'20px'};
   const fs=sizes[size]||'1rem';
   document.documentElement.style.fontSize=fs;
   localStorage.setItem('eter2_fontsize',size);
@@ -1462,6 +1541,7 @@ function copyMyCode(){
 let gravityOn=false;
 let wordPhysics=[];
 let gyroX=0;
+let gyroY=0;
 let physicsRAF=null;
 let wordUserPositions={};
 let wordFloatPositions={}; // original random positions for each word
@@ -1544,7 +1624,7 @@ function stepPhysics(){
   const H=window.innerHeight - containerTop - 10;
   if(container.style.minHeight!==H+'px') container.style.minHeight=H+'px';
   const gx=gyroX*0.35;
-  const gy=0.55;
+  const gy=0.55+gyroY*0.35; // negative gyroY = phone tilted forward = words fly up
   const bounce=0.42,friction=0.86;
 
   // Update physics
@@ -1596,8 +1676,12 @@ function stepPhysics(){
 window.addEventListener('resize',()=>{if(gravityOn)startPhysics();});
 window.addEventListener('deviceorientation',e=>{
   if(!gravityOn)return;
-  // Portrait mode: gamma = left/right tilt
+  // Portrait mode: gamma = left/right, beta = forward/back
   gyroX=(e.gamma||0)/45*3.5;
+  // beta: 0=flat, 90=upright, negative=tilted forward past vertical
+  // When tilted forward (beta<45), apply upward force
+  const b=e.beta||0;
+  gyroY=b<45?(45-b)/45*(-1.2):0;
 },{passive:true});
 
 function gotoV(v,btn){
@@ -1613,7 +1697,7 @@ function gotoV(v,btn){
     if(fn.includes("'"+v+"'"))db.classList.add('active');
   });
   if(v==='graph'){setTimeout(initGraph,40);}
-  if(v==='explore'){appState.magPositions={};buildMagWords();renderExplore();}
+  if(v==='explore'){appState.magPositions={};wordUserPositions={};buildMagWords();renderExplore();}
   if(v==='bitacora'){renderBitacora();}
   if(v==='sistema'){updateStorageInfo();}
 }
@@ -2931,6 +3015,13 @@ function saveLibName(){persistState();if(document.getElementById('viewGraph').cl
 // ══════════════════════════
 // GALAXY CATEGORY FILTER
 // ══════════════════════════
+function toggleGalaxyWishlist(){
+  showGalaxyWishlist=!showGalaxyWishlist;
+  persistShowWish();
+  initGraph();
+  const btn=document.getElementById('wishGalBtn');
+  if(btn){btn.style.opacity=showGalaxyWishlist?'1':'.35';btn.style.color=showGalaxyWishlist?'var(--gold)':'var(--muted)';}
+}
 function toggleCatFilterPanel(){
   const panel=document.getElementById('catFilterPanel');
   if(!panel)return;
@@ -3006,7 +3097,7 @@ function initGraph(){
   toRender.forEach((gal,gi)=>{
     const galLib=gal.lib||[];
     const realBooks=galLib.filter(b=>b.status!=='wishlist'&&!b.isWishlist&&(gal.id!=='mine'||!hiddenCats.includes(CAT_PARENT[b.category||'']||b.category||'')));
-    const wishBooks=galLib.filter(b=>b.status==='wishlist'||b.isWishlist);
+    const wishBooks=showGalaxyWishlist?galLib.filter(b=>b.status==='wishlist'||b.isWishlist):[];
     const isMyGalaxy=gal.id==='mine';
     const galColor=isMyGalaxy?null:FRIEND_SUN_COLORS[gal.colorIdx%FRIEND_SUN_COLORS.length];
 
@@ -3687,9 +3778,9 @@ function openBook(id){
         <div class="nrow">
           <input type="text" id="notePg" class="nri pg" placeholder="Pág.">
           <input type="text" id="noteCmt" class="nri cmt" placeholder="Comentario (opcional)">
-          <button class="btn-an" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important" onclick="addNote(${b.id})" data-i18n="addNote">+ Nota</button>
-          <button class="btn-an" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important" onclick="openVision(${b.id})" data-i18n="camera">📷 Cámara</button>
-          <button class="btn-an" id="micBtn${b.id}" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important" onclick="toggleDictation(${b.id})" data-i18n="dictate">🎙 Dictar</button>
+          <button class="btn-an" onclick="addNote(${b.id})" data-i18n="addNote">+ Nota</button>
+          <button class="btn-an" onclick="openVision(${b.id})" data-i18n="camera">📷 Cámara</button>
+          <button class="btn-an" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">🎙 Dictar</button>
         </div>
       </div>
     </div>
