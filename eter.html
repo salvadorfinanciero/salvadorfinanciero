@@ -1161,7 +1161,9 @@ canvas{-webkit-user-select:none;user-select:none}
 
 
 <!-- WELCOME / AUTHOR NOTE MODAL -->
-<div class="modal" id="mWelcome" style="width:540px;max-width:94vw">
+<div class="modal" id="mWelcome" style="width:540px;max-width:94vw;overflow:hidden;position:fixed">
+  <canvas id="welcomeStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.7"></canvas>
+  <div style="position:relative;z-index:1">
   <button onclick="closeModal('mWelcome')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
   <div style="text-align:center;margin-bottom:1.1rem">
     <div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 20px rgba(139,92,246,.5);margin:0 auto .75rem"></div>
@@ -1173,13 +1175,17 @@ canvas{-webkit-user-select:none;user-select:none}
     <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.</p>
     <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
     <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
-    <p style="font-size:.72rem;color:var(--accent2);line-height:1.8;margin-bottom:.7rem"><strong style="font-size:.78rem;letter-spacing:.01em">Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.</strong></p>
+    <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.8rem">Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.</p>
     <p style="font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
+  </div>
+  <div style="background:var(--glow);border:1px solid var(--border2);border-radius:8px;padding:.65rem .85rem;margin-bottom:.85rem">
+    <p style="font-size:.68rem;color:rgba(240,238,255,.82);line-height:1.85;margin:0">Y recuerda — esta página también se creó con el propósito de que tú sepas que tus datos únicamente son tuyos. ALINEA jamás tendrá tu información, ni nadie más, ni siquiera yo. Todo tu universo vive en tu dispositivo, y solo tú puedes verlo. Cuando quieras, puedes descargar tu respaldo desde <strong style="color:var(--accent2)">Configuración → Datos</strong>.</p>
   </div>
   <div style="display:flex;gap:.6rem;align-items:center">
     <button class="btn-ok" style="flex:1" onclick="closeModal('mWelcome');setTimeout(()=>document.querySelector('.fab')?.click(),300)">✦ Agregar mi primer libro</button>
     <button class="btn-ghost" onclick="closeModal('mWelcome')">Explorar primero</button>
   </div>
+  </div><!-- /z-index wrapper -->
 </div>
 
 <script>
@@ -4658,6 +4664,61 @@ updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance
 // ══════════════════════════
 // WELCOME MODAL
 // ══════════════════════════
+
+// ══════════════════════════
+// WELCOME MODAL STARS
+// ══════════════════════════
+function drawWelcomeStars(){
+  const cv=document.getElementById('welcomeStars');
+  if(!cv)return;
+  const modal=document.getElementById('mWelcome');
+  if(!modal)return;
+  const W=modal.offsetWidth||540;
+  const H=modal.offsetHeight||600;
+  const dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+  // Dark gradient background
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#06050f');
+  bg.addColorStop(.5,'#0c0a18');
+  bg.addColorStop(1,'#06050f');
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,W,H);
+  // Stars
+  const rng=(s)=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  for(let i=0;i<180;i++){
+    const x=rng(i*7.3)*W;
+    const y=rng(i*3.7)*H;
+    const r=rng(i*11.1)*.9+.2;
+    const a=rng(i*5.9)*.7+.15;
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+  // A few bigger glowing stars
+  for(let i=0;i<12;i++){
+    const x=rng(i*17.3+100)*W;
+    const y=rng(i*9.1+200)*H;
+    const r=rng(i*23.7)*.6+.5;
+    const grd=ctx.createRadialGradient(x,y,0,x,y,r*4);
+    grd.addColorStop(0,'rgba(196,181,253,.8)');
+    grd.addColorStop(1,'rgba(139,92,246,0)');
+    ctx.beginPath();ctx.arc(x,y,r*4,0,Math.PI*2);
+    ctx.fillStyle=grd;ctx.fill();
+  }
+}
+// Draw stars when welcome modal opens
+const _origShowModal=showModal;
+function showModal(id){
+  _origShowModal(id);
+  if(id==='mWelcome') setTimeout(drawWelcomeStars,50);
+}
+
 function maybeShowWelcome(){
   if(lib.length===0){
     setTimeout(()=>{
