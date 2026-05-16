@@ -6,6 +6,21 @@
   <meta name="theme-color" content="#06050f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <script>
+  // Block horizontal swipe (Magic Mouse / trackpad) that triggers browser navigation
+  window.addEventListener('wheel',function(e){
+    if(Math.abs(e.deltaX)>Math.abs(e.deltaY)&&Math.abs(e.deltaX)>8)e.preventDefault();
+  },{passive:false,capture:true});
+  // Block view-source and devtools shortcuts
+  document.addEventListener('keydown',function(e){
+    const m=e.ctrlKey||e.metaKey;
+    if(m&&(e.key==='u'||e.key==='U'))e.preventDefault();
+    if(m&&e.shiftKey&&'ijcIJC'.includes(e.key))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  },{capture:true});
+  // Block right-click
+  document.addEventListener('contextmenu',e=>e.preventDefault(),{capture:true});
+  </script>
 <!-- Lock to portrait on mobile -->
 <style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}</style>
 <div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:rgba(196,181,253,.7);font-family:DM Mono,monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;gap:.75rem"><div style="font-size:2rem">↩</div><div>Gira el teléfono<br>para usar ALINEA</div></div>
@@ -22,7 +37,8 @@
   --text:#f0eeff;--muted:#8b87b0;--dim:#332e52;
   --ok:#6ee7b7;--err:#f87171;--gold:#fbbf24;
 }
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;padding-top:calc(env(safe-area-inset-top)+56px);padding-bottom:calc(env(safe-area-inset-bottom)+82px)}
+:root{--header-h:52px;--dock-h:72px;--content-top:calc(env(safe-area-inset-top) + var(--header-h));--content-bottom:calc(env(safe-area-inset-bottom) + var(--dock-h))}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;padding-top:var(--content-top);padding-bottom:var(--content-bottom)}
 html{background:var(--bg)}
 input,textarea,[contenteditable]{-webkit-user-select:text;-moz-user-select:text;user-select:text}
 #starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
@@ -45,7 +61,7 @@ body::before{content:'';position:fixed;inset:0;background:
 /* ── TOP HEADER LIMPIO ── */
 #dockTop{
   position:fixed;top:0;left:0;right:0;
-  height:calc(env(safe-area-inset-top) + 52px);
+  height:var(--content-top);
   padding-top:env(safe-area-inset-top);
   z-index:200;
   display:flex;align-items:center;justify-content:space-between;
@@ -67,7 +83,7 @@ body::before{content:'';position:fixed;inset:0;background:
 /* Search inline in header */
 #searchBar{
   position:fixed;top:0;left:0;right:0;
-  height:calc(env(safe-area-inset-top) + 52px);
+  height:var(--content-top);
   padding-top:env(safe-area-inset-top);
   z-index:201;
   background:rgba(6,5,15,.97);backdrop-filter:blur(24px);
@@ -111,7 +127,9 @@ body::before{content:'';position:fixed;inset:0;background:
 .btn-add:hover{opacity:.86;box-shadow:0 4px 22px rgba(139,92,246,.48)}
 
 /* ── LAYOUT ── */
-.app{position:relative;z-index:1;min-height:calc(100vh - 46px)}
+.app{position:relative;z-index:1;min-height:calc(100vh - var(--content-top))}
+.view{display:none;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
+.view.active{display:flex;flex-direction:column}
 
 .filter-bar-top{display:flex;align-items:center;gap:.5rem;padding:.45rem 1.4rem;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid rgba(30,27,46,.3);background:rgba(6,5,15,.6);backdrop-filter:blur(10px);flex-shrink:0}
 .filter-bar-top::-webkit-scrollbar{display:none}
@@ -122,8 +140,6 @@ body::before{content:'';position:fixed;inset:0;background:
 .sb-n{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim);background:var(--card);padding:.07rem .28rem;border-radius:8px}
 .sb-div{height:1px;background:var(--border);margin:.42rem .82rem}
 .main{width:100%;background:transparent}
-.view{display:none}
-.view.active{display:block}
 
 /* ── LIBRARY — BIG CARDS ── */
 .lib-bar{padding:.4rem 1.4rem;display:flex;align-items:center;justify-content:flex-end;gap:.3rem}
@@ -178,8 +194,8 @@ body::before{content:'';position:fixed;inset:0;background:
 .g-hint{position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.53rem;color:var(--dim);pointer-events:none;text-align:center;letter-spacing:.05em}
 
 /* ── EXPLORE — MAGNETIC WORDS ── */
-#viewExplore{min-height:calc(100vh - 144px);overflow-y:auto;overflow-x:hidden;position:relative}
-.exp-bg{position:relative;width:100%;min-height:calc(100vh - 144px)}
+#viewExplore{min-height:calc(100vh - var(--content-top) - var(--content-bottom));overflow-y:auto;overflow-x:hidden;position:relative}
+.exp-bg{position:relative;width:100%;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
 .mag-words-flow{position:relative;padding:1.2rem 1.5rem 4rem;min-height:calc(100vh - 300px)}
 @keyframes magFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-5px) rotate(var(--r,0deg))}}
 @keyframes magIn{from{opacity:0;transform:scale(.85) rotate(var(--r,0deg))}to{opacity:1;transform:scale(1) rotate(var(--r,0deg))}}
@@ -261,7 +277,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .overlay.open{opacity:1;pointer-events:all}
 
 /* ── MODALS ── */
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-47%);width:460px;max-width:92vw;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:1.62rem;z-index:501;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;max-height:86vh;overflow-y:auto;box-shadow:0 30px 90px rgba(0,0,0,.8),0 0 50px rgba(139,92,246,.05)}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:460px;max-width:92vw;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:1.62rem;z-index:501;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;max-height:min(86vh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px));overflow-y:auto;box-shadow:0 30px 90px rgba(0,0,0,.8),0 0 50px rgba(139,92,246,.05)}
 /* Book modal — much wider on desktop */
 #mBook{
   z-index:502;
@@ -400,8 +416,10 @@ body::before{content:'';position:fixed;inset:0;background:
 .naitag{font-family:'DM Mono',monospace;font-size:.48rem;padding:.07rem .28rem;border-radius:3px;background:var(--glow);border:1px solid rgba(139,92,246,.18);color:var(--accent2)}
 .naitag.mood{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.18);color:var(--ok)}
 .naitag.ld{color:var(--dim);background:transparent;border-color:var(--border);animation:pulse .9s infinite}
-.ndel{position:absolute;top:.5rem;right:.5rem;background:none;border:none;color:var(--dim);cursor:pointer;font-size:.58rem;opacity:0;transition:opacity .13s,color .13s}
+.ndel{position:absolute;top:.5rem;right:.5rem;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:rgba(248,113,113,.6);cursor:pointer;font-size:.55rem;border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .13s,color .13s,background .13s}
 .nitem:hover .ndel{opacity:1}
+@media(pointer:coarse){.ndel{opacity:.7;background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.25)}}
+.ndel:hover{background:rgba(248,113,113,.2);color:#f87171;opacity:1}
 .ndel:hover{color:var(--err)}
 /* Notes search bar */
 .notes-search{display:flex;align-items:center;gap:.4rem;margin-bottom:.65rem;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.28rem .6rem;transition:border-color .2s}
@@ -475,7 +493,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .star-display{display:flex;gap:.1rem}
 
 /* ── FAB ── */
-.fab-wrap{position:fixed;bottom:1.8rem;right:1.8rem;z-index:400;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
+.fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 88px);right:1.4rem;z-index:400;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
 .fab{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;color:#fff;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,92,246,.5);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
 .fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(139,92,246,.65)}
 .fab.open{transform:rotate(45deg)}
@@ -523,7 +541,11 @@ canvas{-webkit-user-select:none;user-select:none}
     flex-direction:column;margin:0;
   }
   #mBook.open{transform:none!important}
-  .bm-header{padding:1rem .9rem .9rem;gap:.8rem}
+  .bm-header{
+    padding-top:calc(env(safe-area-inset-top) + 1rem);
+    padding-left:.9rem;padding-right:.9rem;padding-bottom:.9rem;
+    gap:.8rem;
+  }
   .bm-mini-cover{width:58px;height:87px}
   .bm-title{font-size:1.15rem}
   .bm-author{font-size:.68rem;margin-bottom:.4rem}
@@ -531,9 +553,9 @@ canvas{-webkit-user-select:none;user-select:none}
   .bm-edit-fixed{bottom:.65rem;right:.65rem;padding:.52rem .62rem;font-size:1rem;border-radius:9px}
   .bm-edit-text{display:none}
   .bm-close{
-    position:fixed;top:.6rem;right:.75rem;
-    width:36px;height:36px;font-size:.9rem;
-    background:rgba(6,5,15,.92);
+    position:fixed;top:calc(env(safe-area-inset-top) + .5rem);right:.75rem;
+    width:38px;height:38px;font-size:.9rem;
+    background:rgba(6,5,15,.95);
     border:1.5px solid var(--border2);
     z-index:600;box-shadow:0 2px 12px rgba(0,0,0,.7);
   }
@@ -627,24 +649,21 @@ canvas{-webkit-user-select:none;user-select:none}
 <div class="app">
   <div class="main">
     <div class="view active" id="viewLibrary">
-      <!-- FILTER BAR — inside viewLibrary, no z-index issues -->
-      <div style="display:flex;align-items:center;gap:.5rem;padding:.45rem 1.4rem;border-bottom:1px solid rgba(139,92,246,.1);background:rgba(6,5,15,.5);backdrop-filter:blur(12px);flex-shrink:0;overflow-x:auto">
-        <span id="sbLibNameBar" style="font-family:'Playfair Display',serif;font-size:.76rem;font-style:italic;color:var(--accent2);font-weight:700;white-space:nowrap;flex-shrink:0;margin-right:.3rem"></span>
-        <div id="catChips" style="display:flex;gap:.22rem;flex-shrink:0;overflow-x:auto"></div>
-        <div style="flex:1;min-width:.5rem"></div>
-        <select id="filterSelect" onchange="setFilterFromSelect(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.56rem;padding:.24rem .55rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto">
+      <!-- FILTER BAR — clean, no library name or cat chips -->
+      <div style="display:flex;align-items:center;gap:.4rem;padding:.42rem 1rem;border-bottom:1px solid rgba(139,92,246,.08);background:rgba(6,5,15,.45);backdrop-filter:blur(12px);flex-shrink:0">
+        <select id="filterSelect" onchange="setFilterFromSelect(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto;flex:1">
           <option value="all">Todos</option>
           <option value="reading">Leyendo</option>
           <option value="owned">No leídos</option>
           <option value="wishlist">Wishlist</option>
         </select>
-        <select id="sortSelectBar" onchange="setSortOrder(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.56rem;padding:.24rem .55rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto">
+        <select id="sortSelectBar" onchange="setSortOrder(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto;flex:1">
           <option value="added">Reciente</option>
           <option value="title">Título A-Z</option>
           <option value="author">Autor A-Z</option>
-          <option value="rating">⭐ Calificación</option>
+          <option value="rating">Calificación</option>
         </select>
-        <div style="display:flex;gap:.3rem;flex-shrink:0">
+        <div style="display:flex;gap:.25rem;flex-shrink:0">
           <button class="vbtn active" id="gbtn" onclick="setGV('grid')">⊞</button>
           <button class="vbtn" id="lbtn" onclick="setGV('list')">≡</button>
         </div>
@@ -661,7 +680,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <span id="sbLibName" style="display:none"></span>
     <div id="sbCats" style="display:none"></div>
     <span id="filterBarTop" style="display:none"></span>
-    <div class="view" id="viewGraph" style="height:calc(100vh - 144px);position:relative;overflow:hidden">
+    <div class="view" id="viewGraph" style="height:calc(100vh - var(--content-top) - var(--content-bottom));position:relative;overflow:hidden">
       <canvas id="gCanvas"></canvas>
       <div class="g-lib-name">
         <input type="text" id="libNameInput" placeholder="Mi Biblioteca…" oninput="onLibName(this.value)" onblur="saveLibName()">
