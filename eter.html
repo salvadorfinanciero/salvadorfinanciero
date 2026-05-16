@@ -532,10 +532,12 @@ canvas{-webkit-user-select:none;user-select:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
-  .g-tools{position:fixed!important;flex-direction:row!important;gap:.35rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:.28rem .35rem;backdrop-filter:blur(24px);z-index:200;transform:none!important;transition:top .3s,left .3s,bottom .3s}
-  .g-tools .btic{width:38px;height:38px;font-size:1rem;border-radius:8px;box-shadow:none}
-  .g-tools.is-dragging{transform:none!important}
-  .g-lib-name{position:fixed!important;top:calc(var(--content-top) + 6px)!important;left:50%!important;transform:translateX(-50%)!important;z-index:190!important;}
+  .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:20px!important;top:auto!important;right:auto!important;flex-direction:row!important;gap:.3rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:14px;padding:.25rem .3rem;backdrop-filter:blur(24px);z-index:200;transform:none!important}
+  .g-tools .btic{width:36px;height:36px;font-size:.95rem;border-radius:8px;box-shadow:none}
+  .g-tools.collapsed #gToolsExpandable{display:none!important}
+  .g-tools.collapsed #gToolsCollapseBtn{font-size:.8rem;opacity:.9}
+
+
   .hdr-r{gap:.3rem}
   .hsearch{display:none}
   .btn-add{font-size:.5rem;padding:.32rem .7rem}
@@ -702,7 +704,7 @@ canvas{-webkit-user-select:none;user-select:none}
       <!-- Galaxy selector chips -->
       <div id="galSelector" style="position:absolute;top:.9rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem;align-items:center;margin-top:2.6rem;z-index:5;flex-wrap:wrap;justify-content:center;max-width:80vw"></div>
       <div class="g-tools" id="gToolsPanel">
-        <button class="btic g-drag-handle" title="Mover panel" style="cursor:grab;font-size:.9rem;opacity:.6;touch-action:none" id="gToolsMoveBtn" onclick="cycleToolsPos()">⊕</button>
+
         <button class="btic" onclick="gReset()" title="Centrar">⊙</button>
         <button class="btic" onclick="gZoom(1.2)">＋</button>
         <button class="btic" onclick="gZoom(.83)">－</button>
@@ -3055,7 +3057,6 @@ function toggleCatFilterPanel(){
   const showing=panel.style.display!=='none';
   if(showing){panel.style.display='none';return;}
   renderCatFilterPanel();
-  // Position near the button
   const btn=document.getElementById('catFilterBtn');
   if(btn){
     const r=btn.getBoundingClientRect();
@@ -3063,11 +3064,22 @@ function toggleCatFilterPanel(){
     let left=r.left;
     if(left+pw>window.innerWidth-8)left=window.innerWidth-pw-8;
     panel.style.left=Math.max(8,left)+'px';
-    panel.style.top=(r.bottom+6)+'px';
     panel.style.width=pw+'px';
+    // Open above or below depending on space
+    panel.style.display='block';
+    const ph=panel.offsetHeight||280;
+    if(r.top>ph+20){
+      // enough space above — open upward
+      panel.style.top=(r.top-ph-6)+'px';
+    } else {
+      // open downward
+      panel.style.top=(r.bottom+6)+'px';
+    }
+  } else {
+    panel.style.display='block';
   }
-  panel.style.display='block';
-  btn.style.color=hiddenCats.length>0?'var(--accent2)':'var(--accent2)';
+  const btn2=document.getElementById('catFilterBtn');
+  if(btn2)btn2.style.color=hiddenCats.length>0?'var(--gold)':'var(--accent2)';
 }
 function renderCatFilterPanel(){
   const list=document.getElementById('catFilterList');if(!list)return;
@@ -4457,6 +4469,34 @@ updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance
 // DRAGGABLE G-TOOLS PANEL
 // ══════════════════════════
 
+
+// ══════════════════════════
+// G-TOOLS COLLAPSE (mobile)
+// ══════════════════════════
+let _gToolsCollapsed=localStorage.getItem('eter2_gtoolsCollapsed')==='1';
+function toggleGToolsCollapse(){
+  if(window.innerWidth>=768)return;
+  _gToolsCollapsed=!_gToolsCollapsed;
+  localStorage.setItem('eter2_gtoolsCollapsed',_gToolsCollapsed?'1':'0');
+  applyGToolsCollapse();
+}
+function applyGToolsCollapse(){
+  const panel=document.getElementById('gToolsPanel');
+  const btn=document.getElementById('gToolsCollapseBtn');
+  if(!panel)return;
+  if(window.innerWidth>=768){panel.classList.remove('collapsed');return;}
+  if(_gToolsCollapsed){
+    panel.classList.add('collapsed');
+    if(btn)btn.textContent='›';
+  } else {
+    panel.classList.remove('collapsed');
+    if(btn)btn.textContent='‹‹';
+  }
+}
+// Apply on load
+setTimeout(applyGToolsCollapse,300);
+window.addEventListener('resize',applyGToolsCollapse);
+
 // ══════════════════════════
 // MOBILE TOOLS PANEL POSITION CYCLE
 // ══════════════════════════
@@ -4522,84 +4562,120 @@ window.addEventListener('resize',()=>{
 });
 
 (function initDraggableTools(){
+  // Create a full-screen drag overlay that blocks all events underneath
+  const overlay=document.createElement('div');
+  overlay.id='gDragOverlay';
+  overlay.style.cssText='position:fixed;inset:0;z-index:199;display:none;touch-action:none;-webkit-user-select:none;user-select:none;background:transparent';
+  document.body.appendChild(overlay);
+
   function setup(){
     const panel=document.getElementById('gToolsPanel');
     if(!panel)return;
 
     let dragging=false,startX=0,startY=0,startL=0,startT=0,moved=false;
-    let activePointerId=null;
+    let longPressTimer=null;
 
-    function getFixedPos(){
-      // Convert current position (possibly with transform) to plain fixed coords
+    function getPanelPos(){
       const r=panel.getBoundingClientRect();
-      return {top:r.top, left:r.left};
+      return{left:r.left,top:r.top};
     }
-
-    function applyFixedPos(left,top){
-      panel.classList.add('is-dragging');
+    function applyPos(left,top){
+      const W=window.innerWidth,H=window.innerHeight;
+      const pw=panel.offsetWidth||200,ph=panel.offsetHeight||50;
+      panel.style.position='fixed';
       panel.style.transform='none';
-      panel.style.left=Math.max(4,Math.min(window.innerWidth-panel.offsetWidth-4,left))+'px';
-      panel.style.top=Math.max(4,Math.min(window.innerHeight-panel.offsetHeight-4,top))+'px';
-      panel.style.right='auto';
-      panel.style.bottom='auto';
+      panel.style.bottom='auto';panel.style.right='auto';
+      panel.style.left=Math.max(4,Math.min(W-pw-4,left))+'px';
+      panel.style.top=Math.max(4,Math.min(H-ph-4,top))+'px';
+      panel.classList.add('is-dragging');
     }
-
     function savePos(){
       localStorage.setItem('eter2_gtoolsPos',JSON.stringify({
-        top:parseFloat(panel.style.top)||0,
-        left:parseFloat(panel.style.left)||0
+        left:parseFloat(panel.style.left)||0,
+        top:parseFloat(panel.style.top)||0
       }));
     }
-
-    // Restore saved position
     const saved=JSON.parse(localStorage.getItem('eter2_gtoolsPos')||'null');
-    if(saved){
-      setTimeout(()=>{
-        panel.classList.add('is-dragging');
-        panel.style.transform='none';
-        panel.style.left=Math.max(4,Math.min(window.innerWidth-100,saved.left))+'px';
-        panel.style.top=Math.max(4,Math.min(window.innerHeight-60,saved.top))+'px';
-        panel.style.right='auto';panel.style.bottom='auto';
-      },200);
+    if(saved) setTimeout(()=>applyPos(saved.left,saved.top),300);
+
+    function startDrag(cx,cy){
+      const pos=getPanelPos();
+      startX=cx;startY=cy;startL=pos.left;startT=pos.top;
+      dragging=true;moved=false;
+      // Show overlay to capture all touch events and block canvas
+      overlay.style.display='block';
+      panel.style.opacity='.85';
+      if(navigator.vibrate)navigator.vibrate(30);
+    }
+    function doDrag(cx,cy){
+      if(!dragging)return;
+      const dx=cx-startX,dy=cy-startY;
+      if(!moved&&Math.hypot(dx,dy)<3)return;
+      moved=true;
+      applyPos(startL+dx,startT+dy);
+    }
+    function stopDrag(){
+      if(!dragging)return;
+      dragging=false;
+      overlay.style.display='none';
+      panel.style.opacity='';
+      if(moved)savePos();
     }
 
-    // ── POINTER EVENTS (works on both mouse and touch) ──
-    panel.style.touchAction='none'; // prevent scroll interference
-
-    panel.addEventListener('pointerdown',e=>{
-      // Don't drag when clicking buttons (only drag from handle or gap)
+    // ── DESKTOP MOUSE ──
+    panel.addEventListener('mousedown',e=>{
       if(e.target.tagName==='BUTTON'&&!e.target.classList.contains('g-drag-handle'))return;
       e.preventDefault();
-      panel.setPointerCapture(e.pointerId);
-      activePointerId=e.pointerId;
-      const pos=getFixedPos();
-      startX=e.clientX;startY=e.clientY;
-      startL=pos.left;startT=pos.top;
-      dragging=true;moved=false;
+      startDrag(e.clientX,e.clientY);
+    });
+    document.addEventListener('mousemove',e=>{if(dragging)doDrag(e.clientX,e.clientY);});
+    document.addEventListener('mouseup',stopDrag);
+
+    // ── MOBILE TOUCH — long press to drag ──
+    // Long press on the drag handle (⠿ button) activates drag mode
+    const handle=panel.querySelector('.g-drag-handle');
+    if(handle){
+      handle.addEventListener('touchstart',e=>{
+        e.preventDefault();
+        const t=e.touches[0];
+        // Short tap = cycle position; long press = drag
+        longPressTimer=setTimeout(()=>{
+          longPressTimer=null;
+          startDrag(t.clientX,t.clientY);
+        },400);
+      },{passive:false});
+      handle.addEventListener('touchmove',e=>{
+        if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+        if(!dragging)return;
+        e.preventDefault();
+        doDrag(e.touches[0].clientX,e.touches[0].clientY);
+      },{passive:false});
+      handle.addEventListener('touchend',e=>{
+        if(longPressTimer){
+          // Short tap — cycle position on mobile
+          clearTimeout(longPressTimer);longPressTimer=null;
+          if(typeof cycleToolsPos==='function'&&window.innerWidth<768) cycleToolsPos();
+        }
+        stopDrag();
+      },{passive:true});
+      handle.addEventListener('touchcancel',e=>{
+        if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+        stopDrag();
+      },{passive:true});
+    }
+
+    // Overlay handles ALL touch events during drag (blocks canvas completely)
+    overlay.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      if(!dragging||!e.touches[0])return;
+      doDrag(e.touches[0].clientX,e.touches[0].clientY);
     },{passive:false});
-
-    panel.addEventListener('pointermove',e=>{
-      if(!dragging||e.pointerId!==activePointerId)return;
-      const dx=e.clientX-startX;
-      const dy=e.clientY-startY;
-      if(!moved&&Math.hypot(dx,dy)<4)return;
-      moved=true;
-      applyFixedPos(startL+dx,startT+dy);
-    },{passive:true});
-
-    panel.addEventListener('pointerup',e=>{
-      if(!dragging||e.pointerId!==activePointerId)return;
-      dragging=false;activePointerId=null;
-      if(moved)savePos();
-    },{passive:true});
-
-    panel.addEventListener('pointercancel',e=>{
-      dragging=false;activePointerId=null;
-    },{passive:true});
+    overlay.addEventListener('touchend',stopDrag,{passive:true});
+    overlay.addEventListener('touchcancel',stopDrag,{passive:true});
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
-  else setTimeout(setup,200);
+  else setTimeout(setup,300);
 })();
 setTimeout(initSplash, 50);
 window.addEventListener('resize',()=>{
