@@ -73,7 +73,7 @@ body::before{content:'';position:fixed;inset:0;background:
   gap:.5rem;
 }
 .dtlogo{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);flex-shrink:0}
-.dtbcount{font-family:'DM Mono',monospace;font-size:.46rem;font-weight:400;color:rgba(196,181,253,.55);letter-spacing:.06em;flex-shrink:0}
+.dtbcount{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;color:var(--accent2);border:1.5px solid var(--accent);background:var(--glow);padding:.1rem .5rem;border-radius:10px;letter-spacing:.06em;flex-shrink:0;box-shadow:0 0 6px var(--glow)}
 /* TOP RIGHT actions */
 #dockActions{
   display:flex;gap:.28rem;align-items:center;flex-shrink:0;
@@ -607,12 +607,12 @@ canvas{-webkit-user-select:none;user-select:none}
 
 <!-- TOP HEADER LIMPIO -->
 <div id="dockTop">
-  <div style="display:flex;flex-direction:column;justify-content:center;gap:.06rem">
+  <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.18rem">
     <div style="display:flex;align-items:center;gap:.4rem">
       <div id="headerOrb" style="width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 8px rgba(139,92,246,.55);flex-shrink:0"></div>
       <span class="dtlogo">ALINEA</span>
     </div>
-    <span class="dtbcount" id="bcount" style="padding-left:1px">0 libros</span>
+    <span class="dtbcount" id="bcount" style="align-self:center;margin-top:.1rem">0 libros</span>
   </div>
   <div id="dockActions">
     <button class="dta" onclick="toggleSearch()" title="Buscar" style="font-size:.85rem">⌕</button>
@@ -700,7 +700,8 @@ canvas{-webkit-user-select:none;user-select:none}
       </div>
       <!-- Galaxy selector chips -->
       <div id="galSelector" style="position:absolute;top:.9rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem;align-items:center;margin-top:2.6rem;z-index:5;flex-wrap:wrap;justify-content:center;max-width:80vw"></div>
-      <div class="g-tools">
+      <div class="g-tools" id="gToolsPanel">
+        <button class="btic g-drag-handle" title="Mover panel" style="cursor:grab;font-size:.75rem;opacity:.5">⠿</button>
         <button class="btic" onclick="gReset()" title="Centrar">⊙</button>
         <button class="btic" onclick="gZoom(1.2)">＋</button>
         <button class="btic" onclick="gZoom(.83)">－</button>
@@ -708,7 +709,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btic" onclick="toggleGalaxyWishlist()" title="Mostrar/ocultar wishlist" id="wishGalBtn" style="font-size:.85rem">🚀</button>
       </div>
       <!-- Category filter panel -->
-      <div id="catFilterPanel" style="display:none;position:absolute;top:.9rem;left:.9rem;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:10;min-width:200px;max-width:260px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.6)">
+      <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:600;min-width:200px;max-width:min(260px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
           <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">Categorías</span>
           <div style="display:flex;gap:.3rem">
@@ -2045,7 +2046,7 @@ function showFriendBookTooltip(node){
 // ══════════════════════════
 const LANGS={
 es:{name:'Español',t:{
-  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',
+  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Tu Universo de Conocimiento',
   addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
   galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
   exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
@@ -2099,7 +2100,7 @@ es:{name:'Español',t:{
   ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
 }},
 en:{name:'English',t:{
-  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',
+  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Your Universe of Knowledge',
   addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
   galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
   exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
@@ -2153,7 +2154,7 @@ en:{name:'English',t:{
   ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
 }},
 pt:{name:'Português',t:{
-  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',
+  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Seu Universo do Conhecimento',
   addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
   galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
   exploreTitle:'Explorar ideias',exploreSubtitle:'Toque para explorar · Arraste para mover · Incline o telefone',
@@ -2207,7 +2208,7 @@ pt:{name:'Português',t:{
   ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
 }},
 fr:{name:'Français',t:{
-  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',
+  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Votre Univers de Connaissance',
   addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
   galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
   exploreTitle:'Explorer les idées',exploreSubtitle:'Toucher pour explorer · Glisser pour déplacer · Incliner le téléphone',
@@ -2369,7 +2370,7 @@ it:{name:'Italiano',t:{
   ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
 }},
 ja:{name:'日本語',t:{
-  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',
+  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'あなたの知識の宇宙',
   addBook:'＋ 本を追加',search:'検索…',settings:'設定',wishlistBtn:'ウィッシュリスト',
   galaxyHint:'太陽系 · ドラッグ · スクロール = ズーム · クリック = 本 · アニメーション軌道',
   exploreTitle:'アイデアを探す',exploreSubtitle:'タップして探索 · ドラッグして移動 · 電話を傾ける',
@@ -3033,7 +3034,7 @@ async function genBitacora(){
 // ══════════════════════════
 // GRAPH — ANIMATED SOLAR SYSTEM
 // ══════════════════════════
-function onLibName(v){appState.libName=v;}
+function onLibName(v){appState.libName=v;const _lni=document.getElementById('libNameInput');if(_lni&&!v)_lni.placeholder=t('myLibrary')||'Mi Biblioteca…';}
 function saveLibName(){persistState();if(document.getElementById('viewGraph').classList.contains('active'))initGraph();}
 
 
@@ -3051,10 +3052,21 @@ function toggleCatFilterPanel(){
   const panel=document.getElementById('catFilterPanel');
   if(!panel)return;
   const showing=panel.style.display!=='none';
-  panel.style.display=showing?'none':'block';
-  if(!showing)renderCatFilterPanel();
+  if(showing){panel.style.display='none';return;}
+  renderCatFilterPanel();
+  // Position near the button
   const btn=document.getElementById('catFilterBtn');
-  if(btn)btn.style.color=(!showing&&hiddenCats.length>0)?'var(--accent2)':'';
+  if(btn){
+    const r=btn.getBoundingClientRect();
+    const pw=Math.min(260,window.innerWidth*0.9);
+    let left=r.left;
+    if(left+pw>window.innerWidth-8)left=window.innerWidth-pw-8;
+    panel.style.left=Math.max(8,left)+'px';
+    panel.style.top=(r.bottom+6)+'px';
+    panel.style.width=pw+'px';
+  }
+  panel.style.display='block';
+  btn.style.color=hiddenCats.length>0?'var(--accent2)':'var(--accent2)';
 }
 function renderCatFilterPanel(){
   const list=document.getElementById('catFilterList');if(!list)return;
@@ -3100,12 +3112,24 @@ function initGraph(){
   cv.width=W*dpr;cv.height=H*dpr;
   cv.style.width=W+'px';cv.style.height=H+'px';
   const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
-  document.getElementById('libNameInput').value=appState.libName||'';
+  const _lni=document.getElementById('libNameInput');
+  if(_lni){
+    // Default names in each language — if name matches any default, show translated
+    const _defaults=['Mi Biblioteca','My Library','Minha Biblioteca','Ma Bibliothèque','マイライブラリ','私的图书馆','나의 도서관'];
+    const _curName=appState.libName||'';
+    const _isDefault=!_curName||_defaults.includes(_curName)||_curName==='Mi Biblioteca';
+    if(_isDefault){
+      _lni.value='';
+      _lni.placeholder=t('myLibrary')||'Mi Biblioteca…';
+    } else {
+      _lni.value=_curName;
+    }
+  }
   renderGalSelector();
 
   // Build list of galaxies to render
   const toRender=[];
-  if(activeGalaxies.includes('mine')) toRender.push({lib,name:appState.libName||'Mi Biblioteca',colorIdx:-1,id:'mine'});
+  if(activeGalaxies.includes('mine')) toRender.push({lib,name:appState.libName||(t('myLibrary')||'Mi Biblioteca').replace('…',''),colorIdx:-1,id:'mine'});
   friendGalaxies.filter(f=>activeGalaxies.includes(f.id)).forEach(f=>toRender.push(f));
 
   if(!toRender.length){
@@ -4399,9 +4423,15 @@ function toggleSearch(){
 
 // ── SPLASH SCREEN ──
 function initSplash(){
-  const libName=appState.libName||(lib.length>0?'Mi Biblioteca':'Tu Universo de Conocimiento');
+  const _defaults=['Mi Biblioteca','My Library','Minha Biblioteca','Ma Bibliothèque','マイライブラリ'];
+  const _stored=appState.libName||'';
+  const _isDefault=!_stored||_defaults.includes(_stored);
+  // If user set a custom name, show it; otherwise show translated default
+  const libName=_isDefault
+    ?(lib.length>0?(t('myLibrary')||'Mi Biblioteca').replace('…',''):(t('splashSub')||'Tu Universo de Conocimiento'))
+    :_stored;
   const splashLib=document.getElementById('splashLib');
-  if(splashLib&&libName)splashLib.textContent=libName;
+  if(splashLib)splashLib.textContent=libName;
   setTimeout(()=>{
     const splash=document.getElementById('splash');
     if(splash){splash.classList.add('hiding');setTimeout(()=>splash.remove(),900);}
@@ -4409,6 +4439,78 @@ function initSplash(){
 }
 
 updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();
+// ══════════════════════════
+// DRAGGABLE G-TOOLS PANEL
+// ══════════════════════════
+(function initDraggableTools(){
+  function setup(){
+    const panel=document.getElementById('gToolsPanel');
+    const handle=panel?.querySelector('.g-drag-handle');
+    if(!panel||!handle)return;
+    // Load saved position
+    const saved=JSON.parse(localStorage.getItem('eter2_gtoolsPos')||'null');
+    if(saved){
+      panel.style.position='fixed';
+      panel.style.top=saved.top+'px';
+      panel.style.left=saved.left+'px';
+      panel.style.right='auto';
+      panel.style.bottom='auto';
+      panel.style.transform='none';
+    }
+    let dragging=false,startX,startY,startL,startT;
+    handle.addEventListener('mousedown',e=>{
+      e.preventDefault();dragging=true;
+      const r=panel.getBoundingClientRect();
+      // Convert to fixed if not already
+      panel.style.position='fixed';
+      panel.style.top=r.top+'px';
+      panel.style.left=r.left+'px';
+      panel.style.right='auto';
+      panel.style.bottom='auto';
+      panel.style.transform='none';
+      startX=e.clientX;startY=e.clientY;
+      startL=r.left;startT=r.top;
+      handle.style.cursor='grabbing';
+    });
+    handle.addEventListener('touchstart',e=>{
+      dragging=true;
+      const t=e.touches[0];
+      const r=panel.getBoundingClientRect();
+      panel.style.position='fixed';
+      panel.style.top=r.top+'px';
+      panel.style.left=r.left+'px';
+      panel.style.right='auto';
+      panel.style.bottom='auto';
+      panel.style.transform='none';
+      startX=t.clientX;startY=t.clientY;
+      startL=r.left;startT=r.top;
+    },{passive:true});
+    const onMove=e=>{
+      if(!dragging)return;
+      const cx=e.clientX||e.touches?.[0]?.clientX;
+      const cy=e.clientY||e.touches?.[0]?.clientY;
+      if(!cx)return;
+      const newL=Math.max(0,Math.min(window.innerWidth-panel.offsetWidth,startL+(cx-startX)));
+      const newT=Math.max(0,Math.min(window.innerHeight-panel.offsetHeight,startT+(cy-startY)));
+      panel.style.left=newL+'px';
+      panel.style.top=newT+'px';
+    };
+    const onUp=e=>{
+      if(!dragging)return;
+      dragging=false;
+      handle.style.cursor='grab';
+      localStorage.setItem('eter2_gtoolsPos',JSON.stringify({top:parseFloat(panel.style.top),left:parseFloat(panel.style.left)}));
+    };
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',onUp);
+    document.addEventListener('touchmove',e=>{if(dragging){e.preventDefault();onMove(e);}},{passive:false});
+    document.addEventListener('touchend',onUp);
+  }
+  // Run after DOM ready
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
+  else setTimeout(setup,100);
+})();
+
 setTimeout(initSplash, 50);
 window.addEventListener('resize',()=>{
   if(document.getElementById('viewGraph').classList.contains('active'))initGraph();
@@ -4416,6 +4518,14 @@ window.addEventListener('resize',()=>{
 });
 
 document.getElementById('mBook')._id=null;
+// Close cat filter panel on outside click
+document.addEventListener('click',e=>{
+  const panel=document.getElementById('catFilterPanel');
+  const btn=document.getElementById('catFilterBtn');
+  if(panel&&panel.style.display!=='none'&&!panel.contains(e.target)&&e.target!==btn&&!btn?.contains(e.target)){
+    panel.style.display='none';
+  }
+},{passive:true,capture:false});
 
 // ── FAB ──────────────────────────────────────────────
 let fabOpen=false;
