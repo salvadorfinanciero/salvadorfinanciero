@@ -25,6 +25,9 @@
 <style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}</style>
 <div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:rgba(196,181,253,.7);font-family:DM Mono,monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;gap:.75rem"><div style="font-size:2rem">↩</div><div>Gira el teléfono<br>para usar ALINEA</div></div>
 <title>ALINEA — Tu Biblioteca</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ib3JiIiBjeD0iMzUlIiBjeT0iMzAlIiByPSI2NSUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZTBkNGZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjOGI1Y2Y2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzNiMDc2NCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIzIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMDYwNTBmIiByeD0iMjIiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNiIgZmlsbD0idXJsKCNvcmIpIiBmaWx0ZXI9InVybCgjZ2xvdykiLz4KICA8Y2lyY2xlIGN4PSIzOCIgY3k9IjM2IiByPSI5IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4xOCIvPgo8L3N2Zz4=">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwYzBhMTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDYwNTBmIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIzNSUiIGN5PSIzMCUiIHI9IjY1JSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlMGQ0ZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIzNSUiIHN0b3AtY29sb3I9IiNhNzhiZmEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI3MCUiIHN0b3AtY29sb3I9IiM3YzNhZWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM2IwNzY0Ii8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPGZpbHRlciBpZD0iZ2xvdyIgeD0iLTMwJSIgeT0iLTMwJSIgd2lkdGg9IjE2MCUiIGhlaWdodD0iMTYwJSI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjYiIHJlc3VsdD0iYmx1ciIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJsdXIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIGZpbGw9InVybCgjYmcpIiByeD0iNDAiLz4KICA8IS0tIFN0YXJzIC0tPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iMjUiIHI9IjEuMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNCIvPgogIDxjaXJjbGUgY3g9IjE1MCIgY3k9IjQwIiByPSIxIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4zIi8+CiAgPGNpcmNsZSBjeD0iMTYwIiBjeT0iMTQwIiByPSIxLjUiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjM1Ii8+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIxNTUiIHI9IjEiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz4KICA8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxNjUiIHI9IjEuMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMjUiLz4KICA8IS0tIE9yYiBnbG93IGhhbG8gLS0+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNTgiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMTUiIGZpbHRlcj0idXJsKCNnbG93KSIvPgogIDwhLS0gTWFpbiBvcmIgLS0+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNTIiIGZpbGw9InVybCgjb3JiKSIgZmlsdGVyPSJ1cmwoI2dsb3cpIi8+CiAgPCEtLSBTcGVjdWxhciBoaWdobGlnaHQgLS0+CiAgPGNpcmNsZSBjeD0iNzIiIGN5PSI2OCIgcj0iMTQiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjE2Ii8+CiAgPCEtLSBTbWFsbCBpbm5lciBoaWdobGlnaHQgLS0+CiAgPGNpcmNsZSBjeD0iNjgiIGN5PSI2NCIgcj0iNiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMjIiLz4KPC9zdmc+">
+<meta name="apple-mobile-web-app-title" content="ALINEA">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -1397,6 +1400,8 @@ function applyAccentTheme(name){
     .btn-note:hover{background:${t.glow}!important}
     .btn-note-primary{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;color:#fff!important;border:none!important}
   `;
+  // Update app icon with new accent color
+  updateAppIcon(t.accent, t.accent3);
   // Update swatch active state
   document.querySelectorAll('.accent-swatch').forEach(sw=>{
     const isActive=sw.dataset.theme===name;
@@ -1427,6 +1432,55 @@ function setFontSize(size){
   });
 }
 
+
+// ══════════════════════════
+// DYNAMIC FAVICON & APPLE ICON
+// ══════════════════════════
+function updateAppIcon(accentColor, darkColor){
+  const ac=accentColor||'#8b5cf6';
+  const dk=darkColor||'#3b0764';
+  const light=ac+'dd'; // lighter version for top of gradient
+
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0c0a18"/>
+      <stop offset="100%" stop-color="#06050f"/>
+    </radialGradient>
+    <radialGradient id="orb" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#e8dfff"/>
+      <stop offset="35%" stop-color="${light}"/>
+      <stop offset="70%" stop-color="${ac}"/>
+      <stop offset="100%" stop-color="${dk}"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="180" height="180" fill="url(#bg)" rx="40"/>
+  <circle cx="30" cy="25" r="1.2" fill="white" opacity="0.4"/>
+  <circle cx="150" cy="40" r="1" fill="white" opacity="0.3"/>
+  <circle cx="160" cy="140" r="1.5" fill="white" opacity="0.35"/>
+  <circle cx="20" cy="155" r="1" fill="white" opacity="0.3"/>
+  <circle cx="90" cy="90" r="58" fill="${ac}" opacity="0.15" filter="url(#glow)"/>
+  <circle cx="90" cy="90" r="52" fill="url(#orb)" filter="url(#glow)"/>
+  <circle cx="72" cy="68" r="14" fill="white" opacity="0.16"/>
+  <circle cx="68" cy="64" r="6" fill="white" opacity="0.22"/>
+</svg>`;
+
+  const b64='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
+
+  // Update favicon
+  let fav=document.querySelector('link[rel="icon"]');
+  if(!fav){fav=document.createElement('link');fav.rel='icon';fav.type='image/svg+xml';document.head.appendChild(fav);}
+  fav.href=b64;
+
+  // Update apple touch icon
+  let apple=document.querySelector('link[rel="apple-touch-icon"]');
+  if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';document.head.appendChild(apple);}
+  apple.href=b64;
+}
 function initAppearance(){
   const theme=localStorage.getItem('eter2_theme')||'purple';
   const fsize=localStorage.getItem('eter2_fontsize')||'normal';
