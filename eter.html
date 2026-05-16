@@ -190,7 +190,7 @@ body::before{content:'';position:fixed;inset:0;background:
 #gCanvas:active{cursor:grabbing}
 .g-tools{position:absolute;top:.9rem;right:.9rem;display:flex;flex-direction:column;gap:.5rem}
 .g-tools .btic{width:50px;height:50px;font-size:1.15rem;border-radius:11px;box-shadow:0 2px 14px rgba(0,0,0,.5)}
-.g-lib-name{position:absolute;top:.9rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem}
+.g-lib-name{position:absolute;top:.35rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem}
 .g-lib-name input{background:rgba(12,10,24,.85);border:1px solid var(--border);color:var(--accent2);font-family:'Playfair Display',serif;font-size:.85rem;font-style:italic;padding:.28rem .7rem;border-radius:6px;outline:none;text-align:center;width:200px;transition:border-color .2s}
 .g-lib-name input:focus{border-color:var(--accent)}
 .g-hint{position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.53rem;color:var(--dim);pointer-events:none;text-align:center;letter-spacing:.05em}
@@ -532,9 +532,10 @@ canvas{-webkit-user-select:none;user-select:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
-  .g-tools{position:fixed!important;top:calc(env(safe-area-inset-top) + 96px)!important;bottom:auto!important;right:auto!important;left:50%!important;transform:translateX(-50%)!important;flex-direction:row!important;gap:.35rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:.28rem .35rem;backdrop-filter:blur(24px);z-index:10}
+  .g-tools{position:fixed!important;flex-direction:row!important;gap:.35rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:.28rem .35rem;backdrop-filter:blur(24px);z-index:200;transform:none!important;transition:top .3s,left .3s,bottom .3s}
   .g-tools .btic{width:38px;height:38px;font-size:1rem;border-radius:8px;box-shadow:none}
-  .g-lib-name{top:calc(env(safe-area-inset-top) + 68px)!important;}
+  .g-tools.is-dragging{transform:none!important}
+  .g-lib-name{position:fixed!important;top:calc(var(--content-top) + 6px)!important;left:50%!important;transform:translateX(-50%)!important;z-index:190!important;}
   .hdr-r{gap:.3rem}
   .hsearch{display:none}
   .btn-add{font-size:.5rem;padding:.32rem .7rem}
@@ -701,7 +702,7 @@ canvas{-webkit-user-select:none;user-select:none}
       <!-- Galaxy selector chips -->
       <div id="galSelector" style="position:absolute;top:.9rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem;align-items:center;margin-top:2.6rem;z-index:5;flex-wrap:wrap;justify-content:center;max-width:80vw"></div>
       <div class="g-tools" id="gToolsPanel">
-        <button class="btic g-drag-handle" title="Mover panel" style="cursor:grab;font-size:.75rem;opacity:.5">⠿</button>
+        <button class="btic g-drag-handle" title="Mover panel" style="cursor:grab;font-size:.9rem;opacity:.6;touch-action:none" id="gToolsMoveBtn" onclick="cycleToolsPos()">⊕</button>
         <button class="btic" onclick="gReset()" title="Centrar">⊙</button>
         <button class="btic" onclick="gZoom(1.2)">＋</button>
         <button class="btic" onclick="gZoom(.83)">－</button>
@@ -3760,7 +3761,20 @@ function animateZoom(targetOff, targetSc){
 }
 
 function gReset(){animateZoom({x:0,y:0},1);}
-function gZoom(f){const ns=Math.max(.2,Math.min(4,gSc*f));animateZoom(gOff,ns);}
+function gZoom(f){
+  const cv=document.getElementById('gCanvas');
+  if(!cv)return;
+  const dpr=window.devicePixelRatio||1;
+  const W=cv.width/dpr, H=cv.height/dpr;
+  const ns=Math.max(.2,Math.min(4,gSc*f));
+  // Zoom toward screen center: keep the canvas center point fixed
+  const cx=W/2, cy=H/2;
+  const newOff={
+    x: cx - (cx - gOff.x) * (ns/gSc),
+    y: cy - (cy - gOff.y) * (ns/gSc)
+  };
+  animateZoom(newOff, ns);
+}
 
 // ══════════════════════════
 // BOOK MODAL (CENTRAL)
@@ -4442,75 +4456,151 @@ updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance
 // ══════════════════════════
 // DRAGGABLE G-TOOLS PANEL
 // ══════════════════════════
+
+// ══════════════════════════
+// MOBILE TOOLS PANEL POSITION CYCLE
+// ══════════════════════════
+const _TOOLS_POSITIONS=[
+  'top-center','top-left','top-right','bottom-center'
+];
+let _toolsPosIdx=parseInt(localStorage.getItem('eter2_gtoolsPosIdx')||'0');
+
+function applyToolsPosMobile(){
+  const panel=document.getElementById('gToolsPanel');
+  if(!panel)return;
+  const W=window.innerWidth;
+  const H=window.innerHeight;
+  const pw=panel.offsetWidth||220;
+  const ph=panel.offsetHeight||50;
+  const safeTop=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--content-top'))||72;
+  const safeBot=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--content-bottom'))||80;
+  panel.style.transform='none';
+  panel.style.right='auto';
+  panel.style.bottom='auto';
+  const pos=_TOOLS_POSITIONS[_toolsPosIdx%_TOOLS_POSITIONS.length];
+  if(pos==='top-center'){
+    panel.style.top=(safeTop+8)+'px';
+    panel.style.left=Math.round((W-pw)/2)+'px';
+  } else if(pos==='top-left'){
+    panel.style.top=(safeTop+8)+'px';
+    panel.style.left='8px';
+  } else if(pos==='top-right'){
+    panel.style.top=(safeTop+8)+'px';
+    panel.style.left=(W-pw-8)+'px';
+  } else if(pos==='bottom-center'){
+    panel.style.top=(H-safeBot-ph-8)+'px';
+    panel.style.left=Math.round((W-pw)/2)+'px';
+  }
+}
+
+function cycleToolsPos(){
+  if(window.innerWidth>=768)return; // desktop uses drag
+  _toolsPosIdx=(_toolsPosIdx+1)%_TOOLS_POSITIONS.length;
+  localStorage.setItem('eter2_gtoolsPosIdx',_toolsPosIdx);
+  applyToolsPosMobile();
+  // Show label briefly
+  const btn=document.getElementById('gToolsMoveBtn');
+  const labels=['↑ Centro','← Izq','→ Der','↓ Centro'];
+  if(btn){
+    const orig=btn.textContent;
+    btn.textContent=labels[_toolsPosIdx-1>=0?_toolsPosIdx-1:3];
+    setTimeout(()=>{btn.textContent=orig;},800);
+  }
+}
+
+// Apply on mobile init
+(function(){
+  if(window.innerWidth<768){
+    setTimeout(()=>{
+      // Check if there's a saved JS drag position (desktop), ignore on mobile
+      applyToolsPosMobile();
+    },250);
+  }
+})();
+window.addEventListener('resize',()=>{
+  if(window.innerWidth<768)setTimeout(applyToolsPosMobile,100);
+});
+
 (function initDraggableTools(){
   function setup(){
     const panel=document.getElementById('gToolsPanel');
-    const handle=panel?.querySelector('.g-drag-handle');
-    if(!panel||!handle)return;
-    // Load saved position
+    if(!panel)return;
+
+    let dragging=false,startX=0,startY=0,startL=0,startT=0,moved=false;
+    let activePointerId=null;
+
+    function getFixedPos(){
+      // Convert current position (possibly with transform) to plain fixed coords
+      const r=panel.getBoundingClientRect();
+      return {top:r.top, left:r.left};
+    }
+
+    function applyFixedPos(left,top){
+      panel.classList.add('is-dragging');
+      panel.style.transform='none';
+      panel.style.left=Math.max(4,Math.min(window.innerWidth-panel.offsetWidth-4,left))+'px';
+      panel.style.top=Math.max(4,Math.min(window.innerHeight-panel.offsetHeight-4,top))+'px';
+      panel.style.right='auto';
+      panel.style.bottom='auto';
+    }
+
+    function savePos(){
+      localStorage.setItem('eter2_gtoolsPos',JSON.stringify({
+        top:parseFloat(panel.style.top)||0,
+        left:parseFloat(panel.style.left)||0
+      }));
+    }
+
+    // Restore saved position
     const saved=JSON.parse(localStorage.getItem('eter2_gtoolsPos')||'null');
     if(saved){
-      panel.style.position='fixed';
-      panel.style.top=saved.top+'px';
-      panel.style.left=saved.left+'px';
-      panel.style.right='auto';
-      panel.style.bottom='auto';
-      panel.style.transform='none';
+      setTimeout(()=>{
+        panel.classList.add('is-dragging');
+        panel.style.transform='none';
+        panel.style.left=Math.max(4,Math.min(window.innerWidth-100,saved.left))+'px';
+        panel.style.top=Math.max(4,Math.min(window.innerHeight-60,saved.top))+'px';
+        panel.style.right='auto';panel.style.bottom='auto';
+      },200);
     }
-    let dragging=false,startX,startY,startL,startT;
-    handle.addEventListener('mousedown',e=>{
-      e.preventDefault();dragging=true;
-      const r=panel.getBoundingClientRect();
-      // Convert to fixed if not already
-      panel.style.position='fixed';
-      panel.style.top=r.top+'px';
-      panel.style.left=r.left+'px';
-      panel.style.right='auto';
-      panel.style.bottom='auto';
-      panel.style.transform='none';
-      startX=e.clientX;startY=e.clientY;
-      startL=r.left;startT=r.top;
-      handle.style.cursor='grabbing';
-    });
-    handle.addEventListener('touchstart',e=>{
-      dragging=true;
-      const t=e.touches[0];
-      const r=panel.getBoundingClientRect();
-      panel.style.position='fixed';
-      panel.style.top=r.top+'px';
-      panel.style.left=r.left+'px';
-      panel.style.right='auto';
-      panel.style.bottom='auto';
-      panel.style.transform='none';
-      startX=t.clientX;startY=t.clientY;
-      startL=r.left;startT=r.top;
-    },{passive:true});
-    const onMove=e=>{
-      if(!dragging)return;
-      const cx=e.clientX||e.touches?.[0]?.clientX;
-      const cy=e.clientY||e.touches?.[0]?.clientY;
-      if(!cx)return;
-      const newL=Math.max(0,Math.min(window.innerWidth-panel.offsetWidth,startL+(cx-startX)));
-      const newT=Math.max(0,Math.min(window.innerHeight-panel.offsetHeight,startT+(cy-startY)));
-      panel.style.left=newL+'px';
-      panel.style.top=newT+'px';
-    };
-    const onUp=e=>{
-      if(!dragging)return;
-      dragging=false;
-      handle.style.cursor='grab';
-      localStorage.setItem('eter2_gtoolsPos',JSON.stringify({top:parseFloat(panel.style.top),left:parseFloat(panel.style.left)}));
-    };
-    document.addEventListener('mousemove',onMove);
-    document.addEventListener('mouseup',onUp);
-    document.addEventListener('touchmove',e=>{if(dragging){e.preventDefault();onMove(e);}},{passive:false});
-    document.addEventListener('touchend',onUp);
-  }
-  // Run after DOM ready
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
-  else setTimeout(setup,100);
-})();
 
+    // ── POINTER EVENTS (works on both mouse and touch) ──
+    panel.style.touchAction='none'; // prevent scroll interference
+
+    panel.addEventListener('pointerdown',e=>{
+      // Don't drag when clicking buttons (only drag from handle or gap)
+      if(e.target.tagName==='BUTTON'&&!e.target.classList.contains('g-drag-handle'))return;
+      e.preventDefault();
+      panel.setPointerCapture(e.pointerId);
+      activePointerId=e.pointerId;
+      const pos=getFixedPos();
+      startX=e.clientX;startY=e.clientY;
+      startL=pos.left;startT=pos.top;
+      dragging=true;moved=false;
+    },{passive:false});
+
+    panel.addEventListener('pointermove',e=>{
+      if(!dragging||e.pointerId!==activePointerId)return;
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+      if(!moved&&Math.hypot(dx,dy)<4)return;
+      moved=true;
+      applyFixedPos(startL+dx,startT+dy);
+    },{passive:true});
+
+    panel.addEventListener('pointerup',e=>{
+      if(!dragging||e.pointerId!==activePointerId)return;
+      dragging=false;activePointerId=null;
+      if(moved)savePos();
+    },{passive:true});
+
+    panel.addEventListener('pointercancel',e=>{
+      dragging=false;activePointerId=null;
+    },{passive:true});
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
+  else setTimeout(setup,200);
+})();
 setTimeout(initSplash, 50);
 window.addEventListener('resize',()=>{
   if(document.getElementById('viewGraph').classList.contains('active'))initGraph();
