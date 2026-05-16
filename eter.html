@@ -73,7 +73,7 @@ body::before{content:'';position:fixed;inset:0;background:
   gap:.5rem;
 }
 .dtlogo{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);flex-shrink:0}
-.dtbcount{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;color:var(--accent2);border:1.5px solid var(--accent);background:var(--glow);padding:.18rem .6rem;border-radius:12px;letter-spacing:.07em;flex-shrink:0;box-shadow:0 0 8px var(--glow)}
+.dtbcount{font-family:'DM Mono',monospace;font-size:.46rem;font-weight:400;color:rgba(196,181,253,.55);letter-spacing:.06em;flex-shrink:0}
 /* TOP RIGHT actions */
 #dockActions{
   display:flex;gap:.28rem;align-items:center;flex-shrink:0;
@@ -96,7 +96,7 @@ body::before{content:'';position:fixed;inset:0;background:
 #searchBar input::placeholder{color:var(--dim)}
 /* ── DOCK INFERIOR ── */
 #dock{
-  position:fixed;bottom:calc(env(safe-area-inset-bottom) + 5px);left:50%;transform:translateX(-50%);
+  position:fixed;bottom:calc(env(safe-area-inset-bottom) + 2px);left:50%;transform:translateX(-50%);
   z-index:200;
   display:flex;align-items:center;gap:.08rem;
   background:rgba(8,6,18,.92);
@@ -448,6 +448,11 @@ body::before{content:'';position:fixed;inset:0;background:
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,.4)}50%{box-shadow:0 0 0 6px rgba(244,63,94,0)}}
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,.4)}50%{box-shadow:0 0 0 6px rgba(244,63,94,0)}};color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 2px 12px rgba(139,92,246,.35);font-weight:500}
 .btn-an{background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .88rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 2px 12px rgba(139,92,246,.35);font-weight:500;-webkit-appearance:none;appearance:none}
+.btn-note{background:transparent;border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:500}
+.btn-note:hover{background:var(--glow);box-shadow:0 0 10px var(--glow)}
+.btn-note-primary{background:linear-gradient(135deg,var(--accent3),var(--accent))!important;color:#fff!important;border:none!important}
+.btn-note-primary:hover{opacity:.88;box-shadow:0 2px 12px var(--glow)!important}
+.btn-note.recording{background:rgba(244,63,94,.15)!important;border-color:#f43f5e!important;color:#f43f5e!important}
 .btn-an:hover{opacity:.88;box-shadow:0 4px 18px rgba(139,92,246,.5);transform:translateY(-1px)}
 .btn-an.recording{background:linear-gradient(135deg,#9f1239,#f43f5e)!important;box-shadow:0 2px 12px rgba(244,63,94,.4)!important;animation:micPulse 1s ease-in-out infinite}
 .btn-cam{background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .88rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 2px 12px rgba(139,92,246,.35);font-weight:500;-webkit-appearance:none;appearance:none}
@@ -527,8 +532,9 @@ canvas{-webkit-user-select:none;user-select:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
-  .g-tools{position:fixed!important;top:auto!important;right:auto!important;bottom:calc(env(safe-area-inset-bottom) + 82px)!important;left:50%!important;transform:translateX(-50%)!important;flex-direction:row!important;gap:.4rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:20px;padding:.3rem .4rem;backdrop-filter:blur(24px);z-index:10}
-  .g-tools .btic{width:44px;height:44px;font-size:1.2rem;border-radius:10px;box-shadow:none}
+  .g-tools{position:fixed!important;top:calc(env(safe-area-inset-top) + 96px)!important;bottom:auto!important;right:auto!important;left:50%!important;transform:translateX(-50%)!important;flex-direction:row!important;gap:.35rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:.28rem .35rem;backdrop-filter:blur(24px);z-index:10}
+  .g-tools .btic{width:38px;height:38px;font-size:1rem;border-radius:8px;box-shadow:none}
+  .g-lib-name{top:calc(env(safe-area-inset-top) + 68px)!important;}
   .hdr-r{gap:.3rem}
   .hsearch{display:none}
   .btn-add{font-size:.5rem;padding:.32rem .7rem}
@@ -601,10 +607,12 @@ canvas{-webkit-user-select:none;user-select:none}
 
 <!-- TOP HEADER LIMPIO -->
 <div id="dockTop">
-  <div style="display:flex;align-items:center;gap:.5rem">
-    <div id="headerOrb" style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 10px rgba(139,92,246,.55);flex-shrink:0"></div>
-    <span class="dtlogo">ALINEA</span>
-    <span class="dtbcount" id="bcount">0</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;gap:.06rem">
+    <div style="display:flex;align-items:center;gap:.4rem">
+      <div id="headerOrb" style="width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 8px rgba(139,92,246,.55);flex-shrink:0"></div>
+      <span class="dtlogo">ALINEA</span>
+    </div>
+    <span class="dtbcount" id="bcount" style="padding-left:1px">0 libros</span>
   </div>
   <div id="dockActions">
     <button class="dta" onclick="toggleSearch()" title="Buscar" style="font-size:.85rem">⌕</button>
@@ -929,9 +937,9 @@ canvas{-webkit-user-select:none;user-select:none}
     </select>
   </div>
   <div class="macts" style="justify-content:space-between">
-    <button class="btn-del" style="padding:.42rem .9rem" onclick="const id=document.getElementById('mEdit')._id;closeModal('mEdit');delBook(id)">Eliminar libro</button>
+    <button class="btn-del" style="padding:.42rem .9rem" onclick="const _rid=document.getElementById('mEdit')._id;const _rm2=document.getElementById('mBook');if(_rm2){_rm2.style.filter='';_rm2.style.opacity='';}closeModal('mEdit');delBook(_rid)" data-i18n="deleteBook">Eliminar libro</button>
     <div style="display:flex;gap:.45rem">
-      <button class="btn-ghost" onclick="closeModal('mEdit');const _eb=document.getElementById('mEdit')._id;if(document.getElementById('mBook')._id===_eb||document.getElementById('mBook')._id)document.getElementById('mBook').classList.add('open')" data-i18n="cancel">Cancelar</button>
+      <button class="btn-ghost" onclick="const _rm=document.getElementById('mBook');if(_rm){_rm.style.filter='';_rm.style.opacity='';}closeModal('mEdit');if(_rm&&_rm._id)_rm.classList.add('open')" data-i18n="cancel">Cancelar</button>
       <button class="btn-ok" onclick="saveEdit()" data-i18n="saveChanges">Guardar cambios</button>
     </div>
   </div>
@@ -992,6 +1000,13 @@ canvas{-webkit-user-select:none;user-select:none}
       <button class="pbtn" id="provO" onclick="selProv('openai')">GPT-4o</button>
       <button class="pbtn" id="provG" onclick="selProv('gemini')">Gemini</button>
       <button class="pbtn" id="provX" onclick="selProv('grok')">Grok</button>
+      <button class="pbtn" id="provC" onclick="selProv('custom')">Otro</button>
+    </div>
+    <div id="customEndpointWrap" style="display:none;margin-bottom:.5rem">
+      <label class="flbl">Endpoint URL</label>
+      <input class="fin" type="text" id="customEndpointIn" placeholder="https://api.ejemplo.com/v1/chat/completions" style="margin-bottom:.3rem">
+      <label class="flbl">Modelo</label>
+      <input class="fin" type="text" id="customModelIn" placeholder="llama-3, mistral, etc.">
     </div>
     <label class="flbl" data-i18n="apiKeyLabel">API Key</label>
     <input class="fin" type="password" id="apiKeyIn" placeholder="sk-ant-… o sk-…">
@@ -1374,6 +1389,9 @@ function applyAccentTheme(name){
     .fab-item-btn[style*="7c3aed"]{background:linear-gradient(135deg,${t.accent3},${t.accent})!important}
     .bm-edit-fixed{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;box-shadow:0 2px 12px ${t.glow.replace(".15)",".4)")}!important}
     .bm-edit-fixed:hover{box-shadow:0 4px 18px ${t.glow.replace(".15)",".6)")}!important}
+    .btn-note{border-color:${t.accent}!important;color:${t.accent2}!important}
+    .btn-note:hover{background:${t.glow}!important}
+    .btn-note-primary{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;color:#fff!important;border:none!important}
   `;
   // Update swatch active state
   document.querySelectorAll('.accent-swatch').forEach(sw=>{
@@ -1681,7 +1699,7 @@ window.addEventListener('deviceorientation',e=>{
   // beta: 0=flat, 90=upright, negative=tilted forward past vertical
   // When tilted forward (beta<45), apply upward force
   const b=e.beta||0;
-  gyroY=b<45?(45-b)/45*(-1.2):0;
+  gyroY=b<45?(45-b)/45*(-3.5):0;
 },{passive:true});
 
 function gotoV(v,btn){
@@ -1898,6 +1916,7 @@ function saveBook(){
 
 function openEdit(id){
   const b=lib.find(x=>x.id===id);if(!b)return;
+  const _mb=document.getElementById('mBook');if(_mb&&_mb.classList.contains('open')){_mb.style.filter='blur(4px)';_mb.style.opacity='.35';}
   editCover=b.cover;
   document.getElementById('editTitle').value=b.title;
   document.getElementById('editAuthor').value=b.author==='Autor desconocido'?'':b.author;
@@ -1934,6 +1953,7 @@ function saveEdit(){
   b.status=newStatus;b.isWishlist=newStatus==='wishlist';
   if(editCover)b.cover=editCover;
   persist();closeModal('mEdit');renderSidebar();renderLib();
+  const _mb2=document.getElementById('mBook');if(_mb2){_mb2.style.filter='';_mb2.style.opacity='';}
   const curBookId=document.getElementById('mBook')._id;
   if(curBookId===id)openBook(id);
 }
@@ -2025,7 +2045,7 @@ function showFriendBookTooltip(node){
 // ══════════════════════════
 const LANGS={
 es:{name:'Español',t:{
-  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',
+  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',
   addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
   galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
   exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
@@ -2036,7 +2056,7 @@ es:{name:'Español',t:{
   notas:'Notas & Subrayados',keywords:'Keywords',relatedBooks:'Libros relacionados',
   notePlaceholder:'Escribe un subrayado, idea o reflexión…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentario (opcional)',
   addNote:'+ Nota',camera:'Cámara',dictate:'Dictar',
-  progress:'Progreso',rating:'Rating',editBook:'Editar libro',
+  progress:'Progreso',rating:'Rating',editBook:'Editar libro',deleteBook:'Eliminar libro',
   pending:'Pendiente',reading:'Leyendo',done:'Terminado',
   noNotes:'Sin notas aún — escribe la primera arriba.',
   searchNotes:'Buscar por palabra, página…',
@@ -2079,7 +2099,7 @@ es:{name:'Español',t:{
   ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
 }},
 en:{name:'English',t:{
-  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',
+  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',
   addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
   galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
   exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
@@ -2090,7 +2110,7 @@ en:{name:'English',t:{
   notas:'Notes & Highlights',keywords:'Keywords',relatedBooks:'Related books',
   notePlaceholder:'Write a highlight, idea or reflection…',pagePlaceholder:'Page',commentPlaceholder:'Comment (optional)',
   addNote:'+ Note',camera:'Camera',dictate:'Dictate',
-  progress:'Progress',rating:'Rating',editBook:'Edit book',
+  progress:'Progress',rating:'Rating',editBook:'Edit book',deleteBook:'Delete book',
   pending:'Pending',reading:'Reading',done:'Finished',
   noNotes:'No notes yet — write the first one above.',
   searchNotes:'Search by word, page…',
@@ -2133,7 +2153,7 @@ en:{name:'English',t:{
   ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
 }},
 pt:{name:'Português',t:{
-  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',
+  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',
   addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
   galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
   exploreTitle:'Explorar ideias',exploreSubtitle:'Toque para explorar · Arraste para mover · Incline o telefone',
@@ -2187,7 +2207,7 @@ pt:{name:'Português',t:{
   ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
 }},
 fr:{name:'Français',t:{
-  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',
+  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',
   addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
   galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
   exploreTitle:'Explorer les idées',exploreSubtitle:'Toucher pour explorer · Glisser pour déplacer · Incliner le téléphone',
@@ -2349,7 +2369,7 @@ it:{name:'Italiano',t:{
   ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
 }},
 ja:{name:'日本語',t:{
-  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',
+  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',
   addBook:'＋ 本を追加',search:'検索…',settings:'設定',wishlistBtn:'ウィッシュリスト',
   galaxyHint:'太陽系 · ドラッグ · スクロール = ズーム · クリック = 本 · アニメーション軌道',
   exploreTitle:'アイデアを探す',exploreSubtitle:'タップして探索 · ドラッグして移動 · 電話を傾ける',
@@ -2412,7 +2432,7 @@ function setLang(code){
 function applyLang(){
   // Nav tabs via data-i18n (already tagged in HTML)
   // 2. Placeholders
-  const phs={searchIn:'search',expIn:'explorePlaceholder'};
+  const phs={searchIn:'search',expIn:'explorePlaceholder',libNameInput:'myLibrary'};
   Object.entries(phs).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.placeholder=t(key)||el.placeholder;});
   // Inputs with translated placeholders
   const fn=document.getElementById('friendNameIn');if(fn)fn.placeholder=t('friendName');
@@ -2481,20 +2501,22 @@ function openSettings(){
 }
 function selProv(p,_=true){
   cfg.provider=p;
-  ['provA','provO','provG','provX'].forEach(id=>{
+  ['provA','provO','provG','provX','provC'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
-  const map={anthropic:'provA',openai:'provO',gemini:'provG',grok:'provX'};
+  const map={anthropic:'provA',openai:'provO',gemini:'provG',grok:'provX',custom:'provC'};
   if(map[p]){const el=document.getElementById(map[p]);if(el)el.classList.add('active');}
+  const _cw=document.getElementById('customEndpointWrap');if(_cw)_cw.style.display=p==='custom'?'block':'none';
   const guides={
     anthropic:`<strong style="color:var(--text)">Claude (Anthropic):</strong><ol><li>Ve a <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></li><li>API Keys → Create Key</li><li>Copia y pega arriba</li></ol>`,
     openai:`<strong style="color:var(--text)">OpenAI (GPT-4o):</strong><ol><li>Ve a <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a></li><li>Create new secret key</li><li>Copia y pega arriba</li></ol>`,
     gemini:`<strong style="color:var(--text)">Google Gemini:</strong><ol><li>Ve a <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a></li><li>Create API Key</li><li>Copia y pega arriba</li></ol>`,
-    grok:`<strong style="color:var(--text)">xAI Grok:</strong><ol><li>Ve a <a href="https://console.x.ai" target="_blank">console.x.ai</a></li><li>API Keys → Create Key</li><li>Copia y pega arriba</li></ol>`
+    grok:`<strong style="color:var(--text)">xAI Grok:</strong><ol><li>Ve a <a href="https://console.x.ai" target="_blank">console.x.ai</a></li><li>API Keys → Create Key</li><li>Copia y pega arriba</li></ol>`,
+    custom:`<strong style="color:var(--text)">API Propia (compatible OpenAI):</strong><ol><li>Ingresa tu endpoint completo arriba</li><li>Escribe el nombre del modelo</li><li>Agrega tu API key</li></ol>`
   };
   document.getElementById('apiGuide').innerHTML=(guides[p]||'')+`<br><span style="color:var(--dim)">Guardada solo en tu navegador.</span>`;
 }
-function saveSettings(){cfg.apiKey=document.getElementById('apiKeyIn').value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
+function saveSettings(){cfg.apiKey=document.getElementById('apiKeyIn').value.trim();const _ep=document.getElementById('customEndpointIn');if(_ep&&_ep.value)cfg.customEndpoint=_ep.value.trim();const _cm=document.getElementById('customModelIn');if(_cm&&_cm.value)cfg.customModel=_cm.value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
 function updateApiSt(){const el=document.getElementById('apiSt');if(!el)return;el.className=cfg.apiKey?'api-st ok':'api-st none';el.textContent=cfg.apiKey?('● '+t('apiKeySaved')):('○ '+t('noApiKey'));}
 async function testKey(){
   const key=document.getElementById('apiKeyIn').value.trim();if(!key){alert('Ingresa una API key primero.');return;}
@@ -2521,6 +2543,9 @@ async function callAI(prompt,maxTokens=150){
       const d=await r.json();return d.candidates?.[0]?.content?.parts?.[0]?.text||null;
     }else if(cfg.provider==='grok'){
       const r=await fetch('https://api.x.ai/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'content-type':'application/json'},body:JSON.stringify({model:'grok-3-mini',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})});
+      const d=await r.json();return d.choices?.[0]?.message?.content||null;
+    }else if(cfg.provider==='custom'&&cfg.customEndpoint){
+      const r=await fetch(cfg.customEndpoint,{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'content-type':'application/json'},body:JSON.stringify({model:cfg.customModel||'gpt-4o-mini',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})});
       const d=await r.json();return d.choices?.[0]?.message?.content||null;
     }else{
       const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'content-type':'application/json'},body:JSON.stringify({model:'gpt-4o-mini',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})});
@@ -2757,7 +2782,7 @@ function toggleDictation(bookId){
   const btn=document.getElementById('micBtn'+bookId);
   const ta=document.getElementById('noteText');
   const origText=ta.value;
-  if(btn)btn.classList.add('recording');
+  if(btn){btn.classList.add('recording');btn.textContent='● Rec';}
   r.onresult=e=>{
     const transcript=[...e.results].map(res=>res[0].transcript).join('');
     ta.value=origText+(origText?' ':'')+transcript;
@@ -3778,9 +3803,9 @@ function openBook(id){
         <div class="nrow">
           <input type="text" id="notePg" class="nri pg" placeholder="Pág.">
           <input type="text" id="noteCmt" class="nri cmt" placeholder="Comentario (opcional)">
-          <button class="btn-an" onclick="addNote(${b.id})" data-i18n="addNote">+ Nota</button>
-          <button class="btn-an" onclick="openVision(${b.id})" data-i18n="camera">📷 Cámara</button>
-          <button class="btn-an" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">🎙 Dictar</button>
+          <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" data-i18n="addNote">＋ Nota</button>
+          <button class="btn-note" onclick="openVision(${b.id})" data-i18n="camera">Cámara</button>
+          <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">Dictar</button>
         </div>
       </div>
     </div>
@@ -3897,7 +3922,7 @@ function renderSidebar(){
       occupiedCats.forEach(cat=>{
         const n=lib.filter(b=>b.category===cat&&!b.isWishlist&&b.status!=='wishlist').length;
         const o=document.createElement('option');
-        o.value=cat;o.textContent=cat+' ('+n+')';
+        o.value=cat;o.textContent=translateCat(cat)+' ('+n+')';
         if(cat===curVal)o.selected=true;
         og.appendChild(o);
       });
@@ -3914,7 +3939,7 @@ function renderSidebar(){
     catChips.innerHTML=cats.map(cat=>{
       const n=lib.filter(b=>b.category===cat).length;
       const active=curFilter===cat;
-      return`<button onclick="setFilter('${cat}',this)" style="background:${active?'var(--glow)':'transparent'};border:1px solid ${active?'rgba(139,92,246,.35)':'rgba(139,92,246,.15)'};color:${active?'var(--accent2)':'var(--muted)'};font-family:'DM Mono',monospace;font-size:.58rem;padding:.18rem .55rem;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:.04em">${cat}<span style="margin-left:.25rem;opacity:.5">${n}</span></button>`;
+      return`<button onclick="setFilter('${cat}',this)" style="background:${active?'var(--glow)':'transparent'};border:1px solid ${active?'rgba(139,92,246,.35)':'rgba(139,92,246,.15)'};color:${active?'var(--accent2)':'var(--muted)'};font-family:'DM Mono',monospace;font-size:.58rem;padding:.18rem .55rem;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:.04em">${translateCat(cat)}<span style="margin-left:.25rem;opacity:.5">${n}</span></button>`;
     }).join('');
   }
   const fc=document.getElementById('filterCount');
