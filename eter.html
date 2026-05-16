@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#06050f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -37,7 +37,7 @@
   --text:#f0eeff;--muted:#8b87b0;--dim:#332e52;
   --ok:#6ee7b7;--err:#f87171;--gold:#fbbf24;
 }
-:root{--header-h:52px;--dock-h:72px;--content-top:calc(env(safe-area-inset-top) + var(--header-h));--content-bottom:calc(env(safe-area-inset-bottom) + var(--dock-h))}
+:root{--header-h:62px;--dock-h:72px;--content-top:calc(env(safe-area-inset-top) + var(--header-h));--content-bottom:calc(env(safe-area-inset-bottom) + var(--dock-h))}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;padding-top:var(--content-top);padding-bottom:var(--content-bottom)}
 html{background:var(--bg)}
 input,textarea,[contenteditable]{-webkit-user-select:text;-moz-user-select:text;user-select:text}
@@ -71,15 +71,15 @@ body::before{content:'';position:fixed;inset:0;background:
   border-bottom:1px solid rgba(139,92,246,.12);
   gap:.5rem;
 }
-.dtlogo{font-family:'DM Mono',monospace;font-size:.9rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);flex-shrink:0}
+.dtlogo{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);flex-shrink:0}
 .dtbcount{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--muted);border:1px solid var(--border);padding:.12rem .42rem;border-radius:12px;letter-spacing:.07em;flex-shrink:0}
 /* TOP RIGHT actions */
 #dockActions{
   display:flex;gap:.28rem;align-items:center;flex-shrink:0;
 }
-.dta{background:rgba(12,10,24,.5);border:1px solid rgba(139,92,246,.18);color:var(--muted);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:all .15s;flex-shrink:0}
+.dta{background:rgba(12,10,24,.5);border:1px solid rgba(139,92,246,.18);color:var(--muted);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;transition:all .15s;flex-shrink:0}
 .dta:hover{color:var(--accent2);border-color:var(--accent);background:rgba(139,92,246,.1)}
-.dta-settings{width:36px;height:36px;font-size:.9rem}
+.dta-settings{width:44px;height:44px;font-size:1.05rem}
 /* Search inline in header */
 #searchBar{
   position:fixed;top:0;left:0;right:0;
@@ -106,18 +106,18 @@ body::before{content:'';position:fixed;inset:0;background:
   box-shadow:0 12px 48px rgba(0,0,0,.7),0 0 0 1px rgba(139,92,246,.06),inset 0 1px 0 rgba(255,255,255,.05);
 }
 .dock-btn{
-  display:flex;flex-direction:column;align-items:center;gap:.14rem;
+  display:flex;flex-direction:column;align-items:center;gap:.18rem;
   background:none;border:none;cursor:pointer;
-  padding:.5rem .88rem;border-radius:16px;
+  padding:.65rem 1.1rem;border-radius:18px;
   transition:all .18s cubic-bezier(.34,1.56,.64,1);
-  color:var(--muted);position:relative;min-width:54px;
+  color:var(--muted);position:relative;min-width:64px;
 }
 .dock-btn:hover{background:rgba(139,92,246,.1);color:var(--text)}
 .dock-btn.active{background:rgba(139,92,246,.18);color:var(--accent2)}
 .dock-btn.active::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:18px;height:2.5px;background:var(--accent2);border-radius:2px}
-.dock-icon{font-size:1.15rem;line-height:1;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
+.dock-icon{font-size:1.4rem;line-height:1;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
 .dock-btn:hover .dock-icon,.dock-btn.active .dock-icon{transform:translateY(-2px) scale(1.12)}
-.dock-label{font-family:'DM Mono',monospace;font-size:.45rem;letter-spacing:.07em;text-transform:uppercase;line-height:1}
+.dock-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.07em;text-transform:uppercase;line-height:1}
 .hsi{position:absolute;left:.56rem;top:50%;transform:translateY(-50%);color:var(--dim);font-size:.63rem;pointer-events:none}
 .btic{background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .18s;position:relative}
 .btic:hover{color:var(--accent2);border-color:var(--accent);background:var(--glow)}
@@ -417,9 +417,12 @@ body::before{content:'';position:fixed;inset:0;background:
 .naitag.mood{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.18);color:var(--ok)}
 .naitag.ld{color:var(--dim);background:transparent;border-color:var(--border);animation:pulse .9s infinite}
 .ndel{position:absolute;top:.5rem;right:.5rem;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:rgba(248,113,113,.6);cursor:pointer;font-size:.55rem;border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .13s,color .13s,background .13s}
+.nedit{position:absolute;top:.5rem;right:1.85rem;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:rgba(196,181,253,.6);cursor:pointer;font-size:.6rem;border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .13s,color .13s,background .13s}
 .nitem:hover .ndel{opacity:1}
-@media(pointer:coarse){.ndel{opacity:.7;background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.25)}}
+.nitem:hover .nedit{opacity:1}
+@media(pointer:coarse){.ndel{opacity:.7;background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.25)}.nedit{opacity:.7;background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.25)}}
 .ndel:hover{background:rgba(248,113,113,.2);color:#f87171;opacity:1}
+.nedit:hover{background:rgba(139,92,246,.2);color:var(--accent2);opacity:1}
 .ndel:hover{color:var(--err)}
 /* Notes search bar */
 .notes-search{display:flex;align-items:center;gap:.4rem;margin-bottom:.65rem;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.28rem .6rem;transition:border-color .2s}
@@ -656,6 +659,34 @@ canvas{-webkit-user-select:none;user-select:none}
           <option value="reading">Leyendo</option>
           <option value="owned">No leídos</option>
           <option value="wishlist">Wishlist</option>
+          <option value="recent">Recientes</option>
+          <optgroup label="── Categorías">
+          <option value="Negocios y Finanzas">💼 Negocios y Finanzas</option>
+          <option value="Finanzas Personales">💰 Finanzas Personales</option>
+          <option value="Inversiones">📈 Inversiones</option>
+          <option value="Bienes Raíces y FIBRAs">🏢 Bienes Raíces</option>
+          <option value="Emprendimiento">🚀 Emprendimiento</option>
+          <option value="Desarrollo Personal y Psicología">🧠 Desarrollo Personal</option>
+          <option value="Psicología">🧩 Psicología</option>
+          <option value="Productividad">⚡ Productividad</option>
+          <option value="Autoayuda y Superación">✨ Autoayuda</option>
+          <option value="Filosofía">💭 Filosofía</option>
+          <option value="Historia Universal">📜 Historia</option>
+          <option value="Ciencia y Tecnología">🔬 Ciencia y Tecnología</option>
+          <option value="Informática e IA">🤖 Informática e IA</option>
+          <option value="Narrativa y Ficción">📚 Ficción</option>
+          <option value="Ciencia Ficción">🛸 Ciencia Ficción</option>
+          <option value="Fantasía">🧙 Fantasía</option>
+          <option value="Clásicos Literarios">📖 Clásicos</option>
+          <option value="Biografías y Memorias">👤 Biografías</option>
+          <option value="Salud y Estilo de Vida">💚 Salud y Bienestar</option>
+          <option value="Salud Mental">🌿 Salud Mental</option>
+          <option value="Arte y Entretenimiento">🎨 Arte</option>
+          <option value="Música">🎵 Música</option>
+          <option value="Amor y Familia">❤️ Amor y Familia</option>
+          <option value="Humanidades y Ciencias Sociales">🌍 Humanidades</option>
+          <option value="Economía">📊 Economía</option>
+          </optgroup>
         </select>
         <select id="sortSelectBar" onchange="setSortOrder(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto;flex:1">
           <option value="added">Reciente</option>
@@ -2348,6 +2379,50 @@ async function addNote(bookId){
 }
 function delNote(bookId,idx){const b=lib.find(x=>x.id===bookId);if(!b)return;b.notes.splice(idx,1);persist();renderNotes(b);renderLib();}
 
+function editNote(bookId,idx){
+  const b=lib.find(x=>x.id===bookId);if(!b)return;
+  const n=b.notes[idx];if(!n)return;
+  // find the note element
+  const list=document.getElementById('notesList');
+  if(!list)return;
+  const items=list.querySelectorAll('.nitem');
+  // find by rendered index
+  let el=null;
+  const visible=Array.from(items);
+  // Re-render that note as an editable inline form
+  const q=_noteSearchQuery||'';
+  const notes=b.notes||[];
+  const visibleArr=q
+    ? notes.map((n2,i2)=>({n2,i2})).filter(({n2})=>n2.text.toLowerCase().includes(q.toLowerCase())||(n2.page&&String(n2.page).toLowerCase().includes(q.toLowerCase())))
+    : notes.map((n2,i2)=>({n2,i2}));
+  const pos=visibleArr.findIndex(v=>v.i2===idx);
+  if(pos<0)return;
+  el=visible[pos];
+  if(!el)return;
+  el.innerHTML=`
+    <div class="note-edit-form" style="display:flex;flex-direction:column;gap:.4rem">
+      <textarea class="note-edit-txt" style="width:100%;background:var(--card2);border:1.5px solid var(--accent);color:var(--text);font-family:'Playfair Display',serif;font-size:.78rem;font-style:italic;line-height:1.7;resize:vertical;outline:none;border-radius:6px;padding:.5rem .65rem;min-height:72px">${n.text.replace(/"/g,'&quot;')}</textarea>
+      <div style="display:flex;gap:.3rem;align-items:center;flex-wrap:wrap">
+        <input type="text" value="${n.page||''}" placeholder="Pág." style="width:58px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.26rem .45rem;border-radius:5px;outline:none" class="note-edit-pg">
+        <input type="text" value="${(n.comment||'').replace(/"/g,'&quot;')}" placeholder="Comentario…" style="flex:1;min-width:65px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.26rem .45rem;border-radius:5px;outline:none" class="note-edit-cmt">
+        <button onclick="saveNoteEdit(${bookId},${idx},this)" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:5px;cursor:pointer;box-shadow:0 2px 8px rgba(139,92,246,.35)">Guardar</button>
+        <button onclick="renderNotes(lib.find(x=>x.id===${bookId}))" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .65rem;border-radius:5px;cursor:pointer">Cancelar</button>
+      </div>
+    </div>`;
+  el.querySelector('.note-edit-txt').focus();
+}
+
+function saveNoteEdit(bookId,idx,btn){
+  const b=lib.find(x=>x.id===bookId);if(!b)return;
+  const form=btn.closest('.note-edit-form');if(!form)return;
+  const txt=form.querySelector('.note-edit-txt').value.trim();
+  if(!txt)return;
+  b.notes[idx].text=txt;
+  b.notes[idx].page=form.querySelector('.note-edit-pg').value.trim();
+  b.notes[idx].comment=form.querySelector('.note-edit-cmt').value.trim();
+  persist();renderNotes(b);renderLib();
+}
+
 function renderNotes(b, query='', newIdx=-1){
   const list=document.getElementById('notesList');if(!list)return;
   const q=(query||'').toLowerCase().trim();
@@ -2386,7 +2461,8 @@ function renderNotes(b, query='', newIdx=-1){
       <div class="ntxt">"${hl(n.text)}"</div>
       ${n.comment?`<div class="ncmt">${hl(n.comment)}</div>`:''}
       ${tags}
-      <button class="ndel" onclick="delNote(${b.id},${i})">✕</button>`;
+      <button class="ndel" onclick="delNote(${b.id},${i})">✕</button>
+      <button class="nedit" onclick="editNote(${b.id},${i})">✎</button>`;
     list.appendChild(el);
     // Remove animation class after it plays so re-renders don't re-animate
     if(i===newIdx) setTimeout(()=>el.classList.remove('just-added'),600);
@@ -2811,15 +2887,15 @@ function initGraph(){
     // Base = enough room from main sun + grows with category count + books per cat
     // Never too far — capped relative to maxR
     const sysOrbitR=Math.min(
-      maxR * 0.78,
-      mainR * 2.2                      // close when few books
-      + numSystems * 18                // a bit more per category
-      + maxBooksInCat * 8              // a bit more per book in biggest cat
+      maxR * 0.88,
+      mainR * 3.0                      // more room from main sun
+      + numSystems * 26                // more per category
+      + maxBooksInCat * 12             // more per book in biggest cat
     );
 
     // Planet orbit rings — start just outside sun radius, step proportionally
     const sunR=Math.max(16, Math.min(32, 14+maxBooksInCat*2));
-    const planetGap=Math.max(22, sunR*1.1 + maxBooksInCat*4);
+    const planetGap=Math.max(38, sunR*1.6 + maxBooksInCat*6);
     const planetOrbitRadii=[
       sunR+planetGap,
       sunR+planetGap*2,
@@ -3568,6 +3644,7 @@ function renderLib(){
     const isWish = b.isWishlist||b.status==='wishlist';
     if(curFilter==='wishlist') return isWish;
     if(curFilter==='owned') return b.status==='owned'&&!isWish;
+    if(curFilter==='recent'){const addedDate=new Date(b.added);const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);return !isWish&&addedDate>=cutoff;}
     if(curFilter==='reading') return b.readingStatus==='reading'&&!isWish;
     const mc=curFilter==='all'||b.category===curFilter;
     const ms=!s||b.title.toLowerCase().includes(s)||b.author.toLowerCase().includes(s)||(b.keywords||[]).some(k=>k.toLowerCase().includes(s));
