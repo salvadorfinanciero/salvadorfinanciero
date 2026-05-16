@@ -191,8 +191,8 @@ body::before{content:'';position:fixed;inset:0;background:
 #viewGraph{flex:1;position:relative;overflow:hidden}
 #gCanvas{width:100%;height:100%;display:block;cursor:grab}
 #gCanvas:active{cursor:grabbing}
-.g-tools{position:absolute;top:.9rem;right:.9rem;display:flex;flex-direction:column;gap:.5rem}
-.g-tools .btic{width:50px;height:50px;font-size:1.15rem;border-radius:11px;box-shadow:0 2px 14px rgba(0,0,0,.5)}
+.g-tools{position:absolute;top:.9rem;right:.9rem;display:flex;flex-direction:column;gap:.5rem;z-index:10}
+.g-tools .btic{width:46px;height:46px;font-size:1.05rem;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.5)}
 .g-lib-name{position:absolute;top:.35rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem}
 .g-lib-name input{background:rgba(12,10,24,.85);border:1px solid var(--border);color:var(--accent2);font-family:'Playfair Display',serif;font-size:.85rem;font-style:italic;padding:.28rem .7rem;border-radius:6px;outline:none;text-align:center;width:200px;transition:border-color .2s}
 .g-lib-name input:focus{border-color:var(--accent)}
@@ -751,6 +751,8 @@ canvas{-webkit-user-select:none;user-select:none}
       <div>
         <div class="bit-hero"><h2 data-i18n="logTitle">Bitácora <em>de vuelo</em></h2><p data-i18n="logSubtitle">Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.</p></div>
         <div id="bitStats" class="bit-grid"></div>
+        <!-- READING PACE & INSIGHTS -->
+        <div id="bitInsights" style="margin-bottom:1.2rem"></div>
         <div class="bit-summary" id="bitSummary" style="display:none"></div>
         <button class="btn-gen" onclick="genBitacora()" id="btnBit" data-i18n="generateSynthesis">✦ Generar síntesis IA</button>
         <div style="margin-top:1.5rem">
@@ -997,127 +999,17 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
 
 <!-- SETTINGS -->
-<div class="modal" id="mSettings">
+<div class="modal" id="mSettings" style="width:520px;max-width:95vw">
   <button onclick="closeModal('mSettings')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
-  <h2 data-i18n="settingsTitle">Configuración</h2><p class="sub" data-i18n="settingsSub">Conecta tu IA para análisis automático y Visión IA.</p>
-  <div class="set-s">
-    <h3 data-i18n="providerLabel">Proveedor IA</h3>
-    <div class="prow" style="flex-wrap:wrap;gap:.32rem">
-      <button class="pbtn active" id="provA" onclick="selProv('anthropic')">Claude</button>
-      <button class="pbtn" id="provO" onclick="selProv('openai')">GPT-4o</button>
-      <button class="pbtn" id="provG" onclick="selProv('gemini')">Gemini</button>
-      <button class="pbtn" id="provX" onclick="selProv('grok')">Grok</button>
-      <button class="pbtn" id="provC" onclick="selProv('custom')">Otro</button>
-    </div>
-    <div id="customEndpointWrap" style="display:none;margin-bottom:.5rem">
-      <label class="flbl">Endpoint URL</label>
-      <input class="fin" type="text" id="customEndpointIn" placeholder="https://api.ejemplo.com/v1/chat/completions" style="margin-bottom:.3rem">
-      <label class="flbl">Modelo</label>
-      <input class="fin" type="text" id="customModelIn" placeholder="llama-3, mistral, etc.">
-    </div>
-    <label class="flbl" data-i18n="apiKeyLabel">API Key</label>
-    <input class="fin" type="password" id="apiKeyIn" placeholder="sk-ant-… o sk-…">
-    <div class="api-st none" id="apiSt">○ Sin API key</div><br>
-    <button class="btn-test" onclick="testKey()" data-i18n="verifyConn">Verificar conexión</button>
-    <div class="api-guide" id="apiGuide"></div>
+  <h2 data-i18n="settingsTitle" style="margin-bottom:.8rem">Configuración</h2>
+  <!-- TABS -->
+  <div style="display:flex;gap:.3rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
+    <button class="stab active" id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">🎨 Apariencia</button>
+    <button class="stab" id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">💾 Datos & Galaxia</button>
+    <button class="stab" id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .5rem;border-radius:6px;cursor:pointer;transition:all .15s">✦ Herramientas IA</button>
   </div>
-  <div class="set-s">
-    <h3>🎨 Apariencia</h3>
-    <p style="font-size:.65rem;color:var(--muted);line-height:1.65;margin-bottom:.65rem">Personaliza el color de acento y el tamaño del texto.</p>
-    <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem">Color de acento</div>
-    <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1rem" id="accentPalette">
-      <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:2px solid #c4b5fd;cursor:pointer;box-shadow:0 0 10px rgba(139,92,246,.6);transition:transform .15s" title="Morado"></button>
-      <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Azul"></button>
-      <button class="accent-swatch" data-theme="green" onclick="setAccentTheme('green',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#047857,#10b981);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Verde"></button>
-      <button class="accent-swatch" data-theme="pink" onclick="setAccentTheme('pink',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#9d174d,#ec4899);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Rosa"></button>
-      <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Naranja"></button>
-      <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Amarillo"></button>
-      <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Rojo"></button>
-    </div>
-    <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem">Tamaño de texto</div>
-    <div style="display:flex;gap:.35rem;align-items:center">
-      <button onclick="setFontSize('small')" id="fsSmall" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;padding:.38rem;border-radius:6px;cursor:pointer;transition:all .13s">Pequeño</button>
-      <button onclick="setFontSize('normal')" id="fsNormal" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;padding:.38rem;border-radius:6px;cursor:pointer;transition:all .13s">Normal</button>
-      <button onclick="setFontSize('large')" id="fsLarge" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;padding:.38rem;border-radius:6px;cursor:pointer;transition:all .13s">Grande</button>
-      <button onclick="setFontSize('xl')" id="fsXL" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;padding:.38rem;border-radius:6px;cursor:pointer;transition:all .13s">XL</button>
-    </div>
-  </div>
-  <div class="set-s">
-    <h3>🌐 <span data-i18n="langTitle">Idioma</span></h3>
-    <p style="font-size:.65rem;color:var(--muted);line-height:1.65;margin-bottom:.65rem" data-i18n="langDesc">Cambia el idioma de toda la interfaz de ALINEA.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.4rem" id="langGrid"></div>
-  </div>
-  <div class="set-s">
-    <h3 data-i18n="aiTitle">Sobre la IA</h3>
-    <p style="font-size:.65rem;color:var(--muted);line-height:1.65" data-i18n="aiDesc">Al agregar notas extrae keywords y mood. En Explorar y Bitácora genera síntesis. Visión IA lee páginas con la cámara. Tu key solo vive en tu navegador.</p>
-  </div>
-  <div class="set-s" style="border:none">
-    <h3 data-i18n="devBy">Desarrollado por</h3>
-    <div style="display:flex;align-items:center;gap:.85rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem">
-      <div style="width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 12px rgba(139,92,246,.5);flex-shrink:0"></div>
-      <div>
-        <div style="font-size:.82rem;font-weight:500;color:var(--text)">Miguel Valdez</div>
-        <div style="font-size:.68rem;color:var(--accent2);margin-top:.1rem">@miguel_valdez1</div>
-        <div style="display:flex;gap:.6rem;margin-top:.4rem">
-          <a href="https://salvadorfinanciero.com" target="_blank" style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:.18rem .5rem;border-radius:4px;transition:color .15s" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--muted)'">Web</a>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:.65rem;text-align:center;font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);letter-spacing:.08em">ALINEA — <span data-i18n="appTagline">Biblioteca Mental</span> · <span data-i18n="allRightsReserved">Todos los derechos reservados</span></div>
-  </div>
-  <div class="set-s">
-    <h3>🌌 <span data-i18n="friendsTitle">Galaxias de amigos</span></h3>
-    <p style="font-size:.65rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem" data-i18n="friendsDesc">Pega el JSON de un amigo para ver su galaxia junto a la tuya en la vista Galaxia. Las conexiones de keywords compartidas se iluminan entre galaxias.</p>
-    <div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.65rem" id="friendGalList"></div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.85rem">
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.5rem" data-i18n="addGalaxyLabel">Agregar galaxia</div>
-      <input class="fin" type="text" id="friendNameIn" style="margin-bottom:.42rem">
-      <textarea id="friendJsonIn" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.6rem;padding:.6rem;border-radius:6px;outline:none;resize:vertical;min-height:75px;transition:border-color .2s;margin-bottom:.42rem" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor=''"></textarea>
-      <div style="display:flex;gap:.45rem;align-items:center;flex-wrap:wrap">
-        <button class="btn-gen" style="font-size:.54rem;padding:.32rem .8rem" onclick="addFriendGalaxy()" data-i18n="addGalaxy">Agregar</button>
-        <span id="friendAddMsg" style="font-size:.62rem;display:none"></span>
-      </div>
-    </div>
-    <div style="margin-top:.65rem;display:flex;gap:.42rem;align-items:center">
-      <button class="btn-ghost" style="font-size:.52rem;padding:.25rem .65rem" onclick="copyMyCode()" data-i18n="copyCode">Copiar mi código para compartir</button>
-      <span id="copyMsg" style="font-size:.58rem;color:var(--ok);display:none" data-i18n="copied">¡Copiado!</span>
-    </div>
-  </div>
-  <div class="set-s">
-    <h3>💾 <span data-i18n="backupTitle">Datos & Respaldo</span></h3>
-    <p style="font-size:.64rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem" data-i18n="backupIntro">Tu biblioteca vive solo en este navegador — ningún servidor la guarda. Si cambias de dispositivo o borras el historial, podrías perderla.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.6rem">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem" data-i18n="jsonTitle">JSON — Respaldo real</div>
-        <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem" data-i18n="jsonDesc">Todos tus libros, notas y keywords en un archivo ligero. Puedes reimportarlo aquí en cualquier dispositivo al instante.</p>
-        <button class="btn-gen" style="font-size:.5rem;padding:.28rem .65rem;width:100%" onclick="exportJSON()" data-i18n="downloadJson">Descargar JSON</button>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem" data-i18n="pdfTitle">PDF — Para leer e imprimir</div>
-        <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem" data-i18n="pdfDesc">Versión visual de tu biblioteca. No sirve para restaurar, pero es ideal para archivar, compartir o imprimir.</p>
-        <button class="btn-gen" style="font-size:.5rem;padding:.28rem .65rem;width:100%" onclick="exportPDF()" data-i18n="downloadPdf">Descargar PDF</button>
-      </div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem">
-      <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem" data-i18n="importTitle">Restaurar desde JSON</div>
-      <p style="font-size:.62rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem" data-i18n="importDesc">¿Cambiaste de dispositivo? Sube tu archivo JSON y tu galaxia aparece al instante.</p>
-      <label style="display:inline-flex;align-items:center;gap:.4rem;background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.3rem .75rem;border-radius:6px;cursor:pointer">
-        <span data-i18n="selectFile">Seleccionar archivo</span><input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
-      </label>
-    </div>
-    <div id="storageInfo" style="margin-top:.45rem;font-size:.6rem;color:var(--dim);line-height:1.6" data-i18n="calculating">Calculando…</div>
-  </div>
-  <div class="set-s">
-    <h3>✦ <span data-i18n="aiTools">Herramientas IA</span></h3>
-    <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.5rem">
-      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)" id="btnCollisionSettings" data-i18n="collisionIdeas">Colisión de ideas</button>
-      <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)" id="btnHorizonSettings" data-i18n="horizonEvents">Horizonte de sucesos</button>
-    </div>
-  </div>
-  <div class="set-s">
-    <h3 style="color:rgba(248,113,113,.7)" data-i18n="dangerZone">Zona de peligro</h3>
-    <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="hardReset">Borrar todo y reiniciar</button>
-  </div>
+  <!-- TAB 1: APARIENCIA -->
+  <div id="spage1" class="spage">
   <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
 </div>
 
@@ -1258,6 +1150,41 @@ Object.entries(CAT_TAXONOMY).forEach(([parent,data])=>{
 });
 
 function cc(cat){return CAT_COLORS[cat]||CAT_COLORS[''];}
+
+// ══════════════════════════
+// SETTINGS TABS
+// ══════════════════════════
+function switchSettingsTab(n){
+  [1,2,3].forEach(i=>{
+    const page=document.getElementById('spage'+i);
+    const tab=document.getElementById('stab'+i);
+    if(!page||!tab)return;
+    const active=i===n;
+    page.style.display=active?'block':'none';
+    tab.style.background=active?'var(--glow)':'var(--card)';
+    tab.style.borderColor=active?'var(--accent)':'var(--border)';
+    tab.style.color=active?'var(--accent2)':'var(--muted)';
+  });
+}
+function openSettings(tab){
+  showModal('mSettings');
+  switchSettingsTab(tab||1);
+  // Render lists safely
+  if(typeof renderFriendGalList==='function')renderFriendGalList();
+  if(typeof renderFriendList==='function')renderFriendList();
+  if(typeof updateStorageInfo==='function')updateStorageInfo();
+  if(typeof renderLangGrid==='function')renderLangGrid();
+  // Restore provider state — use optional chaining, elements may be in hidden tab
+  const _pmap={anthropic:'provA',openai:'provO',gemini:'provG',grok:'provX',custom:'provC'};
+  ['provA','provO','provG','provX','provC'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
+  document.getElementById(_pmap[cfg.provider||'anthropic'])?.classList.add('active');
+  const _apiIn=document.getElementById('apiKeyIn');if(_apiIn)_apiIn.value=cfg.apiKey||'';
+  const _cw=document.getElementById('customEndpointWrap');if(_cw)_cw.style.display=(cfg.provider==='custom')?'block':'none';
+  const _ep=document.getElementById('customEndpointIn');if(_ep)_ep.value=cfg.customEndpoint||'';
+  const _cm=document.getElementById('customModelIn');if(_cm)_cm.value=cfg.customModel||'';
+  if(typeof updateApiSt==='function')updateApiSt();
+}
+
 
 // ══════════════════════════
 // CATEGORY I18N
@@ -2548,15 +2475,7 @@ function renderLangGrid(){
     </button>`).join('');
 }
 
-function openSettings(){
-  document.getElementById('apiKeyIn').value=cfg.apiKey||'';
-  selProv(cfg.provider||'anthropic',false);updateApiSt();
-  updateStorageInfo();
-  renderFriendGalList();
-  renderLangGrid();
-  applyLang();
-  showModal('mSettings');
-}
+// openSettings replaced by tabbed version above
 function selProv(p,_=true){
   cfg.provider=p;
   ['provA','provO','provG','provX','provC'].forEach(id=>{
@@ -3057,6 +2976,40 @@ function renderBitacora(){
     ?conns.slice(0,8).map(c=>`<div class="conn-item"><div class="conn-dot"></div><div class="conn-books"><strong>${c.a}</strong> ↔ ${c.b}</div><div class="conn-reason">${c.reason}</div></div>`).join('')
     :`<div style="color:var(--dim);font-size:.72rem;padding:.5rem">${t('addKeywordsForConnections')}</div>`;
   // Wishlist + owned section
+  // INSIGHTS — reading stats
+  const insightEl=document.getElementById('bitInsights');
+  if(insightEl){
+    const readDone=realBooks.filter(b=>b.readingStatus==='done');
+    const reading=realBooks.filter(b=>b.readingStatus==='reading');
+    const withNotes=realBooks.filter(b=>(b.notes||[]).length>0);
+    const allKW=[...new Set(realBooks.flatMap(b=>b.keywords||[]))];
+    const avgRating=realBooks.filter(b=>b.rating).length?
+      (realBooks.filter(b=>b.rating).reduce((a,b)=>a+b.rating,0)/realBooks.filter(b=>b.rating).length).toFixed(1):null;
+    const kwFreq=allKW.map(kw=>({kw,n:realBooks.filter(b=>(b.keywords||[]).includes(kw)).length})).sort((a,b)=>b.n-a.n).slice(0,12);
+    const mostAnnotated=withNotes.sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).slice(0,4);
+    insightEl.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem;margin-bottom:1rem">
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">Terminados</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">Leyendo</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">Notas</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">Keywords</div></div>
+      ${avgRating?`<div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">Rating prom.</div></div>`:''}
+    </div>
+    ${mostAnnotated.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.7rem">
+      <div class="sec" style="margin-bottom:.45rem">📝 Más anotados</div>
+      ${mostAnnotated.map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.7rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.title}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--accent2);margin-left:.5rem;flex-shrink:0">${(b.notes||[]).length} notas</span>
+      </div>`).join('')}
+    </div>`:''}
+    ${kwFreq.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
+      <div class="sec" style="margin-bottom:.45rem">🔑 Keywords frecuentes</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.28rem">
+        ${kwFreq.map(({kw,n})=>`<span style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;padding:.12rem .45rem;border-radius:12px">${kw}<span style="opacity:.55;margin-left:.2rem">${n}</span></span>`).join('')}
+      </div>
+    </div>`:''}`;
+  }
+
   const wishEl=document.getElementById('bitWishList');
   if(wishEl){
     const wishBooks=lib.filter(b=>b.isWishlist||(b.status==='owned'));
@@ -3102,8 +3055,14 @@ function toggleGalaxyWishlist(){
   showGalaxyWishlist=!showGalaxyWishlist;
   persistShowWish();
   initGraph();
+  updateWishGalBtn();
+}
+function updateWishGalBtn(){
   const btn=document.getElementById('wishGalBtn');
-  if(btn){btn.style.opacity=showGalaxyWishlist?'1':'.35';btn.style.color=showGalaxyWishlist?'var(--gold)':'var(--muted)';}
+  if(!btn)return;
+  btn.style.opacity=showGalaxyWishlist?'1':'.4';
+  btn.style.color=showGalaxyWishlist?'var(--gold)':'var(--muted)';
+  btn.title=showGalaxyWishlist?'Ocultar wishlist':'Mostrar wishlist';
 }
 function toggleCatFilterPanel(){
   const panel=document.getElementById('catFilterPanel');
@@ -4518,7 +4477,7 @@ function initSplash(){
   },2600);
 }
 
-updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();
+updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);setTimeout(updateWishGalBtn,400);
 // ══════════════════════════
 // DRAGGABLE G-TOOLS PANEL
 // ══════════════════════════
