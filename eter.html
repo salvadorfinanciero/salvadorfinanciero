@@ -22,7 +22,19 @@
   document.addEventListener('contextmenu',e=>e.preventDefault(),{capture:true});
   </script>
 <!-- Lock to portrait on mobile -->
-<style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}</style>
+<style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}/* ONBOARDING */
+.onb-dot{width:7px;height:7px;border-radius:50%;background:rgba(139,92,246,.25);border:1px solid rgba(139,92,246,.4);cursor:pointer;transition:all .2s}
+.onb-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 8px var(--glow);width:20px;border-radius:4px}
+.onb-step{animation:onbFadeIn .3s ease}
+@keyframes onbFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.onb-lang-btn{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.25);color:var(--text);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;padding:.55rem .5rem;border-radius:8px;cursor:pointer;transition:all .18s;text-align:center}
+.onb-lang-btn:hover,.onb-lang-btn.selected{background:var(--glow);border-color:var(--accent);color:var(--accent2);box-shadow:0 0 12px var(--glow)}
+.onb-guide-item{display:flex;align-items:flex-start;gap:.75rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.1);border-radius:8px;padding:.6rem .8rem}
+.onb-guide-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+.onb-guide-title{font-size:.72rem;font-weight:600;color:var(--text);margin-bottom:.15rem}
+.onb-guide-sub{font-size:.62rem;color:var(--muted);line-height:1.55}
+
+</style>
 <div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:rgba(196,181,253,.7);font-family:DM Mono,monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;gap:.75rem"><div style="font-size:2rem">↩</div><div>Gira el teléfono<br>para usar ALINEA</div></div>
 <title>ALINEA — Tu Biblioteca</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ib3JiIiBjeD0iMzUlIiBjeT0iMzAlIiByPSI2NSUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZTBkNGZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjOGI1Y2Y2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzNiMDc2NCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIzIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMDYwNTBmIiByeD0iMjIiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNiIgZmlsbD0idXJsKCNvcmIpIiBmaWx0ZXI9InVybCgjZ2xvdykiLz4KICA8Y2lyY2xlIGN4PSIzOCIgY3k9IjM2IiByPSI5IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4xOCIvPgo8L3N2Zz4=">
@@ -39,7 +51,7 @@
   --glow:rgba(139,92,246,.15);--glow2:rgba(139,92,246,.07);
   --text:#f0eeff;--muted:#8b87b0;--dim:#332e52;
   --ok:#6ee7b7;--err:#f87171;--gold:#fbbf24;
-  --fs-base:1rem;
+  --fs-base:17px;
 }
 :root{--header-h:62px;--dock-h:72px;--content-top:calc(env(safe-area-inset-top) + var(--header-h));--content-bottom:calc(env(safe-area-inset-bottom) + var(--dock-h))}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;padding-top:var(--content-top);padding-bottom:var(--content-bottom);font-size:var(--fs-base)}
@@ -248,7 +260,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .ec-bk strong{color:var(--text);font-weight:500}
 .exp-empty{padding:2rem;color:var(--dim);font-size:.72rem;font-style:italic}
 
-#viewBitacora{padding:0}
+#viewBitacora{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #viewBitacora>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%}
 #viewSistema>div{padding:1.8rem 2rem;max-width:820px;margin:0 auto;width:100%}
 .bit-hero{margin-bottom:1.8rem}
@@ -766,7 +778,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="margin-top:1.5rem">
           <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.7rem">
             <span style="font-size:1rem;opacity:.5">💾</span>
-            Exportar, importar y herramientas avanzadas → botón <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
+            '+( t('exportarImportar')||'💾 '+( t('exportarImportar')||'Exportar, importar y herramientas avanzadas')+' → botón')+' <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
           </div>
         </div>
       </div>
@@ -821,7 +833,7 @@ canvas{-webkit-user-select:none;user-select:none}
         </div>
 
         <!-- COLLISION DE IDEAS -->
-        <div style="margin-bottom:1.4rem"><div class="sec">Colisión de ideas ✦</div>
+        <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="colisionTitle">Colisión de ideas ✦</div>
         <div class="bit-card">
           <div class="bit-card-title">💥 Conexiones ocultas</div>
           <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">La IA analiza tu galaxia y descubre dos libros que no sabías que tenían algo en común.</div>
@@ -858,7 +870,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div class="bit-card" style="border-color:rgba(248,113,113,.2)">
           <div class="bit-card-title" style="color:var(--err)">☢ Hard Reset</div>
           <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">Elimina <strong style="color:var(--err)">toda</strong> la información guardada — libros, notas, keywords, configuración. Esta acción no se puede deshacer.<br><span style="color:var(--dim)">Recomendado: exporta un JSON antes de hacer reset.</span></div>
-          <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.42rem 1rem;border-radius:6px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(248,113,113,.15)'" onmouseout="this.style.background='rgba(248,113,113,.08)'">☢ Borrar todo y reiniciar</button>
+          <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.42rem 1rem;border-radius:6px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(248,113,113,.15)'" onmouseout="this.style.background='rgba(248,113,113,.08)'" data-i18n="hardResetBtn">☢ Borrar todo y reiniciar</button>
         </div>
         </div>
       </div>
@@ -870,8 +882,8 @@ canvas{-webkit-user-select:none;user-select:none}
 
 <!-- ADD BOOK -->
 <div class="modal" id="mAdd">
-  <h2>Agregar libro</h2>
-  <p class="sub">Escribe el título — la portada se carga automáticamente.</p>
+  <h2 data-i18n="addBookTitle">Agregar libro</h2>
+  <p class="sub" data-i18n="addBookSub">Escribe el título — la portada se carga automáticamente.</p>
   <div class="cvrow">
     <div class="cpick" id="cpick" onclick="document.getElementById('fAdd').click()">
       <div class="cpick-ph" id="cpickPh"><span>📷</span><small>Foto</small></div>
@@ -881,31 +893,27 @@ canvas{-webkit-user-select:none;user-select:none}
     <input type="file" id="fAdd" accept="image/*" style="display:none" onchange="onCoverFile(event)">
     <div class="cvfields">
       <div>
-        <label class="flbl">Título *</label>
-        <input class="fin" type="text" id="addTitle" placeholder="Título del libro…"
+        <label class="flbl" data-i18n="titleLabel">Título *</label>
+        <input class="fin" type="text" id="addTitle" placeholder="Título del libro…" data-i18n-ph="titlePlaceholder"
           oninput="document.getElementById('btnSave').disabled=!this.value.trim();clearTimeout(cvT);cvT=setTimeout(autoCover,900)"
           onblur="autoCover()">
         <div class="fmsg" id="addMsg"></div>
       </div>
-      <div><label class="flbl">Autor</label><input class="fin" type="text" id="addAuthor" placeholder="Autor…"></div>
+      <div><label class="flbl" data-i18n="authorLabel">Autor</label><input class="fin" type="text" id="addAuthor" placeholder="Autor…" data-i18n-ph="authorPlaceholder"></div>
     </div>
   </div>
   <div class="fl" style="margin-top:.65rem">
     <div>
-      <label class="flbl">Categoría</label>
+      <label class="flbl" data-i18n="categoryLabel">Categoría</label>
       <div class="cat-row">
         <select class="fin" id="addCat"></select>
         <button class="btn-new-cat" onclick="promptNewCat()">+ Nueva</button>
       </div>
     </div>
-    <div><label class="flbl">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…"></div>
+    <div><label class="flbl" data-i18n="keywordsInitial">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…" data-i18n-ph="kwPlaceholder"></div>
     <div>
-      <label class="flbl">Estado del libro</label>
-      <select class="fin" id="addStatus">
-        <option value="read">📖 Leído (ya lo tengo y lo leí)</option>
-        <option value="owned">📦 Lo tengo, no lo he leído</option>
-        <option value="wishlist">🚀 Wishlist (aún no lo tengo)</option>
-      </select>
+      <label class="flbl" data-i18n="statusLabel">Estado del libro</label>
+      <select class="fin" id="addStatus" data-i18n-select="statusOptions"></select>
     </div>
   </div>
   <div class="macts">
@@ -929,7 +937,7 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
   </div>
   <div style="margin-top:.65rem">
-    <label class="flbl">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega aquí la dirección de imagen de Google)</span></label>
+    <label class="flbl" data-i18n="coverUrlLabel">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega aquí la dirección de imagen de Google)</span></label>
     <input class="fin" type="text" id="editUrl" placeholder="https://… clic derecho en Google Images → Copiar dirección de imagen" oninput="prevUrl()">
     <img class="url-prev" id="urlPrev" src="" alt="">
   </div>
@@ -939,10 +947,7 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div style="margin-top:.65rem">
     <label class="flbl">Estado del libro</label>
-    <select class="fin" id="editStatus">
-      <option value="read">📖 Leído</option>
-      <option value="owned">📦 Lo tengo, no lo he leído</option>
-      <option value="wishlist">🚀 Wishlist (aún no lo tengo)</option>
+    <select class="fin" id="editStatus"><!-- populated by populateStatusSelect --><option value="wishlist">🚀 Wishlist (aún no lo tengo)</option>
     </select>
   </div>
   <div class="macts" style="justify-content:space-between">
@@ -1004,18 +1009,18 @@ canvas{-webkit-user-select:none;user-select:none}
   <h2 data-i18n="settingsTitle" style="margin-bottom:.8rem">Configuración</h2>
   <!-- TABS -->
   <div style="display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
-    <button id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">🎨 Apariencia</button>
-    <button id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">💾 Datos</button>
-    <button id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">✦ IA</button>
+    <button id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="appearanceTitle">🎨 Apariencia</button>
+    <button id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="dataTitle">💾 Datos</button>
+    <button id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="iaTitle">✦ IA</button>
   </div>
 
   <!-- TAB 1: APARIENCIA -->
   <div id="spage1">
     <div class="set-s">
       <h3>🎨 Apariencia</h3>
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Nombre de tu biblioteca</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="libNameLabel">Nombre de tu biblioteca</div>
       <input class="fin" type="text" id="libNameSettings" placeholder="Mi Biblioteca…" oninput="syncLibName(this.value)" style="margin-bottom:.9rem">
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Color de acento</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="accentColor">Color de acento</div>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem" id="accentPalette">
         <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:2px solid #c4b5fd;cursor:pointer;box-shadow:0 0 8px rgba(139,92,246,.6);transition:transform .15s" title="Morado"></button>
         <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Azul"></button>
@@ -1025,12 +1030,12 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Amarillo"></button>
         <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:2px solid transparent;cursor:pointer;transition:transform .15s" title="Rojo"></button>
       </div>
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Tamaño de texto</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="textSize">Tamaño de texto</div>
       <div style="display:flex;gap:.3rem">
-        <button onclick="setFontSize('small')" id="fsSmall" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Pequeño</button>
-        <button onclick="setFontSize('normal')" id="fsNormal" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Normal</button>
-        <button onclick="setFontSize('large')" id="fsLarge" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">Grande</button>
-        <button onclick="setFontSize('xl')" id="fsXL" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s">XL</button>
+        <button onclick="setFontSize('small')" id="fsSmall" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="small">Pequeño</button>
+        <button onclick="setFontSize('normal')" id="fsNormal" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="normal">Normal</button>
+        <button onclick="setFontSize('large')" id="fsLarge" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="large">Grande</button>
+        <button onclick="setFontSize('xl')" id="fsXL" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="xl">XL</button>
       </div>
     </div>
     <div class="set-s">
@@ -1041,10 +1046,10 @@ canvas{-webkit-user-select:none;user-select:none}
       <h3 style="display:flex;align-items:center;gap:.5rem">✦ Nota del autor</h3>
       <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
-        <p style="font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.75rem;font-style:italic">¿Y si pudieras ver tu conocimiento?</p>
+        <p style="font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.75rem;font-style:italic" id="wQ">¿Y si pudieras ver tu conocimiento?</p>
         <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.</p>
         <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
-        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
+        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em id="wP3em" style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
         <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni sabías que tenías. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en el mundo y en tu galaxia.</p>
         <p style="font-size:.72rem;color:var(--accent2);line-height:1.8;margin-bottom:.75rem"><strong style="font-size:.78rem;letter-spacing:.01em">Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.</strong></p>
         <div onclick="exportJSON()" style="background:var(--glow);border:1px solid var(--accent);border-radius:8px;padding:.65rem .8rem;margin-bottom:.75rem;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(139,92,246,.18)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.background='var(--glow)';this.style.borderColor='var(--accent)'">
@@ -1066,56 +1071,56 @@ canvas{-webkit-user-select:none;user-select:none}
           </div>
         </div>
       </div>
-      <div style="margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim)">ALINEA · Biblioteca Mental · Todos los derechos reservados</div>
+      <div style="margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim)" data-i18n="footerText">ALINEA · Biblioteca Mental · Todos los derechos reservados</div>
     </div>
   </div>
 
   <!-- TAB 2: DATOS & GALAXIA -->
   <div id="spage2" style="display:none">
     <div class="set-s">
-      <h3>💾 Datos & Respaldo</h3>
-      <p style="font-size:.64rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem">Tu biblioteca vive solo en este navegador. Respalda para no perderla.</p>
+      <h3 data-i18n="dataTitle">💾 Datos & Respaldo</h3>
+      <p style="font-size:.64rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem" data-i18n="dataDesc">Tu biblioteca vive solo en este navegador. Respalda para no perderla.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
         <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">JSON — Respaldo real</div>
-          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem">Todos tus libros, notas y keywords.</p>
-          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportJSON()">Descargar JSON</button>
+          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="jsonRealBackup">JSON — Respaldo real</div>
+          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem" data-i18n="jsonDesc">Todos tus libros, notas y keywords.</p>
+          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportJSON()" data-i18n="downloadJson">Descargar JSON</button>
         </div>
         <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">PDF — Para leer</div>
-          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem">Versión visual para archivar o imprimir.</p>
-          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportPDF()">Descargar PDF</button>
+          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="pdfForReading">PDF — Para leer</div>
+          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem" data-i18n="pdfDesc">Versión visual para archivar o imprimir.</p>
+          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportPDF()" data-i18n="downloadPdf">Descargar PDF</button>
         </div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.4rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem">Restaurar desde JSON</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="importTitle">Restaurar desde JSON</div>
         <label style="display:inline-flex;align-items:center;gap:.35rem;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.28rem .7rem;border-radius:6px;cursor:pointer">
-          Seleccionar archivo<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+          <span data-i18n="selectFile">Seleccionar archivo</span><input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
         </label>
       </div>
       <div id="storageInfo" style="font-size:.58rem;color:var(--dim);line-height:1.6">Calculando…</div>
     </div>
     <div class="set-s">
-      <h3>🌌 <span data-i18n="friendsTitle">Galaxias de amigos</span></h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem">Pega el JSON de un amigo para ver su galaxia junto a la tuya.</p>
+      <h3>🌌 <span data-i18n="friendsGalaxiesTitle">Galaxias de amigos</span></h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="friendsGalaxiesDesc">Pega el JSON de un amigo para ver su galaxia junto a la tuya.</p>
       <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.6rem" id="friendGalList"></div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem">Agregar galaxia</div>
-        <input class="fin" type="text" id="friendNameIn" placeholder="Nombre del amigo" style="margin-bottom:.35rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem" data-i18n="addGalaxyTitle">Agregar galaxia</div>
+        <input class="fin" type="text" id="friendNameIn" placeholder="Nombre del amigo" data-i18n-ph="friendNamePh" style="margin-bottom:.35rem">
         <textarea id="friendJsonIn" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.58rem;padding:.55rem;border-radius:6px;outline:none;resize:vertical;min-height:65px;margin-bottom:.35rem" placeholder="Pega el JSON aquí"></textarea>
         <div style="display:flex;gap:.4rem;align-items:center">
-          <button class="btn-gen" style="font-size:.52rem;padding:.3rem .75rem" onclick="addFriendGalaxy()">Agregar</button>
+          <button class="btn-gen" style="font-size:.52rem;padding:.3rem .75rem" onclick="addFriendGalaxy()" data-i18n="addGalaxyBtn">Agregar</button>
           <span id="friendAddMsg" style="font-size:.6rem;display:none"></span>
         </div>
       </div>
       <div style="margin-top:.55rem;display:flex;gap:.4rem;align-items:center">
-        <button class="btn-ghost" style="font-size:.5rem;padding:.22rem .6rem" onclick="copyMyCode()">Copiar mi código para compartir</button>
+        <button class="btn-ghost" style="font-size:.5rem;padding:.22rem .6rem" onclick="copyMyCode()" data-i18n="copyCode">Copiar mi código para compartir</button>
         <span id="copyMsg" style="font-size:.56rem;color:var(--ok);display:none">¡Copiado!</span>
       </div>
     </div>
     <div class="set-s" style="border:none">
-      <h3 style="color:rgba(248,113,113,.7)">⚠ Zona de peligro</h3>
-      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer">Borrar todo y reiniciar</button>
+      <h3 style="color:rgba(248,113,113,.7)" data-i18n="dangerZone">⚠ Zona de peligro</h3>
+      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer" data-i18n="hardResetBtn">Borrar todo y reiniciar</button>
     </div>
   </div>
 
@@ -1143,16 +1148,16 @@ canvas{-webkit-user-select:none;user-select:none}
       <div class="api-guide" id="apiGuide"></div>
     </div>
     <div class="set-s">
-      <h3>✦ Herramientas IA</h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem">Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.</p>
+      <h3 data-i18n="aiTools">✦ Herramientas IA</h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem" data-i18n="iaDesc">Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.</p>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
-        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)">Colisión de ideas</button>
-        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)">Horizonte de sucesos</button>
+        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)" data-i18n="colisionBtn">Colisión de ideas</button>
+        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)" data-i18n="horizonteBtn">Horizonte de sucesos</button>
       </div>
     </div>
     <div class="set-s" style="border:none;background:var(--card2);border-radius:8px;padding:.7rem;border:1px solid var(--border)">
-      <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">🚧 Próximamente</div>
-      <p style="font-size:.6rem;color:var(--dim);line-height:1.55">Mapas de conceptos, análisis de tendencias, resúmenes automáticos y recomendaciones personalizadas.</p>
+      <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem" data-i18n="comingSoon">🚧 Próximamente</div>
+      <p style="font-size:.6rem;color:var(--dim);line-height:1.55" data-i18n="comingSoonDesc">Mapas de conceptos, análisis de tendencias, resúmenes automáticos y recomendaciones personalizadas.</p>
     </div>
   </div>
 
@@ -1160,31 +1165,108 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
 
 
-<!-- WELCOME / AUTHOR NOTE MODAL -->
-<div class="modal" id="mWelcome" style="width:540px;max-width:94vw;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:transparent!important;border-color:var(--accent)!important">
-  <canvas id="welcomeStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px"></canvas>
-  <div style="position:relative;z-index:1">
-  <button onclick="closeModal('mWelcome')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
-  <div style="text-align:center;margin-bottom:1.1rem">
-    <div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 20px rgba(139,92,246,.5);margin:0 auto .75rem"></div>
-    <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2)">ALINEA</span>
+<!-- ONBOARDING MODAL -->
+<div class="modal" id="mOnboarding" style="width:560px;max-width:96vw;overflow:hidden;background:transparent!important;border-color:rgba(139,92,246,.4)!important;padding:0!important">
+  <canvas id="onbStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px;z-index:0"></canvas>
+  <div style="position:relative;z-index:1;padding:2rem 2rem 1.5rem">
+
+    <!-- DOTS NAVIGATION -->
+    <div id="onbDots" style="display:flex;justify-content:center;gap:.5rem;margin-bottom:1.5rem">
+      <div class="onb-dot active" data-step="0"></div>
+      <div class="onb-dot" data-step="1"></div>
+      <div class="onb-dot" data-step="2"></div>
+      <div class="onb-dot" data-step="3"></div>
+      <div class="onb-dot" data-step="4"></div>
+    </div>
+
+    <!-- STEP 0: LANGUAGE -->
+    <div id="onbStep0" class="onb-step">
+      <div style="text-align:center;margin-bottom:1.8rem">
+        <div id="onbOrb" style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 30px rgba(139,92,246,.6);margin:0 auto .9rem"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(196,181,253,.7)">ALINEA</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;max-width:360px;margin:0 auto">
+        <button class="onb-lang-btn" onclick="onbSelectLang('es')">Español</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('en')">English</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('pt')">Português</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('fr')">Français</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('de')">Deutsch</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('it')">Italiano</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('ja')" style="grid-column:span 3;max-width:160px;margin:0 auto;width:100%">日本語</button>
+      </div>
+    </div>
+
+    <!-- STEP 1: MANIFESTO -->
+    <div id="onbStep1" class="onb-step" style="display:none">
+      <div style="background:linear-gradient(135deg,rgba(12,10,24,.9),rgba(8,6,18,.95));border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:1.2rem 1.3rem;position:relative;overflow:hidden;max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch">
+        <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent)"></div>
+        <p id="onbQ" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);line-height:1.4;margin-bottom:.8rem;font-style:italic"></p>
+        <p id="onbP1" style="font-size:.72rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem"></p>
+        <p id="onbP2" style="font-size:.72rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem"></p>
+        <p id="onbP3" style="font-size:.72rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem"></p>
+        <p id="onbPrivacy" style="font-size:.66rem;color:rgba(240,238,255,.65);line-height:1.8;margin-bottom:.8rem"></p>
+        <div style="border-top:1px solid rgba(139,92,246,.2);margin-bottom:.8rem"></div>
+        <p id="onbClosing" style="font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.5;margin-bottom:.6rem"></p>
+        <p id="onbSign" style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0"></p>
+      </div>
+    </div>
+
+    <!-- STEP 2: INITIAL SETUP -->
+    <div id="onbStep2" class="onb-step" style="display:none">
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <p id="onbSetupTitle" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.3rem"></p>
+        <p id="onbSetupSub" style="font-size:.68rem;color:var(--muted)"></p>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label id="onbLibLabel" style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.4rem"></label>
+        <input class="fin" type="text" id="onbLibName" style="font-size:.85rem;padding:.65rem .9rem">
+      </div>
+      <div>
+        <label id="onbColorLabel" style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.5rem"></label>
+        <div style="display:flex;gap:.45rem;flex-wrap:wrap">
+          <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:2px solid #c4b5fd;cursor:pointer;box-shadow:0 0 8px rgba(139,92,246,.6)"></button>
+          <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:2px solid transparent;cursor:pointer"></button>
+          <button class="accent-swatch" data-theme="green" onclick="setAccentTheme('green',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#047857,#10b981);border:2px solid transparent;cursor:pointer"></button>
+          <button class="accent-swatch" data-theme="pink" onclick="setAccentTheme('pink',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#9d174d,#ec4899);border:2px solid transparent;cursor:pointer"></button>
+          <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:2px solid transparent;cursor:pointer"></button>
+          <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:2px solid transparent;cursor:pointer"></button>
+          <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:2px solid transparent;cursor:pointer"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: QUICK GUIDE -->
+    <div id="onbStep3" class="onb-step" style="display:none">
+      <div style="text-align:center;margin-bottom:1.1rem">
+        <p id="onbGuideTitle" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.25rem"></p>
+        <p id="onbGuideSub" style="font-size:.66rem;color:var(--muted)"></p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.55rem">
+        <div class="onb-guide-item"><span class="onb-guide-icon">📚</span><div><div id="onbG1t" class="onb-guide-title"></div><div id="onbG1s" class="onb-guide-sub"></div></div></div>
+        <div class="onb-guide-item"><span class="onb-guide-icon">✍️</span><div><div id="onbG2t" class="onb-guide-title"></div><div id="onbG2s" class="onb-guide-sub"></div></div></div>
+        <div class="onb-guide-item"><span class="onb-guide-icon">🔍</span><div><div id="onbG3t" class="onb-guide-title"></div><div id="onbG3s" class="onb-guide-sub"></div></div></div>
+        <div class="onb-guide-item"><span class="onb-guide-icon">🌌</span><div><div id="onbG4t" class="onb-guide-title"></div><div id="onbG4s" class="onb-guide-sub"></div></div></div>
+        <div class="onb-guide-item"><span class="onb-guide-icon">📋</span><div><div id="onbG5t" class="onb-guide-title"></div><div id="onbG5s" class="onb-guide-sub"></div></div></div>
+      </div>
+    </div>
+
+    <!-- STEP 4: LAUNCH -->
+    <div id="onbStep4" class="onb-step" style="display:none">
+      <div style="text-align:center;padding:1rem 0">
+        <div style="width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,var(--accent));box-shadow:0 0 40px var(--glow);margin:0 auto 1.2rem;animation:orbPulse 2s ease-in-out infinite"></div>
+        <p id="onbLaunchTitle" style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--accent2);margin-bottom:.5rem"></p>
+        <p id="onbLaunchSub" style="font-size:.7rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.7"></p>
+        <button id="onbLaunchBtn" onclick="finishOnboarding()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:.85rem 2.5rem;border-radius:10px;cursor:pointer;box-shadow:0 4px 24px var(--glow);transition:all .2s;width:100%;max-width:300px"></button>
+      </div>
+    </div>
+
+    <!-- NAV BUTTONS -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem" id="onbNav">
+      <button id="onbBack" onclick="onbGo(-1)" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;opacity:0;pointer-events:none;transition:all .15s" id="onbBack2">← </button>
+      <button id="onbNext" onclick="onbGo(1)" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.42rem 1.2rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 12px var(--glow);transition:all .2s;opacity:0;pointer-events:none">→</button>
+    </div>
+
   </div>
-  <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden;margin-bottom:1rem">
-    <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
-    <p style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--accent2);line-height:1.4;margin-bottom:.8rem;font-style:italic">¿Y si pudieras ver tu conocimiento?</p>
-    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.</p>
-    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
-    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
-    <p style="font-size:.67rem;color:rgba(240,238,255,.72);line-height:1.85;margin-bottom:.8rem">Y recuerda — esta página también se creó con el propósito de que tú sepas que tus datos únicamente son tuyos. ALINEA jamás tendrá tu información, ni nadie más, ni siquiera yo. Todo tu universo vive en tu dispositivo, y solo tú puedes verlo. Cuando quieras, puedes descargar tu respaldo desde <strong style="color:var(--accent2)">Configuración → Datos</strong>.</p>
-    <div style="border-top:1px solid rgba(139,92,246,.2);margin-bottom:.8rem"></div>
-    <p style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.55;margin-bottom:.65rem">Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.</p>
-    <p style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
-  </div>
-  <div style="display:flex;gap:.6rem;align-items:center">
-    <button class="btn-ok" style="flex:1" onclick="closeModal('mWelcome');setTimeout(()=>document.querySelector('.fab')?.click(),300)">✦ Agregar mi primer libro</button>
-    <button class="btn-ghost" onclick="closeModal('mWelcome')">Explorar primero</button>
-  </div>
-  </div><!-- /z-index wrapper -->
 </div>
 
 <script>
@@ -1192,6 +1274,551 @@ canvas{-webkit-user-select:none;user-select:none}
 // STATE
 // ══════════════════════════
 let lib = JSON.parse(localStorage.getItem('eter2')||'[]');
+
+var LANGS={
+es:{name:'Español',t:{
+  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Hagamos visible lo invisible.',
+  addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
+  galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
+  exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
+  exploreEmpty:'Escribe para explorar tus notas.',explorePlaceholder:'disciplina, dinero, propósito…',
+  gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
+  logTitle:'Bitácora de vuelo',logSubtitle:'Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.',
+  generateSynthesis:'✦ Generar síntesis IA',wishlistMissions:'Wishlist — próximas misiones',galaxyConnections:'Conexiones entre galaxias',
+  notas:'Notas & Subrayados',keywords:'Keywords',relatedBooks:'Libros relacionados',
+  notePlaceholder:'Escribe un subrayado, idea o reflexión…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentario (opcional)',
+  addNote:'+ Nota',camera:'Cámara',dictate:'Dictar',
+  progress:'Progreso',rating:'Rating',editBook:'Editar libro',deleteBook:'Eliminar libro',
+  accentColor:'Color de acento',textSize:'Tamaño de texto',libNameLabel:'Nombre de tu biblioteca',
+  small:'Pequeño',normal:'Normal',large:'Grande',xl:'XL',
+  appearanceTitle:'🎨 Apariencia',dataTitle:'💾 Datos & Respaldo',iaTitle:'✦ IA',
+  dataDesc:'Tu biblioteca vive solo en este navegador. Respalda para no perderla.',
+  jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords.',
+  pdfTitle:'PDF — Para leer',pdfDesc:'Versión visual para archivar o imprimir.',
+  importTitle:'Restaurar desde JSON',selectFile:'Seleccionar archivo',
+  friendNameLabel:'Nombre del amigo',addGal:'Agregar galaxia',
+  copyCodeBtn:'Copiar mi código para compartir',
+  dangerTitle:'⚠ Zona de peligro',
+  iaDesc:'Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.',
+  comingSoon:'🚧 Próximamente',comingSoonDesc:'Más herramientas de análisis IA en desarrollo.',
+  welcomeQ:'¿Y si pudieras ver tu conocimiento?',
+  welcomeP1:'Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.',
+  welcomeP2:'ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.',
+  welcomeP3:'Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros',
+  welcomeP3em:'sin que te hayas dado cuenta',
+  welcomeP3b:'. ALINEA los hace visibles.',
+  welcomeP4:'Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni sabías que tenías. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en el mundo y en tu galaxia.',
+  welcomePrivacy:'Y recuerda — esta página también se creó con el propósito de que tú sepas que tus datos únicamente son tuyos. ALINEA jamás tendrá tu información, ni nadie más, ni siquiera yo. Todo tu universo vive en tu dispositivo, y solo tú puedes verlo. Cuando quieras, puedes descargar tu respaldo desde',
+  welcomePrivacyLink:'Configuración → Datos',
+  welcomeClosing:'Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.',
+  welcomeSign:'— Miguel Valdez, creador de ALINEA',
+  welcomeBtn1:'✦ Agregar mi primer libro',welcomeBtn2:'Explorar primero',
+  noLibYet:'Tu galaxia está vacía',noLibSub:'Usa el botón + para agregar tu primer libro.',
+  addFirstBook:'+ AGREGAR PRIMER LIBRO',
+  pending:'Pendiente',reading:'Leyendo',done:'Terminado',
+  noNotes:'Sin notas aún — escribe la primera arriba.',
+  searchNotes:'Buscar por palabra, página…',
+  newKeyword:'Nueva keyword…',add:'+ Add',
+  addBookTitle:'Agregar libro',
+  titlePlaceholder:'Título del libro…',authorPlaceholder:'Autor…',addBookSub:'Escribe el título — la portada se carga automáticamente.',
+  author:'Autor',category:'Categoría',initialKeywords:'Keywords iniciales (coma)',bookStatus:'Estado del libro',
+  coverUrl:'URL de portada (opcional)',coverUrlPlaceholder:'https://… pega la URL de la imagen',
+  cancel:'Cancelar',save:'Guardar',
+  statusRead:'Leído (ya lo tengo y lo leí)',statusOwned:'Lo tengo, no lo he leído',statusWishlist:'Wishlist (aún no lo tengo)',
+  wishlistTitle:'Próximas Misiones',wishlistSub:'Libros que viajan hacia tu galaxia.',
+  quickAddWishlist:'Agregar a wishlist rápido',quickAddBtn:'Agregar',wishTitlePlaceholder:'Título del libro…',wishAuthorPlaceholder:'Autor…',
+  iAlreadyHave:'Ya lo tengo',markRead:'Ya lo leí',
+  settingsTitle:'Configuración',settingsSub:'Conecta tu IA para análisis automático y Visión IA.',
+  langTitle:'Idioma',langDesc:'Cambia el idioma de toda la interfaz de ALINEA.',
+  aiTitle:'Sobre la IA',aiDesc:'Al agregar notas extrae keywords y mood. En Explorar y Bitácora genera síntesis. Visión IA lee páginas con la cámara. Tu key solo vive en tu navegador.',
+  backupTitle:'Datos & Respaldo',
+  backupIntro:'Tu biblioteca vive solo en este navegador — ningún servidor la guarda. Si cambias de dispositivo o borras el historial, podrías perderla. El respaldo es tu seguro de vida.',
+  jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords en un archivo ligero. Puedes reimportarlo aquí en cualquier dispositivo al instante.',
+  pdfTitle:'PDF — Para leer e imprimir',pdfDesc:'Versión visual de tu biblioteca. No sirve para restaurar, pero es ideal para archivar, compartir o imprimir.',
+  downloadJson:'Descargar JSON',downloadPdf:'Descargar PDF',
+  importTitle:'Restaurar desde JSON',importDesc:'¿Cambiaste de dispositivo? Sube tu archivo JSON y tu galaxia aparece al instante.',importWarning:'Reemplaza los datos actuales.',selectFile:'Seleccionar archivo',
+  friendsTitle:'Galaxias de amigos',friendsDesc:'Pega el JSON de un amigo para ver su galaxia junto a la tuya.',
+  friendName:'Nombre del amigo…',friendJsonPlaceholder:'Pega aquí el JSON exportado (Descargar JSON)…',addGalaxy:'Agregar',copyCode:'Copiar mi código para compartir',
+  close:'Cerrar',verifyConn:'Verificar conexión',providerLabel:'Proveedor IA',apiKeyLabel:'API Key',
+  filterAll:'Todos',filterReading:'Leyendo',filterOwned:'No leídos',filterWishlist:'Wishlist',
+  sortRecent:'Reciente',sortTitle:'Título A-Z',sortAuthor:'Autor A-Z',sortRating:'Calificación',
+  emptyLib:'Tu biblioteca está vacía. Agrega tu primer libro.',
+  devBy:'Desarrollado por',
+  addGalaxyLabel:'Agregar galaxia',appTagline:'Biblioteca Mental',allRightsReserved:'Todos los derechos reservados',
+  aiTools:'Herramientas IA',collisionIdeas:'Colisión de ideas',horizonEvents:'Horizonte de sucesos',
+  dangerZone:'Zona de peligro',hardReset:'Borrar todo y reiniciar',calculating:'Calculando…',
+  copied:'¡Copiado!',noFriendGalaxies:'Aún no has agregado galaxias de amigos.',
+  bitacoraHint:'💾 Exportar, importar y herramientas avanzadas',
+  noApiKey:'Sin API key',apiKeySaved:'API key guardada',
+  saveChanges:'Guardar cambios',activateCamera:'Activar cámara',captureAnalyze:'Capturar y analizar',
+  volumen:'Volumen',knowledge:'Conocimiento',densestSystem:'Sistema más denso',activeGalaxies:'Galaxias activas',
+  booksInGalaxy:'libros en tu galaxia',inWishlist:'en wishlist',notesAndKeywords:'notas · {kw} keywords únicas',
+  booksCount:'libros',addBooksWithCats:'Agrega libros con categorías',noCatsYet:'Sin categorías aún',
+  addKeywordsForConnections:'Agrega keywords y notas a tus libros para ver conexiones.',
+  ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
+  noCategory:'Sin categoría',
+  filterAll:'Todas',
+  addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',keywordsInitial:'Keywords iniciales (coma)',kwPlaceholder:'inversión, mentalidad…',ownedRead:'📚 Leído (ya lo tengo y lo leí)',ownedUnreadOpt:'📖 Lo tengo, no lo he leído',reading2:'📖 Leyendo ahora',wishlist2:'🚀 Lo quiero (Wishlist)',topFive:'TU TOP 5',filterNone:'Ninguna',category:'Categorías',explore2:'Explorar ideas',
+  titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
+  secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
+  terminados:'Terminados',leyendo:'Leyendo',wishlistStat:'Wishlist',notasStat:'Notas',keywordsStat:'Keywords',ratingProm:'Rating prom.',masAnotados:'📝 Más anotados',keywordsFrecuentes:'🔑 Keywords frecuentes',borrarReiniciar:'☢ Borrar todo y reiniciar',colisionBtn:'Colisión de ideas',horizonteBtn:'Horizonte de sucesos',colisionTitle:'Colisión de ideas ✦',horizonteTitle:'Horizonte de sucesos',footerText:'ALINEA · Biblioteca Mental · Todos los derechos reservados',exploreSub:'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.',exportarImportar:'💾 Exportar, importar y herramientas avanzadas',densestSystem:'🌟 Sistema más denso',gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
+}},
+en:{name:'English',t:{
+  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
+  addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
+  galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
+  exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
+  exploreEmpty:'Type to explore your notes.',explorePlaceholder:'discipline, money, purpose…',
+  gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
+  logTitle:'Flight log',logSubtitle:'Reports from your galaxy — growing areas, found connections, knowledge synthesis.',
+  generateSynthesis:'✦ Generate AI synthesis',wishlistMissions:'Wishlist — upcoming missions',galaxyConnections:'Galaxy connections',
+  notas:'Notes & Highlights',keywords:'Keywords',relatedBooks:'Related books',
+  notePlaceholder:'Write a highlight, idea or reflection…',pagePlaceholder:'Page',commentPlaceholder:'Comment (optional)',
+  addNote:'+ Note',camera:'Camera',dictate:'Dictate',
+  progress:'Progress',rating:'Rating',editBook:'Edit book',deleteBook:'Delete book',
+  accentColor:'Accent color',textSize:'Text size',libNameLabel:'Your library name',
+  small:'Small',normal:'Normal',large:'Large',xl:'XL',
+  appearanceTitle:'🎨 Appearance',dataTitle:'💾 Data & Backup',iaTitle:'✦ AI',
+  dataDesc:'Your library lives only in this browser. Back it up to keep it safe.',
+  jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords.',
+  pdfTitle:'PDF — For reading',pdfDesc:'Visual version for archiving or printing.',
+  importTitle:'Restore from JSON',selectFile:'Select file',
+  friendNameLabel:'Friend name',addGal:'Add galaxy',
+  copyCodeBtn:'Copy my sharing code',
+  dangerTitle:'⚠ Danger zone',
+  iaDesc:'Your API key lives only in your browser — never sent to any ALINEA server.',
+  comingSoon:'🚧 Coming soon',comingSoonDesc:'More AI analysis tools in development.',
+  welcomeQ:'What if you could see your knowledge?',
+  welcomeP1:'We read, we highlight, we annotate — and over time, that wisdom fades. Not because we cannot retain it physically or mentally, although we wish we could.',
+  welcomeP2:'ALINEA is for everyone who always carries a book in their pocket — or more. For book devourers. And for those who are just starting to create, and even more, to visualize their knowledge.',
+  welcomeP3:'Your library is not a list of books. It is a living galaxy of connections that already exist between everything you have read — you just could never see them. Every keyword, every note, every highlight is talking to others',
+  welcomeP3em:'without you even knowing',
+  welcomeP3b:'. ALINEA makes them visible.',
+  welcomeP4:'Explore any word and instantly find everything you have thought about it. Observe your galaxy and discover patterns you did not know you had. Read your log and find, in short, your own mark — the trace you leave in the world and in your galaxy.',
+  welcomePrivacy:'And remember — this page was also created so that you know your data belongs only to you. ALINEA will never have your information, nor will anyone else, not even me. Your entire universe lives on your device, and only you can see it. Whenever you want, you can download your backup from',
+  welcomePrivacyLink:'Settings → Data',
+  welcomeClosing:'See the thousands of connections that exist between your books. Make the invisible visible. That is ALINEA.',
+  welcomeSign:'— Miguel Valdez, creator of ALINEA',
+  welcomeBtn1:'✦ Add my first book',welcomeBtn2:'Explore first',
+  noLibYet:'Your galaxy is empty',noLibSub:'Use the + button to add your first book.',
+  addFirstBook:'+ ADD FIRST BOOK',
+  pending:'Pending',reading:'Reading',done:'Finished',
+  noNotes:'No notes yet — write the first one above.',
+  searchNotes:'Search by word, page…',
+  newKeyword:'New keyword…',add:'+ Add',
+  addBookTitle:'Add book',
+  titlePlaceholder:'Book title…',authorPlaceholder:'Author…',addBookSub:'Type the title — cover loads automatically.',
+  author:'Author',category:'Category',initialKeywords:'Initial keywords (comma)',bookStatus:'Book status',
+  coverUrl:'Cover URL (optional)',coverUrlPlaceholder:'https://… paste image URL',
+  cancel:'Cancel',save:'Save',
+  statusRead:'Read (I own and read it)',statusOwned:'I own it, not read yet',statusWishlist:'Wishlist (I don\'t have it yet)',
+  wishlistTitle:'Upcoming Missions',wishlistSub:'Books traveling toward your galaxy.',
+  quickAddWishlist:'Quick add to wishlist',quickAddBtn:'Add',wishTitlePlaceholder:'Book title…',wishAuthorPlaceholder:'Author…',
+  iAlreadyHave:'I have it',markRead:'Already read',
+  settingsTitle:'Settings',settingsSub:'Connect your AI for automatic analysis and Vision AI.',
+  langTitle:'Language',langDesc:'Change the language of the entire ALINEA interface.',
+  aiTitle:'About AI',aiDesc:'When adding notes it extracts keywords and mood. In Explore and Log it generates synthesis. Vision AI reads pages with the camera. Your key lives only in your browser.',
+  backupTitle:'Data & Backup',
+  backupIntro:'Your library lives only in this browser — no server stores it. If you change devices or clear history, you could lose it. Backup is your life insurance.',
+  jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords in a lightweight file. You can reimport it here on any device instantly.',
+  pdfTitle:'PDF — For reading & printing',pdfDesc:'Visual version of your library. Can\'t be used to restore, but ideal for archiving, sharing or printing.',
+  downloadJson:'Download JSON',downloadPdf:'Download PDF',
+  importTitle:'Restore from JSON',importDesc:'Changed devices? Upload your JSON file and your galaxy appears instantly.',importWarning:'Replaces current data.',selectFile:'Select file',
+  friendsTitle:'Friend galaxies',friendsDesc:'Paste a friend\'s JSON to see their galaxy next to yours.',
+  friendName:'Friend\'s name…',friendJsonPlaceholder:'Paste exported JSON here (Download JSON)…',addGalaxy:'Add',copyCode:'Copy my sharing code',
+  close:'Close',verifyConn:'Verify connection',providerLabel:'AI Provider',apiKeyLabel:'API Key',
+  filterAll:'All',
+  addBookTitle:'Add book',addBookSub:'Write the title — the cover loads automatically.',keywordsInitial:'Initial keywords (comma)',kwPlaceholder:'investment, mindset…',ownedRead:'📚 Read (I own it and read it)',ownedUnreadOpt:'📖 I own it, not read yet',reading2:'📖 Reading now',wishlist2:'🚀 I want it (Wishlist)',topFive:'YOUR TOP 5',filterReading:'Reading',filterOwned:'Unread',filterWishlist:'Wishlist',
+  sortRecent:'Recent',sortTitle:'Title A-Z',sortAuthor:'Author A-Z',sortRating:'Rating',
+  emptyLib:'Your library is empty. Add your first book.',
+  devBy:'Developed by',
+  addGalaxyLabel:'Add galaxy',appTagline:'Mental Library',allRightsReserved:'All rights reserved',
+  aiTools:'AI Tools',collisionIdeas:'Idea collision',horizonEvents:'Event horizon',
+  dangerZone:'Danger zone',hardReset:'Delete everything and restart',calculating:'Calculating…',
+  copied:'Copied!',noFriendGalaxies:"You haven't added friend galaxies yet.",
+  bitacoraHint:'Export, import and advanced tools → Settings button',
+  noApiKey:'No API key',apiKeySaved:'API key saved',
+  saveChanges:'Save changes',activateCamera:'Activate camera',captureAnalyze:'Capture and analyze',
+  volumen:'Volume',knowledge:'Knowledge',densestSystem:'Densest system',activeGalaxies:'Active galaxies',
+  booksInGalaxy:'books in your galaxy',inWishlist:'in wishlist',notesAndKeywords:'{kw} notes · {kw} unique keywords',
+  booksCount:'books',addBooksWithCats:'Add books with categories',noCatsYet:'No categories yet',
+  addKeywordsForConnections:'Add keywords and notes to your books to see connections.',
+  ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
+  noCategory:'No category',
+  filterAll:'All',filterNone:'None',category:'Categories',explore2:'Explore ideas',
+  titleLabel:'Title',authorLabel:'Author',categoryLabel:'Category',statusLabel:'Book status',coverUrlLabel:'Cover URL',
+  secNotas:'Notes & Highlights',secKeywords:'Keywords',secRelated:'Related books',
+  terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'🌟 Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
+}},
+pt:{name:'Português',t:{
+  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
+  addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
+  galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
+  exploreTitle:'Explorar ideias',exploreSubtitle:'Toque para explorar · Arraste para mover · Incline o telefone',
+  exploreEmpty:'Digite para explorar suas notas.',explorePlaceholder:'disciplina, dinheiro, propósito…',
+  gravOff:'Gravidade: OFF',gravOn:'Gravidade: ON',
+  logTitle:'Diário de voo',logSubtitle:'Relatórios da sua galáxia — áreas crescendo, conexões encontradas, síntese do conhecimento.',
+  generateSynthesis:'✦ Gerar síntese IA',wishlistMissions:'Lista de desejos — próximas missões',galaxyConnections:'Conexões entre galáxias',
+  notas:'Notas & Destaques',keywords:'Palavras-chave',relatedBooks:'Livros relacionados',
+  notePlaceholder:'Escreva um destaque, ideia ou reflexão…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentário (opcional)',
+  addNote:'+ Nota',camera:'Câmera',dictate:'Ditar',
+  progress:'Progresso',rating:'Avaliação',editBook:'Editar livro',
+  pending:'Pendente',reading:'Lendo',done:'Terminado',
+  noNotes:'Ainda sem notas — escreva a primeira acima.',
+  searchNotes:'Buscar por palavra, página…',
+  newKeyword:'Nova palavra-chave…',add:'+ Add',
+  addBookTitle:'Adicionar livro',
+  titlePlaceholder:'Título do livro…',authorPlaceholder:'Autor…',addBookSub:'Digite o título — a capa carrega automaticamente.',
+  author:'Autor',category:'Categoria',initialKeywords:'Palavras-chave iniciais (vírgula)',bookStatus:'Status do livro',
+  coverUrl:'URL da capa (opcional)',coverUrlPlaceholder:'https://… cole URL da imagem',
+  cancel:'Cancelar',save:'Salvar',
+  statusRead:'Lido (tenho e li)',statusOwned:'Tenho, ainda não li',statusWishlist:'Lista de desejos (ainda não tenho)',
+  wishlistTitle:'Próximas Missões',wishlistSub:'Livros viajando para sua galáxia.',
+  quickAddWishlist:'Adicionar rapidamente à lista',quickAddBtn:'Adicionar',wishTitlePlaceholder:'Título do livro…',wishAuthorPlaceholder:'Autor…',
+  iAlreadyHave:'Já tenho',markRead:'Já li',
+  settingsTitle:'Configurações',settingsSub:'Conecte sua IA para análise automática e Visão IA.',
+  langTitle:'Idioma',langDesc:'Mude o idioma de toda a interface do ALINEA.',
+  aiTitle:'Sobre a IA',aiDesc:'Ao adicionar notas extrai palavras-chave e humor. Em Explorar e Diário gera sínteses. Visão IA lê páginas com a câmera. Sua chave fica só no navegador.',
+  backupTitle:'Dados & Backup',
+  backupIntro:'Sua biblioteca vive só neste navegador. Se mudar de dispositivo ou limpar o histórico, pode perdê-la. O backup é seu seguro de vida.',
+  jsonTitle:'JSON — Backup real',jsonDesc:'Todos seus livros, notas e palavras-chave num arquivo leve. Você pode reimportá-lo aqui em qualquer dispositivo.',
+  pdfTitle:'PDF — Para ler e imprimir',pdfDesc:'Versão visual da sua biblioteca. Não serve para restaurar, mas ideal para arquivar ou imprimir.',
+  downloadJson:'Baixar JSON',downloadPdf:'Baixar PDF',
+  importTitle:'Restaurar do JSON',importDesc:'Mudou de dispositivo? Envie seu arquivo JSON e sua galáxia aparece instantaneamente.',importWarning:'Substitui os dados atuais.',selectFile:'Selecionar arquivo',
+  friendsTitle:'Galáxias de amigos',friendsDesc:'Cole o JSON de um amigo para ver a galáxia dele ao lado da sua.',
+  friendName:'Nome do amigo…',friendJsonPlaceholder:'Cole aqui o JSON exportado…',addGalaxy:'Adicionar',copyCode:'Copiar meu código para compartilhar',
+  close:'Fechar',verifyConn:'Verificar conexão',providerLabel:'Provedor IA',apiKeyLabel:'Chave API',
+  filterAll:'Todos',filterReading:'Lendo',filterOwned:'Não lidos',filterWishlist:'Lista de desejos',
+  sortRecent:'Recente',sortTitle:'Título A-Z',sortAuthor:'Autor A-Z',sortRating:'Avaliação',
+  emptyLib:'Sua biblioteca está vazia. Adicione seu primeiro livro.',
+  devBy:'Desenvolvido por',
+  addGalaxyLabel:'Adicionar galáxia',appTagline:'Biblioteca Mental',allRightsReserved:'Todos os direitos reservados',
+  aiTools:'Ferramentas de IA',collisionIdeas:'Colisão de ideias',horizonEvents:'Horizonte de eventos',
+  dangerZone:'Zona de perigo',hardReset:'Apagar tudo e reiniciar',calculating:'Calculando…',
+  copied:'Copiado!',noFriendGalaxies:'Você ainda não adicionou galáxias de amigos.',
+  bitacoraHint:'Exportar, importar e ferramentas avançadas → botão Configurações',
+  noApiKey:'Sem chave API',apiKeySaved:'Chave API salva',
+  saveChanges:'Salvar alterações',activateCamera:'Ativar câmera',captureAnalyze:'Capturar e analisar',
+  volumen:'Volume',knowledge:'Conhecimento',densestSystem:'Sistema mais denso',activeGalaxies:'Galáxias ativas',
+  booksInGalaxy:'livros na sua galáxia',inWishlist:'na lista',notesAndKeywords:'notas · {kw} palavras-chave únicas',
+  booksCount:'livros',addBooksWithCats:'Adicione livros com categorias',noCatsYet:'Sem categorias ainda',
+  addKeywordsForConnections:'Adicione palavras-chave e notas aos seus livros para ver conexões.',
+  ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
+  noCategory:'Sem categoria',
+  filterAll:'Todas',filterNone:'Nenhuma',
+  addBookTitle:'Adicionar livro',addBookSub:'Escreva o título — a capa carrega automaticamente.',keywordsInitial:'Keywords iniciais (vírgula)',kwPlaceholder:'investimento, mentalidade…',ownedRead:'📚 Lido (tenho e li)',ownedUnreadOpt:'📖 Tenho, não li ainda',reading2:'📖 Lendo agora',wishlist2:'🚀 Quero (Wishlist)',topFive:'SEU TOP 5',category:'Categorias',explore2:'Explorar ideias',
+  titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoria',statusLabel:'Status do livro',coverUrlLabel:'URL da capa',
+  secNotas:'Notas & Destaques',secKeywords:'Keywords',secRelated:'Livros relacionados',
+  terminados:'Terminados',leyendo:'Lendo',wishlistStat:'Wishlist',
+  notasStat:'Notas',keywordsStat:'Keywords',ratingProm:'Avaliação média',
+  masAnotados:'📝 Mais anotados',keywordsFrecuentes:'🔑 Keywords frequentes',
+  borrarReiniciar:'☢ Apagar tudo e reiniciar',
+  colisionBtn:'Colisão de ideias',horizonteBtn:'Horizonte de eventos',
+  colisionTitle:'Colisão de ideias ✦',horizonteTitle:'Horizonte de eventos',
+  footerText:'ALINEA · Biblioteca Mental · Todos os direitos reservados',
+  exploreSub:'As palavras flutuam acima. Arraste-as, agrupe-as ou escreva para buscar.',
+  exportarImportar:'💾 Exportar, importar e ferramentas avançadas → botão',
+  densestSystem:'🌟 Sistema mais denso',
+  welcomeQ:'E se você pudesse ver seu conhecimento?',
+  welcomeP1:'Lemos, sublinhamos, anotamos — e com o tempo, essa sabedoria vai perdendo brilho.',
+  welcomeP2:'ALINEA é para todos aqueles que sempre carregam um livro no bolso — ou mais.',
+  welcomeP3:'Sua biblioteca não é uma lista de livros. É uma galáxia viva de conexões',
+  welcomeP3em:'sem que você perceba',welcomeP3b:'. ALINEA os torna visíveis.',
+  welcomePrivacy:'E lembre-se — seus dados pertencem apenas a você. Baixe seu backup em',
+  welcomePrivacyLink:'Configurações → Dados',
+  welcomeClosing:'Ver as milhares de conexões. Tornar visível o invisível. Isso é ALINEA.',
+  welcomeSign:'— Miguel Valdez, criador da ALINEA',
+  welcomeBtn1:'✦ Adicionar meu primeiro livro',welcomeBtn2:'Explorar primeiro',
+  noLibYet:'Sua galáxia está vazia',noLibSub:'Use o botão + para adicionar seu primeiro livro.',
+  addFirstBook:'+ ADICIONAR PRIMEIRO LIVRO',
+}},
+fr:{name:'Français',t:{
+  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Visible lo invisible.',
+  addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
+  galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
+  exploreTitle:'Explorer les idées',exploreSubtitle:'Toucher pour explorer · Glisser pour déplacer · Incliner le téléphone',
+  exploreEmpty:'Écrivez pour explorer vos notes.',explorePlaceholder:'discipline, argent, but…',
+  gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
+  logTitle:'Journal de bord',logSubtitle:'Rapports de votre galaxie — zones en croissance, connexions trouvées, synthèse des connaissances.',
+  generateSynthesis:'✦ Générer synthèse IA',wishlistMissions:'Liste de souhaits — prochaines missions',galaxyConnections:'Connexions entre galaxies',
+  notas:'Notes & Surlignements',keywords:'Mots-clés',relatedBooks:'Livres associés',
+  notePlaceholder:'Écrivez un surlignement, une idée ou une réflexion…',pagePlaceholder:'Page',commentPlaceholder:'Commentaire (optionnel)',
+  addNote:'+ Note',camera:'Caméra',dictate:'Dicter',
+  progress:'Progrès',rating:'Note',editBook:'Modifier le livre',deleteBook:'Supprimer le livre',
+  accentColor:"Couleur d'accent",textSize:'Taille du texte',libNameLabel:'Nom de votre bibliothèque',
+  small:'Petit',normal:'Normal',large:'Grand',xl:'XL',
+  appearanceTitle:'🎨 Apparence',dataTitle:'💾 Données & Sauvegarde',iaTitle:'✦ IA',
+  dataDesc:'Votre bibliothèque vit uniquement dans ce navigateur. Sauvegardez-la.',
+  jsonTitle:'JSON — Vraie sauvegarde',jsonDesc:'Tous vos livres, notes et mots-clés.',
+  pdfTitle:'PDF — Pour lire',pdfDesc:'Version visuelle pour archiver ou imprimer.',
+  importTitle:'Restaurer depuis JSON',selectFile:'Sélectionner un fichier',
+  friendNameLabel:"Nom de l'ami",addGal:'Ajouter une galaxie',
+  copyCodeBtn:'Copier mon code de partage',
+  dangerTitle:'⚠ Zone de danger',
+  iaDesc:"Votre clé API vit uniquement dans votre navigateur.",
+  comingSoon:'🚧 Bientôt disponible',comingSoonDesc:"Plus d'outils d'analyse IA en développement.",
+  welcomeQ:'Et si vous pouviez voir votre connaissance ?',
+  welcomeP1:'Nous lisons, soulignons, annotons — et avec le temps, cette sagesse perd de son éclat. Nous aimerions tout retenir, mais c’est impossible.',
+  welcomeP2:'ALINEA est pour tous ceux qui portent toujours un livre dans leur poche — ou plus. Pour les dévoreurs de livres et ceux qui veulent visualiser leur connaissance.',
+  welcomeP3:'Votre bibliothèque est une galaxie vivante de connexions entre tout ce que vous avez lu — vous ne pouviez pas les voir. Chaque note, chaque mot-clé parle à d’autres',
+  welcomeP3em:'sans que vous le sachiez',
+  welcomeP3b:'. ALINEA les rend visibles.',
+  welcomeP4:'Explorez chaque mot et trouvez instantanément tout ce que vous en avez pensé.',
+  welcomePrivacy:'Et rappelez-vous — vos données vous appartiennent uniquement. ALINEA ne les aura jamais. Téléchargez votre sauvegarde depuis',
+  welcomePrivacyLink:'Paramètres → Données',
+  welcomeClosing:'Voir les milliers de connexions entre vos livres. Rendre visible l’invisible. C’est ALINEA.',
+  welcomeSign:'— Miguel Valdez, créateur d’ALINEA',
+  welcomeBtn1:'✦ Ajouter mon premier livre',welcomeBtn2:"Explorer d'abord",
+  noLibYet:'Votre galaxie est vide',noLibSub:'Utilisez le bouton + pour ajouter votre premier livre.',
+  addFirstBook:'+ AJOUTER PREMIER LIVRE',
+  pending:'En attente',reading:'En lecture',done:'Terminé',
+  noNotes:'Pas encore de notes — écrivez la première ci-dessus.',
+  searchNotes:'Rechercher par mot, page…',
+  newKeyword:'Nouveau mot-clé…',add:'+ Add',
+  addBookTitle:'Ajouter un livre',
+  titlePlaceholder:'Titre du livre…',authorPlaceholder:'Auteur…',addBookSub:'Tapez le titre — la couverture se charge automatiquement.',
+  author:'Auteur',category:'Catégorie',initialKeywords:'Mots-clés initiaux (virgule)',bookStatus:'Statut du livre',
+  coverUrl:'URL de couverture (optionnel)',coverUrlPlaceholder:'https://… collez l\'URL de l\'image',
+  cancel:'Annuler',save:'Enregistrer',
+  statusRead:'Lu (je l\'ai et je l\'ai lu)',statusOwned:'Je l\'ai, pas encore lu',statusWishlist:'Liste de souhaits (je ne l\'ai pas encore)',
+  wishlistTitle:'Prochaines Missions',wishlistSub:'Livres voyageant vers votre galaxie.',
+  quickAddWishlist:'Ajout rapide à la liste',quickAddBtn:'Ajouter',wishTitlePlaceholder:'Titre du livre…',wishAuthorPlaceholder:'Auteur…',
+  iAlreadyHave:'Je l\'ai',markRead:'Déjà lu',
+  settingsTitle:'Paramètres',settingsSub:'Connectez votre IA pour analyse automatique et Vision IA.',
+  langTitle:'Langue',langDesc:'Changez la langue de toute l\'interface ALINEA.',
+  aiTitle:'À propos de l\'IA',aiDesc:'En ajoutant des notes, extrait mots-clés et humeur. En Explorer et Journal génère des synthèses. Votre clé reste dans votre navigateur.',
+  backupTitle:'Données & Sauvegarde',
+  backupIntro:'Votre bibliothèque vit uniquement dans ce navigateur. Si vous changez d\'appareil, vous pourriez la perdre. La sauvegarde est votre assurance.',
+  jsonTitle:'JSON — Sauvegarde réelle',jsonDesc:'Tous vos livres, notes et mots-clés dans un fichier léger. Réimportable instantanément.',
+  pdfTitle:'PDF — Pour lire et imprimer',pdfDesc:'Version visuelle de votre bibliothèque. Idéal pour archiver ou partager.',
+  downloadJson:'Télécharger JSON',downloadPdf:'Télécharger PDF',
+  importTitle:'Restaurer depuis JSON',importDesc:'Changé d\'appareil? Importez votre JSON et votre galaxie apparaît.',importWarning:'Remplace les données actuelles.',selectFile:'Sélectionner un fichier',
+  friendsTitle:'Galaxies d\'amis',friendsDesc:'Collez le JSON d\'un ami pour voir sa galaxie à côté de la vôtre.',
+  friendName:'Nom de l\'ami…',friendJsonPlaceholder:'Collez ici le JSON exporté…',addGalaxy:'Ajouter',copyCode:'Copier mon code de partage',
+  close:'Fermer',verifyConn:'Vérifier connexion',providerLabel:'Fournisseur IA',apiKeyLabel:'Clé API',
+  filterAll:'Tous',filterReading:'En lecture',filterOwned:'Non lus',filterWishlist:'Souhaits',
+  sortRecent:'Récent',sortTitle:'Titre A-Z',sortAuthor:'Auteur A-Z',sortRating:'Note',
+  emptyLib:'Votre bibliothèque est vide. Ajoutez votre premier livre.',
+  devBy:'Développé par',
+  addGalaxyLabel:'Ajouter une galaxie',appTagline:'Bibliothèque Mentale',allRightsReserved:'Tous droits réservés',
+  aiTools:'Outils IA',collisionIdeas:'Collision d’idées',horizonEvents:'Horizon des événements',
+  dangerZone:'Zone de danger',hardReset:'Tout supprimer et redémarrer',calculating:'Calcul en cours…',
+  copied:'Copié !',noFriendGalaxies:"Vous n'avez pas encore ajouté de galaxies d'amis.",
+  bitacoraHint:'Exporter, importer et outils avancés → bouton Paramètres',
+  noApiKey:'Pas de clé API',apiKeySaved:'Clé API enregistrée',
+  saveChanges:'Enregistrer les modifications',activateCamera:'Activer la caméra',captureAnalyze:'Capturer et analyser',
+  volumen:'Volume',knowledge:'Connaissance',densestSystem:'Système le plus dense',activeGalaxies:'Galaxies actives',
+  booksInGalaxy:'livres dans votre galaxie',inWishlist:'en liste',notesAndKeywords:'notes · {kw} mots-clés uniques',
+  booksCount:'livres',addBooksWithCats:'Ajoutez des livres avec catégories',noCatsYet:'Pas encore de catégories',
+  addKeywordsForConnections:'Ajoutez mots-clés et notes à vos livres pour voir les connexions.',
+  ownedUnread:"Je l'ai, non lu",noPendingBooks:'Aucun livre en attente.',
+  noCategory:'Sans catégorie',
+  filterAll:'Toutes',
+  addBookTitle:'Ajouter un livre',addBookSub:'Écrivez le titre — la couverture se charge automatiquement.',keywordsInitial:'Mots-clés initiaux (virgule)',kwPlaceholder:'investissement, mentalité…',ownedRead:'📚 Lu (je l’ai et je l’ai lu)',ownedUnreadOpt:'📖 Je l’ai, pas encore lu',reading2:'📖 En train de lire',wishlist2:'🚀 Je le veux (Wishlist)',topFive:'VOTRE TOP 5',filterNone:'Aucune',category:'Catégories',explore2:'Explorer les idées',
+  titleLabel:'Titre',authorLabel:'Auteur',categoryLabel:'Catégorie',statusLabel:'Statut du livre',coverUrlLabel:'URL de couverture',
+  secNotas:'Notes & Surlignements',secKeywords:'Mots-clés',secRelated:'Livres liés',
+  terminados:'Terminés',leyendo:'En cours',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Mots-clés',ratingProm:'Note moy.',masAnotados:'📝 Plus annotés',keywordsFrecuentes:'🔑 Mots-clés fréquents',borrarReiniciar:'☢ Tout supprimer',colisionBtn:'Collision d’idées',horizonteBtn:'Horizon des événements',colisionTitle:'Collision d’idées ✔',horizonteTitle:'Horizon des événements',footerText:'ALINEA · Bibliothèque Mentale · Tous droits réservés',exploreSub:'Les mots flottent. Glissez-les ou écrivez pour chercher.',exportarImportar:'💾 Exporter, importer et outils avancés',densestSystem:'🌟 Système le plus dense',gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
+}},
+de:{name:'Deutsch',t:{
+  library:'Bibliothek',galaxy:'Galaxie',explore:'Entdecken',log:'Logbuch',
+  addBook:'＋ Buch hinzufügen',search:'Suchen…',settings:'Einstellungen',wishlistBtn:'Wunschliste',
+  galaxyHint:'Sonnensystem · Ziehen · Scrollen = Zoom · Klick = Buch · Animierte Umlaufbahnen',
+  exploreTitle:'Ideen erkunden',exploreSubtitle:'Tippen zum Erkunden · Ziehen zum Bewegen · Telefon neigen',
+  exploreEmpty:'Tippen Sie zum Erkunden Ihrer Notizen.',explorePlaceholder:'Disziplin, Geld, Zweck…',
+  gravOff:'Schwerkraft: AUS',gravOn:'Schwerkraft: AN',
+  logTitle:'Fluglogbuch',logSubtitle:'Berichte aus Ihrer Galaxie — wachsende Bereiche, gefundene Verbindungen, Wissenssynthese.',
+  generateSynthesis:'✦ KI-Synthese generieren',wishlistMissions:'Wunschliste — kommende Missionen',galaxyConnections:'Galaxieverbindungen',
+  notas:'Notizen & Markierungen',keywords:'Schlüsselwörter',relatedBooks:'Verwandte Bücher',
+  notePlaceholder:'Schreiben Sie eine Markierung, Idee oder Reflexion…',pagePlaceholder:'Seite',commentPlaceholder:'Kommentar (optional)',
+  addNote:'+ Notiz',camera:'Kamera',dictate:'Diktieren',
+  progress:'Fortschritt',rating:'Bewertung',editBook:'Buch bearbeiten',
+  pending:'Ausstehend',reading:'Lese gerade',done:'Fertig',
+  noNotes:'Noch keine Notizen — schreiben Sie die erste oben.',
+  searchNotes:'Nach Wort, Seite suchen…',
+  newKeyword:'Neues Schlüsselwort…',add:'+ Add',
+  addBookTitle:'Buch hinzufügen',addBookSub:'Titel eingeben — Cover lädt automatisch.',
+  author:'Autor',category:'Kategorie',initialKeywords:'Anfangs-Keywords (Komma)',bookStatus:'Buchstatus',
+  coverUrl:'Cover-URL (optional)',coverUrlPlaceholder:'https://… Bild-URL einfügen',
+  cancel:'Abbrechen',save:'Speichern',
+  statusRead:'Gelesen (habe und las es)',statusOwned:'Habe es, noch nicht gelesen',statusWishlist:'Wunschliste (habe es noch nicht)',
+  wishlistTitle:'Kommende Missionen',wishlistSub:'Bücher auf dem Weg zu Ihrer Galaxie.',
+  quickAddWishlist:'Schnell zur Liste hinzufügen',quickAddBtn:'Hinzufügen',wishTitlePlaceholder:'Buchtitel…',wishAuthorPlaceholder:'Autor…',
+  iAlreadyHave:'Habe es',markRead:'Bereits gelesen',
+  settingsTitle:'Einstellungen',settingsSub:'Verbinden Sie Ihre KI für automatische Analyse und Vision KI.',
+  langTitle:'Sprache',langDesc:'Ändern Sie die Sprache der gesamten ALINEA-Oberfläche.',
+  aiTitle:'Über KI',aiDesc:'Beim Hinzufügen von Notizen werden Keywords und Stimmung extrahiert. In Entdecken und Logbuch werden Synthesen erstellt. Ihr Schlüssel bleibt im Browser.',
+  backupTitle:'Daten & Backup',
+  backupIntro:'Ihre Bibliothek lebt nur in diesem Browser. Bei Gerätewechsel könnten Sie sie verlieren. Backup ist Ihre Lebensversicherung.',
+  jsonTitle:'JSON — Echtes Backup',jsonDesc:'Alle Ihre Bücher, Notizen und Keywords in einer leichten Datei. Sofort auf jedem Gerät reimportierbar.',
+  pdfTitle:'PDF — Zum Lesen & Drucken',pdfDesc:'Visuelle Version Ihrer Bibliothek. Nicht für die Wiederherstellung, aber ideal zum Archivieren.',
+  downloadJson:'JSON herunterladen',downloadPdf:'PDF herunterladen',
+  importTitle:'Von JSON wiederherstellen',importDesc:'Gerät gewechselt? Laden Sie Ihre JSON-Datei hoch.',importWarning:'Ersetzt aktuelle Daten.',selectFile:'Datei auswählen',
+  friendsTitle:'Freundes-Galaxien',friendsDesc:'Fügen Sie das JSON eines Freundes ein, um seine Galaxie neben Ihrer zu sehen.',
+  friendName:'Name des Freundes…',friendJsonPlaceholder:'Exportiertes JSON hier einfügen…',addGalaxy:'Hinzufügen',copyCode:'Meinen Teilungscode kopieren',
+  close:'Schließen',verifyConn:'Verbindung prüfen',providerLabel:'KI-Anbieter',apiKeyLabel:'API-Schlüssel',
+  filterAll:'Alle',filterReading:'Lese gerade',filterOwned:'Ungelesen',filterWishlist:'Wunschliste',
+  sortRecent:'Neueste',sortTitle:'Titel A-Z',sortAuthor:'Autor A-Z',sortRating:'Bewertung',
+  emptyLib:'Ihre Bibliothek ist leer. Fügen Sie Ihr erstes Buch hinzu.',
+  devBy:'Entwickelt von',
+  addGalaxyLabel:'Galaxie hinzufügen',appTagline:'Mentale Bibliothek',allRightsReserved:'Alle Rechte vorbehalten',
+  aiTools:'KI-Werkzeuge',collisionIdeas:'Ideenkollision',horizonEvents:'Ereignishorizont',
+  dangerZone:'Gefahrenzone',hardReset:'Alles löschen und neu starten',calculating:'Berechnung…',
+  copied:'Kopiert!',noFriendGalaxies:'Sie haben noch keine Freundes-Galaxien hinzugefügt.',
+  bitacoraHint:'Exportieren, importieren und erweiterte Tools → Einstellungen',
+  noApiKey:'Kein API-Schlüssel',apiKeySaved:'API-Schlüssel gespeichert',
+  saveChanges:'Änderungen speichern',activateCamera:'Kamera aktivieren',captureAnalyze:'Aufnehmen und analysieren',
+  volumen:'Volumen',knowledge:'Wissen',densestSystem:'Dichtestes System',activeGalaxies:'Aktive Galaxien',
+  booksInGalaxy:'Bücher in deiner Galaxie',inWishlist:'auf Wunschliste',notesAndKeywords:'Notizen · {kw} einzigartige Keywords',
+  booksCount:'Bücher',addBooksWithCats:'Füge Bücher mit Kategorien hinzu',noCatsYet:'Noch keine Kategorien',
+  addKeywordsForConnections:'Füge Keywords und Notizen hinzu, um Verbindungen zu sehen.',
+  ownedUnread:'Habe es, ungelesen',noPendingBooks:'Keine ausstehenden Bücher.',
+}},
+it:{name:'Italiano',t:{
+  library:'Biblioteca',galaxy:'Galassia',explore:'Esplora',log:'Diario',
+  addBook:'＋ Aggiungi libro',search:'Cerca…',settings:'Impostazioni',wishlistBtn:'Lista desideri',
+  galaxyHint:'Sistema solare · Trascina · Scroll = zoom · Clic = libro · Orbite animate',
+  exploreTitle:'Esplorare idee',exploreSubtitle:'Tocca per esplorare · Trascina per spostare · Inclina il telefono',
+  exploreEmpty:'Scrivi per esplorare le tue note.',explorePlaceholder:'disciplina, denaro, scopo…',
+  gravOff:'Gravità: OFF',gravOn:'Gravità: ON',
+  logTitle:'Diario di volo',logSubtitle:'Rapporti dalla tua galassia — aree in crescita, connessioni trovate, sintesi della conoscenza.',
+  generateSynthesis:'✦ Genera sintesi IA',wishlistMissions:'Lista desideri — prossime missioni',galaxyConnections:'Connessioni tra galassie',
+  notas:'Note & Sottolineature',keywords:'Parole chiave',relatedBooks:'Libri correlati',
+  notePlaceholder:'Scrivi un\'evidenziazione, idea o riflessione…',pagePlaceholder:'Pag.',commentPlaceholder:'Commento (opzionale)',
+  addNote:'+ Nota',camera:'Fotocamera',dictate:'Dettare',
+  progress:'Progresso',rating:'Valutazione',editBook:'Modifica libro',
+  pending:'In attesa',reading:'In lettura',done:'Terminato',
+  noNotes:'Ancora nessuna nota — scrivi la prima sopra.',
+  searchNotes:'Cerca per parola, pagina…',
+  newKeyword:'Nuova parola chiave…',add:'+ Add',
+  addBookTitle:'Aggiungi libro',addBookSub:'Digita il titolo — la copertina si carica automaticamente.',
+  author:'Autore',category:'Categoria',initialKeywords:'Parole chiave iniziali (virgola)',bookStatus:'Stato del libro',
+  coverUrl:'URL copertina (opzionale)',coverUrlPlaceholder:'https://… incolla URL immagine',
+  cancel:'Annulla',save:'Salva',
+  statusRead:'Letto (ce l\'ho e l\'ho letto)',statusOwned:'Ce l\'ho, non ancora letto',statusWishlist:'Lista desideri (non ce l\'ho ancora)',
+  wishlistTitle:'Prossime Missioni',wishlistSub:'Libri in viaggio verso la tua galassia.',
+  quickAddWishlist:'Aggiungi rapidamente alla lista',quickAddBtn:'Aggiungi',wishTitlePlaceholder:'Titolo del libro…',wishAuthorPlaceholder:'Autore…',
+  iAlreadyHave:'Ce l\'ho',markRead:'Già letto',
+  settingsTitle:'Impostazioni',settingsSub:'Collega la tua IA per analisi automatica e Vision IA.',
+  langTitle:'Lingua',langDesc:'Cambia la lingua dell\'intera interfaccia ALINEA.',
+  aiTitle:'Sull\'IA',aiDesc:'Aggiungendo note estrae parole chiave e umore. In Esplora e Diario genera sintesi. Vision IA legge le pagine con la fotocamera. La tua chiave resta nel browser.',
+  backupTitle:'Dati & Backup',
+  backupIntro:'La tua biblioteca vive solo in questo browser. Cambiando dispositivo potresti perderla. Il backup è la tua assicurazione sulla vita.',
+  jsonTitle:'JSON — Backup reale',jsonDesc:'Tutti i tuoi libri, note e parole chiave in un file leggero. Reimportabile istantaneamente.',
+  pdfTitle:'PDF — Per leggere e stampare',pdfDesc:'Versione visiva della tua biblioteca. Ideale per archiviare o condividere.',
+  downloadJson:'Scarica JSON',downloadPdf:'Scarica PDF',
+  importTitle:'Ripristina da JSON',importDesc:'Hai cambiato dispositivo? Carica il tuo file JSON e la tua galassia appare.',importWarning:'Sostituisce i dati attuali.',selectFile:'Seleziona file',
+  friendsTitle:'Galassie degli amici',friendsDesc:'Incolla il JSON di un amico per vedere la sua galassia accanto alla tua.',
+  friendName:'Nome dell\'amico…',friendJsonPlaceholder:'Incolla qui il JSON esportato…',addGalaxy:'Aggiungi',copyCode:'Copia il mio codice di condivisione',
+  close:'Chiudi',verifyConn:'Verifica connessione',providerLabel:'Fornitore IA',apiKeyLabel:'Chiave API',
+  filterAll:'Tutti',filterReading:'In lettura',filterOwned:'Non letti',filterWishlist:'Lista desideri',
+  sortRecent:'Recente',sortTitle:'Titolo A-Z',sortAuthor:'Autore A-Z',sortRating:'Valutazione',
+  emptyLib:'La tua biblioteca è vuota. Aggiungi il tuo primo libro.',
+  devBy:'Sviluppato da',
+  addGalaxyLabel:'Aggiungi galassia',appTagline:'Biblioteca Mentale',allRightsReserved:'Tutti i diritti riservati',
+  aiTools:'Strumenti IA',collisionIdeas:'Collisione di idee',horizonEvents:'Orizzonte degli eventi',
+  dangerZone:'Zona di pericolo',hardReset:'Elimina tutto e riavvia',calculating:'Calcolo…',
+  copied:'Copiato!',noFriendGalaxies:'Non hai ancora aggiunto galassie di amici.',
+  bitacoraHint:'Esporta, importa e strumenti avanzati → pulsante Impostazioni',
+  noApiKey:'Nessuna chiave API',apiKeySaved:'Chiave API salvata',
+  saveChanges:'Salva modifiche',activateCamera:'Attiva fotocamera',captureAnalyze:'Cattura e analizza',
+  volumen:'Volume',knowledge:'Conoscenza',densestSystem:'Sistema più denso',activeGalaxies:'Galassie attive',
+  booksInGalaxy:'libri nella tua galassia',inWishlist:'in lista',notesAndKeywords:'note · {kw} parole chiave uniche',
+  booksCount:'libri',addBooksWithCats:'Aggiungi libri con categorie',noCatsYet:'Ancora nessuna categoria',
+  addKeywordsForConnections:'Aggiungi parole chiave e note ai tuoi libri per vedere connessioni.',
+  ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
+}},
+ja:{name:'日本語',t:{
+  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
+  accentColor:'アクセントカラー',textSize:'テキストサイズ',libNameLabel:'ライブラリ名',
+  small:'小',normal:'標準',large:'大',xl:'特大',
+  appearanceTitle:'🎨 外観',dataTitle:'💾 データ & バックアップ',iaTitle:'✦ AI',
+  dataDesc:'ライブラリはこのブラウザにのみ存在します。バックアップを取ってください。',
+  jsonTitle:'JSON — 本当のバックアップ',jsonDesc:'すべての本、メモ、キーワード。',
+  pdfTitle:'PDF — 閲覧用',pdfDesc:'アーカイブや印刷のためのビジュアル版。',
+  importTitle:'JSONから復元',selectFile:'ファイルを選択',
+  friendNameLabel:'友達の名前',addGal:'ギャラクシーを追加',
+  copyCodeBtn:'共有コードをコピー',
+  dangerTitle:'⚠ 危険ゾーン',
+  iaDesc:'APIキーはブラウザのみに保存されます — ALINEAのサーバーには送信されません。',
+  comingSoon:'🚧 近日公開',comingSoonDesc:'AIツールを開発中です。',
+  welcomeQ:'あなたの知識を見ることができたら？',
+  welcomeP1:'私たちは読み、線を引き、メモする — そして時間とともに、その知恵は輝きを失っていきます。記憶できないのではなく、すべての本を物理的にも精神的にも持ち続けることができないからです。',
+  welcomeP2:'ALINEAは、いつもポケットに本を入れている人のために — あるいは複数の本を。本の虫のために。そして、知識を作り、さらには可視化し始めたばかりの人のためにも。',
+  welcomeP3:'あなたのライブラリは本のリストではありません。あなたが読んだすべてのものの間にすでに存在するつながりの、生きた銀河です。すべてのキーワード、すべてのメモ、すべての下線が他と語り合っています',
+  welcomeP3em:'あなたが気づかないうちに',
+  welcomeP3b:'。ALINEAがそれを見えるようにします。',
+  welcomeP4:'任意の言葉を探索して、それについて考えたすべてを瞬時に見つけてください。銀河を観察して、知らなかったパターンを発見してください。',
+  welcomePrivacy:'そして覚えておいてください — このページはあなたのデータがあなただけのものであることを知るために作られました。ALINEAはあなたの情報を持ちません。いつでも、次の場所からバックアップをダウンロードできます',
+  welcomePrivacyLink:'設定 → データ',
+  welcomeClosing:'あなたの本の間に存在する何千ものつながりを見てください。見えないものを見えるようにする。それがALINEAです。',
+  welcomeSign:'— Miguel Valdez、ALINEAの創設者',
+  gravOff:'重力: OFF',gravOn:'重力: ON',
+  welcomeBtn1:'✦ 最初の本を追加',welcomeBtn2:'まず探索する',
+  noLibYet:'ギャラクシーが空です',noLibSub:'+ ボタンで最初の本を追加してください。',
+  addFirstBook:'+ 最初の本を追加',
+  addBook:'＋ 本を追加',search:'検索…',settings:'設定',wishlistBtn:'ウィッシュリスト',
+  galaxyHint:'太陽系 · ドラッグ · スクロール = ズーム · クリック = 本 · アニメーション軌道',
+  exploreTitle:'アイデアを探す',exploreSubtitle:'タップして探索 · ドラッグして移動 · 電話を傾ける',
+  exploreEmpty:'ノートを探索するには入力してください。',explorePlaceholder:'規律、お金、目的…',
+  gravOff:'重力: OFF',gravOn:'重力: ON',
+  logTitle:'フライトログ',logSubtitle:'銀河からのレポート — 成長エリア、見つかった接続、知識の合成。',
+  generateSynthesis:'✦ AI合成を生成',wishlistMissions:'ウィッシュリスト — 次のミッション',galaxyConnections:'銀河間の接続',
+  notas:'ノート＆ハイライト',keywords:'キーワード',relatedBooks:'関連書籍',
+  notePlaceholder:'ハイライト、アイデア、または考察を書く…',pagePlaceholder:'ページ',commentPlaceholder:'コメント（任意）',
+  addNote:'+ ノート',camera:'カメラ',dictate:'ディクテーション',
+  progress:'進捗',rating:'評価',editBook:'本を編集',
+  pending:'未読',reading:'読書中',done:'完了',
+  noNotes:'まだノートがありません — 上に最初のものを書いてください。',
+  searchNotes:'単語、ページで検索…',
+  newKeyword:'新しいキーワード…',add:'+ 追加',
+  addBookTitle:'本を追加',
+  titlePlaceholder:'本のタイトル…',authorPlaceholder:'著者…',addBookSub:'タイトルを入力 — カバーが自動的に読み込まれます。',
+  author:'著者',category:'カテゴリ',initialKeywords:'初期キーワード（カンマ）',bookStatus:'本のステータス',
+  coverUrl:'カバーURL（任意）',coverUrlPlaceholder:'https://… 画像URLを貼り付け',
+  cancel:'キャンセル',save:'保存',
+  statusRead:'読了（持っていて読んだ）',statusOwned:'持っているが未読',statusWishlist:'ウィッシュリスト（まだ持っていない）',
+  wishlistTitle:'次のミッション',wishlistSub:'銀河に向かう本。',
+  quickAddWishlist:'リストにクイック追加',quickAddBtn:'追加',wishTitlePlaceholder:'本のタイトル…',wishAuthorPlaceholder:'著者…',
+  iAlreadyHave:'持っています',markRead:'読みました',
+  settingsTitle:'設定',settingsSub:'自動分析とビジョンAIのためにAIを接続。',
+  langTitle:'言語',langDesc:'ALINEAインターフェース全体の言語を変更。',
+  aiTitle:'AIについて',aiDesc:'ノート追加時にキーワードとムードを抽出。探索とログでは合成を生成。ビジョンAIはカメラでページを読み取ります。キーはブラウザ内のみ。',
+  backupTitle:'データ＆バックアップ',
+  backupIntro:'ライブラリはこのブラウザにのみ存在します。デバイスを変更すると失う可能性があります。バックアップはあなたの生命保険です。',
+  jsonTitle:'JSON — 本物のバックアップ',jsonDesc:'全書籍、ノート、キーワードを含む軽量ファイル。どのデバイスでも即座に再インポートできます。',
+  pdfTitle:'PDF — 読むために印刷',pdfDesc:'ライブラリのビジュアル版。復元には使えませんが、アーカイブや共有に最適。',
+  downloadJson:'JSONダウンロード',downloadPdf:'PDFダウンロード',
+  importTitle:'JSONから復元',importDesc:'デバイスを変更しましたか？JSONファイルをアップロードしてください。',importWarning:'現在のデータを置き換えます。',selectFile:'ファイルを選択',
+  friendsTitle:'友達の銀河',friendsDesc:'友達のJSONを貼り付けて、自分の銀河の隣に表示。',
+  friendName:'友達の名前…',friendJsonPlaceholder:'エクスポートされたJSONをここに貼り付け…',addGalaxy:'追加',copyCode:'共有コードをコピー',
+  close:'閉じる',verifyConn:'接続を確認',providerLabel:'AIプロバイダー',apiKeyLabel:'APIキー',
+  filterAll:'全て',
+  addBookTitle:'本を追加',addBookSub:'タイトルを入力 — 表紙は自動的に読み込まれます。',keywordsInitial:'初期キーワード（カンマ）',kwPlaceholder:'投資、マインドセット…',ownedRead:'📚 読了（持っていて読んだ）',ownedUnreadOpt:'📖 持っているが未読',reading2:'📖 読書中',wishlist2:'🚀 欲しい（ウィッシュリスト）',topFive:'あなたのトップ5',filterReading:'読書中',filterOwned:'未読',filterWishlist:'ウィッシュリスト',
+  sortRecent:'最新',sortTitle:'タイトル順',sortAuthor:'著者順',sortRating:'評価',
+  emptyLib:'ライブラリが空です。最初の本を追加してください。',
+  devBy:'開発者',
+  addGalaxyLabel:'銀河を追加',appTagline:'メンタルライブラリ',allRightsReserved:'全著作権所有',
+  aiTools:'AIツール',collisionIdeas:'アイデアコリジョン',horizonEvents:'イベントホライゾン',
+  dangerZone:'危険ゾーン',hardReset:'全て削除して再起動',calculating:'計算中…',
+  copied:'コピーしました！',noFriendGalaxies:'まだ友達の銀河を追加していません。',
+  bitacoraHint:'エクスポート、インポートと高度なツール → 設定ボタン',
+  noApiKey:'APIキーなし',apiKeySaved:'APIキー保存済み',
+  saveChanges:'変更を保存',activateCamera:'カメラを起動',captureAnalyze:'キャプチャして分析',
+  volumen:'ボリューム',knowledge:'知識',densestSystem:'最も密なシステム',activeGalaxies:'アクティブな銀河',
+  booksInGalaxy:'銀河内の本',inWishlist:'ウィッシュリスト',notesAndKeywords:'ノート · {kw} ユニークなキーワード',
+  booksCount:'冊',addBooksWithCats:'カテゴリ付きで本を追加',noCatsYet:'カテゴリがまだありません',
+  addKeywordsForConnections:'接続を見るためにキーワードとノートを追加してください。',
+  ownedUnread:'持っているが未読',noPendingBooks:'保留中の本はありません。',
+  noCategory:'カテゴリなし',
+  filterAll:'全て',filterNone:'なし',category:'カテゴリ',explore2:'アイデアを探索',
+  titleLabel:'タイトル',authorLabel:'著者',categoryLabel:'カテゴリ',statusLabel:'本のステータス',coverUrlLabel:'表紙URL',
+  secNotas:'メモ & ハイライト',secKeywords:'キーワード',secRelated:'関連書籍',
+  terminados:'読了',leyendo:'読書中',wishlistStat:'ウィッシュリスト',notasStat:'メモ',keywordsStat:'キーワード',ratingProm:'平均評価',masAnotados:'📝 最もメモが多い',keywordsFrecuentes:'🔑 よく使うキーワード',borrarReiniciar:'☢ すべて削除して再起動',colisionBtn:'アイデアの衝突',horizonteBtn:'事象の地平線',colisionTitle:'アイデアの衝突 ✦',horizonteTitle:'事象の地平線',footerText:'ALINEA · メンタルライブラリ · 全著作権所有',exploreSub:'言葉が上に浮かびます。ドラッグ、グループ化、または検索。',exportarImportar:'💾 エクスポートとインポート',densestSystem:'🌟 最も密なシステム',gravOff:'重力: OFF',gravOn:'重力: ON',
+}},
+};
+var currentLang=localStorage.getItem('eter_lang')||'es';
+function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
+
 let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"anthropic","apiKey":""}');
 let appState = JSON.parse(localStorage.getItem('eter2_state')||'{"libName":"Mi Biblioteca","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
 let gv='grid', curFilter='all', curSearch='', _noteSearchQuery='';
@@ -1212,7 +1839,7 @@ let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
-const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mWelcome'];
+const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding'];
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
 const persistCfg=()=>localStorage.setItem('eter2_cfg',JSON.stringify(cfg));
@@ -1373,66 +2000,140 @@ function openSettings(tab){
 // ══════════════════════════
 const CAT_I18N={
   en:{
-    'Negocios y Finanzas':'Business & Finance',
-    'Finanzas Personales':'Personal Finance','Inversiones':'Investments',
-    'Bienes Raíces y FIBRAs':'Real Estate','Emprendimiento':'Entrepreneurship',
-    'Management y Liderazgo':'Management & Leadership','Marketing y Ventas':'Marketing & Sales',
-    'Economía':'Economics','Negocios Internacionales':'International Business',
-    'Desarrollo Personal y Psicología':'Personal Development & Psychology',
-    'Autoayuda y Superación':'Self-Help','Psicología':'Psychology',
-    'Productividad':'Productivity','Espiritualidad':'Spirituality',
-    'Relaciones y Comunicación':'Relationships & Communication',
-    'Inteligencia Emocional':'Emotional Intelligence','Neurociencia':'Neuroscience',
-    'Amor y Familia':'Love & Family','Amor y Romance':'Love & Romance',
-    'Maternidad y Paternidad':'Parenting','Familia y Crianza':'Family & Upbringing',
-    'Duelo y Resiliencia':'Grief & Resilience',
+    'Negocios y Finanzas':'Business & Finance','Finanzas Personales':'Personal Finance',
+    'Inversiones':'Investments','Bienes Raíces y FIBRAs':'Real Estate',
+    'Emprendimiento':'Entrepreneurship','Management y Liderazgo':'Management & Leadership',
+    'Marketing y Ventas':'Marketing & Sales','Economía':'Economics',
+    'Negocios Internacionales':'International Business',
+    'Desarrollo Personal y Psicología':'Personal Development','Autoayuda y Superación':'Self-Help',
+    'Psicología':'Psychology','Productividad':'Productivity','Espiritualidad':'Spirituality',
+    'Relaciones y Comunicación':'Relationships','Inteligencia Emocional':'Emotional Intelligence',
+    'Neurociencia':'Neuroscience','Amor y Familia':'Love & Family',
+    'Amor y Romance':'Love & Romance','Maternidad y Paternidad':'Parenting',
+    'Familia y Crianza':'Family','Duelo y Resiliencia':'Grief & Resilience',
     'Humanidades y Ciencias Sociales':'Humanities & Social Sciences',
     'Filosofía':'Philosophy','Historia Universal':'World History','Política':'Politics',
     'Sociología':'Sociology','Antropología':'Anthropology','Educación':'Education',
     'Derecho y Leyes':'Law & Legal','Religión y Mitología':'Religion & Mythology',
-    'Ciencia y Tecnología':'Science & Technology',
-    'Divulgación Científica':'Popular Science','Física y Astrofísica':'Physics & Astrophysics',
-    'Biología y Salud':'Biology & Health','Informática e IA':'Computing & AI',
-    'Matemáticas':'Mathematics',
-    'Narrativa y Ficción':'Fiction & Literature',
-    'Novela Contemporánea':'Contemporary Novel','Ciencia Ficción':'Science Fiction',
-    'Fantasía':'Fantasy','Misterio y Thriller':'Mystery & Thriller',
-    'True Crime':'True Crime','Clásicos Literarios':'Literary Classics',
-    'Poesía':'Poetry','Ensayo':'Essay','Novela Gráfica y Cómic':'Graphic Novel & Comics',
-    'Biografías y Memorias':'Biographies & Memoirs',
-    'Biografía':'Biography','Autobiografía y Memorias':'Autobiography & Memoirs',
-    'Crónica y Periodismo':'Chronicle & Journalism',
-    'Salud y Estilo de Vida':'Health & Lifestyle',
-    'Salud y Fitness':'Health & Fitness','Nutrición y Dietética':'Nutrition & Diet',
+    'Ciencia y Tecnología':'Science & Technology','Divulgación Científica':'Popular Science',
+    'Física y Astrofísica':'Physics & Astrophysics','Biología y Salud':'Biology & Health',
+    'Informática e IA':'Computing & AI','Matemáticas':'Mathematics',
+    'Narrativa y Ficción':'Fiction','Novela Contemporánea':'Contemporary Novel',
+    'Ciencia Ficción':'Science Fiction','Fantasía':'Fantasy',
+    'Misterio y Thriller':'Mystery & Thriller','True Crime':'True Crime',
+    'Clásicos Literarios':'Literary Classics','Poesía':'Poetry','Ensayo':'Essay',
+    'Novela Gráfica y Cómic':'Graphic Novel','Biografías y Memorias':'Biographies & Memoirs',
+    'Biografía':'Biography','Autobiografía y Memorias':'Autobiography',
+    'Crónica y Periodismo':'Journalism','Salud y Estilo de Vida':'Health & Lifestyle',
+    'Salud y Fitness':'Health & Fitness','Nutrición y Dietética':'Nutrition',
     'Salud Mental':'Mental Health','Yoga y Mindfulness':'Yoga & Mindfulness',
     'Gastronomía':'Gastronomy','Viajes y Crónica de Viaje':'Travel',
-    'Arte y Entretenimiento':'Art & Entertainment',
-    'Arquitectura y Diseño':'Architecture & Design','Historia del Arte':'Art History',
-    'Fotografía':'Photography','Música':'Music','Cine y Teatro':'Cinema & Theater',
-    'Humor y Sátira':'Humor & Satire',
+    'Arte y Entretenimiento':'Art & Entertainment','Arquitectura y Diseño':'Architecture & Design',
+    'Historia del Arte':'Art History','Fotografía':'Photography',
+    'Música':'Music','Cine y Teatro':'Cinema & Theater','Humor y Sátira':'Humor & Satire',
     'Otros':'Others','Idiomas':'Languages','Referencia y Consulta':'Reference'
   },
   pt:{
-    'Negocios y Finanzas':'Negócios e Finanças','Filosofía':'Filosofia',
-    'Historia Universal':'História Universal','Psicología':'Psicologia',
-    'Ciencia y Tecnología':'Ciência e Tecnologia','Narrativa y Ficción':'Ficção',
-    'Biografías y Memorias':'Biografias e Memórias','Salud y Estilo de Vida':'Saúde e Estilo de Vida',
-    'Arte y Entretenimiento':'Arte e Entretenimento','Amor y Familia':'Amor e Família',
-    'Humanidades y Ciencias Sociales':'Humanidades e Ciências Sociais',
-    'Desarrollo Personal y Psicología':'Desenvolvimento Pessoal e Psicologia',
-    'Productividad':'Produtividade','Economía':'Economia','Música':'Música',
-    'Ciencia Ficción':'Ficção Científica','Fantasía':'Fantasia','Otros':'Outros'
+    'Negocios y Finanzas':'Negócios e Finanças','Finanzas Personales':'Finanças Pessoais',
+    'Inversiones':'Investimentos','Bienes Raíces y FIBRAs':'Imóveis',
+    'Emprendimiento':'Empreendedorismo','Management y Liderazgo':'Gestão e Liderança',
+    'Marketing y Ventas':'Marketing e Vendas','Economía':'Economia',
+    'Negocios Internacionales':'Negócios Internacionais',
+    'Desarrollo Personal y Psicología':'Desenvolvimento Pessoal','Autoayuda y Superación':'Autoajuda',
+    'Psicología':'Psicologia','Productividad':'Produtividade','Espiritualidad':'Espiritualidade',
+    'Relaciones y Comunicación':'Relacionamentos','Inteligencia Emocional':'Inteligência Emocional',
+    'Neurociencia':'Neurociência','Amor y Familia':'Amor e Família',
+    'Amor y Romance':'Amor e Romance','Maternidad y Paternidad':'Paternidade',
+    'Familia y Crianza':'Família','Duelo y Resiliencia':'Luto e Resiliência',
+    'Humanidades y Ciencias Sociales':'Humanidades','Filosofía':'Filosofia',
+    'Historia Universal':'História Universal','Política':'Política',
+    'Sociología':'Sociologia','Antropología':'Antropologia','Educación':'Educação',
+    'Derecho y Leyes':'Direito','Religión y Mitología':'Religião e Mitologia',
+    'Ciencia y Tecnología':'Ciência e Tecnologia','Divulgación Científica':'Divulgação Científica',
+    'Física y Astrofísica':'Física e Astrofísica','Biología y Salud':'Biologia e Saúde',
+    'Informática e IA':'Informática e IA','Matemáticas':'Matemática',
+    'Narrativa y Ficción':'Ficção','Novela Contemporánea':'Romance Contemporâneo',
+    'Ciencia Ficción':'Ficção Científica','Fantasía':'Fantasia',
+    'Misterio y Thriller':'Mistério e Thriller','True Crime':'True Crime',
+    'Clásicos Literarios':'Clássicos Literários','Poesía':'Poesia','Ensayo':'Ensaio',
+    'Novela Gráfica y Cómic':'HQ e Graphic Novel','Biografías y Memorias':'Biografias',
+    'Biografía':'Biografia','Autobiografía y Memorias':'Autobiografia',
+    'Crónica y Periodismo':'Jornalismo','Salud y Estilo de Vida':'Saúde e Estilo de Vida',
+    'Salud y Fitness':'Saúde e Fitness','Nutrición y Dietética':'Nutrição',
+    'Salud Mental':'Saúde Mental','Yoga y Mindfulness':'Yoga e Mindfulness',
+    'Gastronomía':'Gastronomia','Viajes y Crónica de Viaje':'Viagens',
+    'Arte y Entretenimiento':'Arte e Entretenimento','Arquitectura y Diseño':'Arquitetura e Design',
+    'Historia del Arte':'História da Arte','Fotografía':'Fotografia',
+    'Música':'Música','Cine y Teatro':'Cinema e Teatro','Humor y Sátira':'Humor e Sátira',
+    'Otros':'Outros','Idiomas':'Idiomas','Referencia y Consulta':'Referência'
   },
   fr:{
-    'Negocios y Finanzas':'Affaires et Finance','Filosofía':'Philosophie',
-    'Historia Universal':'Histoire Universelle','Psicología':'Psychologie',
-    'Ciencia y Tecnología':'Science et Technologie','Narrativa y Ficción':'Fiction',
-    'Biografías y Memorias':'Biographies et Mémoires','Salud y Estilo de Vida':'Santé et Mode de Vie',
-    'Arte y Entretenimiento':'Art et Divertissement','Amor y Familia':'Amour et Famille',
-    'Humanidades y Ciencias Sociales':'Sciences Humaines et Sociales',
-    'Desarrollo Personal y Psicología':'Développement Personnel et Psychologie',
-    'Productividad':'Productivité','Economía':'Économie','Música':'Musique',
-    'Ciencia Ficción':'Science-Fiction','Fantasía':'Fantaisie','Otros':'Autres'
+    'Negocios y Finanzas':'Finance et Affaires','Finanzas Personales':'Finances Personnelles',
+    'Inversiones':'Investissements','Bienes Raíces y FIBRAs':'Immobilier',
+    'Emprendimiento':'Entrepreneuriat','Management y Liderazgo':'Management et Leadership',
+    'Marketing y Ventas':'Marketing et Ventes','Economía':'Économie',
+    'Negocios Internacionales':'Affaires Internationales',
+    'Desarrollo Personal y Psicología':'Développement Personnel','Autoayuda y Superación':'Développement Personnel',
+    'Psicología':'Psychologie','Productividad':'Productivité','Espiritualidad':'Spiritualité',
+    'Relaciones y Comunicación':'Relations','Inteligencia Emocional':'Intelligence Émotionnelle',
+    'Neurociencia':'Neurosciences','Amor y Familia':'Amour et Famille',
+    'Amor y Romance':'Amour et Romance','Maternidad y Paternidad':'Parentalité',
+    'Familia y Crianza':'Famille','Duelo y Resiliencia':'Deuil et Résilience',
+    'Humanidades y Ciencias Sociales':'Sciences Humaines','Filosofía':'Philosophie',
+    'Historia Universal':'Histoire Universelle','Política':'Politique',
+    'Sociología':'Sociologie','Antropología':'Anthropologie','Educación':'Éducation',
+    'Derecho y Leyes':'Droit','Religión y Mitología':'Religion et Mythologie',
+    'Ciencia y Tecnología':'Science et Technologie','Divulgación Científica':'Vulgarisation Scientifique',
+    'Física y Astrofísica':'Physique et Astrophysique','Biología y Salud':'Biologie et Santé',
+    'Informática e IA':'Informatique et IA','Matemáticas':'Mathématiques',
+    'Narrativa y Ficción':'Fiction','Novela Contemporánea':'Roman Contemporain',
+    'Ciencia Ficción':'Science-Fiction','Fantasía':'Fantaisie',
+    'Misterio y Thriller':'Mystère et Thriller','True Crime':'True Crime',
+    'Clásicos Literarios':'Classiques Littéraires','Poesía':'Poésie','Ensayo':'Essai',
+    'Novela Gráfica y Cómic':'Bande Dessinée','Biografías y Memorias':'Biographies',
+    'Biografía':'Biographie','Autobiografía y Memorias':'Autobiographie',
+    'Crónica y Periodismo':'Journalisme','Salud y Estilo de Vida':'Santé et Mode de Vie',
+    'Salud y Fitness':'Santé et Fitness','Nutrición y Dietética':'Nutrition',
+    'Salud Mental':'Santé Mentale','Yoga y Mindfulness':'Yoga et Pleine Conscience',
+    'Gastronomía':'Gastronomie','Viajes y Crónica de Viaje':'Voyages',
+    'Arte y Entretenimiento':'Art et Divertissement','Arquitectura y Diseño':'Architecture et Design',
+    'Historia del Arte':'Histoire de l’Art','Fotografía':'Photographie',
+    'Música':'Musique','Cine y Teatro':'Cinéma et Théâtre','Humor y Sátira':'Humour et Satire',
+    'Otros':'Autres','Idiomas':'Langues','Referencia y Consulta':'Référence'
+  },
+  ja:{
+    'Negocios y Finanzas':'ビジネスと金融','Finanzas Personales':'個人財務',
+    'Inversiones':'投資','Bienes Raíces y FIBRAs':'不動産',
+    'Emprendimiento':'起業','Management y Liderazgo':'マネジメントとリーダーシップ',
+    'Marketing y Ventas':'マーケティングと営業','Economía':'経済学',
+    'Negocios Internacionales':'国際ビジネス',
+    'Desarrollo Personal y Psicología':'自己啓発','Autoayuda y Superación':'自己啓発',
+    'Psicología':'心理学','Productividad':'生産性','Espiritualidad':'スピリチュアリティ',
+    'Relaciones y Comunicación':'人間関係','Inteligencia Emocional':'感情知性',
+    'Neurociencia':'神経科学','Amor y Familia':'愛と家族',
+    'Amor y Romance':'愛とロマンス','Maternidad y Paternidad':'子育て',
+    'Familia y Crianza':'家族','Duelo y Resiliencia':'悲嘆とレジリエンス',
+    'Humanidades y Ciencias Sociales':'人文社会科学','Filosofía':'哲学',
+    'Historia Universal':'世界史','Política':'政治',
+    'Sociología':'社会学','Antropología':'人類学','Educación':'教育',
+    'Derecho y Leyes':'法律','Religión y Mitología':'宗教と神話',
+    'Ciencia y Tecnología':'科学技術','Divulgación Científica':'科学普及',
+    'Física y Astrofísica':'物理学と天体物理学','Biología y Salud':'生物学と健康',
+    'Informática e IA':'コンピュータとAI','Matemáticas':'数学',
+    'Narrativa y Ficción':'フィクション','Novela Contemporánea':'現代小説',
+    'Ciencia Ficción':'SF','Fantasía':'ファンタジー',
+    'Misterio y Thriller':'ミステリーとスリラー','True Crime':'実録犯罪',
+    'Clásicos Literarios':'文学の古典','Poesía':'詩','Ensayo':'エッセイ',
+    'Novela Gráfica y Cómic':'マンガとグラフィックノベル','Biografías y Memorias':'伝記と回顧録',
+    'Biografía':'伝記','Autobiografía y Memorias':'自伝',
+    'Crónica y Periodismo':'ジャーナリズム','Salud y Estilo de Vida':'健康とライフスタイル',
+    'Salud y Fitness':'健康とフィットネス','Nutrición y Dietética':'栄養',
+    'Salud Mental':'メンタルヘルス','Yoga y Mindfulness':'ヨガとマインドフルネス',
+    'Gastronomía':'美食学','Viajes y Crónica de Viaje':'旅行',
+    'Arte y Entretenimiento':'芸術とエンターテインメント','Arquitectura y Diseño':'建築とデザイン',
+    'Historia del Arte':'美術史','Fotografía':'写真',
+    'Música':'音楽','Cine y Teatro':'映画と演劇','Humor y Sátira':'ユーモアと風刺',
+    'Otros':'その他','Idiomas':'言語','Referencia y Consulta':'参考資料'
   }
 };
 function translateCat(cat){
@@ -1528,17 +2229,21 @@ function setAccentTheme(name,btn){
 
 function setFontSize(size){
   const isMobile=window.innerWidth<768;
-  const sizes=isMobile?{small:'13px',normal:'15px',large:'16px',xl:'17px'}:{small:'14px',normal:'16px',large:'18px',xl:'20px'};
-  const fs=sizes[size]||'1rem';
+  const sizes=isMobile?{small:'14px',normal:'16px',large:'17px',xl:'18px'}:{small:'15px',normal:'17px',large:'19px',xl:'21px'};
+  const fs=sizes[size]||'16px';
   document.documentElement.style.fontSize=fs;
   localStorage.setItem('eter2_fontsize',size);
-  // Update button states
-  ['small','normal','large','xl'].forEach(s=>{
-    const btn=document.getElementById('fs'+s.charAt(0).toUpperCase()+s.slice(1));
-    if(!btn)return;
-    if(s===size){btn.style.background='var(--glow)';btn.style.borderColor='var(--accent)';btn.style.color='var(--accent2)';}
-    else{btn.style.background='var(--card)';btn.style.borderColor='var(--border)';btn.style.color='var(--muted)';}
+  // Update all fs buttons (use querySelectorAll to handle hidden tabs)
+  const ids={small:'fsSmall',normal:'fsNormal',large:'fsLarge',xl:'fsXL'};
+  document.querySelectorAll('#fsSmall,#fsNormal,#fsLarge,#fsXL').forEach(btn=>{
+    const isActive=btn.id===ids[size];
+    btn.style.background=isActive?'var(--glow)':'var(--card)';
+    btn.style.borderColor=isActive?'var(--accent)':'var(--border)';
+    btn.style.color=isActive?'var(--accent2)':'var(--muted)';
   });
+  // Ensure modal never overflows on mobile
+  const modal=document.getElementById('mSettings');
+  if(modal)modal.style.maxHeight=Math.min(window.innerHeight*0.85,600)+'px';
 }
 
 
@@ -1593,6 +2298,8 @@ function updateAppIcon(accentColor, darkColor){
 function initAppearance(){
   const theme=localStorage.getItem('eter2_theme')||'purple';
   const fsize=localStorage.getItem('eter2_fontsize')||'normal';
+  // Apply base font size immediately
+  document.documentElement.style.fontSize='17px';
   applyAccentTheme(theme);
   setFontSize(fsize);
   // Highlight correct font size button
@@ -1891,15 +2598,26 @@ function gotoV(v,btn){
 // CATEGORIES
 // ══════════════════════════
 function getCats(){return Object.keys(CAT_COLORS).filter(c=>c!=='');}
+
+function populateStatusSelect(selId, currentVal){
+  const sel=document.getElementById(selId);if(!sel)return;
+  const opts=[
+    {v:'read', label:`📚 ${t('ownedRead')||'Leído (ya lo tengo y lo leí)'}`},
+    {v:'owned', label:`📦 ${t('ownedUnreadOpt')||'Lo tengo, no lo he leído'}`},
+    {v:'wishlist', label:`🚀 ${t('wishlist2')||'Wishlist (aún no lo tengo)'}`},
+  ];
+  sel.innerHTML=opts.map(o=>`<option value="${o.v}"${o.v===currentVal?' selected':''}>${o.label}</option>`).join('');
+}
+
 function populateCatSelect(id,val=''){
   const sel=document.getElementById(id);
   if(!sel)return;
-  let html='<option value="">Sin categoría</option>';
+  let html=`<option value="">${t('noCategory')||'Sin categoría'}</option>`;
   Object.entries(CAT_TAXONOMY).forEach(([parent,data])=>{
-    html+=`<optgroup label="── ${parent}">`;
-    html+=`<option value="${parent}"${parent===val?' selected':''}>${parent}</option>`;
+    html+=`<optgroup label="── ${translateCat(parent)}">`;
+    html+=`<option value="${parent}"${parent===val?' selected':''}>${translateCat(parent)}</option>`;
     Object.keys(data.subs).forEach(sub=>{
-      html+=`<option value="${sub}"${sub===val?' selected':''}>&nbsp;&nbsp;↳ ${sub}</option>`;
+      html+=`<option value="${sub}"${sub===val?' selected':''}>&nbsp;&nbsp;↳ ${translateCat(sub)}</option>`;
     });
     html+=`</optgroup>`;
   });
@@ -2068,6 +2786,7 @@ function openAdd(){
   document.getElementById('addStatus').value='read';
   pendCover=null;manCover=false;clearTimeout(cvT);
   populateCatSelect('addCat');
+  populateStatusSelect('addStatus','read');
   showModal('mAdd');
   setTimeout(()=>document.getElementById('addTitle').focus(),110);
 }
@@ -2095,6 +2814,8 @@ function openEdit(id){
   if(b.cover){img.src=b.cover;img.style.display='block';document.getElementById('cpickEPh').style.display='none';}
   else{img.style.display='none';document.getElementById('cpickEPh').style.display='flex';}
   populateCatSelect('editCat',b.category||'');
+  populateStatusSelect('editStatus',b.status||b.readingStatus||'read');
+  populateStatusSelect('editStatus',b.status||'read');
   document.getElementById('mEdit')._id=id;
   showModal('mEdit');
 }
@@ -2146,7 +2867,7 @@ function openWishlist(){
         <div style="flex:1;min-width:0">
           <div style="font-size:.8rem;font-weight:500;line-height:1.3;margin-bottom:.15rem">${b.title}</div>
           <div style="font-size:.66rem;color:var(--muted)">${b.author}</div>
-          ${b.category?`<span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.2);padding:.06rem .24rem;border-radius:3px">${b.category}</span>`:''}
+          ${b.category?`<span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.2);padding:.06rem .24rem;border-radius:3px">${translateCat(b.category)}</span>`:''}
         </div>
         <button onclick="event.stopPropagation();markOwned(${b.id})" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .5rem;border-radius:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">📦 Tengo</button>
       </div>`).join('');
@@ -2210,388 +2931,6 @@ function showFriendBookTooltip(node){
 // ══════════════════════════
 // I18N — LANGUAGE SYSTEM
 // ══════════════════════════
-const LANGS={
-es:{name:'Español',t:{
-  library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Hagamos visible lo invisible.',
-  addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
-  galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
-  exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
-  exploreEmpty:'Escribe para explorar tus notas.',explorePlaceholder:'disciplina, dinero, propósito…',
-  gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
-  logTitle:'Bitácora de vuelo',logSubtitle:'Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.',
-  generateSynthesis:'✦ Generar síntesis IA',wishlistMissions:'Wishlist — próximas misiones',galaxyConnections:'Conexiones entre galaxias',
-  notas:'Notas & Subrayados',keywords:'Keywords',relatedBooks:'Libros relacionados',
-  notePlaceholder:'Escribe un subrayado, idea o reflexión…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentario (opcional)',
-  addNote:'+ Nota',camera:'Cámara',dictate:'Dictar',
-  progress:'Progreso',rating:'Rating',editBook:'Editar libro',deleteBook:'Eliminar libro',
-  pending:'Pendiente',reading:'Leyendo',done:'Terminado',
-  noNotes:'Sin notas aún — escribe la primera arriba.',
-  searchNotes:'Buscar por palabra, página…',
-  newKeyword:'Nueva keyword…',add:'+ Add',
-  addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',
-  author:'Autor',category:'Categoría',initialKeywords:'Keywords iniciales (coma)',bookStatus:'Estado del libro',
-  coverUrl:'URL de portada (opcional)',coverUrlPlaceholder:'https://… pega la URL de la imagen',
-  cancel:'Cancelar',save:'Guardar',
-  statusRead:'Leído (ya lo tengo y lo leí)',statusOwned:'Lo tengo, no lo he leído',statusWishlist:'Wishlist (aún no lo tengo)',
-  wishlistTitle:'Próximas Misiones',wishlistSub:'Libros que viajan hacia tu galaxia.',
-  quickAddWishlist:'Agregar a wishlist rápido',quickAddBtn:'Agregar',wishTitlePlaceholder:'Título del libro…',wishAuthorPlaceholder:'Autor…',
-  iAlreadyHave:'Ya lo tengo',markRead:'Ya lo leí',
-  settingsTitle:'Configuración',settingsSub:'Conecta tu IA para análisis automático y Visión IA.',
-  langTitle:'Idioma',langDesc:'Cambia el idioma de toda la interfaz de ALINEA.',
-  aiTitle:'Sobre la IA',aiDesc:'Al agregar notas extrae keywords y mood. En Explorar y Bitácora genera síntesis. Visión IA lee páginas con la cámara. Tu key solo vive en tu navegador.',
-  backupTitle:'Datos & Respaldo',
-  backupIntro:'Tu biblioteca vive solo en este navegador — ningún servidor la guarda. Si cambias de dispositivo o borras el historial, podrías perderla. El respaldo es tu seguro de vida.',
-  jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords en un archivo ligero. Puedes reimportarlo aquí en cualquier dispositivo al instante.',
-  pdfTitle:'PDF — Para leer e imprimir',pdfDesc:'Versión visual de tu biblioteca. No sirve para restaurar, pero es ideal para archivar, compartir o imprimir.',
-  downloadJson:'Descargar JSON',downloadPdf:'Descargar PDF',
-  importTitle:'Restaurar desde JSON',importDesc:'¿Cambiaste de dispositivo? Sube tu archivo JSON y tu galaxia aparece al instante.',importWarning:'Reemplaza los datos actuales.',selectFile:'Seleccionar archivo',
-  friendsTitle:'Galaxias de amigos',friendsDesc:'Pega el JSON de un amigo para ver su galaxia junto a la tuya.',
-  friendName:'Nombre del amigo…',friendJsonPlaceholder:'Pega aquí el JSON exportado (Descargar JSON)…',addGalaxy:'Agregar',copyCode:'Copiar mi código para compartir',
-  close:'Cerrar',verifyConn:'Verificar conexión',providerLabel:'Proveedor IA',apiKeyLabel:'API Key',
-  filterAll:'Todos',filterReading:'Leyendo',filterOwned:'No leídos',filterWishlist:'Wishlist',
-  sortRecent:'Reciente',sortTitle:'Título A-Z',sortAuthor:'Autor A-Z',sortRating:'Calificación',
-  emptyLib:'Tu biblioteca está vacía. Agrega tu primer libro.',
-  devBy:'Desarrollado por',
-  addGalaxyLabel:'Agregar galaxia',appTagline:'Biblioteca Mental',allRightsReserved:'Todos los derechos reservados',
-  aiTools:'Herramientas IA',collisionIdeas:'Colisión de ideas',horizonEvents:'Horizonte de sucesos',
-  dangerZone:'Zona de peligro',hardReset:'Borrar todo y reiniciar',calculating:'Calculando…',
-  copied:'¡Copiado!',noFriendGalaxies:'Aún no has agregado galaxias de amigos.',
-  bitacoraHint:'Exportar, importar y herramientas avanzadas → botón Configuración',
-  noApiKey:'Sin API key',apiKeySaved:'API key guardada',
-  saveChanges:'Guardar cambios',activateCamera:'Activar cámara',captureAnalyze:'Capturar y analizar',
-  volumen:'Volumen',knowledge:'Conocimiento',densestSystem:'Sistema más denso',activeGalaxies:'Galaxias activas',
-  booksInGalaxy:'libros en tu galaxia',inWishlist:'en wishlist',notesAndKeywords:'notas · {kw} keywords únicas',
-  booksCount:'libros',addBooksWithCats:'Agrega libros con categorías',noCatsYet:'Sin categorías aún',
-  addKeywordsForConnections:'Agrega keywords y notas a tus libros para ver conexiones.',
-  ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
-}},
-en:{name:'English',t:{
-  library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
-  addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
-  galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
-  exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
-  exploreEmpty:'Type to explore your notes.',explorePlaceholder:'discipline, money, purpose…',
-  gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
-  logTitle:'Flight log',logSubtitle:'Reports from your galaxy — growing areas, found connections, knowledge synthesis.',
-  generateSynthesis:'✦ Generate AI synthesis',wishlistMissions:'Wishlist — upcoming missions',galaxyConnections:'Galaxy connections',
-  notas:'Notes & Highlights',keywords:'Keywords',relatedBooks:'Related books',
-  notePlaceholder:'Write a highlight, idea or reflection…',pagePlaceholder:'Page',commentPlaceholder:'Comment (optional)',
-  addNote:'+ Note',camera:'Camera',dictate:'Dictate',
-  progress:'Progress',rating:'Rating',editBook:'Edit book',deleteBook:'Delete book',
-  pending:'Pending',reading:'Reading',done:'Finished',
-  noNotes:'No notes yet — write the first one above.',
-  searchNotes:'Search by word, page…',
-  newKeyword:'New keyword…',add:'+ Add',
-  addBookTitle:'Add book',addBookSub:'Type the title — cover loads automatically.',
-  author:'Author',category:'Category',initialKeywords:'Initial keywords (comma)',bookStatus:'Book status',
-  coverUrl:'Cover URL (optional)',coverUrlPlaceholder:'https://… paste image URL',
-  cancel:'Cancel',save:'Save',
-  statusRead:'Read (I own and read it)',statusOwned:'I own it, not read yet',statusWishlist:'Wishlist (I don\'t have it yet)',
-  wishlistTitle:'Upcoming Missions',wishlistSub:'Books traveling toward your galaxy.',
-  quickAddWishlist:'Quick add to wishlist',quickAddBtn:'Add',wishTitlePlaceholder:'Book title…',wishAuthorPlaceholder:'Author…',
-  iAlreadyHave:'I have it',markRead:'Already read',
-  settingsTitle:'Settings',settingsSub:'Connect your AI for automatic analysis and Vision AI.',
-  langTitle:'Language',langDesc:'Change the language of the entire ALINEA interface.',
-  aiTitle:'About AI',aiDesc:'When adding notes it extracts keywords and mood. In Explore and Log it generates synthesis. Vision AI reads pages with the camera. Your key lives only in your browser.',
-  backupTitle:'Data & Backup',
-  backupIntro:'Your library lives only in this browser — no server stores it. If you change devices or clear history, you could lose it. Backup is your life insurance.',
-  jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords in a lightweight file. You can reimport it here on any device instantly.',
-  pdfTitle:'PDF — For reading & printing',pdfDesc:'Visual version of your library. Can\'t be used to restore, but ideal for archiving, sharing or printing.',
-  downloadJson:'Download JSON',downloadPdf:'Download PDF',
-  importTitle:'Restore from JSON',importDesc:'Changed devices? Upload your JSON file and your galaxy appears instantly.',importWarning:'Replaces current data.',selectFile:'Select file',
-  friendsTitle:'Friend galaxies',friendsDesc:'Paste a friend\'s JSON to see their galaxy next to yours.',
-  friendName:'Friend\'s name…',friendJsonPlaceholder:'Paste exported JSON here (Download JSON)…',addGalaxy:'Add',copyCode:'Copy my sharing code',
-  close:'Close',verifyConn:'Verify connection',providerLabel:'AI Provider',apiKeyLabel:'API Key',
-  filterAll:'All',filterReading:'Reading',filterOwned:'Unread',filterWishlist:'Wishlist',
-  sortRecent:'Recent',sortTitle:'Title A-Z',sortAuthor:'Author A-Z',sortRating:'Rating',
-  emptyLib:'Your library is empty. Add your first book.',
-  devBy:'Developed by',
-  addGalaxyLabel:'Add galaxy',appTagline:'Mental Library',allRightsReserved:'All rights reserved',
-  aiTools:'AI Tools',collisionIdeas:'Idea collision',horizonEvents:'Event horizon',
-  dangerZone:'Danger zone',hardReset:'Delete everything and restart',calculating:'Calculating…',
-  copied:'Copied!',noFriendGalaxies:"You haven't added friend galaxies yet.",
-  bitacoraHint:'Export, import and advanced tools → Settings button',
-  noApiKey:'No API key',apiKeySaved:'API key saved',
-  saveChanges:'Save changes',activateCamera:'Activate camera',captureAnalyze:'Capture and analyze',
-  volumen:'Volume',knowledge:'Knowledge',densestSystem:'Densest system',activeGalaxies:'Active galaxies',
-  booksInGalaxy:'books in your galaxy',inWishlist:'in wishlist',notesAndKeywords:'{kw} notes · {kw} unique keywords',
-  booksCount:'books',addBooksWithCats:'Add books with categories',noCatsYet:'No categories yet',
-  addKeywordsForConnections:'Add keywords and notes to your books to see connections.',
-  ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
-}},
-pt:{name:'Português',t:{
-  library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
-  addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
-  galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
-  exploreTitle:'Explorar ideias',exploreSubtitle:'Toque para explorar · Arraste para mover · Incline o telefone',
-  exploreEmpty:'Digite para explorar suas notas.',explorePlaceholder:'disciplina, dinheiro, propósito…',
-  gravOff:'Gravidade: OFF',gravOn:'Gravidade: ON',
-  logTitle:'Diário de voo',logSubtitle:'Relatórios da sua galáxia — áreas crescendo, conexões encontradas, síntese do conhecimento.',
-  generateSynthesis:'✦ Gerar síntese IA',wishlistMissions:'Lista de desejos — próximas missões',galaxyConnections:'Conexões entre galáxias',
-  notas:'Notas & Destaques',keywords:'Palavras-chave',relatedBooks:'Livros relacionados',
-  notePlaceholder:'Escreva um destaque, ideia ou reflexão…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentário (opcional)',
-  addNote:'+ Nota',camera:'Câmera',dictate:'Ditar',
-  progress:'Progresso',rating:'Avaliação',editBook:'Editar livro',
-  pending:'Pendente',reading:'Lendo',done:'Terminado',
-  noNotes:'Ainda sem notas — escreva a primeira acima.',
-  searchNotes:'Buscar por palavra, página…',
-  newKeyword:'Nova palavra-chave…',add:'+ Add',
-  addBookTitle:'Adicionar livro',addBookSub:'Digite o título — a capa carrega automaticamente.',
-  author:'Autor',category:'Categoria',initialKeywords:'Palavras-chave iniciais (vírgula)',bookStatus:'Status do livro',
-  coverUrl:'URL da capa (opcional)',coverUrlPlaceholder:'https://… cole URL da imagem',
-  cancel:'Cancelar',save:'Salvar',
-  statusRead:'Lido (tenho e li)',statusOwned:'Tenho, ainda não li',statusWishlist:'Lista de desejos (ainda não tenho)',
-  wishlistTitle:'Próximas Missões',wishlistSub:'Livros viajando para sua galáxia.',
-  quickAddWishlist:'Adicionar rapidamente à lista',quickAddBtn:'Adicionar',wishTitlePlaceholder:'Título do livro…',wishAuthorPlaceholder:'Autor…',
-  iAlreadyHave:'Já tenho',markRead:'Já li',
-  settingsTitle:'Configurações',settingsSub:'Conecte sua IA para análise automática e Visão IA.',
-  langTitle:'Idioma',langDesc:'Mude o idioma de toda a interface do ALINEA.',
-  aiTitle:'Sobre a IA',aiDesc:'Ao adicionar notas extrai palavras-chave e humor. Em Explorar e Diário gera sínteses. Visão IA lê páginas com a câmera. Sua chave fica só no navegador.',
-  backupTitle:'Dados & Backup',
-  backupIntro:'Sua biblioteca vive só neste navegador. Se mudar de dispositivo ou limpar o histórico, pode perdê-la. O backup é seu seguro de vida.',
-  jsonTitle:'JSON — Backup real',jsonDesc:'Todos seus livros, notas e palavras-chave num arquivo leve. Você pode reimportá-lo aqui em qualquer dispositivo.',
-  pdfTitle:'PDF — Para ler e imprimir',pdfDesc:'Versão visual da sua biblioteca. Não serve para restaurar, mas ideal para arquivar ou imprimir.',
-  downloadJson:'Baixar JSON',downloadPdf:'Baixar PDF',
-  importTitle:'Restaurar do JSON',importDesc:'Mudou de dispositivo? Envie seu arquivo JSON e sua galáxia aparece instantaneamente.',importWarning:'Substitui os dados atuais.',selectFile:'Selecionar arquivo',
-  friendsTitle:'Galáxias de amigos',friendsDesc:'Cole o JSON de um amigo para ver a galáxia dele ao lado da sua.',
-  friendName:'Nome do amigo…',friendJsonPlaceholder:'Cole aqui o JSON exportado…',addGalaxy:'Adicionar',copyCode:'Copiar meu código para compartilhar',
-  close:'Fechar',verifyConn:'Verificar conexão',providerLabel:'Provedor IA',apiKeyLabel:'Chave API',
-  filterAll:'Todos',filterReading:'Lendo',filterOwned:'Não lidos',filterWishlist:'Lista de desejos',
-  sortRecent:'Recente',sortTitle:'Título A-Z',sortAuthor:'Autor A-Z',sortRating:'Avaliação',
-  emptyLib:'Sua biblioteca está vazia. Adicione seu primeiro livro.',
-  devBy:'Desenvolvido por',
-  addGalaxyLabel:'Adicionar galáxia',appTagline:'Biblioteca Mental',allRightsReserved:'Todos os direitos reservados',
-  aiTools:'Ferramentas de IA',collisionIdeas:'Colisão de ideias',horizonEvents:'Horizonte de eventos',
-  dangerZone:'Zona de perigo',hardReset:'Apagar tudo e reiniciar',calculating:'Calculando…',
-  copied:'Copiado!',noFriendGalaxies:'Você ainda não adicionou galáxias de amigos.',
-  bitacoraHint:'Exportar, importar e ferramentas avançadas → botão Configurações',
-  noApiKey:'Sem chave API',apiKeySaved:'Chave API salva',
-  saveChanges:'Salvar alterações',activateCamera:'Ativar câmera',captureAnalyze:'Capturar e analisar',
-  volumen:'Volume',knowledge:'Conhecimento',densestSystem:'Sistema mais denso',activeGalaxies:'Galáxias ativas',
-  booksInGalaxy:'livros na sua galáxia',inWishlist:'na lista',notesAndKeywords:'notas · {kw} palavras-chave únicas',
-  booksCount:'livros',addBooksWithCats:'Adicione livros com categorias',noCatsYet:'Sem categorias ainda',
-  addKeywordsForConnections:'Adicione palavras-chave e notas aos seus livros para ver conexões.',
-  ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
-}},
-fr:{name:'Français',t:{
-  library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Visible lo invisible.',
-  addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
-  galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
-  exploreTitle:'Explorer les idées',exploreSubtitle:'Toucher pour explorer · Glisser pour déplacer · Incliner le téléphone',
-  exploreEmpty:'Écrivez pour explorer vos notes.',explorePlaceholder:'discipline, argent, but…',
-  gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
-  logTitle:'Journal de bord',logSubtitle:'Rapports de votre galaxie — zones en croissance, connexions trouvées, synthèse des connaissances.',
-  generateSynthesis:'✦ Générer synthèse IA',wishlistMissions:'Liste de souhaits — prochaines missions',galaxyConnections:'Connexions entre galaxies',
-  notas:'Notes & Surlignements',keywords:'Mots-clés',relatedBooks:'Livres associés',
-  notePlaceholder:'Écrivez un surlignement, une idée ou une réflexion…',pagePlaceholder:'Page',commentPlaceholder:'Commentaire (optionnel)',
-  addNote:'+ Note',camera:'Caméra',dictate:'Dicter',
-  progress:'Progrès',rating:'Note',editBook:'Modifier le livre',
-  pending:'En attente',reading:'En lecture',done:'Terminé',
-  noNotes:'Pas encore de notes — écrivez la première ci-dessus.',
-  searchNotes:'Rechercher par mot, page…',
-  newKeyword:'Nouveau mot-clé…',add:'+ Add',
-  addBookTitle:'Ajouter un livre',addBookSub:'Tapez le titre — la couverture se charge automatiquement.',
-  author:'Auteur',category:'Catégorie',initialKeywords:'Mots-clés initiaux (virgule)',bookStatus:'Statut du livre',
-  coverUrl:'URL de couverture (optionnel)',coverUrlPlaceholder:'https://… collez l\'URL de l\'image',
-  cancel:'Annuler',save:'Enregistrer',
-  statusRead:'Lu (je l\'ai et je l\'ai lu)',statusOwned:'Je l\'ai, pas encore lu',statusWishlist:'Liste de souhaits (je ne l\'ai pas encore)',
-  wishlistTitle:'Prochaines Missions',wishlistSub:'Livres voyageant vers votre galaxie.',
-  quickAddWishlist:'Ajout rapide à la liste',quickAddBtn:'Ajouter',wishTitlePlaceholder:'Titre du livre…',wishAuthorPlaceholder:'Auteur…',
-  iAlreadyHave:'Je l\'ai',markRead:'Déjà lu',
-  settingsTitle:'Paramètres',settingsSub:'Connectez votre IA pour analyse automatique et Vision IA.',
-  langTitle:'Langue',langDesc:'Changez la langue de toute l\'interface ALINEA.',
-  aiTitle:'À propos de l\'IA',aiDesc:'En ajoutant des notes, extrait mots-clés et humeur. En Explorer et Journal génère des synthèses. Votre clé reste dans votre navigateur.',
-  backupTitle:'Données & Sauvegarde',
-  backupIntro:'Votre bibliothèque vit uniquement dans ce navigateur. Si vous changez d\'appareil, vous pourriez la perdre. La sauvegarde est votre assurance.',
-  jsonTitle:'JSON — Sauvegarde réelle',jsonDesc:'Tous vos livres, notes et mots-clés dans un fichier léger. Réimportable instantanément.',
-  pdfTitle:'PDF — Pour lire et imprimer',pdfDesc:'Version visuelle de votre bibliothèque. Idéal pour archiver ou partager.',
-  downloadJson:'Télécharger JSON',downloadPdf:'Télécharger PDF',
-  importTitle:'Restaurer depuis JSON',importDesc:'Changé d\'appareil? Importez votre JSON et votre galaxie apparaît.',importWarning:'Remplace les données actuelles.',selectFile:'Sélectionner un fichier',
-  friendsTitle:'Galaxies d\'amis',friendsDesc:'Collez le JSON d\'un ami pour voir sa galaxie à côté de la vôtre.',
-  friendName:'Nom de l\'ami…',friendJsonPlaceholder:'Collez ici le JSON exporté…',addGalaxy:'Ajouter',copyCode:'Copier mon code de partage',
-  close:'Fermer',verifyConn:'Vérifier connexion',providerLabel:'Fournisseur IA',apiKeyLabel:'Clé API',
-  filterAll:'Tous',filterReading:'En lecture',filterOwned:'Non lus',filterWishlist:'Souhaits',
-  sortRecent:'Récent',sortTitle:'Titre A-Z',sortAuthor:'Auteur A-Z',sortRating:'Note',
-  emptyLib:'Votre bibliothèque est vide. Ajoutez votre premier livre.',
-  devBy:'Développé par',
-  addGalaxyLabel:'Ajouter une galaxie',appTagline:'Bibliothèque Mentale',allRightsReserved:'Tous droits réservés',
-  aiTools:"Outils IA",collisionIdeas:'Collision d\'idées',horizonEvents:'Horizon des événements',
-  dangerZone:'Zone de danger',hardReset:'Tout supprimer et redémarrer',calculating:'Calcul en cours…',
-  copied:'Copié !',noFriendGalaxies:"Vous n'avez pas encore ajouté de galaxies d'amis.",
-  bitacoraHint:'Exporter, importer et outils avancés → bouton Paramètres',
-  noApiKey:'Pas de clé API',apiKeySaved:'Clé API enregistrée',
-  saveChanges:'Enregistrer les modifications',activateCamera:'Activer la caméra',captureAnalyze:'Capturer et analyser',
-  volumen:'Volume',knowledge:'Connaissance',densestSystem:'Système le plus dense',activeGalaxies:'Galaxies actives',
-  booksInGalaxy:'livres dans votre galaxie',inWishlist:'en liste',notesAndKeywords:'notes · {kw} mots-clés uniques',
-  booksCount:'livres',addBooksWithCats:'Ajoutez des livres avec catégories',noCatsYet:'Pas encore de catégories',
-  addKeywordsForConnections:'Ajoutez mots-clés et notes à vos livres pour voir les connexions.',
-  ownedUnread:"Je l'ai, non lu",noPendingBooks:'Aucun livre en attente.',
-}},
-de:{name:'Deutsch',t:{
-  library:'Bibliothek',galaxy:'Galaxie',explore:'Entdecken',log:'Logbuch',
-  addBook:'＋ Buch hinzufügen',search:'Suchen…',settings:'Einstellungen',wishlistBtn:'Wunschliste',
-  galaxyHint:'Sonnensystem · Ziehen · Scrollen = Zoom · Klick = Buch · Animierte Umlaufbahnen',
-  exploreTitle:'Ideen erkunden',exploreSubtitle:'Tippen zum Erkunden · Ziehen zum Bewegen · Telefon neigen',
-  exploreEmpty:'Tippen Sie zum Erkunden Ihrer Notizen.',explorePlaceholder:'Disziplin, Geld, Zweck…',
-  gravOff:'Schwerkraft: AUS',gravOn:'Schwerkraft: AN',
-  logTitle:'Fluglogbuch',logSubtitle:'Berichte aus Ihrer Galaxie — wachsende Bereiche, gefundene Verbindungen, Wissenssynthese.',
-  generateSynthesis:'✦ KI-Synthese generieren',wishlistMissions:'Wunschliste — kommende Missionen',galaxyConnections:'Galaxieverbindungen',
-  notas:'Notizen & Markierungen',keywords:'Schlüsselwörter',relatedBooks:'Verwandte Bücher',
-  notePlaceholder:'Schreiben Sie eine Markierung, Idee oder Reflexion…',pagePlaceholder:'Seite',commentPlaceholder:'Kommentar (optional)',
-  addNote:'+ Notiz',camera:'Kamera',dictate:'Diktieren',
-  progress:'Fortschritt',rating:'Bewertung',editBook:'Buch bearbeiten',
-  pending:'Ausstehend',reading:'Lese gerade',done:'Fertig',
-  noNotes:'Noch keine Notizen — schreiben Sie die erste oben.',
-  searchNotes:'Nach Wort, Seite suchen…',
-  newKeyword:'Neues Schlüsselwort…',add:'+ Add',
-  addBookTitle:'Buch hinzufügen',addBookSub:'Titel eingeben — Cover lädt automatisch.',
-  author:'Autor',category:'Kategorie',initialKeywords:'Anfangs-Keywords (Komma)',bookStatus:'Buchstatus',
-  coverUrl:'Cover-URL (optional)',coverUrlPlaceholder:'https://… Bild-URL einfügen',
-  cancel:'Abbrechen',save:'Speichern',
-  statusRead:'Gelesen (habe und las es)',statusOwned:'Habe es, noch nicht gelesen',statusWishlist:'Wunschliste (habe es noch nicht)',
-  wishlistTitle:'Kommende Missionen',wishlistSub:'Bücher auf dem Weg zu Ihrer Galaxie.',
-  quickAddWishlist:'Schnell zur Liste hinzufügen',quickAddBtn:'Hinzufügen',wishTitlePlaceholder:'Buchtitel…',wishAuthorPlaceholder:'Autor…',
-  iAlreadyHave:'Habe es',markRead:'Bereits gelesen',
-  settingsTitle:'Einstellungen',settingsSub:'Verbinden Sie Ihre KI für automatische Analyse und Vision KI.',
-  langTitle:'Sprache',langDesc:'Ändern Sie die Sprache der gesamten ALINEA-Oberfläche.',
-  aiTitle:'Über KI',aiDesc:'Beim Hinzufügen von Notizen werden Keywords und Stimmung extrahiert. In Entdecken und Logbuch werden Synthesen erstellt. Ihr Schlüssel bleibt im Browser.',
-  backupTitle:'Daten & Backup',
-  backupIntro:'Ihre Bibliothek lebt nur in diesem Browser. Bei Gerätewechsel könnten Sie sie verlieren. Backup ist Ihre Lebensversicherung.',
-  jsonTitle:'JSON — Echtes Backup',jsonDesc:'Alle Ihre Bücher, Notizen und Keywords in einer leichten Datei. Sofort auf jedem Gerät reimportierbar.',
-  pdfTitle:'PDF — Zum Lesen & Drucken',pdfDesc:'Visuelle Version Ihrer Bibliothek. Nicht für die Wiederherstellung, aber ideal zum Archivieren.',
-  downloadJson:'JSON herunterladen',downloadPdf:'PDF herunterladen',
-  importTitle:'Von JSON wiederherstellen',importDesc:'Gerät gewechselt? Laden Sie Ihre JSON-Datei hoch.',importWarning:'Ersetzt aktuelle Daten.',selectFile:'Datei auswählen',
-  friendsTitle:'Freundes-Galaxien',friendsDesc:'Fügen Sie das JSON eines Freundes ein, um seine Galaxie neben Ihrer zu sehen.',
-  friendName:'Name des Freundes…',friendJsonPlaceholder:'Exportiertes JSON hier einfügen…',addGalaxy:'Hinzufügen',copyCode:'Meinen Teilungscode kopieren',
-  close:'Schließen',verifyConn:'Verbindung prüfen',providerLabel:'KI-Anbieter',apiKeyLabel:'API-Schlüssel',
-  filterAll:'Alle',filterReading:'Lese gerade',filterOwned:'Ungelesen',filterWishlist:'Wunschliste',
-  sortRecent:'Neueste',sortTitle:'Titel A-Z',sortAuthor:'Autor A-Z',sortRating:'Bewertung',
-  emptyLib:'Ihre Bibliothek ist leer. Fügen Sie Ihr erstes Buch hinzu.',
-  devBy:'Entwickelt von',
-  addGalaxyLabel:'Galaxie hinzufügen',appTagline:'Mentale Bibliothek',allRightsReserved:'Alle Rechte vorbehalten',
-  aiTools:'KI-Werkzeuge',collisionIdeas:'Ideenkollision',horizonEvents:'Ereignishorizont',
-  dangerZone:'Gefahrenzone',hardReset:'Alles löschen und neu starten',calculating:'Berechnung…',
-  copied:'Kopiert!',noFriendGalaxies:'Sie haben noch keine Freundes-Galaxien hinzugefügt.',
-  bitacoraHint:'Exportieren, importieren und erweiterte Tools → Einstellungen',
-  noApiKey:'Kein API-Schlüssel',apiKeySaved:'API-Schlüssel gespeichert',
-  saveChanges:'Änderungen speichern',activateCamera:'Kamera aktivieren',captureAnalyze:'Aufnehmen und analysieren',
-  volumen:'Volumen',knowledge:'Wissen',densestSystem:'Dichtestes System',activeGalaxies:'Aktive Galaxien',
-  booksInGalaxy:'Bücher in deiner Galaxie',inWishlist:'auf Wunschliste',notesAndKeywords:'Notizen · {kw} einzigartige Keywords',
-  booksCount:'Bücher',addBooksWithCats:'Füge Bücher mit Kategorien hinzu',noCatsYet:'Noch keine Kategorien',
-  addKeywordsForConnections:'Füge Keywords und Notizen hinzu, um Verbindungen zu sehen.',
-  ownedUnread:'Habe es, ungelesen',noPendingBooks:'Keine ausstehenden Bücher.',
-}},
-it:{name:'Italiano',t:{
-  library:'Biblioteca',galaxy:'Galassia',explore:'Esplora',log:'Diario',
-  addBook:'＋ Aggiungi libro',search:'Cerca…',settings:'Impostazioni',wishlistBtn:'Lista desideri',
-  galaxyHint:'Sistema solare · Trascina · Scroll = zoom · Clic = libro · Orbite animate',
-  exploreTitle:'Esplorare idee',exploreSubtitle:'Tocca per esplorare · Trascina per spostare · Inclina il telefono',
-  exploreEmpty:'Scrivi per esplorare le tue note.',explorePlaceholder:'disciplina, denaro, scopo…',
-  gravOff:'Gravità: OFF',gravOn:'Gravità: ON',
-  logTitle:'Diario di volo',logSubtitle:'Rapporti dalla tua galassia — aree in crescita, connessioni trovate, sintesi della conoscenza.',
-  generateSynthesis:'✦ Genera sintesi IA',wishlistMissions:'Lista desideri — prossime missioni',galaxyConnections:'Connessioni tra galassie',
-  notas:'Note & Sottolineature',keywords:'Parole chiave',relatedBooks:'Libri correlati',
-  notePlaceholder:'Scrivi un\'evidenziazione, idea o riflessione…',pagePlaceholder:'Pag.',commentPlaceholder:'Commento (opzionale)',
-  addNote:'+ Nota',camera:'Fotocamera',dictate:'Dettare',
-  progress:'Progresso',rating:'Valutazione',editBook:'Modifica libro',
-  pending:'In attesa',reading:'In lettura',done:'Terminato',
-  noNotes:'Ancora nessuna nota — scrivi la prima sopra.',
-  searchNotes:'Cerca per parola, pagina…',
-  newKeyword:'Nuova parola chiave…',add:'+ Add',
-  addBookTitle:'Aggiungi libro',addBookSub:'Digita il titolo — la copertina si carica automaticamente.',
-  author:'Autore',category:'Categoria',initialKeywords:'Parole chiave iniziali (virgola)',bookStatus:'Stato del libro',
-  coverUrl:'URL copertina (opzionale)',coverUrlPlaceholder:'https://… incolla URL immagine',
-  cancel:'Annulla',save:'Salva',
-  statusRead:'Letto (ce l\'ho e l\'ho letto)',statusOwned:'Ce l\'ho, non ancora letto',statusWishlist:'Lista desideri (non ce l\'ho ancora)',
-  wishlistTitle:'Prossime Missioni',wishlistSub:'Libri in viaggio verso la tua galassia.',
-  quickAddWishlist:'Aggiungi rapidamente alla lista',quickAddBtn:'Aggiungi',wishTitlePlaceholder:'Titolo del libro…',wishAuthorPlaceholder:'Autore…',
-  iAlreadyHave:'Ce l\'ho',markRead:'Già letto',
-  settingsTitle:'Impostazioni',settingsSub:'Collega la tua IA per analisi automatica e Vision IA.',
-  langTitle:'Lingua',langDesc:'Cambia la lingua dell\'intera interfaccia ALINEA.',
-  aiTitle:'Sull\'IA',aiDesc:'Aggiungendo note estrae parole chiave e umore. In Esplora e Diario genera sintesi. Vision IA legge le pagine con la fotocamera. La tua chiave resta nel browser.',
-  backupTitle:'Dati & Backup',
-  backupIntro:'La tua biblioteca vive solo in questo browser. Cambiando dispositivo potresti perderla. Il backup è la tua assicurazione sulla vita.',
-  jsonTitle:'JSON — Backup reale',jsonDesc:'Tutti i tuoi libri, note e parole chiave in un file leggero. Reimportabile istantaneamente.',
-  pdfTitle:'PDF — Per leggere e stampare',pdfDesc:'Versione visiva della tua biblioteca. Ideale per archiviare o condividere.',
-  downloadJson:'Scarica JSON',downloadPdf:'Scarica PDF',
-  importTitle:'Ripristina da JSON',importDesc:'Hai cambiato dispositivo? Carica il tuo file JSON e la tua galassia appare.',importWarning:'Sostituisce i dati attuali.',selectFile:'Seleziona file',
-  friendsTitle:'Galassie degli amici',friendsDesc:'Incolla il JSON di un amico per vedere la sua galassia accanto alla tua.',
-  friendName:'Nome dell\'amico…',friendJsonPlaceholder:'Incolla qui il JSON esportato…',addGalaxy:'Aggiungi',copyCode:'Copia il mio codice di condivisione',
-  close:'Chiudi',verifyConn:'Verifica connessione',providerLabel:'Fornitore IA',apiKeyLabel:'Chiave API',
-  filterAll:'Tutti',filterReading:'In lettura',filterOwned:'Non letti',filterWishlist:'Lista desideri',
-  sortRecent:'Recente',sortTitle:'Titolo A-Z',sortAuthor:'Autore A-Z',sortRating:'Valutazione',
-  emptyLib:'La tua biblioteca è vuota. Aggiungi il tuo primo libro.',
-  devBy:'Sviluppato da',
-  addGalaxyLabel:'Aggiungi galassia',appTagline:'Biblioteca Mentale',allRightsReserved:'Tutti i diritti riservati',
-  aiTools:'Strumenti IA',collisionIdeas:'Collisione di idee',horizonEvents:'Orizzonte degli eventi',
-  dangerZone:'Zona di pericolo',hardReset:'Elimina tutto e riavvia',calculating:'Calcolo…',
-  copied:'Copiato!',noFriendGalaxies:'Non hai ancora aggiunto galassie di amici.',
-  bitacoraHint:'Esporta, importa e strumenti avanzati → pulsante Impostazioni',
-  noApiKey:'Nessuna chiave API',apiKeySaved:'Chiave API salvata',
-  saveChanges:'Salva modifiche',activateCamera:'Attiva fotocamera',captureAnalyze:'Cattura e analizza',
-  volumen:'Volume',knowledge:'Conoscenza',densestSystem:'Sistema più denso',activeGalaxies:'Galassie attive',
-  booksInGalaxy:'libri nella tua galassia',inWishlist:'in lista',notesAndKeywords:'note · {kw} parole chiave uniche',
-  booksCount:'libri',addBooksWithCats:'Aggiungi libri con categorie',noCatsYet:'Ancora nessuna categoria',
-  addKeywordsForConnections:'Aggiungi parole chiave e note ai tuoi libri per vedere connessioni.',
-  ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
-}},
-ja:{name:'日本語',t:{
-  library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
-  addBook:'＋ 本を追加',search:'検索…',settings:'設定',wishlistBtn:'ウィッシュリスト',
-  galaxyHint:'太陽系 · ドラッグ · スクロール = ズーム · クリック = 本 · アニメーション軌道',
-  exploreTitle:'アイデアを探す',exploreSubtitle:'タップして探索 · ドラッグして移動 · 電話を傾ける',
-  exploreEmpty:'ノートを探索するには入力してください。',explorePlaceholder:'規律、お金、目的…',
-  gravOff:'重力: OFF',gravOn:'重力: ON',
-  logTitle:'フライトログ',logSubtitle:'銀河からのレポート — 成長エリア、見つかった接続、知識の合成。',
-  generateSynthesis:'✦ AI合成を生成',wishlistMissions:'ウィッシュリスト — 次のミッション',galaxyConnections:'銀河間の接続',
-  notas:'ノート＆ハイライト',keywords:'キーワード',relatedBooks:'関連書籍',
-  notePlaceholder:'ハイライト、アイデア、または考察を書く…',pagePlaceholder:'ページ',commentPlaceholder:'コメント（任意）',
-  addNote:'+ ノート',camera:'カメラ',dictate:'ディクテーション',
-  progress:'進捗',rating:'評価',editBook:'本を編集',
-  pending:'未読',reading:'読書中',done:'完了',
-  noNotes:'まだノートがありません — 上に最初のものを書いてください。',
-  searchNotes:'単語、ページで検索…',
-  newKeyword:'新しいキーワード…',add:'+ 追加',
-  addBookTitle:'本を追加',addBookSub:'タイトルを入力 — カバーが自動的に読み込まれます。',
-  author:'著者',category:'カテゴリ',initialKeywords:'初期キーワード（カンマ）',bookStatus:'本のステータス',
-  coverUrl:'カバーURL（任意）',coverUrlPlaceholder:'https://… 画像URLを貼り付け',
-  cancel:'キャンセル',save:'保存',
-  statusRead:'読了（持っていて読んだ）',statusOwned:'持っているが未読',statusWishlist:'ウィッシュリスト（まだ持っていない）',
-  wishlistTitle:'次のミッション',wishlistSub:'銀河に向かう本。',
-  quickAddWishlist:'リストにクイック追加',quickAddBtn:'追加',wishTitlePlaceholder:'本のタイトル…',wishAuthorPlaceholder:'著者…',
-  iAlreadyHave:'持っています',markRead:'読みました',
-  settingsTitle:'設定',settingsSub:'自動分析とビジョンAIのためにAIを接続。',
-  langTitle:'言語',langDesc:'ALINEAインターフェース全体の言語を変更。',
-  aiTitle:'AIについて',aiDesc:'ノート追加時にキーワードとムードを抽出。探索とログでは合成を生成。ビジョンAIはカメラでページを読み取ります。キーはブラウザ内のみ。',
-  backupTitle:'データ＆バックアップ',
-  backupIntro:'ライブラリはこのブラウザにのみ存在します。デバイスを変更すると失う可能性があります。バックアップはあなたの生命保険です。',
-  jsonTitle:'JSON — 本物のバックアップ',jsonDesc:'全書籍、ノート、キーワードを含む軽量ファイル。どのデバイスでも即座に再インポートできます。',
-  pdfTitle:'PDF — 読むために印刷',pdfDesc:'ライブラリのビジュアル版。復元には使えませんが、アーカイブや共有に最適。',
-  downloadJson:'JSONダウンロード',downloadPdf:'PDFダウンロード',
-  importTitle:'JSONから復元',importDesc:'デバイスを変更しましたか？JSONファイルをアップロードしてください。',importWarning:'現在のデータを置き換えます。',selectFile:'ファイルを選択',
-  friendsTitle:'友達の銀河',friendsDesc:'友達のJSONを貼り付けて、自分の銀河の隣に表示。',
-  friendName:'友達の名前…',friendJsonPlaceholder:'エクスポートされたJSONをここに貼り付け…',addGalaxy:'追加',copyCode:'共有コードをコピー',
-  close:'閉じる',verifyConn:'接続を確認',providerLabel:'AIプロバイダー',apiKeyLabel:'APIキー',
-  filterAll:'全て',filterReading:'読書中',filterOwned:'未読',filterWishlist:'ウィッシュリスト',
-  sortRecent:'最新',sortTitle:'タイトル順',sortAuthor:'著者順',sortRating:'評価',
-  emptyLib:'ライブラリが空です。最初の本を追加してください。',
-  devBy:'開発者',
-  addGalaxyLabel:'銀河を追加',appTagline:'メンタルライブラリ',allRightsReserved:'全著作権所有',
-  aiTools:'AIツール',collisionIdeas:'アイデアコリジョン',horizonEvents:'イベントホライゾン',
-  dangerZone:'危険ゾーン',hardReset:'全て削除して再起動',calculating:'計算中…',
-  copied:'コピーしました！',noFriendGalaxies:'まだ友達の銀河を追加していません。',
-  bitacoraHint:'エクスポート、インポートと高度なツール → 設定ボタン',
-  noApiKey:'APIキーなし',apiKeySaved:'APIキー保存済み',
-  saveChanges:'変更を保存',activateCamera:'カメラを起動',captureAnalyze:'キャプチャして分析',
-  volumen:'ボリューム',knowledge:'知識',densestSystem:'最も密なシステム',activeGalaxies:'アクティブな銀河',
-  booksInGalaxy:'銀河内の本',inWishlist:'ウィッシュリスト',notesAndKeywords:'ノート · {kw} ユニークなキーワード',
-  booksCount:'冊',addBooksWithCats:'カテゴリ付きで本を追加',noCatsYet:'カテゴリがまだありません',
-  addKeywordsForConnections:'接続を見るためにキーワードとノートを追加してください。',
-  ownedUnread:'持っているが未読',noPendingBooks:'保留中の本はありません。',
-}},
-};
-let currentLang=localStorage.getItem('eter_lang')||'es';
-function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
 function setLang(code){
   currentLang=code;localStorage.setItem('eter_lang',code);
   applyLang();renderLangGrid();
@@ -2617,6 +2956,10 @@ function applyLang(){
     const val=t(el.dataset.i18n);
     if(val)el.textContent=val;
   });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const val=t(el.dataset.i18nPh||el.getAttribute('data-i18n-ph'));
+    if(val)el.placeholder=val;
+  });
   // 6. Settings modal title/sub
   const mSet=document.getElementById('mSettings');
   if(mSet){
@@ -2631,6 +2974,26 @@ function applyLang(){
   renderFriendGalList();
   // 10. Book count
   updateBcount();
+  // Repopulate status selects on lang change
+  const _addSt=document.getElementById('addStatus');if(_addSt)populateStatusSelect('addStatus',_addSt.value||'read');
+  const _editSt=document.getElementById('editStatus');if(_editSt)populateStatusSelect('editStatus',_editSt.value||'read');
+  // Already added - skip
+  // 11. Welcome modal — fully rebuilt in current language
+  renderWelcomeBody();
+}
+function renderWelcomeBody(){
+  const wb=document.getElementById('welcomeBody');if(!wb)return;
+  const ac=getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim()||'#c4b5fd';
+  wb.innerHTML=`
+    <p style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--accent2);line-height:1.4;margin-bottom:.8rem;font-style:italic">${t('welcomeQ')||'¿Y si pudieras ver tu conocimiento?'}</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">${t('welcomeP1')||''}</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">${t('welcomeP2')||''}</p>
+    <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">${t('welcomeP3')||''} <em style="color:var(--accent2)">${t('welcomeP3em')||''}</em>${t('welcomeP3b')||''}</p>
+    <p style="font-size:.67rem;color:rgba(240,238,255,.7);line-height:1.85;margin-bottom:.8rem">${t('welcomePrivacy')||''} <strong style="color:var(--accent2)">${t('welcomePrivacyLink')||''}</strong>.</p>
+    <div style="border-top:1px solid rgba(139,92,246,.2);margin-bottom:.8rem"></div>
+    <p style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.55;margin-bottom:.65rem">${t('welcomeClosing')||''}</p>
+    <p style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">${t('welcomeSign')||''}</p>
+  `;
 }
 function updateBcount(){
   const n=lib.filter(b=>!b.isWishlist&&b.status!=='wishlist').length;
@@ -3095,7 +3458,7 @@ function getMatches(q){
 function renderExplore(){
   const q=document.getElementById('expIn').value.trim().toLowerCase();
   const c=document.getElementById('expRes');
-  if(!q){c.innerHTML='<div class="exp-empty">Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.</div>';document.getElementById('aiBox').style.display='none';return;}
+  if(!q){c.innerHTML='<div class="exp-empty">'+(t('exploreSub')||'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.')+'</div>';document.getElementById('aiBox').style.display='none';return;}
   const m=getMatches(q);
   if(!m.length){c.innerHTML=`<div class="exp-empty">Sin resultados para "<em>${q}</em>".</div>`;document.getElementById('aiBox').style.display='none';return;}
   c.innerHTML=m.map(({book,note})=>`
@@ -3136,12 +3499,12 @@ function renderBitacora(){
       ${topCat?`<div class="bit-stat" style="font-size:1.4rem;font-family:'Playfair Display',serif">${topCat.c}</div><div class="bit-stat-label">${topCat.n} ${t('booksCount')||'libros'}</div>`:`<div style="color:var(--dim);font-size:.74rem">${t('addBooksWithCats')}</div>`}
     </div>
     <div class="bit-card">
-      <div class="bit-card-title">📊 ${t('activeGalaxies')||'Galaxias activas'}</div>
+      <div class="bit-card-title" data-i18n="topFive">📊 Tu Top 5</div>
       <div style="margin-top:.3rem">
-        ${cats.map(c=>{
+        ${[...cats].sort((a,b)=>realBooks.filter(x=>x.category===b).length-realBooks.filter(x=>x.category===a).length).slice(0,5).map(c=>{
           const n=realBooks.filter(b=>b.category===c).length;
           const max=topCat?.n||1;
-          return`<div class="bit-bar-row"><div class="bit-bar-label">${c}</div><div class="bit-bar-wrap"><div class="bit-bar-fill" style="width:${Math.round(n/max*100)}%"></div></div><div class="bit-bar-n">${n}</div></div>`;
+          return`<div class="bit-bar-row"><div class="bit-bar-label">${translateCat(c)}</div><div class="bit-bar-wrap"><div class="bit-bar-fill" style="width:${Math.round(n/max*100)}%"></div></div><div class="bit-bar-n">${n}</div></div>`;
         }).join('')||`<div style="color:var(--dim);font-size:.7rem">${t('noCatsYet')}</div>`}
       </div>
     </div>`;
@@ -3172,22 +3535,22 @@ function renderBitacora(){
     const mostAnnotated=withNotes.sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).slice(0,4);
     insightEl.innerHTML=`
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;margin-bottom:1rem">
-      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">Terminados</div></div>
-      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">Leyendo</div></div>
-      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">Wishlist</div></div>
-      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">Notas</div></div>
-      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">Keywords</div></div>
-      ${avgRating?`<div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">Rating prom.</div></div>`:''}
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('terminados')||'Terminados'}</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('leyendo')||'Leyendo'}</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">${t('wishlistStat')||'Wishlist'}</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">${t('notasStat')||'Notas'}</div></div>
+      <div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('keywordsStat')||'Keywords'}</div></div>
+      ${avgRating?`<div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">${t('ratingProm')||'Rating prom.'}</div></div>`:''}
     </div>
     ${mostAnnotated.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.7rem">
-      <div class="sec" style="margin-bottom:.45rem">📝 Más anotados</div>
+      <div class="sec" style="margin-bottom:.45rem">${t('masAnotados')||'📝 Más anotados'}</div>
       ${mostAnnotated.map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid var(--border)">
         <span style="font-size:.7rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.title}</span>
         <span style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--accent2);margin-left:.5rem;flex-shrink:0">${(b.notes||[]).length} notas</span>
       </div>`).join('')}
     </div>`:''}
     ${kwFreq.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
-      <div class="sec" style="margin-bottom:.45rem">🔑 Keywords frecuentes</div>
+      <div class="sec" style="margin-bottom:.45rem">${t('keywordsFrecuentes')||'🔑 Keywords frecuentes'}</div>
       <div style="display:flex;flex-wrap:wrap;gap:.28rem">
         ${kwFreq.map(({kw,n})=>`<span style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;padding:.12rem .45rem;border-radius:12px">${kw}<span style="opacity:.55;margin-left:.2rem">${n}</span></span>`).join('')}
       </div>
@@ -3291,7 +3654,7 @@ function renderCatFilterPanel(){
     return`<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.22rem .3rem;border-radius:5px;transition:background .13s" onmouseover="this.style.background='rgba(139,92,246,.08)'" onmouseout="this.style.background='transparent'">
       <input type="checkbox" ${hidden?'':'checked'} onchange="toggleHiddenCat('${safecat}')" style="accent-color:${col.sun};width:13px;height:13px;cursor:pointer;flex-shrink:0">
       <span style="width:8px;height:8px;border-radius:50%;background:${col.sun};flex-shrink:0;box-shadow:0 0 5px ${col.sun}88"></span>
-      <span style="font-size:.66rem;color:${hidden?'var(--dim)':'var(--text)'};flex:1;transition:color .13s">${cat}</span>
+      <span style="font-size:.66rem;color:${hidden?'var(--dim)':'var(--text)'};flex:1;transition:color .13s">${translateCat(cat)}</span>
       <span style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim)">${n}</span>
     </label>`;
   }).join('');
@@ -3429,7 +3792,7 @@ function initGraph(){
       const sysId=`sun_${gi}_${cat}`;
       const catNotes=groups[cat].reduce((s,b)=>s+(b.notes?.length||0),0);
       gSystems.push({cx,cy,cat,books:groups[cat],baseAngle:angle,orbitR:sysOrbitR,galIdx:gi,sysId});
-      gNodes.push({id:sysId,title:cat||'Sin cat.',x:cx,y:cy,type:'sun',cat,r:Math.max(16,Math.min(34,16+groups[cat].length*2.2+catNotes*.4)),galIdx:gi,galColor});
+      gNodes.push({id:sysId,title:translateCat(cat)||cat||'Sin cat.',x:cx,y:cy,type:'sun',cat,r:Math.max(16,Math.min(34,16+groups[cat].length*2.2+catNotes*.4)),galIdx:gi,galColor});
 
       groups[cat].forEach((b,bi)=>{
         const ring=Math.floor(bi/5);
@@ -3452,7 +3815,7 @@ function initGraph(){
           const sx=cx+Math.cos(subAng)*subR;
           const sy=cy+Math.sin(subAng)*subR;
           if(!gNodes.find(n=>n.id===subId)){
-            gNodes.push({id:subId,title:subCat,x:sx,y:sy,type:'subsun',cat:subCat,parentCat:cat,r:9,galIdx:gi,galColor,orbitSun:sysId,orbitR:subR,orbitCenter:{x:cx,y:cy}});
+            gNodes.push({id:subId,title:translateCat(subCat)||subCat,x:sx,y:sy,type:'subsun',cat:subCat,parentCat:cat,r:9,galIdx:gi,galColor,orbitSun:sysId,orbitR:subR,orbitCenter:{x:cx,y:cy}});
             if(!gAngles[subId])gAngles[subId]=subAng;
           }
         });
@@ -3996,9 +4359,9 @@ function openBook(id){
   const statusBadge=b.isWishlist
     ?`<span style="font-size:.58rem;color:var(--gold);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">🚀 WISHLIST</span>`
     :b.readingStatus==='reading'
-      ?`<span style="font-size:.58rem;color:#6ee7b7;background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.2);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">📖 LEYENDO</span>`
+      ?`<span style="font-size:.58rem;color:#6ee7b7;background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.2);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">${t('leyendo')||'LEYENDO'}</span>`
       :b.readingStatus==='done'
-        ?`<span style="font-size:.58rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">✅ TERMINADO</span>`:'';
+        ?`<span style="font-size:.58rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">${t('terminados')||'TERMINADO'}</span>`:'';
 
   document.getElementById('bmTop').innerHTML=`
     <div class="bm-header" style="--bm-cat-color:${catCol.sun}33;--bm-cat-glow:${catCol.glow}0.08)">
@@ -4008,29 +4371,29 @@ function openBook(id){
         ?`<div class="bm-cover-col"><div class="bm-mini-cover"><img src="${b.cover}" alt="${b.title}"></div></div>`
         :`<div class="bm-cover-col"><div class="bm-mini-cover">📖</div></div>`}
       <div class="bm-info-col">
-        ${b.category?`<div class="bm-cat">${b.category}</div>`:''}
+        ${b.category?`<div class="bm-cat">${translateCat(b.category)}</div>`:''}
         <div class="bm-title">${b.title}</div>
         <div class="bm-author">${b.author}</div>
         <div class="bm-tags" id="bmTags">${(b.keywords||[]).slice(0,5).map(k=>`<span class="pill">${k}</span>`).join('')}</div>
         <div class="bm-meta-row">
           ${statusBadge?statusBadge+'&nbsp;':''}
           <div style="display:flex;align-items:center;gap:.4rem">
-            <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Progreso</span>
+            <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">${t('progress')||'Progreso'}</span>
             <select id="bmProgress" onchange="saveProgress(${b.id},this.value)" style="background:rgba(26,23,48,.95);border:1.5px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.04em;padding:.32rem .7rem;border-radius:8px;outline:none;cursor:pointer;box-shadow:0 0 0 2px var(--glow)">
-              <option value="pending" ${(b.readingStatus||'pending')==='pending'?'selected':''}>⏳ Pendiente</option>
-              <option value="reading" ${(b.readingStatus||'')==='reading'?'selected':''}>📖 Leyendo</option>
-              <option value="done" ${(b.readingStatus||'')==='done'?'selected':''}>✅ Terminado</option>
+              <option value="pending" ${(b.readingStatus||'pending')==='pending'?'selected':''}>⏳ ${t('pending')||'Pendiente'}</option>
+              <option value="reading" ${(b.readingStatus||'')==='reading'?'selected':''}>📖 ${t('reading')||'Leyendo'}</option>
+              <option value="done" ${(b.readingStatus||'')==='done'?'selected':''}>✅ ${t('done')||'Terminado'}</option>
             </select>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:.28rem;margin-bottom:.35rem">
-          <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">Rating</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)">${t('rating')||'Rating'}</span>
           <div class="star-rating" id="bmStars">${[1,2,3,4,5].map(n=>`<span class="star${n<=(b.rating||0)?' on':''}" onclick="saveRating(${b.id},${n})">★</span>`).join('')}</div>
         </div>
       </div>
       <button class="bm-edit-fixed" onclick="openEdit(${b.id})">
         <span class="bm-edit-icon">✎</span>
-        <span class="bm-edit-text"> Editar libro</span>
+        <span class="bm-edit-text"> ${t('editBook')||'Editar libro'}</span>
       </button>
     </div>`;
 
@@ -4038,35 +4401,35 @@ function openBook(id){
   document.getElementById('bmBody').style.gridTemplateColumns='1.6fr 1fr';
   document.getElementById('bmBody').innerHTML=`
     <div>
-      <div class="sec">Notas & Subrayados</div>
+      <div class="sec">${t('secNotas')||'Notas & Subrayados'}</div>
       <div class="notes-search" id="notesSearchBox">
         <span class="notes-search-icon">⌕</span>
-        <input type="text" id="notesSearchIn" placeholder="Buscar por palabra, página…" oninput="filterNotes(${b.id},this.value)">
+        <input type="text" id="notesSearchIn" placeholder="${t('searchNotes')||'Buscar por palabra, página…'}" oninput="filterNotes(${b.id},this.value)">
         <span class="notes-count" id="notesCount"></span>
       </div>
       <div class="notes-list" id="notesList"></div>
       <div class="note-box">
-        <textarea id="noteText" placeholder="Escribe un subrayado, idea o reflexión…" rows="3"></textarea>
+        <textarea id="noteText" placeholder="${t('notePlaceholder')||'Escribe un subrayado, idea o reflexión…'}" rows="3"></textarea>
         <div class="nrow">
-          <input type="text" id="notePg" class="nri pg" placeholder="Pág.">
-          <input type="text" id="noteCmt" class="nri cmt" placeholder="Comentario (opcional)">
-          <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" data-i18n="addNote">＋ Nota</button>
-          <button class="btn-note" onclick="openVision(${b.id})" data-i18n="camera">Cámara</button>
-          <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">Dictar</button>
+          <input type="text" id="notePg" class="nri pg" placeholder="${t('pagePlaceholder')||'Pág.'}">
+          <input type="text" id="noteCmt" class="nri cmt" placeholder="${t('commentPlaceholder')||'Comentario (opcional)'}">
+          <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" data-i18n="addNote">${t("addNote")||"＋ Nota"}</button>
+          <button class="btn-note" onclick="openVision(${b.id})" data-i18n="camera">${t("camera")||"Cámara"}</button>
+          <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">${t("dictate")||"Dictar"}</button>
         </div>
       </div>
     </div>
     <div>
-      <div class="sec">Keywords</div>
-      <div class="kwrow"><input type="text" class="kwin" id="kwInput" placeholder="Nueva keyword…" onkeydown="if(event.key==='Enter')addKw(${b.id})"><button class="btn-kw" onclick="addKw(${b.id})">+ Add</button></div>
+      <div class="sec">${t('secKeywords')||'Keywords'}</div>
+      <div class="kwrow"><input type="text" class="kwin" id="kwInput" placeholder="${t('newKeyword')||'Nueva keyword…'}" onkeydown="if(event.key==='Enter')addKw(${b.id})"><button class="btn-kw" onclick="addKw(${b.id})">+ Add</button></div>
       <div class="kwcloud" id="kwWrap"></div>
-      <div class="sec">Libros relacionados</div>
+      <div class="sec">${t('secRelated')||'Libros relacionados'}</div>
       <div class="rel-list">
         ${related.length?related.map(r=>`
           <div class="ritem" onclick="closeModal('mBook');setTimeout(()=>openBook(${r.book.id}),260)">
             ${r.book.cover?`<img class="rcov" src="${r.book.cover}" alt="">`:`<div class="rcov-ph">📖</div>`}
             <div class="rinfo"><div class="rtit">${r.book.title}</div><div class="rrea">↳ ${r.reason}</div></div>
-          </div>`).join(''):`<div class="norel">Agrega más libros o keywords para ver conexiones.</div>`}
+          </div>`).join(''):`<div class="norel">${t("addKeywordsForConnections")||"Agrega más libros o keywords para ver conexiones."}</div>`}
       </div>
     </div>`;
   const bmDelEl=document.getElementById('bmDel');
@@ -4094,7 +4457,7 @@ function saveProgress(bookId, val){
 function getRelated(b){
   return lib.filter(x=>x.id!==b.id&&!x.isWishlist).map(o=>{
     const rs=[];
-    if(b.category&&b.category===o.category)rs.push(`categoría: ${b.category}`);
+    if(b.category&&b.category===o.category)rs.push(`${t('category')||'categoría'}: ${translateCat(b.category)}`);
     const sk=(b.keywords||[]).filter(k=>(o.keywords||[]).some(ok=>ok.toLowerCase()===k.toLowerCase()));
     if(sk.length)rs.push(`keywords: ${sk.slice(0,2).join(', ')}`);
     const sm=[...new Set((b.notes||[]).map(n=>n.mood).filter(Boolean))].filter(m=>(o.notes||[]).some(n=>n.mood===m));
@@ -4228,8 +4591,8 @@ function renderLib(){
   if(!filtered.length&&!wishBooks.length){
     grid.innerHTML=`<div class="empty" style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:3rem">
   <div style="font-size:3rem;margin-bottom:1rem;opacity:.15">📚</div>
-  <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--muted);margin-bottom:.5rem">${lib.length===0?'Tu galaxia está vacía':'Sin resultados'}</h3>
-  <p style="font-size:.75rem;color:var(--dim);margin-bottom:1.5rem">${lib.length===0?'Usa el botón ＋ para agregar tu primer libro.':'Intenta con otro término o filtro.'}</p>
+  <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--muted);margin-bottom:.5rem">${lib.length===0?(t('noLibYet')||'Tu galaxia está vacía'):(t('noResults')||'Sin resultados')}</h3>
+  <p style="font-size:.75rem;color:var(--dim);margin-bottom:1.5rem">${lib.length===0?(t('noLibSub')||'Usa el botón + para agregar tu primer libro.'):(t('noResultsSub')||'Intenta con otro término o filtro.')}</p>
   ${lib.length===0?`<button onclick="openAdd()" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1.3rem;border-radius:8px;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4)">＋ Agregar primer libro</button>`:''}
 </div>`;
     return;
@@ -4738,10 +5101,279 @@ function initSplash(){
   },2600);
 }
 
-updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);maybeShowWelcome();
+updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);maybeShowOnboarding();
 // ══════════════════════════
-// WELCOME MODAL
+// ONBOARDING
 // ══════════════════════════
+
+// ══════════════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════════════
+var _onbStep = 0;
+var _onbLangSelected = false;
+
+const ONB_TEXTS = {
+  es: {
+    setup_title: 'Personaliza ALINEA',
+    setup_sub: 'Dale nombre a tu universo y elige tu color.',
+    lib_label: 'Nombre de tu biblioteca',
+    color_label: 'Color de acento',
+    guide_title: 'Cómo funciona ALINEA',
+    guide_sub: 'Todo lo que necesitas saber en 30 segundos.',
+    g1t:'Añade libros', g1s:'Usa el botón + para agregar libros a tu galaxia.',
+    g2t:'Captura citas', g2s:'Escribe notas, dicta con voz, o usa IA para analizar imágenes (próximamente).',
+    g3t:'Explorador de ideas', g3s:'Busca cualquier palabra y encuentra todo lo que has pensado sobre ella.',
+    g4t:'Tu galaxia', g4s:'Crece sola con cada libro que agregas. Arrastra, haz zoom, explora.',
+    g5t:'Bitácora de vuelo', g5s:'Estadísticas, conexiones y síntesis IA de toda tu biblioteca.',
+    launch_title: 'Todo listo.',
+    launch_sub: 'Tu universo de conocimiento te espera.\nHagamos visible lo invisible.',
+    launch_btn: '✦ Encender ALINEA',
+    back: '← Atrás', next: 'Siguiente →'
+  },
+  en: {
+    setup_title: 'Customize ALINEA',
+    setup_sub: 'Name your universe and choose your color.',
+    lib_label: 'Your library name',
+    color_label: 'Accent color',
+    guide_title: 'How ALINEA works',
+    guide_sub: 'Everything you need to know in 30 seconds.',
+    g1t:'Add books', g1s:'Use the + button to add books to your galaxy.',
+    g2t:'Capture quotes', g2s:'Write notes, dictate by voice, or use AI to analyze images (coming soon).',
+    g3t:'Idea explorer', g3s:'Search any word and find everything you\'ve thought about it.',
+    g4t:'Your galaxy', g4s:'Grows with every book you add. Drag, zoom, explore.',
+    g5t:'Flight log', g5s:'Stats, connections and AI synthesis of your entire library.',
+    launch_title: 'All set.',
+    launch_sub: 'Your knowledge universe awaits.\nMake the invisible visible.',
+    launch_btn: '✦ Launch ALINEA',
+    back: '← Back', next: 'Next →'
+  },
+  pt: {
+    setup_title: 'Personalize ALINEA',
+    setup_sub: 'Nomeie seu universo e escolha sua cor.',
+    lib_label: 'Nome da sua biblioteca',
+    color_label: 'Cor de destaque',
+    guide_title: 'Como ALINEA funciona',
+    guide_sub: 'Tudo que você precisa saber em 30 segundos.',
+    g1t:'Adicionar livros', g1s:'Use o botão + para adicionar livros à sua galáxia.',
+    g2t:'Capturar citações', g2s:'Escreva notas, dite por voz ou use IA para analisar imagens (em breve).',
+    g3t:'Explorador de ideias', g3s:'Pesquise qualquer palavra e encontre tudo que pensou sobre ela.',
+    g4t:'Sua galáxia', g4s:'Cresce com cada livro adicionado. Arraste, amplie, explore.',
+    g5t:'Diário de voo', g5s:'Estatísticas, conexões e síntese IA de toda a sua biblioteca.',
+    launch_title: 'Tudo pronto.',
+    launch_sub: 'Seu universo de conhecimento espera.\nTornemos visível o invisível.',
+    launch_btn: '✦ Ligar ALINEA',
+    back: '← Voltar', next: 'Próximo →'
+  },
+  fr: {
+    setup_title:"Personnalisez ALINEA",
+    setup_sub:"Nommez votre univers et choisissez votre couleur.",
+    lib_label:"Nom de votre biblioth\u00e8que",
+    color_label:"Couleur d\u2019accent",
+    guide_title:"Comment fonctionne ALINEA",
+    guide_sub:"Tout ce que vous devez savoir en 30 secondes.",
+    g1t:"Ajouter des livres",g1s:"Utilisez le bouton + pour ajouter des livres.",
+    g2t:"Capturer des citations",g2s:"\u00c9crivez des notes ou dictez avec la voix.",
+    g3t:"Explorateur d\u2019id\u00e9es",g3s:"Recherchez un mot et trouvez tout ce que vous en avez pens\u00e9.",
+    g4t:"Votre galaxie",g4s:"Grandit avec chaque livre ajout\u00e9.",
+    g5t:"Journal de bord",g5s:"Statistiques et synth\u00e8se IA de votre biblioth\u00e8que.",
+    launch_title:"Tout est pr\u00eat.",
+    launch_sub:"Votre univers vous attend.\nRendons visible l\u2019invisible.",
+    launch_btn:"\u2726 Lancer ALINEA",
+    back:"\u2190 Retour",next:"Suivant \u2192"
+  },
+  de: {
+    setup_title: 'ALINEA anpassen',
+    setup_sub: 'Benennen Sie Ihr Universum und wählen Sie Ihre Farbe.',
+    lib_label: 'Name Ihrer Bibliothek',
+    color_label: 'Akzentfarbe',
+    guide_title: 'Wie ALINEA funktioniert',
+    guide_sub: 'Alles was Sie in 30 Sekunden wissen müssen.',
+    g1t:'Bücher hinzufügen', g1s:'Nutzen Sie die + Schaltfläche um Bücher zu Ihrer Galaxie hinzuzufügen.',
+    g2t:'Zitate erfassen', g2s:'Schreiben Sie Notizen, diktieren Sie oder nutzen Sie KI für Bilder (bald).',
+    g3t:'Ideenexplorer', g3s:'Suchen Sie nach jedem Wort und finden Sie alles, was Sie darüber gedacht haben.',
+    g4t:'Ihre Galaxie', g4s:'Wächst mit jedem hinzugefügten Buch. Ziehen, zoomen, erkunden.',
+    g5t:'Flugtagebuch', g5s:'Statistiken, Verbindungen und KI-Synthese Ihrer gesamten Bibliothek.',
+    launch_title: 'Alles bereit.',
+    launch_sub: 'Ihr Wissensuniversum wartet.\nMachen Sie das Unsichtbare sichtbar.',
+    launch_btn: '✦ ALINEA starten',
+    back: '← Zurück', next: 'Weiter →'
+  },
+  it: {
+    setup_title: 'Personalizza ALINEA',
+    setup_sub: 'Dai un nome al tuo universo e scegli il tuo colore.',
+    lib_label: 'Nome della tua biblioteca',
+    color_label: 'Colore accentuato',
+    guide_title: 'Come funziona ALINEA',
+    guide_sub: 'Tutto ciò che devi sapere in 30 secondi.',
+    g1t:'Aggiungi libri', g1s:'Usa il pulsante + per aggiungere libri alla tua galassia.',
+    g2t:'Cattura citazioni', g2s:'Scrivi note, detta con la voce o usa l’IA per analizzare immagini (presto)',
+    g3t:"Esploratore di idee", g3s:"Cerca qualsiasi parola e trova tutto ci\u00f2 che hai pensato al riguardo.",
+    g4t:'La tua galassia', g4s:'Cresce con ogni libro aggiunto. Trascina, zoom, esplora.',
+    g5t:'Diario di volo', g5s:'Statistiche, connessioni e sintesi IA di tutta la tua biblioteca.',
+    launch_title: 'Tutto pronto.',
+    launch_sub: 'Il tuo universo di conoscenza ti aspetta.\nRendiamo visibile l’invisibile.',
+    launch_btn: '✦ Accendi ALINEA',
+    back: '← Indietro', next: 'Avanti →'
+  },
+  ja: {
+    setup_title: 'ALINEAをカスタマイズ',
+    setup_sub: 'あなたの宇宙に名前をつけ、色を選んでください。',
+    lib_label: 'ライブラリ名',
+    color_label: 'アクセントカラー',
+    guide_title: 'ALINEAの使い方',
+    guide_sub: '30秒で知っておくべきすべて。',
+    g1t:'本を追加', g1s:'+ ボタンで銀河に本を追加します。',
+    g2t:'引用をキャプチャ', g2s:'メモを書く、音声で口述する、またはAIで画像を分析（近日公開）。',
+    g3t:'アイデアエクスプローラー', g3s:'任意の言葉を検索して、それについて考えたすべてを見つけます。',
+    g4t:'あなたの銀河', g4s:'追加する本ごとに成長します。ドラッグ、ズーム、探索。',
+    g5t:'フライトログ', g5s:'統計、接続、ライブラリ全体のAI合成。',
+    launch_title: '準備完了。',
+    launch_sub: 'あなたの知識の宇宙が待っています。\n見えないものを見えるようにしましょう。',
+    launch_btn: '✦ ALINEAを起動',
+    back: '← 戻る', next: '次へ →'
+  }
+};
+
+function onbSelectLang(lang){
+  // Highlight selected button
+  document.querySelectorAll('.onb-lang-btn').forEach(b=>b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  // Apply lang immediately to whole app
+  currentLang=lang;
+  localStorage.setItem('eter_lang',lang);
+  applyLang();
+  _onbLangSelected=true;
+  // Show next button
+  const nb=document.getElementById('onbNext');
+  if(nb){nb.style.opacity='1';nb.style.pointerEvents='auto';}
+  // Update orb color
+  updateAppIcon && updateAppIcon();
+}
+
+function onbGo(dir){
+  const newStep=_onbStep+dir;
+  if(newStep<0||newStep>4)return;
+  if(newStep>0&&!_onbLangSelected)return;
+  document.getElementById('onbStep'+_onbStep).style.display='none';
+  _onbStep=newStep;
+  document.getElementById('onbStep'+_onbStep).style.display='block';
+  // Update dots
+  document.querySelectorAll('.onb-dot').forEach((d,i)=>d.classList.toggle('active',i===_onbStep));
+  // Update nav buttons
+  const back=document.getElementById('onbBack');
+  const next=document.getElementById('onbNext');
+  if(back){back.style.opacity=_onbStep>0?'1':'0';back.style.pointerEvents=_onbStep>0?'auto':'none';}
+  if(next){
+    if(_onbStep===4){next.style.opacity='0';next.style.pointerEvents='none';}
+    else if(_onbStep===0){next.style.opacity=_onbLangSelected?'1':'0';next.style.pointerEvents=_onbLangSelected?'auto':'none';}
+    else{next.style.opacity='1';next.style.pointerEvents='auto';}
+  }
+  // Populate step content
+  onbPopulateStep(_onbStep);
+}
+
+function onbPopulateStep(step){
+  const lang=currentLang||'es';
+  const tx=ONB_TEXTS[lang]||ONB_TEXTS.es;
+  // Welcome keys from LANGS
+  if(step===1){
+    const el=id=>document.getElementById(id);
+    if(el('onbQ'))el('onbQ').textContent=t('welcomeQ')||'';
+    if(el('onbP1'))el('onbP1').textContent=t('welcomeP1')||'';
+    if(el('onbP2'))el('onbP2').textContent=t('welcomeP2')||'';
+    if(el('onbP3'))el('onbP3').innerHTML=(t('welcomeP3')||'')+' <em style="color:var(--accent2)">'+(t('welcomeP3em')||'')+'</em>'+(t('welcomeP3b')||'');
+    if(el('onbPrivacy'))el('onbPrivacy').innerHTML=(t('welcomePrivacy')||'')+' <strong style="color:var(--accent2)">'+(t('welcomePrivacyLink')||'')+'</strong>.';
+    if(el('onbClosing'))el('onbClosing').textContent=t('welcomeClosing')||'';
+    if(el('onbSign'))el('onbSign').textContent=t('welcomeSign')||'';
+  }
+  if(step===2){
+    document.getElementById('onbSetupTitle').textContent=tx.setup_title;
+    document.getElementById('onbSetupSub').textContent=tx.setup_sub;
+    document.getElementById('onbLibLabel').textContent=tx.lib_label;
+    document.getElementById('onbColorLabel').textContent=tx.color_label;
+    document.getElementById('onbLibName').placeholder=t('myLibrary')||'Mi Biblioteca…';
+  }
+  if(step===3){
+    document.getElementById('onbGuideTitle').textContent=tx.guide_title;
+    document.getElementById('onbGuideSub').textContent=tx.guide_sub;
+    for(let i=1;i<=5;i++){
+      document.getElementById('onbG'+i+'t').textContent=tx['g'+i+'t']||'';
+      document.getElementById('onbG'+i+'s').textContent=tx['g'+i+'s']||'';
+    }
+  }
+  if(step===4){
+    document.getElementById('onbLaunchTitle').textContent=tx.launch_title;
+    document.getElementById('onbLaunchSub').textContent=tx.launch_sub;
+    document.getElementById('onbLaunchBtn').textContent=tx.launch_btn;
+  }
+  // Update nav button labels
+  const back=document.getElementById('onbBack');
+  const next=document.getElementById('onbNext');
+  if(back)back.textContent=tx.back||'← ';
+  if(next&&step<4)next.textContent=tx.next||'→';
+}
+
+function finishOnboarding(){
+  // Save library name if entered
+  const nameInput=document.getElementById('onbLibName');
+  if(nameInput&&nameInput.value.trim()){
+    appState.libName=nameInput.value.trim();
+    persistState();
+    const li=document.getElementById('libNameInput');
+    if(li)li.value=appState.libName;
+    const ls=document.getElementById('libNameSettings');
+    if(ls)ls.value=appState.libName;
+  }
+  closeModal('mOnboarding');
+  document.body.style.overflow='';
+  localStorage.setItem('eter2_onboarded','1');
+  // Trigger welcome animation
+  initSplash&&initSplash();
+  renderLib();renderSidebar();
+}
+
+function maybeShowOnboarding(){
+  if(lib.length===0&&localStorage.getItem('eter2_onboarded')!=='1'){
+    _onbStep=0;
+    _onbLangSelected=false;
+    setTimeout(()=>{
+      showModal('mOnboarding');
+      drawOnbStars();
+      // Reset to step 0
+      for(let i=0;i<=4;i++){
+        const s=document.getElementById('onbStep'+i);
+        if(s)s.style.display=i===0?'block':'none';
+      }
+      document.querySelectorAll('.onb-dot').forEach((d,i)=>d.classList.toggle('active',i===0));
+      const back=document.getElementById('onbBack');
+      const next=document.getElementById('onbNext');
+      if(back){back.style.opacity='0';back.style.pointerEvents='none';}
+      if(next){next.style.opacity='0';next.style.pointerEvents='none';}
+    },800);
+  }
+}
+
+function drawOnbStars(){
+  const cv=document.getElementById('onbStars');
+  if(!cv)return;
+  const modal=document.getElementById('mOnboarding');
+  const W=modal?modal.offsetWidth:540;
+  const H=modal?modal.offsetHeight:620;
+  const dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#07060f');bg.addColorStop(1,'#0c0a1a');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  for(let i=0;i<160;i++){
+    ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*.8+.15,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.45+.08})`;ctx.fill();
+  }
+}
+
 
 // ══════════════════════════
 // WELCOME MODAL STARS
@@ -4791,14 +5423,7 @@ function drawWelcomeStars(){
   }
 }
 // Draw stars when welcome modal opens
-function maybeShowWelcome(){
-  if(lib.length===0){
-    setTimeout(()=>{
-      showModal('mWelcome');
-      setTimeout(drawWelcomeStars,80);
-    },1200);
-  }
-}
+// maybeShowWelcome replaced by maybeShowOnboarding
 
 // ══════════════════════════
 // DRAGGABLE G-TOOLS PANEL
@@ -5047,15 +5672,15 @@ document.addEventListener('click',e=>{
   <button class="fab" id="fabMain" onclick="toggleFab()" title="Acciones rápidas">＋</button>
   <div class="fab-menu" id="fabMenu">
     <div class="fab-item" onclick="toggleFab();openAdd()">
-      <div class="fab-item-label">Agregar libro</div>
+      <div class="fab-item-label" data-i18n="addBookTitle">Agregar libro</div>
       <button class="fab-item-btn" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">📚</button>
     </div>
     <div class="fab-item" onclick="toggleFab();openWishlist()">
-      <div class="fab-item-label" id="fabWishLabel">Ver wishlist</div>
+      <div class="fab-item-label" id="fabWishLabel" data-i18n="wishlistBtn">Ver wishlist</div>
       <button class="fab-item-btn" style="background:linear-gradient(135deg,#92400e,#b45309)">🚀</button>
     </div>
     <div class="fab-item" onclick="toggleFab();document.querySelectorAll('.ntab')[2]?.click()">
-      <div class="fab-item-label">Explorar ideas</div>
+      <div class="fab-item-label" data-i18n="explore2">Explorar ideas</div>
       <button class="fab-item-btn" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">✦</button>
     </div>
   </div>
