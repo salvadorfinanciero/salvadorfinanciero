@@ -1059,6 +1059,11 @@ canvas{-webkit-user-select:none;user-select:none}
         <p style="font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.06em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
       </div>
     </div>
+    <div class="set-s" style="border-bottom:none;padding-bottom:.5rem">
+      <h3 data-i18n="onboardingTitle">Tutorial de inicio</h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="onboardingDesc">¿Quieres volver a ver la guía de bienvenida?</p>
+      <button onclick="closeModal('mSettings');setTimeout(()=>{localStorage.removeItem('eter2_onboarded');maybeShowOnboarding();},200)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
+    </div>
     <div class="set-s" style="border:none">
       <h3>Desarrollado por</h3>
       <div style="display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
@@ -1166,7 +1171,7 @@ canvas{-webkit-user-select:none;user-select:none}
 
 
 <!-- ONBOARDING MODAL -->
-<div class="modal" id="mOnboarding" style="width:560px;max-width:96vw;overflow:hidden;background:transparent!important;border-color:rgba(139,92,246,.4)!important;padding:0!important">
+<div class="modal" id="mOnboarding" style="width:560px;max-width:96vw;overflow:hidden;background:transparent!important;border-color:var(--accent)!important;padding:0!important">
   <canvas id="onbStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px;z-index:0"></canvas>
   <div style="position:relative;z-index:1;padding:2rem 2rem 1.5rem">
 
@@ -1190,6 +1195,8 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="onb-lang-btn" onclick="onbSelectLang('en')">English</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('pt')">Português</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('fr')">Français</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('de')">Deutsch</button>
+        <button class="onb-lang-btn" onclick="onbSelectLang('it')">Italiano</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('de')">Deutsch</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('it')">Italiano</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('ja')" style="grid-column:span 3;max-width:160px;margin:0 auto;width:100%">日本語</button>
@@ -1358,6 +1365,7 @@ es:{name:'Español',t:{
   ownedUnread:'Tengo, no leído',noPendingBooks:'No tienes libros pendientes.',
   noCategory:'Sin categoría',
   filterAll:'Todas',
+  onboardingTitle:'Tutorial de inicio',onboardingDesc:'¿Quieres volver a ver la guía de bienvenida?',onboardingBtn:'✦ Ver guía de inicio',
   addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',keywordsInitial:'Keywords iniciales (coma)',kwPlaceholder:'inversión, mentalidad…',ownedRead:'📚 Leído (ya lo tengo y lo leí)',ownedUnreadOpt:'📖 Lo tengo, no lo he leído',reading2:'📖 Leyendo ahora',wishlist2:'🚀 Lo quiero (Wishlist)',topFive:'TU TOP 5',filterNone:'Ninguna',category:'Categorías',explore2:'Explorar ideas',
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
   secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
@@ -1428,6 +1436,7 @@ en:{name:'English',t:{
   friendName:'Friend\'s name…',friendJsonPlaceholder:'Paste exported JSON here (Download JSON)…',addGalaxy:'Add',copyCode:'Copy my sharing code',
   close:'Close',verifyConn:'Verify connection',providerLabel:'AI Provider',apiKeyLabel:'API Key',
   filterAll:'All',
+  onboardingTitle:'Getting started',onboardingDesc:'Want to see the welcome guide again?',onboardingBtn:'✦ View getting started',
   addBookTitle:'Add book',addBookSub:'Write the title — the cover loads automatically.',keywordsInitial:'Initial keywords (comma)',kwPlaceholder:'investment, mindset…',ownedRead:'📚 Read (I own it and read it)',ownedUnreadOpt:'📖 I own it, not read yet',reading2:'📖 Reading now',wishlist2:'🚀 I want it (Wishlist)',topFive:'YOUR TOP 5',filterReading:'Reading',filterOwned:'Unread',filterWishlist:'Wishlist',
   sortRecent:'Recent',sortTitle:'Title A-Z',sortAuthor:'Author A-Z',sortRating:'Rating',
   emptyLib:'Your library is empty. Add your first book.',
@@ -1506,6 +1515,7 @@ pt:{name:'Português',t:{
   ownedUnread:'Tenho, não li',noPendingBooks:'Sem livros pendentes.',
   noCategory:'Sem categoria',
   filterAll:'Todas',filterNone:'Nenhuma',
+  onboardingTitle:'Tutorial inicial',onboardingDesc:'Quer ver o guia de boas-vindas novamente?',onboardingBtn:'✦ Ver guia inicial',
   addBookTitle:'Adicionar livro',addBookSub:'Escreva o título — a capa carrega automaticamente.',keywordsInitial:'Keywords iniciais (vírgula)',kwPlaceholder:'investimento, mentalidade…',ownedRead:'📚 Lido (tenho e li)',ownedUnreadOpt:'📖 Tenho, não li ainda',reading2:'📖 Lendo agora',wishlist2:'🚀 Quero (Wishlist)',topFive:'SEU TOP 5',category:'Categorias',explore2:'Explorar ideias',
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoria',statusLabel:'Status do livro',coverUrlLabel:'URL da capa',
   secNotas:'Notas & Destaques',secKeywords:'Keywords',secRelated:'Livros relacionados',
@@ -1614,6 +1624,7 @@ fr:{name:'Français',t:{
   ownedUnread:"Je l'ai, non lu",noPendingBooks:'Aucun livre en attente.',
   noCategory:'Sans catégorie',
   filterAll:'Toutes',
+  onboardingTitle:'Tutoriel de démarrage',onboardingDesc:'Vous voulez revoir le guide de bienvenue?',onboardingBtn:'✦ Voir le guide',
   addBookTitle:'Ajouter un livre',addBookSub:'Écrivez le titre — la couverture se charge automatiquement.',keywordsInitial:'Mots-clés initiaux (virgule)',kwPlaceholder:'investissement, mentalité…',ownedRead:'📚 Lu (je l’ai et je l’ai lu)',ownedUnreadOpt:'📖 Je l’ai, pas encore lu',reading2:'📖 En train de lire',wishlist2:'🚀 Je le veux (Wishlist)',topFive:'VOTRE TOP 5',filterNone:'Aucune',category:'Catégories',explore2:'Explorer les idées',
   titleLabel:'Titre',authorLabel:'Auteur',categoryLabel:'Catégorie',statusLabel:'Statut du livre',coverUrlLabel:'URL de couverture',
   secNotas:'Notes & Surlignements',secKeywords:'Mots-clés',secRelated:'Livres liés',
@@ -1793,6 +1804,7 @@ ja:{name:'日本語',t:{
   friendName:'友達の名前…',friendJsonPlaceholder:'エクスポートされたJSONをここに貼り付け…',addGalaxy:'追加',copyCode:'共有コードをコピー',
   close:'閉じる',verifyConn:'接続を確認',providerLabel:'AIプロバイダー',apiKeyLabel:'APIキー',
   filterAll:'全て',
+  onboardingTitle:'はじめ方',onboardingDesc:'ウェルカムガイドをもう一度見ますか？',onboardingBtn:'✦ ガイドを見る',
   addBookTitle:'本を追加',addBookSub:'タイトルを入力 — 表紙は自動的に読み込まれます。',keywordsInitial:'初期キーワード（カンマ）',kwPlaceholder:'投資、マインドセット…',ownedRead:'📚 読了（持っていて読んだ）',ownedUnreadOpt:'📖 持っているが未読',reading2:'📖 読書中',wishlist2:'🚀 欲しい（ウィッシュリスト）',topFive:'あなたのトップ5',filterReading:'読書中',filterOwned:'未読',filterWishlist:'ウィッシュリスト',
   sortRecent:'最新',sortTitle:'タイトル順',sortAuthor:'著者順',sortRating:'評価',
   emptyLib:'ライブラリが空です。最初の本を追加してください。',
@@ -2209,6 +2221,9 @@ function applyAccentTheme(name){
     .btn-note{border-color:${t.accent}!important;color:${t.accent2}!important}
     .btn-note:hover{background:${t.glow}!important}
     .btn-note-primary{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;color:#fff!important;border:none!important}
+    #mOnboarding{border-color:${t.accent}!important;box-shadow:0 0 40px ${t.glow},0 30px 90px rgba(0,0,0,.85)!important}
+    #onbLaunchBtn{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;box-shadow:0 4px 24px ${t.glow}!important}
+    #onbNext{background:linear-gradient(135deg,${t.accent3},${t.accent})!important;box-shadow:0 2px 12px ${t.glow}!important}
   `;
   // Update app icon with new accent color
   updateAppIcon(t.accent, t.accent3);
