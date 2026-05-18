@@ -204,7 +204,7 @@ body::before{content:'';position:fixed;inset:0;background:
 #gCanvas{width:100%;height:100%;display:block;cursor:grab}
 #gCanvas:active{cursor:grabbing}
 .g-tools{position:absolute;top:.9rem;right:.9rem;display:flex;flex-direction:column;gap:.5rem;z-index:10}
-.g-tools .btic{width:46px;height:46px;font-size:1.05rem;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.5)}
+.g-tools .btic{width:46px;height:46px;font-size:1.05rem;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.5);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .g-lib-name{position:absolute;top:.35rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem}
 .g-lib-name input{background:rgba(12,10,24,.85);border:1px solid var(--border);color:var(--accent2);font-family:'Playfair Display',serif;font-size:.85rem;font-style:italic;padding:.28rem .7rem;border-radius:6px;outline:none;text-align:center;width:200px;transition:border-color .2s}
 .g-lib-name input:focus{border-color:var(--accent)}
@@ -548,7 +548,7 @@ canvas{-webkit-user-select:none;user-select:none}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
   .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:20px!important;top:auto!important;right:auto!important;flex-direction:row!important;gap:.3rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:14px;padding:.25rem .3rem;backdrop-filter:blur(24px);z-index:200;transform:none!important}
-  .g-tools .btic{width:36px;height:36px;font-size:.95rem;border-radius:8px;box-shadow:none}
+  .g-tools .btic{width:36px;height:36px;font-size:.95rem;border-radius:8px;box-shadow:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .g-tools.collapsed #gToolsExpandable{display:none!important}
   .g-tools.collapsed #gToolsCollapseBtn{font-size:.8rem;opacity:.9}
 
@@ -727,7 +727,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btic" onclick="toggleGalaxyWishlist()" title="Mostrar/ocultar wishlist" id="wishGalBtn" style="font-size:.85rem">🚀</button>
       </div>
       <!-- Category filter panel -->
-      <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:600;min-width:200px;max-width:min(260px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
+      <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:1000;min-width:200px;max-width:min(260px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
           <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">Categorías</span>
           <div style="display:flex;gap:.3rem">
@@ -778,7 +778,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="margin-top:1.5rem">
           <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.7rem">
             <span style="font-size:1rem;opacity:.5">💾</span>
-            '+( t('exportarImportar')||'💾 '+( t('exportarImportar')||'Exportar, importar y herramientas avanzadas')+' → botón')+' <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
+            '+( t('exportarImportar')||'Exportar, importar')+'  → Configuración' <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
           </div>
         </div>
       </div>
@@ -1195,11 +1195,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="onb-lang-btn" onclick="onbSelectLang('en')">English</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('pt')">Português</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('fr')">Français</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('de')">Deutsch</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('it')">Italiano</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('de')">Deutsch</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('it')">Italiano</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('ja')" style="grid-column:span 3;max-width:160px;margin:0 auto;width:100%">日本語</button>
+              <button class="onb-lang-btn" <button class="onb-lang-btn" <button class="onb-lang-btn" onclick="onbSelectLang('ja')" style="grid-column:span 3;max-width:160px;margin:0 auto;width:100%">日本語</button>
       </div>
     </div>
 
@@ -1630,115 +1626,7 @@ fr:{name:'Français',t:{
   secNotas:'Notes & Surlignements',secKeywords:'Mots-clés',secRelated:'Livres liés',
   terminados:'Terminés',leyendo:'En cours',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Mots-clés',ratingProm:'Note moy.',masAnotados:'📝 Plus annotés',keywordsFrecuentes:'🔑 Mots-clés fréquents',borrarReiniciar:'☢ Tout supprimer',colisionBtn:'Collision d’idées',horizonteBtn:'Horizon des événements',colisionTitle:'Collision d’idées ✔',horizonteTitle:'Horizon des événements',footerText:'ALINEA · Bibliothèque Mentale · Tous droits réservés',exploreSub:'Les mots flottent. Glissez-les ou écrivez pour chercher.',exportarImportar:'💾 Exporter, importer et outils avancés',densestSystem:'🌟 Système le plus dense',gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
 }},
-de:{name:'Deutsch',t:{
-  library:'Bibliothek',galaxy:'Galaxie',explore:'Entdecken',log:'Logbuch',
-  addBook:'＋ Buch hinzufügen',search:'Suchen…',settings:'Einstellungen',wishlistBtn:'Wunschliste',
-  galaxyHint:'Sonnensystem · Ziehen · Scrollen = Zoom · Klick = Buch · Animierte Umlaufbahnen',
-  exploreTitle:'Ideen erkunden',exploreSubtitle:'Tippen zum Erkunden · Ziehen zum Bewegen · Telefon neigen',
-  exploreEmpty:'Tippen Sie zum Erkunden Ihrer Notizen.',explorePlaceholder:'Disziplin, Geld, Zweck…',
-  gravOff:'Schwerkraft: AUS',gravOn:'Schwerkraft: AN',
-  logTitle:'Fluglogbuch',logSubtitle:'Berichte aus Ihrer Galaxie — wachsende Bereiche, gefundene Verbindungen, Wissenssynthese.',
-  generateSynthesis:'✦ KI-Synthese generieren',wishlistMissions:'Wunschliste — kommende Missionen',galaxyConnections:'Galaxieverbindungen',
-  notas:'Notizen & Markierungen',keywords:'Schlüsselwörter',relatedBooks:'Verwandte Bücher',
-  notePlaceholder:'Schreiben Sie eine Markierung, Idee oder Reflexion…',pagePlaceholder:'Seite',commentPlaceholder:'Kommentar (optional)',
-  addNote:'+ Notiz',camera:'Kamera',dictate:'Diktieren',
-  progress:'Fortschritt',rating:'Bewertung',editBook:'Buch bearbeiten',
-  pending:'Ausstehend',reading:'Lese gerade',done:'Fertig',
-  noNotes:'Noch keine Notizen — schreiben Sie die erste oben.',
-  searchNotes:'Nach Wort, Seite suchen…',
-  newKeyword:'Neues Schlüsselwort…',add:'+ Add',
-  addBookTitle:'Buch hinzufügen',addBookSub:'Titel eingeben — Cover lädt automatisch.',
-  author:'Autor',category:'Kategorie',initialKeywords:'Anfangs-Keywords (Komma)',bookStatus:'Buchstatus',
-  coverUrl:'Cover-URL (optional)',coverUrlPlaceholder:'https://… Bild-URL einfügen',
-  cancel:'Abbrechen',save:'Speichern',
-  statusRead:'Gelesen (habe und las es)',statusOwned:'Habe es, noch nicht gelesen',statusWishlist:'Wunschliste (habe es noch nicht)',
-  wishlistTitle:'Kommende Missionen',wishlistSub:'Bücher auf dem Weg zu Ihrer Galaxie.',
-  quickAddWishlist:'Schnell zur Liste hinzufügen',quickAddBtn:'Hinzufügen',wishTitlePlaceholder:'Buchtitel…',wishAuthorPlaceholder:'Autor…',
-  iAlreadyHave:'Habe es',markRead:'Bereits gelesen',
-  settingsTitle:'Einstellungen',settingsSub:'Verbinden Sie Ihre KI für automatische Analyse und Vision KI.',
-  langTitle:'Sprache',langDesc:'Ändern Sie die Sprache der gesamten ALINEA-Oberfläche.',
-  aiTitle:'Über KI',aiDesc:'Beim Hinzufügen von Notizen werden Keywords und Stimmung extrahiert. In Entdecken und Logbuch werden Synthesen erstellt. Ihr Schlüssel bleibt im Browser.',
-  backupTitle:'Daten & Backup',
-  backupIntro:'Ihre Bibliothek lebt nur in diesem Browser. Bei Gerätewechsel könnten Sie sie verlieren. Backup ist Ihre Lebensversicherung.',
-  jsonTitle:'JSON — Echtes Backup',jsonDesc:'Alle Ihre Bücher, Notizen und Keywords in einer leichten Datei. Sofort auf jedem Gerät reimportierbar.',
-  pdfTitle:'PDF — Zum Lesen & Drucken',pdfDesc:'Visuelle Version Ihrer Bibliothek. Nicht für die Wiederherstellung, aber ideal zum Archivieren.',
-  downloadJson:'JSON herunterladen',downloadPdf:'PDF herunterladen',
-  importTitle:'Von JSON wiederherstellen',importDesc:'Gerät gewechselt? Laden Sie Ihre JSON-Datei hoch.',importWarning:'Ersetzt aktuelle Daten.',selectFile:'Datei auswählen',
-  friendsTitle:'Freundes-Galaxien',friendsDesc:'Fügen Sie das JSON eines Freundes ein, um seine Galaxie neben Ihrer zu sehen.',
-  friendName:'Name des Freundes…',friendJsonPlaceholder:'Exportiertes JSON hier einfügen…',addGalaxy:'Hinzufügen',copyCode:'Meinen Teilungscode kopieren',
-  close:'Schließen',verifyConn:'Verbindung prüfen',providerLabel:'KI-Anbieter',apiKeyLabel:'API-Schlüssel',
-  filterAll:'Alle',filterReading:'Lese gerade',filterOwned:'Ungelesen',filterWishlist:'Wunschliste',
-  sortRecent:'Neueste',sortTitle:'Titel A-Z',sortAuthor:'Autor A-Z',sortRating:'Bewertung',
-  emptyLib:'Ihre Bibliothek ist leer. Fügen Sie Ihr erstes Buch hinzu.',
-  devBy:'Entwickelt von',
-  addGalaxyLabel:'Galaxie hinzufügen',appTagline:'Mentale Bibliothek',allRightsReserved:'Alle Rechte vorbehalten',
-  aiTools:'KI-Werkzeuge',collisionIdeas:'Ideenkollision',horizonEvents:'Ereignishorizont',
-  dangerZone:'Gefahrenzone',hardReset:'Alles löschen und neu starten',calculating:'Berechnung…',
-  copied:'Kopiert!',noFriendGalaxies:'Sie haben noch keine Freundes-Galaxien hinzugefügt.',
-  bitacoraHint:'Exportieren, importieren und erweiterte Tools → Einstellungen',
-  noApiKey:'Kein API-Schlüssel',apiKeySaved:'API-Schlüssel gespeichert',
-  saveChanges:'Änderungen speichern',activateCamera:'Kamera aktivieren',captureAnalyze:'Aufnehmen und analysieren',
-  volumen:'Volumen',knowledge:'Wissen',densestSystem:'Dichtestes System',activeGalaxies:'Aktive Galaxien',
-  booksInGalaxy:'Bücher in deiner Galaxie',inWishlist:'auf Wunschliste',notesAndKeywords:'Notizen · {kw} einzigartige Keywords',
-  booksCount:'Bücher',addBooksWithCats:'Füge Bücher mit Kategorien hinzu',noCatsYet:'Noch keine Kategorien',
-  addKeywordsForConnections:'Füge Keywords und Notizen hinzu, um Verbindungen zu sehen.',
-  ownedUnread:'Habe es, ungelesen',noPendingBooks:'Keine ausstehenden Bücher.',
-}},
-it:{name:'Italiano',t:{
-  library:'Biblioteca',galaxy:'Galassia',explore:'Esplora',log:'Diario',
-  addBook:'＋ Aggiungi libro',search:'Cerca…',settings:'Impostazioni',wishlistBtn:'Lista desideri',
-  galaxyHint:'Sistema solare · Trascina · Scroll = zoom · Clic = libro · Orbite animate',
-  exploreTitle:'Esplorare idee',exploreSubtitle:'Tocca per esplorare · Trascina per spostare · Inclina il telefono',
-  exploreEmpty:'Scrivi per esplorare le tue note.',explorePlaceholder:'disciplina, denaro, scopo…',
-  gravOff:'Gravità: OFF',gravOn:'Gravità: ON',
-  logTitle:'Diario di volo',logSubtitle:'Rapporti dalla tua galassia — aree in crescita, connessioni trovate, sintesi della conoscenza.',
-  generateSynthesis:'✦ Genera sintesi IA',wishlistMissions:'Lista desideri — prossime missioni',galaxyConnections:'Connessioni tra galassie',
-  notas:'Note & Sottolineature',keywords:'Parole chiave',relatedBooks:'Libri correlati',
-  notePlaceholder:'Scrivi un\'evidenziazione, idea o riflessione…',pagePlaceholder:'Pag.',commentPlaceholder:'Commento (opzionale)',
-  addNote:'+ Nota',camera:'Fotocamera',dictate:'Dettare',
-  progress:'Progresso',rating:'Valutazione',editBook:'Modifica libro',
-  pending:'In attesa',reading:'In lettura',done:'Terminato',
-  noNotes:'Ancora nessuna nota — scrivi la prima sopra.',
-  searchNotes:'Cerca per parola, pagina…',
-  newKeyword:'Nuova parola chiave…',add:'+ Add',
-  addBookTitle:'Aggiungi libro',addBookSub:'Digita il titolo — la copertina si carica automaticamente.',
-  author:'Autore',category:'Categoria',initialKeywords:'Parole chiave iniziali (virgola)',bookStatus:'Stato del libro',
-  coverUrl:'URL copertina (opzionale)',coverUrlPlaceholder:'https://… incolla URL immagine',
-  cancel:'Annulla',save:'Salva',
-  statusRead:'Letto (ce l\'ho e l\'ho letto)',statusOwned:'Ce l\'ho, non ancora letto',statusWishlist:'Lista desideri (non ce l\'ho ancora)',
-  wishlistTitle:'Prossime Missioni',wishlistSub:'Libri in viaggio verso la tua galassia.',
-  quickAddWishlist:'Aggiungi rapidamente alla lista',quickAddBtn:'Aggiungi',wishTitlePlaceholder:'Titolo del libro…',wishAuthorPlaceholder:'Autore…',
-  iAlreadyHave:'Ce l\'ho',markRead:'Già letto',
-  settingsTitle:'Impostazioni',settingsSub:'Collega la tua IA per analisi automatica e Vision IA.',
-  langTitle:'Lingua',langDesc:'Cambia la lingua dell\'intera interfaccia ALINEA.',
-  aiTitle:'Sull\'IA',aiDesc:'Aggiungendo note estrae parole chiave e umore. In Esplora e Diario genera sintesi. Vision IA legge le pagine con la fotocamera. La tua chiave resta nel browser.',
-  backupTitle:'Dati & Backup',
-  backupIntro:'La tua biblioteca vive solo in questo browser. Cambiando dispositivo potresti perderla. Il backup è la tua assicurazione sulla vita.',
-  jsonTitle:'JSON — Backup reale',jsonDesc:'Tutti i tuoi libri, note e parole chiave in un file leggero. Reimportabile istantaneamente.',
-  pdfTitle:'PDF — Per leggere e stampare',pdfDesc:'Versione visiva della tua biblioteca. Ideale per archiviare o condividere.',
-  downloadJson:'Scarica JSON',downloadPdf:'Scarica PDF',
-  importTitle:'Ripristina da JSON',importDesc:'Hai cambiato dispositivo? Carica il tuo file JSON e la tua galassia appare.',importWarning:'Sostituisce i dati attuali.',selectFile:'Seleziona file',
-  friendsTitle:'Galassie degli amici',friendsDesc:'Incolla il JSON di un amico per vedere la sua galassia accanto alla tua.',
-  friendName:'Nome dell\'amico…',friendJsonPlaceholder:'Incolla qui il JSON esportato…',addGalaxy:'Aggiungi',copyCode:'Copia il mio codice di condivisione',
-  close:'Chiudi',verifyConn:'Verifica connessione',providerLabel:'Fornitore IA',apiKeyLabel:'Chiave API',
-  filterAll:'Tutti',filterReading:'In lettura',filterOwned:'Non letti',filterWishlist:'Lista desideri',
-  sortRecent:'Recente',sortTitle:'Titolo A-Z',sortAuthor:'Autore A-Z',sortRating:'Valutazione',
-  emptyLib:'La tua biblioteca è vuota. Aggiungi il tuo primo libro.',
-  devBy:'Sviluppato da',
-  addGalaxyLabel:'Aggiungi galassia',appTagline:'Biblioteca Mentale',allRightsReserved:'Tutti i diritti riservati',
-  aiTools:'Strumenti IA',collisionIdeas:'Collisione di idee',horizonEvents:'Orizzonte degli eventi',
-  dangerZone:'Zona di pericolo',hardReset:'Elimina tutto e riavvia',calculating:'Calcolo…',
-  copied:'Copiato!',noFriendGalaxies:'Non hai ancora aggiunto galassie di amici.',
-  bitacoraHint:'Esporta, importa e strumenti avanzati → pulsante Impostazioni',
-  noApiKey:'Nessuna chiave API',apiKeySaved:'Chiave API salvata',
-  saveChanges:'Salva modifiche',activateCamera:'Attiva fotocamera',captureAnalyze:'Cattura e analizza',
-  volumen:'Volume',knowledge:'Conoscenza',densestSystem:'Sistema più denso',activeGalaxies:'Galassie attive',
-  booksInGalaxy:'libri nella tua galassia',inWishlist:'in lista',notesAndKeywords:'note · {kw} parole chiave uniche',
-  booksCount:'libri',addBooksWithCats:'Aggiungi libri con categorie',noCatsYet:'Ancora nessuna categoria',
-  addKeywordsForConnections:'Aggiungi parole chiave e note ai tuoi libri per vedere connessioni.',
-  ownedUnread:"Ce l'ho, non letto",noPendingBooks:'Nessun libro in sospeso.',
-}},
-ja:{name:'日本語',t:{
+a:{name:'日本語',t:{
   library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
   accentColor:'アクセントカラー',textSize:'テキストサイズ',libNameLabel:'ライブラリ名',
   small:'小',normal:'標準',large:'大',xl:'特大',
@@ -5212,23 +5100,6 @@ const ONB_TEXTS = {
     launch_sub: 'Ihr Wissensuniversum wartet.\nMachen Sie das Unsichtbare sichtbar.',
     launch_btn: '✦ ALINEA starten',
     back: '← Zurück', next: 'Weiter →'
-  },
-  it: {
-    setup_title: 'Personalizza ALINEA',
-    setup_sub: 'Dai un nome al tuo universo e scegli il tuo colore.',
-    lib_label: 'Nome della tua biblioteca',
-    color_label: 'Colore accentuato',
-    guide_title: 'Come funziona ALINEA',
-    guide_sub: 'Tutto ciò che devi sapere in 30 secondi.',
-    g1t:'Aggiungi libri', g1s:'Usa il pulsante + per aggiungere libri alla tua galassia.',
-    g2t:'Cattura citazioni', g2s:'Scrivi note, detta con la voce o usa l’IA per analizzare immagini (presto)',
-    g3t:"Esploratore di idee", g3s:"Cerca qualsiasi parola e trova tutto ci\u00f2 che hai pensato al riguardo.",
-    g4t:'La tua galassia', g4s:'Cresce con ogni libro aggiunto. Trascina, zoom, esplora.',
-    g5t:'Diario di volo', g5s:'Statistiche, connessioni e sintesi IA di tutta la tua biblioteca.',
-    launch_title: 'Tutto pronto.',
-    launch_sub: 'Il tuo universo di conoscenza ti aspetta.\nRendiamo visibile l’invisibile.',
-    launch_btn: '✦ Accendi ALINEA',
-    back: '← Indietro', next: 'Avanti →'
   },
   ja: {
     setup_title: 'ALINEAをカスタマイズ',
