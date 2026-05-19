@@ -424,9 +424,9 @@ body::before{content:'';position:fixed;inset:0;background:
 .sec::after{content:'';flex:1;height:1px;background:var(--border)}
 @keyframes noteIn{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .notes-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.85rem}
-.nitem{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem .95rem;position:relative;transition:border-color .18s,box-shadow .18s}
+.nitem{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem .95rem;position:relative;transition:border-color .18s,box-shadow .18s,background .18s;cursor:pointer}
 .nitem.just-added{animation:noteIn .32s cubic-bezier(.22,1,.36,1) both;border-color:rgba(139,92,246,.45);box-shadow:0 0 0 3px rgba(139,92,246,.1)}
-.nitem:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.nitem:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px rgba(139,92,246,.2);background:rgba(139,92,246,.05)}
 .npg{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);letter-spacing:.1em;margin-bottom:.3rem;text-transform:uppercase;opacity:.9}
 .ntxt{font-size:.82rem;line-height:1.72;color:#f0eeff;font-style:italic;font-family:'Playfair Display',serif}
 .ntxt mark{background:rgba(139,92,246,.2);color:var(--accent2);border-radius:2px;padding:0 .1em;font-style:italic}
@@ -519,7 +519,19 @@ body::before{content:'';position:fixed;inset:0;background:
 .star-sm{font-size:.7rem}
 .star-display{display:flex;gap:.1rem}
 
-/* ── FAB ── */
+/* ── QUOTE POPUP ── */
+#quotePopup{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:1.2rem}
+#quotePopup.open{display:flex}
+#quotePopupBg{position:absolute;inset:0;background:rgba(3,2,10,.82);backdrop-filter:blur(6px)}
+#quotePopupCard{position:relative;z-index:1;background:linear-gradient(135deg,#07060f,#0c0a1a);border:1px solid var(--border2);border-radius:16px;padding:1.6rem 1.5rem 1.2rem;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
+.qp-quote{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:.8rem}
+.qp-source{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.05em;margin-bottom:1.1rem}
+.qp-actions{display:flex;gap:.5rem;align-items:center}
+.qp-share{flex:1;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.52rem .9rem;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 2px 12px var(--glow);transition:all .15s}
+.qp-share:hover{opacity:.88;transform:translateY(-1px)}
+.qp-open{background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.5rem .85rem;border-radius:8px;cursor:pointer;transition:all .15s}
+.qp-close{position:absolute;top:.65rem;right:.65rem;background:none;border:none;color:var(--dim);font-size:.9rem;cursor:pointer;padding:.2rem;line-height:1;transition:color .13s}
+.qp-close:hover{color:var(--text)}
 .fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 80px);right:1.4rem;z-index:300;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
 .fab{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;color:#fff;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,92,246,.5);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
 .fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(139,92,246,.65)}
@@ -725,6 +737,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btic" onclick="gZoom(.83)">－</button>
         <button class="btic" onclick="toggleCatFilterPanel()" title="Filtrar categorías" id="catFilterBtn" style="font-size:.85rem">⊜</button>
         <button class="btic" onclick="toggleGalaxyWishlist()" title="Mostrar/ocultar wishlist" id="wishGalBtn" style="font-size:.85rem">🚀</button>
+        <button class="btic" onclick="shareGalaxySnapshot()" title="Compartir galaxia" id="sharGalBtn" style="font-size:.85rem">📸</button>
       </div>
       <!-- Category filter panel -->
       <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:1000;min-width:200px;max-width:min(260px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
@@ -1069,6 +1082,28 @@ canvas{-webkit-user-select:none;user-select:none}
       <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="onboardingDesc">¿Quieres volver a ver la guía de bienvenida?</p>
       <button onclick="closeModal('mSettings');setTimeout(()=>{localStorage.removeItem('eter2_onboarded');forceShowOnboarding();},200)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
     </div>
+    <div class="set-s" style="border-bottom:1px solid var(--border)">
+      <h3 style="display:flex;align-items:center;gap:.5rem">💬 <span data-i18n="helpTitle">Help & Feedback</span></h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.7rem" data-i18n="helpDesc">¿Tienes dudas o sugerencias? Escríbenos.</p>
+      <div style="display:flex;flex-direction:column;gap:.45rem">
+        <a href="mailto:hello.alinea.io@gmail.com" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
+          <span style="font-size:1.1rem">✉️</span>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpEmailLabel">Soporte por email</div>
+            <div style="font-size:.64rem;color:var(--muted)">hello.alinea.io@gmail.com</div>
+          </div>
+          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
+        </a>
+        <a href="https://instagram.com/alinea.io" target="_blank" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
+          <span style="font-size:1.1rem">📸</span>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpIgLabel">Instagram oficial</div>
+            <div style="font-size:.64rem;color:var(--muted)">@alinea.io</div>
+          </div>
+          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
+        </a>
+      </div>
+    </div>
     <div class="set-s" style="border:none">
       <h3 data-i18n="devBy">Desarrollado por</h3>
       <div style="display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
@@ -1381,6 +1416,8 @@ es:{name:'Español',t:{
   copyGalaxyBtn:'📋 Copiar código de galaxia',viewFriendBtn:'👁 Ver galaxia de amigo',
   hardResetTitle:'☢ Hard Reset',hardResetDesc:'Elimina toda la información guardada — libros, notas, keywords, configuración. Esta acción no se puede deshacer.',
   authorNoteToggleShow:'✦ Ver nota del autor',authorNoteToggleHide:'✦ Ocultar nota del autor',
+  helpTitle:'Ayuda & Feedback',helpDesc:'¿Tienes dudas o sugerencias? Escríbenos.',
+  helpEmailLabel:'Soporte por email',helpIgLabel:'Instagram oficial',
   addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',keywordsInitial:'Keywords iniciales (coma)',kwPlaceholder:'inversión, mentalidad…',ownedRead:'📚 Leído (ya lo tengo y lo leí)',ownedUnreadOpt:'📖 Lo tengo, no lo he leído',reading2:'📖 Leyendo ahora',wishlist2:'🚀 Lo quiero (Wishlist)',topFive:'TU TOP 5',filterNone:'Ninguna',category:'Categorías',explore2:'Explorar ideas',
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
   secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
@@ -1469,6 +1506,8 @@ en:{name:'English',t:{
   copyGalaxyBtn:'📋 Copy galaxy code',viewFriendBtn:'👁 View friend\'s galaxy',
   hardResetTitle:'☢ Hard Reset',hardResetDesc:'Deletes all saved information — books, notes, keywords, settings. This action cannot be undone.',
   authorNoteToggleShow:'✦ View author\'s note',authorNoteToggleHide:'✦ Hide author\'s note',
+  helpTitle:'Help & Feedback',helpDesc:'Questions or suggestions? Reach out.',
+  helpEmailLabel:'Email support',helpIgLabel:'Official Instagram',
   addBookTitle:'Add book',addBookSub:'Write the title — the cover loads automatically.',keywordsInitial:'Initial keywords (comma)',kwPlaceholder:'investment, mindset…',ownedRead:'📚 Read (I own it and read it)',ownedUnreadOpt:'📖 I own it, not read yet',reading2:'📖 Reading now',wishlist2:'🚀 I want it (Wishlist)',topFive:'YOUR TOP 5',filterReading:'Reading',filterOwned:'Unread',filterWishlist:'Wishlist',
   sortRecent:'Recent',sortTitle:'Title A-Z',sortAuthor:'Author A-Z',sortRating:'Rating',
   emptyLib:'Your library is empty. Add your first book.',
@@ -1764,6 +1803,7 @@ let gNodes=[], gEdges=[], gSystems=[], gOff={x:0,y:0}, gSc=1;
 let gDragNode=null, gPan=false, gLast=null;
 let gAnimT=null, gAngles={};
 let expTimer=null;
+let _exploreMatches=[];
 // Friend galaxies — array of {name, lib, color}
 let friendGalaxies=JSON.parse(localStorage.getItem('eter2_friends')||'[]');
 const persistFriends=()=>localStorage.setItem('eter2_friends',JSON.stringify(friendGalaxies));
@@ -3163,6 +3203,14 @@ function renderNotes(b, query='', newIdx=-1){
       ${tags}
       <button class="ndel" onclick="delNote(${b.id},${i})">✕</button>
       <button class="nedit" onclick="editNote(${b.id},${i})">✎</button>`;
+    el.dataset.noteText=n.text;
+    el.dataset.bookTitle=b.title;
+    el.dataset.bookAuthor=b.author||'';
+    el.style.cursor='pointer';
+    el.addEventListener('click',e=>{
+      if(e.target.closest('.ndel,.nedit,.nai,.naitag'))return;
+      showQuotePopup(b.id,n.text,b.title,b.author||'');
+    });
     list.appendChild(el);
     // Remove animation class after it plays so re-renders don't re-animate
     if(i===newIdx) setTimeout(()=>el.classList.remove('just-added'),600);
@@ -3391,6 +3439,136 @@ function activateWord(el,word){
   onExplore();
 }
 
+// ── QUOTE POPUP ──────────────────────────────────────
+var _qpBookId=null,_qpQuoteText='',_qpBookTitle='',_qpBookAuthor='';
+function showQuotePopup(bookId,quoteText,bookTitle,bookAuthor){
+  _qpBookId=bookId;_qpQuoteText=quoteText;_qpBookTitle=bookTitle;_qpBookAuthor=bookAuthor;
+  document.getElementById('qpText').textContent='"'+quoteText+'"';
+  document.getElementById('qpSource').textContent=(currentLang==='en'?'From ':'De ')+(bookTitle||'')+(bookAuthor?' · '+bookAuthor:'');
+  document.getElementById('qpShareLabel').textContent=currentLang==='en'?'Share as Story':'Compartir como Story';
+  document.getElementById('qpOpenBtn').textContent=currentLang==='en'?'View book':'Ver libro';
+  const popup=document.getElementById('quotePopup');
+  popup.classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(drawQpStars,60);
+}
+function drawQpStars(){
+  const cv=document.getElementById('qpStars');
+  if(!cv)return;
+  const card=document.getElementById('quotePopupCard');
+  const W=card.offsetWidth||380;
+  const H=card.offsetHeight||220;
+  const dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#07060f');bg.addColorStop(.5,'#0d0b1c');bg.addColorStop(1,'#07060f');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // Subtle accent glow top-right
+  const glow=ctx.createRadialGradient(W*.85,H*.1,0,W*.85,H*.1,W*.5);
+  glow.addColorStop(0,'rgba(139,92,246,.15)');glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+  // Stars
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  for(let i=0;i<90;i++){
+    ctx.beginPath();
+    ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*.7+.15,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.45+.08})`;ctx.fill();
+  }
+}
+function closeQuotePopup(){
+  document.getElementById('quotePopup').classList.remove('open');
+  document.body.style.overflow='';
+}
+async function shareQuoteAsStory(){
+  const btn=document.querySelector('.qp-share');
+  const origLabel=document.getElementById('qpShareLabel').textContent;
+  if(btn){btn.style.opacity='.6';document.getElementById('qpShareLabel').textContent=currentLang==='en'?'Rendering…':'Generando…';}
+
+  // Build story card on offscreen canvas (1080x1920 = Instagram Story ratio)
+  const W=1080,H=1920;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+
+  // Background — deep space gradient
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Stars
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  for(let i=0;i<320;i++){
+    ctx.beginPath();
+    ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*1.4+.2,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.6+.1})`;ctx.fill();
+  }
+
+  // Subtle glow center
+  const glow=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.7);
+  glow.addColorStop(0,'rgba(139,92,246,.12)');glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+
+  // ALINEA orb logo
+  const orbX=W/2,orbY=H*.18,orbR=72;
+  const orbGrad=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
+  orbGrad.addColorStop(0,'#e0d4ff');orbGrad.addColorStop(.4,'#a78bfa');
+  orbGrad.addColorStop(.75,'#7c3aed');orbGrad.addColorStop(1,'#3b0764');
+  ctx.shadowBlur=60;ctx.shadowColor='rgba(139,92,246,.8)';
+  ctx.fillStyle=orbGrad;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+
+  // ALINEA wordmark
+  ctx.fillStyle='rgba(196,181,253,.9)';
+  ctx.font='500 52px "DM Mono",monospace';
+  ctx.textAlign='center';ctx.letterSpacing='18px';
+  ctx.fillText('ALINEA',W/2,orbY+orbR+70);
+
+  // Decorative line
+  ctx.strokeStyle='rgba(139,92,246,.35)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(W*.25,H*.32);ctx.lineTo(W*.75,H*.32);ctx.stroke();
+
+  // Quote text — word wrap
+  const quote='"'+_qpQuoteText+'"';
+  ctx.fillStyle='#f0eeff';ctx.font='italic 700 58px "Playfair Display",serif';
+  ctx.textAlign='center';
+  const maxW=W-200,lineH=82;
+  const words=quote.split(' ');
+  let lines=[],cur='';
+  words.forEach(w=>{const test=cur?cur+' '+w:w;if(ctx.measureText(test).width>maxW&&cur){lines.push(cur);cur=w;}else cur=test;});
+  if(cur)lines.push(cur);
+  const totalH=lines.length*lineH;
+  const startY=H/2-totalH/2;
+  lines.forEach((ln,i)=>{ctx.fillText(ln,W/2,startY+i*lineH);});
+
+  // Source
+  ctx.fillStyle='rgba(196,181,253,.7)';
+  ctx.font='400 40px "DM Mono",monospace';
+  ctx.letterSpacing='2px';
+  ctx.fillText('— '+(_qpBookTitle||''),W/2,startY+totalH+80);
+
+  // Bottom watermark
+  ctx.fillStyle='rgba(139,92,246,.5)';ctx.font='400 36px "DM Mono",monospace';
+  ctx.letterSpacing='6px';ctx.fillText('alinea.io',W/2,H*.92);
+
+  if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
+
+  // Share
+  cv.toBlob(async blob=>{
+    if(!blob)return;
+    const file=new File([blob],'alinea-quote.png',{type:'image/png'});
+    const shareText='My knowledge universe in ALINEA 🌌 alinea.io';
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'ALINEA',text:shareText});}
+      catch(e){if(e.name!=='AbortError')_downloadGalaxyPng(blob);}
+    } else {
+      _downloadGalaxyPng(blob);
+      _showToast('📸 Story descargada — '+(currentLang==='en'?'share on Instagram!':'¡compártela en Instagram!'));
+    }
+  },'image/png');
+}
+
 function onExplore(){
   renderExplore();
   clearTimeout(expTimer);
@@ -3414,8 +3592,8 @@ function renderExplore(){
   if(!q){c.innerHTML='<div class="exp-empty">'+(t('exploreSub')||'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.')+'</div>';document.getElementById('aiBox').style.display='none';return;}
   const m=getMatches(q);
   if(!m.length){c.innerHTML=`<div class="exp-empty">Sin resultados para "<em>${q}</em>".</div>`;document.getElementById('aiBox').style.display='none';return;}
-  c.innerHTML=m.map(({book,note})=>`
-    <div class="ec" onclick="openBook(${book.id})">
+  c.innerHTML=m.map(({book,note},idx)=>`
+    <div class="ec qp-trigger" data-qp-idx="${idx}" style="cursor:pointer">
       <div class="ec-q">"${note.text}"</div>
       <div class="ec-m">
         <div class="ec-bk">De <strong>${book.title}</strong> · ${book.author}</div>
@@ -3423,6 +3601,15 @@ function renderExplore(){
         <div style="display:flex;gap:.16rem;flex-wrap:wrap">${(note.keywords||[]).map(k=>`<span class="pill">${k}</span>`).join('')}${note.mood?`<span class="pill mood">${note.mood}</span>`:''}</div>
       </div>
     </div>`).join('');
+  // Attach click handlers via JS (avoids innerHTML quoting issues)
+  _exploreMatches=m;
+  c.querySelectorAll('.qp-trigger').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const idx=parseInt(el.dataset.qpIdx);
+      const {book,note}=_exploreMatches[idx];
+      showQuotePopup(book.id,note.text,book.title,book.author||'');
+    });
+  });
 }
 
 // ══════════════════════════
@@ -4289,6 +4476,72 @@ function animateZoom(targetOff, targetSc){
 }
 
 function gReset(){animateZoom({x:0,y:0},1);}
+function shareGalaxySnapshot(){
+  const cv=document.getElementById('gCanvas');
+  if(!cv){alert('No hay galaxia para capturar.');return;}
+  const btn=document.getElementById('sharGalBtn');
+  if(btn){btn.textContent='⏳';btn.style.pointerEvents='none';}
+
+  // Create high-res composite canvas: stars bg + galaxy canvas
+  const dpr=Math.max(window.devicePixelRatio||1,2); // minimum 2x
+  const W=cv.offsetWidth||cv.width;
+  const H=cv.offsetHeight||cv.height;
+  const out=document.createElement('canvas');
+  out.width=W*dpr;out.height=H*dpr;
+  const ctx=out.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  // 1. Draw deep space background
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // 2. Draw stars
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  for(let i=0;i<280;i++){
+    ctx.beginPath();
+    ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*1.1+.2,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.55+.1})`;ctx.fill();
+  }
+
+  // 3. Draw galaxy canvas on top
+  ctx.drawImage(cv,0,0,W,H);
+
+  // 4. Watermark
+  ctx.fillStyle='rgba(196,181,253,.45)';
+  ctx.font=`500 ${Math.round(W*.022)}px "DM Mono",monospace`;
+  ctx.textAlign='right';
+  ctx.fillText('alinea.io',W-16,H-14);
+
+  if(btn){btn.textContent='📸';btn.style.pointerEvents='';}
+
+  out.toBlob(async blob=>{
+    if(!blob)return;
+    const file=new File([blob],'my-galaxy-alinea.png',{type:'image/png'});
+    const shareText='My knowledge universe in ALINEA 🌌 alinea.io';
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'ALINEA Galaxy',text:shareText});}
+      catch(e){if(e.name!=='AbortError')_downloadGalaxyPng(blob);}
+    } else {
+      _downloadGalaxyPng(blob);
+      if(navigator.clipboard)navigator.clipboard.writeText(shareText).catch(()=>{});
+      _showToast(currentLang==='en'?'📸 Image downloaded — share it!':'📸 Imagen descargada — ¡compártela!');
+    }
+  },'image/png',1.0);
+}
+function _downloadGalaxyPng(blob){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='my-galaxy-alinea.png';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+}
+function _showToast(msg,duration=3000){
+  let t=document.getElementById('_alineaToast');
+  if(!t){t=document.createElement('div');t.id='_alineaToast';t.style.cssText='position:fixed;bottom:calc(env(safe-area-inset-bottom)+90px);left:50%;transform:translateX(-50%);background:rgba(26,23,48,.97);border:1px solid var(--border2);border-radius:10px;padding:.65rem 1.1rem;font-size:.7rem;color:var(--text);max-width:300px;text-align:center;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.5);pointer-events:none;transition:opacity .3s';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity='0';},duration);
+}
 function gZoom(f){
   const cv=document.getElementById('gCanvas');
   if(!cv)return;
@@ -5623,6 +5876,25 @@ document.addEventListener('click',e=>{
 },{passive:true});
 
 </script>
+
+<!-- QUOTE POPUP -->
+<div id="quotePopup">
+  <div id="quotePopupBg" onclick="closeQuotePopup()"></div>
+  <div id="quotePopupCard">
+    <canvas id="qpStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:16px;z-index:0"></canvas>
+    <div style="position:relative;z-index:1">
+      <button class="qp-close" onclick="closeQuotePopup()">✕</button>
+      <div class="qp-quote" id="qpText"></div>
+      <div class="qp-source" id="qpSource"></div>
+      <div class="qp-actions">
+        <button class="qp-share" onclick="shareQuoteAsStory()">
+          <span>✦</span><span id="qpShareLabel">Share as Story</span>
+        </button>
+        <button class="qp-open" id="qpOpenBtn" onclick="closeQuotePopup();setTimeout(()=>openBook(_qpBookId),150)">Ver libro</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- FAB -->
 <div class="fab-wrap" id="fabWrap">
