@@ -674,7 +674,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <button class="ntab active" onclick="gotoV('library',this)">Biblioteca</button>
     <button class="ntab" onclick="gotoV('graph',this)">Galaxia</button>
     <button class="ntab" onclick="gotoV('explore',this)">Explorar</button>
-    <button class="ntab" onclick="gotoV('bitacora',this)">Bitácora</button>
+    <button class="ntab" onclick="gotoV('bitacora',this)" data-i18n="log">Bitácora</button>
   </nav>
 </header>
 
@@ -742,7 +742,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <div class="view" id="viewExplore">
       <div class="exp-panel">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-          <div class="exp-hero"><h2 data-i18n="exploreTitle">Explorar <em>ideas</em></h2><p data-i18n="exploreSubtitle">Toca para explorar · Arrastra para mover · Gira el teléfono</p></div>
+          <div class="exp-hero"><h2 id="exploreHeroTitle"></h2><p data-i18n="exploreSubtitle">Toca para explorar · Arrastra para mover · Gira el teléfono</p></div>
           <button id="gravityBtn" onclick="toggleGravity()" style="
             flex-shrink:0;margin-top:.3rem;
             background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);
@@ -761,7 +761,7 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
     <div class="view" id="viewBitacora">
       <div>
-        <div class="bit-hero"><h2 data-i18n="logTitle">Bitácora <em>de vuelo</em></h2><p data-i18n="logSubtitle">Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.</p></div>
+        <div class="bit-hero"><h2 id="bitHeroTitle"></h2><p data-i18n="logSubtitle">Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.</p></div>
         <div id="bitStats" class="bit-grid"></div>
         <!-- READING PACE & INSIGHTS -->
         <div id="bitInsights" style="margin-bottom:1.2rem"></div>
@@ -778,7 +778,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="margin-top:1.5rem">
           <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.7rem">
             <span style="font-size:1rem;opacity:.5">💾</span>
-            '+( t('exportarImportar')||'Exportar, importar')+'  → Configuración' <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
+            <span data-i18n="exportarImportar">Exportar, importar</span>  → <strong style="color:var(--accent2)" data-i18n="settings">Configuración</strong>
           </div>
         </div>
       </div>
@@ -796,38 +796,38 @@ canvas{-webkit-user-select:none;user-select:none}
         <!-- STORAGE INFO -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:1.6rem">
           <div class="bit-card">
-            <div class="bit-card-title">💾 Almacenamiento</div>
+            <div class="bit-card-title" data-i18n="storageTitle">💾 Almacenamiento</div>
             <div id="storageInfo" style="font-size:.7rem;color:var(--muted);line-height:1.65">Calculando…</div>
           </div>
           <div class="bit-card">
-            <div class="bit-card-title">📍 Ubicación</div>
-            <div style="font-size:.68rem;color:var(--muted);line-height:1.65">localStorage del navegador<br><span style="color:var(--dim)">Solo en este dispositivo y navegador</span></div>
+            <div class="bit-card-title" data-i18n="locationTitle">📍 Ubicación</div>
+            <div style="font-size:.68rem;color:var(--muted);line-height:1.65" data-i18n="locationDesc">localStorage del navegador</div>
           </div>
           <div class="bit-card">
-            <div class="bit-card-title">🔒 Privacidad</div>
-            <div style="font-size:.68rem;color:var(--muted);line-height:1.65">Datos 100% locales<br><span style="color:var(--dim)">No se envía nada a ningún servidor</span></div>
+            <div class="bit-card-title" data-i18n="privacyTitle">🔒 Privacidad</div>
+            <div style="font-size:.68rem;color:var(--muted);line-height:1.65" data-i18n="privacyDesc">Datos 100% locales</div>
           </div>
         </div>
 
         <!-- EXPORT / IMPORT -->
-        <div style="margin-bottom:1.4rem"><div class="sec">Respaldo de datos</div>
+        <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="backupTitle">Respaldo de datos</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:.85rem">
           <div class="bit-card">
-            <div class="bit-card-title">💾 Exportar JSON</div>
-            <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem">Descarga tu biblioteca completa. Ligero, portable, restaurable al instante en cualquier dispositivo.</div>
-            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()">⬇ Descargar JSON</button>
+            <div class="bit-card-title" data-i18n="exportJsonTitle">💾 Exportar JSON</div>
+            <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem" data-i18n="exportJsonDesc">Descarga tu biblioteca completa. Ligero, portable, restaurable al instante en cualquier dispositivo.</div>
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()" data-i18n="downloadJson">⬇ Descargar JSON</button>
           </div>
           <div class="bit-card">
-            <div class="bit-card-title">📄 Exportar PDF</div>
-            <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem">PDF visual con todos tus libros y notas. Para archivar, imprimir o compartir.</div>
-            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportPDF()">⬇ Descargar PDF</button>
+            <div class="bit-card-title" data-i18n="exportPdfTitle">📄 Exportar PDF</div>
+            <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem" data-i18n="exportPdfDesc">PDF visual con todos tus libros y notas. Para archivar, imprimir o compartir.</div>
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportPDF()" data-i18n="downloadPdf">⬇ Descargar PDF</button>
           </div>
         </div>
         <div class="bit-card">
-          <div class="bit-card-title">📂 Importar respaldo JSON</div>
-          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem">Restaura desde un archivo exportado anteriormente. Sube el JSON y tu galaxia aparece al instante.<br><strong style="color:var(--err)">⚠ Reemplaza la biblioteca actual.</strong></div>
+          <div class="bit-card-title" data-i18n="importJsonTitle">📂 Importar respaldo JSON</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem" data-i18n="importJsonDesc">Restaura desde un archivo exportado anteriormente. Sube el JSON y tu galaxia aparece al instante.</div>
           <label style="display:inline-flex;align-items:center;gap:.5rem;background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:.42rem 1rem;border-radius:6px;cursor:pointer">
-            📂 Seleccionar archivo JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+            📂 <span data-i18n="selectFile">Seleccionar archivo</span><input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
           </label>
         </div>
         </div>
@@ -835,42 +835,42 @@ canvas{-webkit-user-select:none;user-select:none}
         <!-- COLLISION DE IDEAS -->
         <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="colisionTitle">Colisión de ideas ✦</div>
         <div class="bit-card">
-          <div class="bit-card-title">💥 Conexiones ocultas</div>
-          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">La IA analiza tu galaxia y descubre dos libros que no sabías que tenían algo en común.</div>
-          <button class="btn-gen" onclick="runCollision()" id="btnCollision">✦ Descubrir colisión</button>
+          <div class="bit-card-title" data-i18n="hiddenConnectionsTitle">💥 Conexiones ocultas</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="hiddenConnectionsDesc">La IA analiza tu galaxia y descubre dos libros que no sabías que tenían algo en común.</div>
+          <button class="btn-gen" onclick="runCollision()" id="btnCollision" data-i18n="colisionBtn">✦ Descubrir colisión</button>
           <div id="collisionResult" style="margin-top:.85rem;display:none"></div>
         </div>
         </div>
 
         <!-- HORIZONTE DE SUCESOS -->
-        <div style="margin-bottom:1.4rem"><div class="sec">Horizonte de sucesos ✦</div>
+        <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="horizonteTitle">Horizonte de sucesos ✦</div>
         <div class="bit-card">
-          <div class="bit-card-title">🔭 Próxima misión sugerida</div>
-          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">Basado en la densidad de tu galaxia, la IA detecta qué tema falta y te sugiere tu próximo libro.</div>
-          <button class="btn-gen" onclick="runHorizon()" id="btnHorizon">✦ Analizar galaxia</button>
+          <div class="bit-card-title" data-i18n="nextMissionTitle">🔭 Próxima misión sugerida</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="nextMissionDesc">Basado en la densidad de tu galaxia, la IA detecta qué tema falta y te sugiere tu próximo libro.</div>
+          <button class="btn-gen" onclick="runHorizon()" id="btnHorizon" data-i18n="horizonteBtn">✦ Analizar galaxia</button>
           <div id="horizonResult" style="margin-top:.85rem;display:none"></div>
         </div>
         </div>
 
         <!-- GALAXY SHARE -->
-        <div style="margin-bottom:1.4rem"><div class="sec">Compartir galaxia ✦</div>
+        <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="shareGalaxyTitle">Compartir galaxia ✦</div>
         <div class="bit-card">
-          <div class="bit-card-title">🌌 Compartir mi galaxia</div>
-          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">Exporta un código de tu biblioteca para que otra persona lo importe y vea tu galaxia junto a la suya.</div>
+          <div class="bit-card-title" data-i18n="shareGalaxyCardTitle">🌌 Compartir mi galaxia</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="shareGalaxyDesc">Exporta un código de tu biblioteca para que otra persona lo importe y vea tu galaxia junto a la suya.</div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="copyGalaxyCode()">📋 Copiar código de galaxia</button>
-            <button class="btn-ghost" style="font-size:.55rem;padding:.35rem .85rem" onclick="openFriendGalaxy()">👁 Ver galaxia de amigo</button>
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="copyGalaxyCode()" data-i18n="copyGalaxyBtn">📋 Copiar código de galaxia</button>
+            <button class="btn-ghost" style="font-size:.55rem;padding:.35rem .85rem" onclick="openFriendGalaxy()" data-i18n="viewFriendBtn">👁 Ver galaxia de amigo</button>
           </div>
           <textarea id="friendCodeIn" placeholder="Pega aquí el código JSON de tu amigo…" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.6rem;border-radius:6px;outline:none;resize:vertical;min-height:70px;margin-top:.65rem;display:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'"></textarea>
         </div>
         </div>
 
         <!-- HARD RESET -->
-        <div><div class="sec" style="color:rgba(248,113,113,.5)">Zona de peligro</div>
+        <div><div class="sec" style="color:rgba(248,113,113,.5)" data-i18n="dangerZone">Zona de peligro</div>
         <div class="bit-card" style="border-color:rgba(248,113,113,.2)">
-          <div class="bit-card-title" style="color:var(--err)">☢ Hard Reset</div>
-          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem">Elimina <strong style="color:var(--err)">toda</strong> la información guardada — libros, notas, keywords, configuración. Esta acción no se puede deshacer.<br><span style="color:var(--dim)">Recomendado: exporta un JSON antes de hacer reset.</span></div>
-          <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.42rem 1rem;border-radius:6px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(248,113,113,.15)'" onmouseout="this.style.background='rgba(248,113,113,.08)'" data-i18n="hardResetBtn">☢ Borrar todo y reiniciar</button>
+          <div class="bit-card-title" style="color:var(--err)" data-i18n="hardResetTitle">☢ Hard Reset</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="hardResetDesc">Elimina toda la información guardada — libros, notas, keywords, configuración. Esta acción no se puede deshacer.</div>
+          <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.42rem 1rem;border-radius:6px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(248,113,113,.15)'" onmouseout="this.style.background='rgba(248,113,113,.08)'" data-i18n="hardReset">☢ Borrar todo y reiniciar</button>
         </div>
         </div>
       </div>
@@ -907,7 +907,7 @@ canvas{-webkit-user-select:none;user-select:none}
       <label class="flbl" data-i18n="categoryLabel">Categoría</label>
       <div class="cat-row">
         <select class="fin" id="addCat"></select>
-        <button class="btn-new-cat" onclick="promptNewCat()">+ Nueva</button>
+        <button class="btn-new-cat" onclick="promptNewCat()" id="btnNewCatAdd">+ Nueva</button>
       </div>
     </div>
     <div><label class="flbl" data-i18n="keywordsInitial">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…" data-i18n-ph="kwPlaceholder"></div>
@@ -943,7 +943,7 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div style="margin-top:.65rem">
     <label class="flbl">Categoría</label>
-    <div class="cat-row"><select class="fin" id="editCat"></select><button class="btn-new-cat" onclick="promptNewCatEdit()">+ Nueva</button></div>
+    <div class="cat-row"><select class="fin" id="editCat"></select><button class="btn-new-cat" onclick="promptNewCatEdit()" id="btnNewCatEdit">+ Nueva</button></div>
   </div>
   <div style="margin-top:.65rem">
     <label class="flbl">Estado del libro</label>
@@ -1043,29 +1043,34 @@ canvas{-webkit-user-select:none;user-select:none}
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.35rem" id="langGrid"></div>
     </div>
     <div class="set-s" style="border:none;margin-top:.2rem">
-      <h3 style="display:flex;align-items:center;gap:.5rem">✦ Nota del autor</h3>
-      <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
-        <p style="font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.75rem;font-style:italic" id="wQ">¿Y si pudieras ver tu conocimiento?</p>
-        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.</p>
-        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.</p>
-        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros <em id="wP3em" style="color:var(--accent2)">sin que te hayas dado cuenta</em>. ALINEA los hace visibles.</p>
-        <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem">Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni sabías que tenías. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en el mundo y en tu galaxia.</p>
-        <p style="font-size:.72rem;color:var(--accent2);line-height:1.8;margin-bottom:.75rem"><strong style="font-size:.78rem;letter-spacing:.01em">Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.</strong></p>
-        <div onclick="exportJSON()" style="background:var(--glow);border:1px solid var(--accent);border-radius:8px;padding:.65rem .8rem;margin-bottom:.75rem;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(139,92,246,.18)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.background='var(--glow)';this.style.borderColor='var(--accent)'">
-          <p style="font-size:.67rem;color:rgba(240,238,255,.82);line-height:1.8;margin:0"><strong style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase">Una cosa importante —</strong><br>Tus datos nunca salen de tu dispositivo. Ni yo puedo verlos. ALINEA jamás tendrá tu información. Lo único que te pido es que <span style="color:var(--accent2);text-decoration:underline;text-underline-offset:3px;font-weight:500">descargues tu respaldo</span> — ese archivo JSON es tu biblioteca entera, vive donde tú quieras, y con él puedes volver a tu galaxia en cualquier momento y en cualquier dispositivo.</p>
-          <div style="margin-top:.5rem;display:flex;align-items:center;gap:.35rem;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase">⬇ Descargar respaldo ahora</div>
+      <h3 style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;cursor:pointer" onclick="toggleAuthorNote()" id="authorNoteHeader">
+        <span>✦ <span data-i18n="authorNoteTitle">Nota del autor</span></span>
+        <span id="authorNoteChevron" style="font-size:.7rem;color:var(--muted);transition:transform .2s">▼</span>
+      </h3>
+      <div id="authorNoteBody" style="display:none;margin-top:.65rem">
+        <div style="background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.2rem;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:2px"></div>
+          <p style="font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--accent2);line-height:1.5;margin-bottom:.75rem;font-style:italic" id="wQ"></p>
+          <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem" id="wP1"></p>
+          <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem" id="wP2"></p>
+          <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem" id="wP3"></p>
+          <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.7rem" id="wP4"></p>
+          <p style="font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.55;margin-bottom:.75rem" id="wClosing"></p>
+          <div onclick="exportJSON()" style="background:var(--glow);border:1px solid var(--accent);border-radius:8px;padding:.65rem .8rem;margin-bottom:.75rem;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(139,92,246,.18)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.background='var(--glow)';this.style.borderColor='var(--accent)'">
+            <p style="font-size:.67rem;color:rgba(240,238,255,.82);line-height:1.8;margin:0" id="wPrivacy"></p>
+            <div style="margin-top:.5rem;display:flex;align-items:center;gap:.35rem;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase" id="wDownload"></div>
+          </div>
+          <p style="font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.06em;text-align:right;margin:0" id="wSign"></p>
         </div>
-        <p style="font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.06em;text-align:right;margin:0">— Miguel Valdez, creador de ALINEA</p>
       </div>
     </div>
     <div class="set-s" style="border-bottom:none;padding-bottom:.5rem">
       <h3 data-i18n="onboardingTitle">Tutorial de inicio</h3>
       <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="onboardingDesc">¿Quieres volver a ver la guía de bienvenida?</p>
-      <button onclick="closeModal('mSettings');setTimeout(()=>{localStorage.removeItem('eter2_onboarded');maybeShowOnboarding();},200)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
+      <button onclick="closeModal('mSettings');setTimeout(()=>{localStorage.removeItem('eter2_onboarded');forceShowOnboarding();},200)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
     </div>
     <div class="set-s" style="border:none">
-      <h3>Desarrollado por</h3>
+      <h3 data-i18n="devBy">Desarrollado por</h3>
       <div style="display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
         <div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 10px rgba(139,92,246,.5);flex-shrink:0"></div>
         <div>
@@ -1106,26 +1111,26 @@ canvas{-webkit-user-select:none;user-select:none}
       <div id="storageInfo" style="font-size:.58rem;color:var(--dim);line-height:1.6">Calculando…</div>
     </div>
     <div class="set-s">
-      <h3>🌌 <span data-i18n="friendsGalaxiesTitle">Galaxias de amigos</span></h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="friendsGalaxiesDesc">Pega el JSON de un amigo para ver su galaxia junto a la tuya.</p>
+      <h3>🌌 <span data-i18n="friendsTitle">Galaxias de amigos</span></h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="friendsDesc">Pega el JSON de un amigo para ver su galaxia junto a la tuya.</p>
       <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.6rem" id="friendGalList"></div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem" data-i18n="addGalaxyTitle">Agregar galaxia</div>
-        <input class="fin" type="text" id="friendNameIn" placeholder="Nombre del amigo" data-i18n-ph="friendNamePh" style="margin-bottom:.35rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem" data-i18n="addGalaxy">Agregar galaxia</div>
+        <input class="fin" type="text" id="friendNameIn" placeholder="Nombre del amigo" data-i18n-ph="friendName" style="margin-bottom:.35rem">
         <textarea id="friendJsonIn" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.58rem;padding:.55rem;border-radius:6px;outline:none;resize:vertical;min-height:65px;margin-bottom:.35rem" placeholder="Pega el JSON aquí"></textarea>
         <div style="display:flex;gap:.4rem;align-items:center">
-          <button class="btn-gen" style="font-size:.52rem;padding:.3rem .75rem" onclick="addFriendGalaxy()" data-i18n="addGalaxyBtn">Agregar</button>
+          <button class="btn-gen" style="font-size:.52rem;padding:.3rem .75rem" onclick="addFriendGalaxy()" data-i18n="addGalaxy">Agregar</button>
           <span id="friendAddMsg" style="font-size:.6rem;display:none"></span>
         </div>
       </div>
       <div style="margin-top:.55rem;display:flex;gap:.4rem;align-items:center">
-        <button class="btn-ghost" style="font-size:.5rem;padding:.22rem .6rem" onclick="copyMyCode()" data-i18n="copyCode">Copiar mi código para compartir</button>
+        <button class="btn-ghost" style="font-size:.5rem;padding:.22rem .6rem" onclick="copyMyCode()" data-i18n="copyCodeBtn">Copiar mi código para compartir</button>
         <span id="copyMsg" style="font-size:.56rem;color:var(--ok);display:none">¡Copiado!</span>
       </div>
     </div>
     <div class="set-s" style="border:none">
-      <h3 style="color:rgba(248,113,113,.7)" data-i18n="dangerZone">⚠ Zona de peligro</h3>
-      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer" data-i18n="hardResetBtn">Borrar todo y reiniciar</button>
+      <h3 style="color:rgba(248,113,113,.7)" data-i18n="dangerTitle">⚠ Zona de peligro</h3>
+      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer" data-i18n="hardReset">Borrar todo y reiniciar</button>
     </div>
   </div>
 
@@ -1171,8 +1176,8 @@ canvas{-webkit-user-select:none;user-select:none}
 
 
 <!-- ONBOARDING MODAL -->
-<div class="modal" id="mOnboarding" style="width:560px;max-width:96vw;overflow:hidden;background:transparent!important;border-color:var(--accent)!important;padding:0!important">
-  <canvas id="onbStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px;z-index:0"></canvas>
+<div class="modal" id="mOnboarding" style="width:560px;max-width:96vw;overflow:hidden;background:radial-gradient(ellipse at 30% 20%,#0e0b1e,#06050f)!important;border-color:var(--accent)!important;padding:0!important">
+  <canvas id="onbStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px;z-index:0;display:block"></canvas>
   <div style="position:relative;z-index:1;padding:2rem 2rem 1.5rem">
 
     <!-- DOTS NAVIGATION -->
@@ -1190,12 +1195,9 @@ canvas{-webkit-user-select:none;user-select:none}
         <div id="onbOrb" style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 30px rgba(139,92,246,.6);margin:0 auto .9rem"></div>
         <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(196,181,253,.7)">ALINEA</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;max-width:360px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;max-width:280px;margin:0 auto">
         <button class="onb-lang-btn" onclick="onbSelectLang('es')">Español</button>
         <button class="onb-lang-btn" onclick="onbSelectLang('en')">English</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('pt')">Português</button>
-        <button class="onb-lang-btn" onclick="onbSelectLang('fr')">Français</button>
-              <button class="onb-lang-btn" <button class="onb-lang-btn" <button class="onb-lang-btn" onclick="onbSelectLang('ja')" style="grid-column:span 3;max-width:160px;margin:0 auto;width:100%">日本語</button>
       </div>
     </div>
 
@@ -1266,7 +1268,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <!-- NAV BUTTONS -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem" id="onbNav">
       <button id="onbBack" onclick="onbGo(-1)" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;opacity:0;pointer-events:none;transition:all .15s" id="onbBack2">← </button>
-      <button id="onbNext" onclick="onbGo(1)" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.42rem 1.2rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 12px var(--glow);transition:all .2s;opacity:0;pointer-events:none">→</button>
+      <button id="onbNext" onclick="onbGo(1)" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.42rem 1.2rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 12px var(--glow);transition:all .2s;opacity:0.3;pointer-events:none">→</button>
     </div>
 
   </div>
@@ -1283,10 +1285,10 @@ es:{name:'Español',t:{
   library:'Biblioteca',galaxy:'Galaxia',explore:'Explorar',log:'Bitácora',myLibrary:'Mi Biblioteca…',splashSub:'Hagamos visible lo invisible.',
   addBook:'＋ Agregar libro',search:'Buscar…',settings:'Configuración',wishlistBtn:'Wishlist',
   galaxyHint:'Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas',
-  exploreTitle:'Explorar ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
+  exploreTitle:'Explorar ideas',exploreTitleBase:'Explorar',exploreTitleEm:'ideas',exploreSubtitle:'Toca para explorar · Arrastra para mover · Gira el teléfono',
   exploreEmpty:'Escribe para explorar tus notas.',explorePlaceholder:'disciplina, dinero, propósito…',
   gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
-  logTitle:'Bitácora de vuelo',logSubtitle:'Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.',
+  logTitle:'Bitácora de vuelo',logTitleEm:'de vuelo',logTitleBase:'Bitácora',logSubtitle:'Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.',
   generateSynthesis:'✦ Generar síntesis IA',wishlistMissions:'Wishlist — próximas misiones',galaxyConnections:'Conexiones entre galaxias',
   notas:'Notas & Subrayados',keywords:'Keywords',relatedBooks:'Libros relacionados',
   notePlaceholder:'Escribe un subrayado, idea o reflexión…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentario (opcional)',
@@ -1362,6 +1364,23 @@ es:{name:'Español',t:{
   noCategory:'Sin categoría',
   filterAll:'Todas',
   onboardingTitle:'Tutorial de inicio',onboardingDesc:'¿Quieres volver a ver la guía de bienvenida?',onboardingBtn:'✦ Ver guía de inicio',
+  authorNoteTitle:'Nota del autor',
+  newCatPrompt:'Nueva categoría:',
+  downloadBackupNow:'⬇ Descargar respaldo ahora',
+  importantNote:'Una cosa importante —',
+  privacyNote:'Tus datos nunca salen de tu dispositivo. Ni yo puedo verlos. ALINEA jamás tendrá tu información. Lo único que te pido es que descargues tu respaldo — ese archivo JSON es tu biblioteca entera, vive donde tú quieras, y con él puedes volver a tu galaxia en cualquier momento y en cualquier dispositivo.',
+  storageTitle:'💾 Almacenamiento',locationTitle:'📍 Ubicación',privacyTitle:'🔒 Privacidad',
+  locationDesc:'localStorage del navegador',privacyDesc:'Datos 100% locales',
+  backupTitle:'Respaldo de datos',
+  exportJsonTitle:'💾 Exportar JSON',exportJsonDesc:'Descarga tu biblioteca completa. Ligero, portable, restaurable al instante en cualquier dispositivo.',
+  exportPdfTitle:'📄 Exportar PDF',exportPdfDesc:'PDF visual con todos tus libros y notas. Para archivar, imprimir o compartir.',
+  importJsonTitle:'📂 Importar respaldo JSON',importJsonDesc:'Restaura desde un archivo exportado anteriormente. Sube el JSON y tu galaxia aparece al instante.',
+  hiddenConnectionsTitle:'💥 Conexiones ocultas',hiddenConnectionsDesc:'La IA analiza tu galaxia y descubre dos libros que no sabías que tenían algo en común.',
+  nextMissionTitle:'🔭 Próxima misión sugerida',nextMissionDesc:'Basado en la densidad de tu galaxia, la IA detecta qué tema falta y te sugiere tu próximo libro.',
+  shareGalaxyTitle:'Compartir galaxia ✦',shareGalaxyCardTitle:'🌌 Compartir mi galaxia',shareGalaxyDesc:'Exporta un código de tu biblioteca para que otra persona lo importe y vea tu galaxia junto a la suya.',
+  copyGalaxyBtn:'📋 Copiar código de galaxia',viewFriendBtn:'👁 Ver galaxia de amigo',
+  hardResetTitle:'☢ Hard Reset',hardResetDesc:'Elimina toda la información guardada — libros, notas, keywords, configuración. Esta acción no se puede deshacer.',
+  authorNoteToggleShow:'✦ Ver nota del autor',authorNoteToggleHide:'✦ Ocultar nota del autor',
   addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',keywordsInitial:'Keywords iniciales (coma)',kwPlaceholder:'inversión, mentalidad…',ownedRead:'📚 Leído (ya lo tengo y lo leí)',ownedUnreadOpt:'📖 Lo tengo, no lo he leído',reading2:'📖 Leyendo ahora',wishlist2:'🚀 Lo quiero (Wishlist)',topFive:'TU TOP 5',filterNone:'Ninguna',category:'Categorías',explore2:'Explorar ideas',
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
   secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
@@ -1371,10 +1390,10 @@ en:{name:'English',t:{
   library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
   addBook:'＋ Add book',search:'Search…',settings:'Settings',wishlistBtn:'Wishlist',
   galaxyHint:'Solar system · Drag · Scroll = zoom · Click = book · Animated orbits',
-  exploreTitle:'Explore ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
+  exploreTitle:'Explore ideas',exploreTitleBase:'Explore',exploreTitleEm:'ideas',exploreSubtitle:'Tap to explore · Drag to move · Tilt phone',
   exploreEmpty:'Type to explore your notes.',explorePlaceholder:'discipline, money, purpose…',
   gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
-  logTitle:'Flight log',logSubtitle:'Reports from your galaxy — growing areas, found connections, knowledge synthesis.',
+  logTitle:'Flight log',logTitleEm:'log',logTitleBase:'Flight',logSubtitle:'Reports from your galaxy — growing areas, found connections, knowledge synthesis.',
   generateSynthesis:'✦ Generate AI synthesis',wishlistMissions:'Wishlist — upcoming missions',galaxyConnections:'Galaxy connections',
   notas:'Notes & Highlights',keywords:'Keywords',relatedBooks:'Related books',
   notePlaceholder:'Write a highlight, idea or reflection…',pagePlaceholder:'Page',commentPlaceholder:'Comment (optional)',
@@ -1433,6 +1452,23 @@ en:{name:'English',t:{
   close:'Close',verifyConn:'Verify connection',providerLabel:'AI Provider',apiKeyLabel:'API Key',
   filterAll:'All',
   onboardingTitle:'Getting started',onboardingDesc:'Want to see the welcome guide again?',onboardingBtn:'✦ View getting started',
+  authorNoteTitle:"Author's note",
+  newCatPrompt:'New category:',
+  downloadBackupNow:'⬇ Download backup now',
+  importantNote:'One important thing —',
+  privacyNote:"Your data never leaves your device. Not even I can see it. ALINEA will never have your information. The only thing I ask is that you download your backup — that JSON file is your entire library, lives wherever you want, and with it you can return to your galaxy at any time on any device.",
+  storageTitle:'💾 Storage',locationTitle:'📍 Location',privacyTitle:'🔒 Privacy',
+  locationDesc:'Browser localStorage',privacyDesc:'100% local data',
+  backupTitle:'Data backup',
+  exportJsonTitle:'💾 Export JSON',exportJsonDesc:'Download your full library. Lightweight, portable, instantly restorable on any device.',
+  exportPdfTitle:'📄 Export PDF',exportPdfDesc:'Visual PDF with all your books and notes. For archiving, printing or sharing.',
+  importJsonTitle:'📂 Import JSON backup',importJsonDesc:'Restore from a previously exported file. Upload the JSON and your galaxy appears instantly.',
+  hiddenConnectionsTitle:'💥 Hidden connections',hiddenConnectionsDesc:'The AI analyzes your galaxy and discovers two books you didn\'t know had something in common.',
+  nextMissionTitle:'🔭 Suggested next mission',nextMissionDesc:'Based on your galaxy density, the AI detects what topic is missing and suggests your next book.',
+  shareGalaxyTitle:'Share galaxy ✦',shareGalaxyCardTitle:'🌌 Share my galaxy',shareGalaxyDesc:'Export a code of your library so someone else can import it and see your galaxy next to theirs.',
+  copyGalaxyBtn:'📋 Copy galaxy code',viewFriendBtn:'👁 View friend\'s galaxy',
+  hardResetTitle:'☢ Hard Reset',hardResetDesc:'Deletes all saved information — books, notes, keywords, settings. This action cannot be undone.',
+  authorNoteToggleShow:'✦ View author\'s note',authorNoteToggleHide:'✦ Hide author\'s note',
   addBookTitle:'Add book',addBookSub:'Write the title — the cover loads automatically.',keywordsInitial:'Initial keywords (comma)',kwPlaceholder:'investment, mindset…',ownedRead:'📚 Read (I own it and read it)',ownedUnreadOpt:'📖 I own it, not read yet',reading2:'📖 Reading now',wishlist2:'🚀 I want it (Wishlist)',topFive:'YOUR TOP 5',filterReading:'Reading',filterOwned:'Unread',filterWishlist:'Wishlist',
   sortRecent:'Recent',sortTitle:'Title A-Z',sortAuthor:'Author A-Z',sortRating:'Rating',
   emptyLib:'Your library is empty. Add your first book.',
@@ -1455,7 +1491,7 @@ en:{name:'English',t:{
   secNotas:'Notes & Highlights',secKeywords:'Keywords',secRelated:'Related books',
   terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'🌟 Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
 }},
-pt:{name:'Português',t:{
+_pt_disabled:{name:'Português',t:{
   library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
   addBook:'＋ Adicionar livro',search:'Buscar…',settings:'Configurações',wishlistBtn:'Lista de desejos',
   galaxyHint:'Sistema solar · Arraste · Scroll = zoom · Clique = livro · Órbitas animadas',
@@ -1538,7 +1574,7 @@ pt:{name:'Português',t:{
   noLibYet:'Sua galáxia está vazia',noLibSub:'Use o botão + para adicionar seu primeiro livro.',
   addFirstBook:'+ ADICIONAR PRIMEIRO LIVRO',
 }},
-fr:{name:'Français',t:{
+_fr_disabled:{name:'Français',t:{
   library:'Bibliothèque',galaxy:'Galaxie',explore:'Explorer',log:'Journal',myLibrary:'Ma Bibliothèque…',splashSub:'Visible lo invisible.',
   addBook:'＋ Ajouter un livre',search:'Rechercher…',settings:'Paramètres',wishlistBtn:'Liste de souhaits',
   galaxyHint:'Système solaire · Glisser · Scroll = zoom · Clic = livre · Orbites animées',
@@ -1626,7 +1662,7 @@ fr:{name:'Français',t:{
   secNotas:'Notes & Surlignements',secKeywords:'Mots-clés',secRelated:'Livres liés',
   terminados:'Terminés',leyendo:'En cours',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Mots-clés',ratingProm:'Note moy.',masAnotados:'📝 Plus annotés',keywordsFrecuentes:'🔑 Mots-clés fréquents',borrarReiniciar:'☢ Tout supprimer',colisionBtn:'Collision d’idées',horizonteBtn:'Horizon des événements',colisionTitle:'Collision d’idées ✔',horizonteTitle:'Horizon des événements',footerText:'ALINEA · Bibliothèque Mentale · Tous droits réservés',exploreSub:'Les mots flottent. Glissez-les ou écrivez pour chercher.',exportarImportar:'💾 Exporter, importer et outils avancés',densestSystem:'🌟 Système le plus dense',gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
 }},
-a:{name:'日本語',t:{
+_ja_disabled:{name:'日本語',t:{
   library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
   accentColor:'アクセントカラー',textSize:'テキストサイズ',libNameLabel:'ライブラリ名',
   small:'小',normal:'標準',large:'大',xl:'特大',
@@ -1716,7 +1752,7 @@ a:{name:'日本語',t:{
   terminados:'読了',leyendo:'読書中',wishlistStat:'ウィッシュリスト',notasStat:'メモ',keywordsStat:'キーワード',ratingProm:'平均評価',masAnotados:'📝 最もメモが多い',keywordsFrecuentes:'🔑 よく使うキーワード',borrarReiniciar:'☢ すべて削除して再起動',colisionBtn:'アイデアの衝突',horizonteBtn:'事象の地平線',colisionTitle:'アイデアの衝突 ✦',horizonteTitle:'事象の地平線',footerText:'ALINEA · メンタルライブラリ · 全著作権所有',exploreSub:'言葉が上に浮かびます。ドラッグ、グループ化、または検索。',exportarImportar:'💾 エクスポートとインポート',densestSystem:'🌟 最も密なシステム',gravOff:'重力: OFF',gravOn:'重力: ON',
 }},
 };
-var currentLang=localStorage.getItem('eter_lang')||'es';
+var currentLang=(()=>{const l=localStorage.getItem('eter_lang')||'es';return(l==='es'||l==='en')?l:'es';})();
 function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
 
 let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"anthropic","apiKey":""}');
@@ -2130,13 +2166,10 @@ function setAccentTheme(name,btn){
   applyAccentTheme(name);
 }
 
-function setFontSize(size){
+function applyFontSize(size){
   const isMobile=window.innerWidth<768;
   const sizes=isMobile?{small:'14px',normal:'16px',large:'17px',xl:'18px'}:{small:'15px',normal:'17px',large:'19px',xl:'21px'};
-  const fs=sizes[size]||'16px';
-  document.documentElement.style.fontSize=fs;
-  localStorage.setItem('eter2_fontsize',size);
-  // Update all fs buttons (use querySelectorAll to handle hidden tabs)
+  document.documentElement.style.fontSize=sizes[size]||'17px';
   const ids={small:'fsSmall',normal:'fsNormal',large:'fsLarge',xl:'fsXL'};
   document.querySelectorAll('#fsSmall,#fsNormal,#fsLarge,#fsXL').forEach(btn=>{
     const isActive=btn.id===ids[size];
@@ -2144,9 +2177,10 @@ function setFontSize(size){
     btn.style.borderColor=isActive?'var(--accent)':'var(--border)';
     btn.style.color=isActive?'var(--accent2)':'var(--muted)';
   });
-  // Ensure modal never overflows on mobile
-  const modal=document.getElementById('mSettings');
-  if(modal)modal.style.maxHeight=Math.min(window.innerHeight*0.85,600)+'px';
+}
+function setFontSize(size){
+  localStorage.setItem('eter2_fontsize',size);
+  applyFontSize(size);
 }
 
 
@@ -2201,17 +2235,8 @@ function updateAppIcon(accentColor, darkColor){
 function initAppearance(){
   const theme=localStorage.getItem('eter2_theme')||'purple';
   const fsize=localStorage.getItem('eter2_fontsize')||'normal';
-  // Apply base font size immediately
-  document.documentElement.style.fontSize='17px';
   applyAccentTheme(theme);
-  setFontSize(fsize);
-  // Highlight correct font size button
-  ['small','normal','large','xl'].forEach(s=>{
-    const btn=document.getElementById('fs'+s.charAt(0).toUpperCase()+s.slice(1));
-    if(!btn)return;
-    if(s===fsize){btn.style.background='var(--glow)';btn.style.borderColor='var(--accent)';btn.style.color='var(--accent2)';}
-    else{btn.style.background='var(--card)';btn.style.borderColor='var(--border)';btn.style.color='var(--muted)';}
-  });
+  applyFontSize(fsize);
 }
 function catParent(cat){return CAT_PARENT[cat]||null;}
 
@@ -2536,11 +2561,11 @@ function addCategory(name){
   appState.categories.push(name);persistState();
 }
 function promptNewCat(){
-  const n=prompt('Nueva categoría:');
+  const n=prompt(t('newCatPrompt')||'Nueva categoría:');
   if(n&&n.trim()){addCategory(n.trim());populateCatSelect('addCat',n.trim());}
 }
 function promptNewCatEdit(){
-  const n=prompt('Nueva categoría:');
+  const n=prompt(t('newCatPrompt')||'Nueva categoría:');
   if(n&&n.trim()){addCategory(n.trim());populateCatSelect('editCat',n.trim());}
 }
 
@@ -2836,7 +2861,7 @@ function showFriendBookTooltip(node){
 // ══════════════════════════
 function setLang(code){
   currentLang=code;localStorage.setItem('eter_lang',code);
-  applyLang();renderLangGrid();
+  location.reload();
 }
 function applyLang(){
   // Nav tabs via data-i18n (already tagged in HTML)
@@ -2857,7 +2882,10 @@ function applyLang(){
   // 5. All data-i18n elements (covers settings modal + everything tagged)
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const val=t(el.dataset.i18n);
-    if(val)el.textContent=val;
+    if(val&&val!==el.dataset.i18n){
+      if(el.children.length===0)el.textContent=val;
+      else el.setAttribute('data-i18n-done',val);
+    }
   });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
     const val=t(el.dataset.i18nPh||el.getAttribute('data-i18n-ph'));
@@ -2883,6 +2911,28 @@ function applyLang(){
   // Already added - skip
   // 11. Welcome modal — fully rebuilt in current language
   renderWelcomeBody();
+  // 12. Author note section in settings — populate with i18n
+  const _wQ=document.getElementById('wQ');if(_wQ)_wQ.textContent=t('welcomeQ')||'';
+  const _wP1=document.getElementById('wP1');if(_wP1)_wP1.textContent=t('welcomeP1')||'';
+  const _wP2=document.getElementById('wP2');if(_wP2)_wP2.textContent=t('welcomeP2')||'';
+  const _wP3=document.getElementById('wP3');if(_wP3)_wP3.innerHTML=(t('welcomeP3')||'')+' <em style="color:var(--accent2)">'+(t('welcomeP3em')||'')+'</em>'+(t('welcomeP3b')||'');
+  const _wP4=document.getElementById('wP4');if(_wP4)_wP4.textContent=t('welcomeP4')||'';
+  const _wClosing=document.getElementById('wClosing');if(_wClosing)_wClosing.textContent=t('welcomeClosing')||'';
+  const _wPrivacy=document.getElementById('wPrivacy');if(_wPrivacy)_wPrivacy.innerHTML='<strong style="color:var(--accent2);font-family:\'DM Mono\',monospace;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase">'+(t('importantNote')||'')+'</strong><br>'+(t('privacyNote')||'');
+  const _wDl=document.getElementById('wDownload');if(_wDl)_wDl.textContent=t('downloadBackupNow')||'';
+  const _wSign=document.getElementById('wSign');if(_wSign)_wSign.textContent=t('welcomeSign')||'';
+  // 13. Dynamic buttons
+  const _nc1=document.getElementById('btnNewCatAdd');if(_nc1)_nc1.textContent='+ '+(currentLang==='en'?'New':'Nueva');
+  const _nc2=document.getElementById('btnNewCatEdit');if(_nc2)_nc2.textContent='+ '+(currentLang==='en'?'New':'Nueva');
+  // 14. Bitacora hero title with em
+  const _bht=document.getElementById('bitHeroTitle');
+  if(_bht)_bht.innerHTML=t('logTitleBase')+' <em>'+t('logTitleEm')+'</em>';
+  // 15. Top 5 title
+  const _t5=document.getElementById('bitTopFiveTitle');
+  if(_t5)_t5.textContent='📊 '+t('topFive');
+  // 16. Explore hero title with em
+  const _eht=document.getElementById('exploreHeroTitle');
+  if(_eht)_eht.innerHTML=t('exploreTitleBase')+' <em>'+t('exploreTitleEm')+'</em>';
 }
 function renderWelcomeBody(){
   const wb=document.getElementById('welcomeBody');if(!wb)return;
@@ -2894,8 +2944,7 @@ function renderWelcomeBody(){
     <p style="font-size:.7rem;color:rgba(240,238,255,.82);line-height:1.85;margin-bottom:.65rem">${t('welcomeP3')||''} <em style="color:var(--accent2)">${t('welcomeP3em')||''}</em>${t('welcomeP3b')||''}</p>
     <p style="font-size:.67rem;color:rgba(240,238,255,.7);line-height:1.85;margin-bottom:.8rem">${t('welcomePrivacy')||''} <strong style="color:var(--accent2)">${t('welcomePrivacyLink')||''}</strong>.</p>
     <div style="border-top:1px solid rgba(139,92,246,.2);margin-bottom:.8rem"></div>
-    <p style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.55;margin-bottom:.65rem">${t('welcomeClosing')||''}</p>
-    <p style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">${t('welcomeSign')||''}</p>
+    <p style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;background:linear-gradient(120deg,var(--accent2) 0%,#fff 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.55;margin-bottom:.65rem">${t('welcomeClosing')||''}</p>    <p style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.05em;text-align:right;margin:0">${t('welcomeSign')||''}</p>
   `;
 }
 function updateBcount(){
@@ -2908,7 +2957,8 @@ function updateBcount(){
 }
 function renderLangGrid(){
   const el=document.getElementById('langGrid');if(!el)return;
-  el.innerHTML=Object.entries(LANGS).map(([code,lang])=>`
+  const visible=['es','en'];
+  el.innerHTML=visible.map(code=>{const lang=LANGS[code];return`
     <button onclick="setLang('${code}')" style="
       display:flex;align-items:center;gap:.4rem;
       background:${currentLang===code?'rgba(139,92,246,.2)':'var(--card)'};
@@ -2920,7 +2970,7 @@ function renderLangGrid(){
     ">
       <span>${lang.name}</span>
       ${currentLang===code?'<span style="margin-left:auto;color:var(--accent2)">✓</span>':''}
-    </button>`).join('');
+    </button>`}).join('');
 }
 
 // openSettings replaced by tabbed version above
@@ -3402,7 +3452,7 @@ function renderBitacora(){
       ${topCat?`<div class="bit-stat" style="font-size:1.4rem;font-family:'Playfair Display',serif">${topCat.c}</div><div class="bit-stat-label">${topCat.n} ${t('booksCount')||'libros'}</div>`:`<div style="color:var(--dim);font-size:.74rem">${t('addBooksWithCats')}</div>`}
     </div>
     <div class="bit-card">
-      <div class="bit-card-title" data-i18n="topFive">📊 Tu Top 5</div>
+      <div class="bit-card-title" id="bitTopFiveTitle">📊 Tu Top 5</div>
       <div style="margin-top:.3rem">
         ${[...cats].sort((a,b)=>realBooks.filter(x=>x.category===b).length-realBooks.filter(x=>x.category===a).length).slice(0,5).map(c=>{
           const n=realBooks.filter(b=>b.category===c).length;
@@ -3548,7 +3598,7 @@ function renderCatFilterPanel(){
   const list=document.getElementById('catFilterList');if(!list)return;
   const realBooks=lib.filter(b=>!b.isWishlist&&b.status!=='wishlist');
   const usedCats=[...new Set(realBooks.map(b=>{const p=CAT_PARENT[b.category||'']||b.category||'';return p;}).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-  if(!usedCats.length){list.innerHTML='<div style="font-size:.64rem;color:var(--dim);font-style:italic">Sin categorías aún.</div>';return;}
+  if(!usedCats.length){list.innerHTML=`<div style="font-size:.64rem;color:var(--dim);font-style:italic">${t('noCatsYet')}</div>`;return;}
   list.innerHTML=usedCats.map(cat=>{
     const col=cc(cat);
     const n=realBooks.filter(b=>(CAT_PARENT[b.category||'']||b.category||'')===cat).length;
@@ -3957,10 +4007,13 @@ function drawGraph(){
   // MAIN SUNS (one per galaxy)
   gNodes.filter(n=>n.type==='main').forEach(mn=>{
     const r=mn.r||30;
-    const sunColor=mn.galColor?mn.galColor.sun:'#8b5cf6';
-    const sunDark=mn.galColor?mn.galColor.dark:'#3b0764';
+    const _tkey=cfg.accentTheme||localStorage.getItem('eter2_theme')||'purple';
+    const _tmap={purple:{sun:'#8b5cf6',dark:'#3b0764',glow2:'rgba(139,92,246,'},blue:{sun:'#3b82f6',dark:'#1e3a5f',glow2:'rgba(59,130,246,'},green:{sun:'#10b981',dark:'#064e3b',glow2:'rgba(16,185,129,'},pink:{sun:'#ec4899',dark:'#831843',glow2:'rgba(236,72,153,'},orange:{sun:'#f97316',dark:'#7c2d12',glow2:'rgba(249,115,22,'},yellow:{sun:'#fbbf24',dark:'#78350f',glow2:'rgba(251,191,36,'},red:{sun:'#ef4444',dark:'#7f1d1d',glow2:'rgba(239,68,68,'}};
+    const _ct=_tmap[_tkey]||_tmap.purple;
+    const sunColor=mn.galColor?mn.galColor.sun:_ct.sun;
+    const sunDark=mn.galColor?mn.galColor.dark:_ct.dark;
     const corona=ctx.createRadialGradient(mn.x,mn.y,0,mn.x,mn.y,r+28);
-    corona.addColorStop(0,mn.galColor?mn.galColor.glow+'0.22)':'rgba(196,181,253,.22)');
+    corona.addColorStop(0,mn.galColor?mn.galColor.glow+'0.22)':(_ct.glow2+'0.22)'));
     corona.addColorStop(1,'transparent');
     ctx.beginPath();ctx.arc(mn.x,mn.y,r+28,0,Math.PI*2);ctx.fillStyle=corona;ctx.fill();
     const sg=ctx.createRadialGradient(mn.x-r*.4,mn.y-r*.4,0,mn.x,mn.y,r);
@@ -4324,7 +4377,7 @@ function openBook(id){
     </div>
     <div>
       <div class="sec">${t('secKeywords')||'Keywords'}</div>
-      <div class="kwrow"><input type="text" class="kwin" id="kwInput" placeholder="${t('newKeyword')||'Nueva keyword…'}" onkeydown="if(event.key==='Enter')addKw(${b.id})"><button class="btn-kw" onclick="addKw(${b.id})">+ Add</button></div>
+      <div class="kwrow"><input type="text" class="kwin" id="kwInput" placeholder="${t('newKeyword')||'Nueva keyword…'}" onkeydown="if(event.key==='Enter')addKw(${b.id})"><button class="btn-kw" onclick="addKw(${b.id})">${t('add')||'+ Add'}</button></div>
       <div class="kwcloud" id="kwWrap"></div>
       <div class="sec">${t('secRelated')||'Libros relacionados'}</div>
       <div class="rel-list">
@@ -5124,7 +5177,7 @@ function onbSelectLang(lang){
   // Highlight selected button
   document.querySelectorAll('.onb-lang-btn').forEach(b=>b.classList.remove('selected'));
   event.target.classList.add('selected');
-  // Apply lang immediately to whole app
+  // Save lang — reload happens when onboarding finishes
   currentLang=lang;
   localStorage.setItem('eter_lang',lang);
   applyLang();
@@ -5132,7 +5185,6 @@ function onbSelectLang(lang){
   // Show next button
   const nb=document.getElementById('onbNext');
   if(nb){nb.style.opacity='1';nb.style.pointerEvents='auto';}
-  // Update orb color
   updateAppIcon && updateAppIcon();
 }
 
@@ -5151,11 +5203,13 @@ function onbGo(dir){
   if(back){back.style.opacity=_onbStep>0?'1':'0';back.style.pointerEvents=_onbStep>0?'auto':'none';}
   if(next){
     if(_onbStep===4){next.style.opacity='0';next.style.pointerEvents='none';}
-    else if(_onbStep===0){next.style.opacity=_onbLangSelected?'1':'0';next.style.pointerEvents=_onbLangSelected?'auto':'none';}
+    else if(_onbStep===0){next.style.opacity=_onbLangSelected?'1':'0.3';next.style.pointerEvents=_onbLangSelected?'auto':'none';}
     else{next.style.opacity='1';next.style.pointerEvents='auto';}
   }
   // Populate step content
   onbPopulateStep(_onbStep);
+  // Redraw stars to cover full modal height after content renders
+  setTimeout(drawOnbStars, 60);
 }
 
 function onbPopulateStep(step){
@@ -5220,43 +5274,60 @@ function finishOnboarding(){
 
 function maybeShowOnboarding(){
   if(lib.length===0&&localStorage.getItem('eter2_onboarded')!=='1'){
-    _onbStep=0;
-    _onbLangSelected=false;
-    setTimeout(()=>{
-      showModal('mOnboarding');
-      drawOnbStars();
-      // Reset to step 0
-      for(let i=0;i<=4;i++){
-        const s=document.getElementById('onbStep'+i);
-        if(s)s.style.display=i===0?'block':'none';
-      }
-      document.querySelectorAll('.onb-dot').forEach((d,i)=>d.classList.toggle('active',i===0));
-      const back=document.getElementById('onbBack');
-      const next=document.getElementById('onbNext');
-      if(back){back.style.opacity='0';back.style.pointerEvents='none';}
-      if(next){next.style.opacity='0';next.style.pointerEvents='none';}
-    },800);
+    forceShowOnboarding();
   }
+}
+
+function toggleAuthorNote(){
+  const body=document.getElementById('authorNoteBody');
+  const chevron=document.getElementById('authorNoteChevron');
+  if(!body)return;
+  const open=body.style.display==='none'||body.style.display==='';
+  body.style.display=open?'block':'none';
+  if(chevron)chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+}
+
+function forceShowOnboarding(){
+  _onbStep=0;
+  _onbLangSelected=false;
+  setTimeout(()=>{
+    showModal('mOnboarding');
+    for(let i=0;i<=4;i++){
+      const s=document.getElementById('onbStep'+i);
+      if(s)s.style.display=i===0?'block':'none';
+    }
+    document.querySelectorAll('.onb-dot').forEach((d,i)=>d.classList.toggle('active',i===0));
+    const back=document.getElementById('onbBack');
+    const next=document.getElementById('onbNext');
+    if(back){back.style.opacity='0';back.style.pointerEvents='none';}
+    if(next){next.style.opacity='0.3';next.style.pointerEvents='none';}
+    // Draw stars after modal is fully visible and has dimensions
+    setTimeout(drawOnbStars, 120);
+    // Redraw again after a bit more in case height changed
+    setTimeout(drawOnbStars, 350);
+  },300);
 }
 
 function drawOnbStars(){
   const cv=document.getElementById('onbStars');
   if(!cv)return;
   const modal=document.getElementById('mOnboarding');
-  const W=modal?modal.offsetWidth:540;
-  const H=modal?modal.offsetHeight:620;
+  if(!modal)return;
+  // Force canvas to match full modal size including scroll height
+  const W=modal.offsetWidth||540;
+  const H=Math.max(modal.offsetHeight,modal.scrollHeight,500);
   const dpr=window.devicePixelRatio||1;
   cv.width=W*dpr;cv.height=H*dpr;
   cv.style.width=W+'px';cv.style.height=H+'px';
   const ctx=cv.getContext('2d');
   ctx.scale(dpr,dpr);
   const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#07060f');bg.addColorStop(1,'#0c0a1a');
+  bg.addColorStop(0,'#07060f');bg.addColorStop(.5,'#0c0a1a');bg.addColorStop(1,'#06050f');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
-  for(let i=0;i<160;i++){
-    ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*.8+.15,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.45+.08})`;ctx.fill();
+  for(let i=0;i<200;i++){
+    ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*.9+.15,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.5+.1})`;ctx.fill();
   }
 }
 
