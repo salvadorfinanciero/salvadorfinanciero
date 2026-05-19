@@ -559,7 +559,7 @@ canvas{-webkit-user-select:none;user-select:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
-  .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:20px!important;top:auto!important;right:auto!important;flex-direction:row!important;gap:.3rem!important;background:rgba(8,6,18,.92);border:1px solid rgba(139,92,246,.22);border-radius:14px;padding:.25rem .3rem;backdrop-filter:blur(24px);z-index:200;transform:none!important}
+  .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:12px!important;top:auto!important;right:auto!important;flex-direction:row!important;flex-wrap:wrap!important;gap:.28rem!important;background:rgba(8,6,18,.95);border:1px solid rgba(139,92,246,.25);border-radius:14px;padding:.3rem .32rem;backdrop-filter:blur(24px);z-index:200;transform:none!important;max-width:174px!important}
   .g-tools .btic{width:36px;height:36px;font-size:.95rem;border-radius:8px;box-shadow:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .g-tools.collapsed #gToolsExpandable{display:none!important}
   .g-tools.collapsed #gToolsCollapseBtn{font-size:.8rem;opacity:.9}
@@ -3487,12 +3487,18 @@ async function shareQuoteAsStory(){
   const origLabel=document.getElementById('qpShareLabel').textContent;
   if(btn){btn.style.opacity='.6';document.getElementById('qpShareLabel').textContent=currentLang==='en'?'Rendering…':'Generando…';}
 
-  // Build story card on offscreen canvas (1080x1920 = Instagram Story ratio)
+  // Get current theme colors
+  const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
+  const ac=theme.accent,ac2=theme.accent2,ac3=theme.accent3;
+  const glowStrong=theme.glow.replace(/[\d.]+\)$/,'0.8)');
+  const glowMid=theme.glow.replace(/[\d.]+\)$/,'0.18)');
+  const glowLine=theme.glow.replace(/[\d.]+\)$/,'0.4)');
+
   const W=1080,H=1920;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const ctx=cv.getContext('2d');
 
-  // Background — deep space gradient
+  // Background
   const bg=ctx.createLinearGradient(0,0,W,H);
   bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
@@ -3500,73 +3506,84 @@ async function shareQuoteAsStory(){
   // Stars
   const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
   for(let i=0;i<320;i++){
-    ctx.beginPath();
-    ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*1.4+.2,0,Math.PI*2);
+    ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11.1)*1.4+.2,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.6+.1})`;ctx.fill();
   }
 
-  // Subtle glow center
-  const glow=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.7);
-  glow.addColorStop(0,'rgba(139,92,246,.12)');glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+  // Center glow
+  const glowRad=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.7);
+  glowRad.addColorStop(0,glowMid);glowRad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glowRad;ctx.fillRect(0,0,W,H);
 
-  // ALINEA orb logo
-  const orbX=W/2,orbY=H*.18,orbR=72;
+  // Orb — theme color
+  const orbX=W/2,orbY=H*.14,orbR=78;
   const orbGrad=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
-  orbGrad.addColorStop(0,'#e0d4ff');orbGrad.addColorStop(.4,'#a78bfa');
-  orbGrad.addColorStop(.75,'#7c3aed');orbGrad.addColorStop(1,'#3b0764');
-  ctx.shadowBlur=60;ctx.shadowColor='rgba(139,92,246,.8)';
+  orbGrad.addColorStop(0,'#fff');orbGrad.addColorStop(.25,ac2);
+  orbGrad.addColorStop(.65,ac);orbGrad.addColorStop(1,ac3);
+  ctx.shadowBlur=70;ctx.shadowColor=glowStrong;
   ctx.fillStyle=orbGrad;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();
   ctx.shadowBlur=0;
 
   // ALINEA wordmark
-  ctx.fillStyle='rgba(196,181,253,.9)';
-  ctx.font='500 52px "DM Mono",monospace';
-  ctx.textAlign='center';ctx.letterSpacing='18px';
-  ctx.fillText('ALINEA',W/2,orbY+orbR+70);
+  ctx.fillStyle=ac2;ctx.font='500 54px "DM Mono",monospace';
+  ctx.textAlign='center';ctx.letterSpacing='20px';
+  ctx.fillText('ALINEA',W/2,orbY+orbR+72);
 
   // Decorative line
-  ctx.strokeStyle='rgba(139,92,246,.35)';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(W*.25,H*.32);ctx.lineTo(W*.75,H*.32);ctx.stroke();
+  ctx.strokeStyle=glowLine;ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(W*.22,H*.26);ctx.lineTo(W*.78,H*.26);ctx.stroke();
 
-  // Quote text — word wrap
-  const quote='"'+_qpQuoteText+'"';
-  ctx.fillStyle='#f0eeff';ctx.font='italic 700 58px "Playfair Display",serif';
-  ctx.textAlign='center';
-  const maxW=W-200,lineH=82;
-  const words=quote.split(' ');
-  let lines=[],cur='';
-  words.forEach(w=>{const test=cur?cur+' '+w:w;if(ctx.measureText(test).width>maxW&&cur){lines.push(cur);cur=w;}else cur=test;});
-  if(cur)lines.push(cur);
-  const totalH=lines.length*lineH;
-  const startY=H/2-totalH/2;
-  lines.forEach((ln,i)=>{ctx.fillText(ln,W/2,startY+i*lineH);});
+  // Quote text with auto font scaling
+  const quote='\u201C'+_qpQuoteText+'\u201D';
+  const maxW=W-180;
+  let fontSize=68,lineH,lines=[];
+  for(let sz=68;sz>=28;sz-=3){
+    ctx.font=`italic 700 ${sz}px "Playfair Display",serif`;
+    lineH=sz*1.45;
+    const wds=quote.split(' ');
+    lines=[];let cur='';
+    wds.forEach(w=>{const test=cur?cur+' '+w:w;if(ctx.measureText(test).width>maxW&&cur){lines.push(cur);cur=w;}else cur=test;});
+    if(cur)lines.push(cur);
+    if(lines.length*lineH<H*.46){fontSize=sz;break;}
+  }
+  ctx.font=`italic 700 ${fontSize}px "Playfair Display",serif`;
+  lineH=fontSize*1.45;
 
-  // Source
-  ctx.fillStyle='rgba(196,181,253,.7)';
-  ctx.font='400 40px "DM Mono",monospace';
-  ctx.letterSpacing='2px';
-  ctx.fillText('— '+(_qpBookTitle||''),W/2,startY+totalH+80);
+  const zoneTop=H*.29,zoneBot=H*.78;
+  const totalQH=lines.length*lineH;
+  const startY=zoneTop+(zoneBot-zoneTop-totalQH)/2+fontSize;
+  ctx.fillStyle='#f0eeff';ctx.textAlign='center';
+  lines.forEach((ln,i)=>ctx.fillText(ln,W/2,startY+i*lineH));
 
-  // Bottom watermark
-  ctx.fillStyle='rgba(139,92,246,.5)';ctx.font='400 36px "DM Mono",monospace';
-  ctx.letterSpacing='6px';ctx.fillText('alinea.io',W/2,H*.92);
+  // Book title
+  const afterQ=startY+lines.length*lineH+60;
+  ctx.fillStyle=ac2+'cc';ctx.font='400 40px "DM Mono",monospace';ctx.letterSpacing='2px';
+  ctx.fillText('\u2014 '+(_qpBookTitle||''),W/2,afterQ);
+
+  // Author
+  if(_qpBookAuthor){
+    ctx.fillStyle='rgba(255,255,255,.42)';ctx.font='300 33px "DM Mono",monospace';ctx.letterSpacing='1px';
+    ctx.fillText(_qpBookAuthor,W/2,afterQ+54);
+  }
+
+  // Watermark
+  ctx.fillStyle=ac+'90';ctx.font='400 34px "DM Mono",monospace';
+  ctx.letterSpacing='8px';ctx.fillText('alinea.io',W/2,H*.93);
 
   if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
 
-  // Share
   cv.toBlob(async blob=>{
     if(!blob)return;
     const file=new File([blob],'alinea-quote.png',{type:'image/png'});
-    const shareText='My knowledge universe in ALINEA 🌌 alinea.io';
+    const shareText='My knowledge universe in ALINEA \uD83C\uDF0C alinea.io';
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
       try{await navigator.share({files:[file],title:'ALINEA',text:shareText});}
       catch(e){if(e.name!=='AbortError')_downloadGalaxyPng(blob);}
     } else {
       _downloadGalaxyPng(blob);
-      _showToast('📸 Story descargada — '+(currentLang==='en'?'share on Instagram!':'¡compártela en Instagram!'));
+      _showToast(currentLang==='en'?'\uD83D\uDCF8 Story downloaded \u2014 share on Instagram!':'\uD83D\uDCF8 Story descargada \u2014 \u00A1comp\u00E1rtela en Instagram!');
     }
-  },'image/png');
+  },'image/png',1.0);
 }
 
 function onExplore(){
