@@ -254,11 +254,14 @@ body::before{content:'';position:fixed;inset:0;background:
 .exp-res{display:flex;flex-direction:column;gap:.52rem}
 .ec{background:rgba(12,10,24,.93);border:1px solid var(--border);border-radius:8px;padding:.88rem 1rem;transition:border-color .18s,box-shadow .18s;cursor:pointer;animation:fadeUp .2s ease}
 .ec:hover{border-color:var(--accent);box-shadow:0 3px 16px rgba(139,92,246,.12)}
-.ec-q{font-family:'Source Serif 4',serif;font-size:.83rem;font-style:italic;line-height:1.72;color:var(--text);margin-bottom:.42rem}
+.ec-q{font-family:'Source Serif 4',serif;font-style:italic;color:var(--text);margin-bottom:.42rem;font-size:.83rem;line-height:1.72}
+.ec-q.q-short{font-size:.95rem;line-height:1.6}
+.ec-q.q-medium{font-size:.83rem;line-height:1.5}
+.ec-q.q-long{font-size:.7rem;line-height:1.4}
 .ec-m{display:flex;align-items:center;gap:.42rem;flex-wrap:wrap}
 .ec-bk{font-size:.64rem;color:var(--muted)}
 .ec-bk strong{color:var(--text);font-weight:500}
-.exp-empty{padding:2rem;color:var(--dim);font-size:.72rem;font-style:italic}
+.exp-empty{padding:2rem;color:var(--dim);font-size:.72rem;font-style:italic;text-align:center;width:100%}
 
 #viewBitacora{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #viewBitacora>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%}
@@ -274,7 +277,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .bit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .18s,box-shadow .18s}
 .bit-card:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px var(--glow)}
 .bit-card-title{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.bit-stat{font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.25rem}
+.bit-stat{font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.25rem;word-break:break-word;hyphens:auto;overflow-wrap:break-word;max-width:100%}
 .bit-stat-label{font-size:.68rem;color:var(--muted)}
 .bit-bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.38rem}
 .bit-bar-label{font-size:.65rem;color:var(--muted);width:90px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -299,7 +302,7 @@ body::before{content:'';position:fixed;inset:0;background:
 
 /* ── MODALS ── */
 body.modal-open{overflow:hidden!important;touch-action:none}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:460px;max-width:92vw;background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:1.62rem;z-index:501;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;max-height:min(86vh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-shadow:0 30px 90px rgba(0,0,0,.85),0 0 40px var(--glow),inset 0 0 0 1px rgba(255,255,255,.04)}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:460px;max-width:min(92vw,460px);background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:1.4rem;z-index:501;opacity:0;pointer-events:none;transition:opacity .22s;max-height:min(82vh,680px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-shadow:0 20px 60px rgba(0,0,0,.85),0 0 30px var(--glow)}
 /* Book modal — much wider on desktop */
 #mBook{
   z-index:502;
@@ -434,6 +437,9 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .nitem:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px rgba(139,92,246,.2);background:rgba(139,92,246,.05)}
 .npg{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);letter-spacing:.1em;margin-bottom:.3rem;text-transform:uppercase;opacity:.9}
 .ntxt{font-size:.82rem;line-height:1.72;color:#f0eeff;font-style:italic;font-family:'Source Serif 4',serif}
+.ntxt.q-short{font-size:.9rem;line-height:1.6}
+.ntxt.q-medium{font-size:.82rem;line-height:1.5}
+.ntxt.q-long{font-size:.7rem;line-height:1.4}
 .ntxt mark{background:rgba(139,92,246,.2);color:var(--accent2);border-radius:2px;padding:0 .1em;font-style:italic}
 .ncmt{font-size:.65rem;color:rgba(196,181,253,.75);margin-top:.28rem;line-height:1.5}
 .nai{display:flex;gap:.18rem;flex-wrap:wrap;margin-top:.35rem}
@@ -524,7 +530,11 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .star-sm{font-size:.7rem}
 .star-display{display:flex;gap:.1rem}
 
-/* ── MILESTONE POPUP ── */
+body.onboarding-active header,
+body.onboarding-active #dock,
+body.onboarding-active .fab-wrap{display:none!important;pointer-events:none!important}
+#onbOverlay{position:fixed;inset:0;width:100vw;height:100vh;z-index:9998;background:rgba(3,2,10,.95);display:none}
+#mOnboarding{z-index:9999!important}
 #milestonePopup.open{opacity:1!important;pointer-events:auto!important;transform:translateX(-50%) translateY(0)!important;}
 /* ── QUOTE POPUP ── */
 #quotePopup{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:1.2rem}
@@ -532,6 +542,9 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 #quotePopupBg{position:absolute;inset:0;background:rgba(3,2,10,.82);backdrop-filter:blur(6px)}
 #quotePopupCard{position:relative;z-index:1;background:linear-gradient(135deg,#07060f,#0c0a1a);border:1px solid var(--border2);border-radius:16px;padding:1.6rem 1.5rem 1.2rem;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
 .qp-quote{font-family:'Source Serif 4',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:.8rem}
+.qp-quote.q-short{font-size:1.15rem;line-height:1.6}
+.qp-quote.q-medium{font-size:.95rem;line-height:1.55}
+.qp-quote.q-long{font-size:.78rem;line-height:1.45}
 .qp-source{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.05em;margin-bottom:1.1rem}
 .qp-actions{display:flex;gap:.5rem;align-items:center}
 .qp-share{flex:1;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.52rem .9rem;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 2px 12px var(--glow);transition:all .15s}
@@ -539,7 +552,7 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .qp-open{background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.5rem .85rem;border-radius:8px;cursor:pointer;transition:all .15s}
 .qp-close{position:absolute;top:.65rem;right:.65rem;background:none;border:none;color:var(--dim);font-size:.9rem;cursor:pointer;padding:.2rem;line-height:1;transition:color .13s}
 .qp-close:hover{color:var(--text)}
-.fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 80px);right:1.4rem;z-index:300;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
+.fab-wrap{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 96px);right:1.4rem;z-index:300;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.6rem}
 .fab{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;color:#fff;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,92,246,.5);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
 .fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(139,92,246,.65)}
 .fab.open{transform:rotate(45deg)}
@@ -566,7 +579,7 @@ canvas{-webkit-user-select:none;user-select:none}
   .nav{gap:.05rem;overflow-x:auto;flex-shrink:1;min-width:0}
   .hdr-r{gap:.35rem}
   .btic{width:32px;height:32px;font-size:.8rem}
-  .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:12px!important;top:auto!important;right:auto!important;display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:.28rem!important;background:rgba(8,6,18,.95);border:1px solid rgba(139,92,246,.25);border-radius:14px;padding:.3rem .32rem;backdrop-filter:blur(24px);z-index:200;transform:none!important;width:auto!important;flex-wrap:unset!important}
+  .g-tools{position:fixed!important;bottom:calc(env(safe-area-inset-bottom) + 86px)!important;left:12px!important;top:auto!important;right:auto!important;display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:.28rem!important;background:rgba(8,6,18,.95);border:1px solid rgba(139,92,246,.25);border-radius:14px;padding:.3rem .32rem;backdrop-filter:blur(24px);z-index:200;transform:none!important;width:auto!important}
   .g-tools .btic{width:36px;height:36px;font-size:.95rem;border-radius:8px;box-shadow:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .g-tools.collapsed #gToolsExpandable{display:none!important}
   .g-tools.collapsed #gToolsCollapseBtn{font-size:.8rem;opacity:.9}
@@ -885,10 +898,11 @@ canvas{-webkit-user-select:none;user-select:none}
           <div class="bit-card-title" data-i18n="shareGalaxyCardTitle">🌌 Compartir mi galaxia</div>
           <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="shareGalaxyDesc">Exporta un código de tu biblioteca para que otra persona lo importe y vea tu galaxia junto a la suya.</div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="copyGalaxyCode()" data-i18n="copyGalaxyBtn">📋 Copiar código de galaxia</button>
-            <button class="btn-ghost" style="font-size:.55rem;padding:.35rem .85rem" onclick="openFriendGalaxy()" data-i18n="viewFriendBtn">👁 Ver galaxia de amigo</button>
-          </div>
-          <textarea id="friendCodeIn" placeholder="Pega aquí el código JSON de tu amigo…" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.6rem;border-radius:6px;outline:none;resize:vertical;min-height:70px;margin-top:.65rem;display:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'"></textarea>
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="shareGalaxyFile()" data-i18n="copyGalaxyBtn">📤 Compartir mi galaxia</button>
+            <label class="btn-ghost" style="font-size:.55rem;padding:.35rem .85rem;cursor:pointer">
+              📂 <span data-i18n="viewFriendBtn">Importar galaxia de amigo</span>
+              <input type="file" accept=".json" style="display:none" onchange="loadFriendGalaxyFile(event)">
+            </label>
         </div>
         </div>
 
@@ -1015,6 +1029,10 @@ canvas{-webkit-user-select:none;user-select:none}
 <!-- VISION -->
 <div class="modal" id="mVision">
   <h2>✦ Visión IA</h2><p class="sub">Apunta la cámara a una página subrayada.</p>
+  <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:.55rem .75rem;margin-bottom:.65rem;display:flex;gap:.5rem;align-items:flex-start">
+    <span style="font-size:.85rem;flex-shrink:0">⚠️</span>
+    <p style="font-size:.6rem;color:rgba(251,191,36,.85);line-height:1.6;margin:0" data-i18n="cameraApiNote">Esta función requiere que tu API Key esté conectada en Ajustes → IA para procesar el texto de la imagen.</p>
+  </div>
   <div class="fl">
     <div class="cam-wrap" id="camWrap"><div class="cam-ph" id="camPh">📷</div><video id="camVid" autoplay playsinline style="display:none"></video></div>
     <div style="display:flex;gap:.42rem;justify-content:center">
@@ -1137,7 +1155,17 @@ canvas{-webkit-user-select:none;user-select:none}
 
   <!-- TAB 2: DATOS & GALAXIA -->
   <div id="spage2" style="display:none">
-    <!-- LOCAL-FIRST WARNING -->
+    <div class="set-s">
+      <h3>🌌 Galaxia de amigos</h3>
+      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.65rem">Comparte tu biblioteca o importa la de un amigo para ver sus galaxias juntas.</p>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+        <button onclick="shareGalaxyFile()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.42rem .9rem;border-radius:7px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📤 Compartir mi galaxia</button>
+        <label style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.42rem .9rem;border-radius:7px;cursor:pointer">
+          📂 Importar galaxia
+          <input type="file" accept=".json" style="display:none" onchange="loadFriendGalaxyFile(event)">
+        </label>
+      </div>
+    </div>
     <div style="background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:.85rem 1rem;margin-bottom:.95rem;display:flex;gap:.65rem;align-items:flex-start">
       <span style="font-size:1.1rem;flex-shrink:0;margin-top:.05rem">⚠️</span>
       <p id="localFirstNote" style="font-size:.63rem;color:rgba(251,191,36,.9);line-height:1.7;margin:0"></p>
@@ -1352,6 +1380,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div class="onb-guide-item"><span class="onb-guide-icon">🔍</span><div><div id="onbG3t" class="onb-guide-title"></div><div id="onbG3s" class="onb-guide-sub"></div></div></div>
         <div class="onb-guide-item"><span class="onb-guide-icon">🌌</span><div><div id="onbG4t" class="onb-guide-title"></div><div id="onbG4s" class="onb-guide-sub"></div></div></div>
         <div class="onb-guide-item"><span class="onb-guide-icon">📋</span><div><div id="onbG5t" class="onb-guide-title"></div><div id="onbG5s" class="onb-guide-sub"></div></div></div>
+        <div class="onb-guide-item" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:.5rem .65rem"><span class="onb-guide-icon">📸</span><div><div id="onbG6t" class="onb-guide-title"></div><div id="onbG6s" class="onb-guide-sub"></div></div></div>
       </div>
     </div>
 
@@ -1896,7 +1925,7 @@ let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
-const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat'];
+const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat','mBookSelector'];
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
 const persistCfg=()=>localStorage.setItem('eter2_cfg',JSON.stringify(cfg));
@@ -3087,6 +3116,10 @@ function applyLang(){
   // 17. Local-first security note
   const _lfn=document.getElementById('localFirstNote');
   if(_lfn)_lfn.textContent=t('localFirstNote')||'';
+  // 18. FAB labels
+  const _fl1=document.querySelector('#fabMenu [data-i18n="addBookTitle"]');if(_fl1)_fl1.textContent=t('addBookTitle')||'Agregar libro';
+  const _fl2=document.querySelector('#fabMenu [data-i18n="wishlistBtn"]');if(_fl2)_fl2.textContent=t('wishlistBtn')||'Wishlist';
+  const _fl3=document.querySelector('#fabMenu [data-i18n="explore2"]');if(_fl3)_fl3.textContent=t('explore2')||'Explorar ideas';
 }
 function renderWelcomeBody(){
   const wb=document.getElementById('welcomeBody');if(!wb)return;
@@ -3285,11 +3318,10 @@ function saveNoteEdit(bookId,idx,btn){
   persist();renderNotes(b);renderLib();
 }
 
-function renderNotes(b, query='', newIdx=-1){
+function renderNotes(b, query='', newIdx=-1, page=0){
   const list=document.getElementById('notesList');if(!list)return;
   const q=(query||'').toLowerCase().trim();
   const notes=b.notes||[];
-  // Filter by query if present
   const visible=q
     ? notes.map((n,i)=>({n,i})).filter(({n})=>
         n.text.toLowerCase().includes(q)||
@@ -3298,12 +3330,15 @@ function renderNotes(b, query='', newIdx=-1){
         (n.keywords||[]).some(k=>k.toLowerCase().includes(q)))
     : notes.map((n,i)=>({n,i}));
 
-  // Update count badge
+  const PAGE=10;
+  const total=visible.length;
+  const paged=visible.slice(page*PAGE,(page+1)*PAGE);
+
   const countEl=document.getElementById('notesCount');
-  if(countEl) countEl.textContent=q?`${visible.length}/${notes.length}`:`${notes.length} nota${notes.length!==1?'s':''}`;
+  if(countEl) countEl.textContent=q?`${total}/${notes.length}`:`${notes.length} nota${notes.length!==1?'s':''}`;
 
   list.innerHTML='';
-  if(!visible.length){
+  if(!total){
     list.innerHTML=`<div style="font-family:'Source Serif 4',serif;font-size:.72rem;font-style:italic;color:var(--dim);padding:.5rem 0">${q?'Sin notas que coincidan con "'+q+'"':'Sin notas aún — escribe la primera arriba.'}</div>`;
     return;
   }
@@ -3312,7 +3347,7 @@ function renderNotes(b, query='', newIdx=-1){
     const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
     return txt.replace(re,'<mark>$1</mark>');
   }
-  visible.forEach(({n,i})=>{
+  paged.forEach(({n,i})=>{
     const el=document.createElement('div');
     el.className='nitem'+(i===newIdx?' just-added':'');
     const tags=n.aiDone
@@ -3320,7 +3355,7 @@ function renderNotes(b, query='', newIdx=-1){
       :`<div class="nai"><span class="naitag ld">✦ analizando…</span></div>`;
     el.innerHTML=`
       ${n.page?`<div class="npg">Pág. ${hl(String(n.page))}</div>`:''}
-      <div class="ntxt">"${hl(n.text)}"</div>
+      <div class="ntxt ${qSizeClass(n.text)}">"${hl(n.text)}"</div>
       ${n.comment?`<div class="ncmt">${hl(n.comment)}</div>`:''}
       ${tags}
       <button class="ndel" onclick="delNote(${b.id},${i})">✕</button>
@@ -3330,15 +3365,25 @@ function renderNotes(b, query='', newIdx=-1){
     el.dataset.bookAuthor=b.author||'';
     el.style.cursor='pointer';
     el.addEventListener('click',e=>{
-      // Only open popup if NOT in edit mode and click is directly on note content (not buttons)
       if(e.target.closest('.ndel,.nedit,.nai,.naitag,.note-edit-form'))return;
-      if(el.querySelector('.note-edit-form'))return; // note is in edit mode
+      if(el.querySelector('.note-edit-form'))return;
       showQuotePopup(b.id,n.text,b.title,b.author||'');
     });
     list.appendChild(el);
-    // Remove animation class after it plays so re-renders don't re-animate
     if(i===newIdx) setTimeout(()=>el.classList.remove('just-added'),600);
   });
+
+  // Pagination controls
+  if(total>PAGE){
+    const nav=document.createElement('div');
+    nav.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:.55rem .2rem;border-top:1px solid var(--border);margin-top:.3rem';
+    nav.innerHTML=`<span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim)">${page*PAGE+1}–${Math.min((page+1)*PAGE,total)} / ${total}</span>
+      <div style="display:flex;gap:.3rem">
+        ${page>0?`<button onclick="renderNotes(lib.find(x=>x.id===${b.id}),document.getElementById('noteSearchIn')?.value||'',${-1},${page-1})" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.48rem;padding:.2rem .5rem;border-radius:5px;cursor:pointer">←</button>`:''}
+        ${(page+1)*PAGE<total?`<button onclick="renderNotes(lib.find(x=>x.id===${b.id}),document.getElementById('noteSearchIn')?.value||'',${-1},${page+1})" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.48rem;padding:.2rem .5rem;border-radius:5px;cursor:pointer">→</button>`:''}
+      </div>`;
+    list.appendChild(nav);
+  }
 }
 
 function filterNotes(bookId, val){
@@ -3396,6 +3441,12 @@ function stopCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camS
 // ══════════════════════════
 // KEYWORDS
 // ══════════════════════════
+function qSizeClass(text){
+  const len=(text||'').length;
+  if(len<150)return'q-short';
+  if(len<350)return'q-medium';
+  return'q-long';
+}
 function addNoteKw(bookId,idx,input){
   const b=lib.find(x=>x.id===bookId);if(!b)return;
   const val=input.value.trim();if(!val)return;
@@ -3447,30 +3498,49 @@ function toggleDictation(bookId){
     alert('Tu navegador no soporta dictado por voz. Prueba Chrome o Safari en iOS.');return;
   }
   const r=new SpeechRecognition();
-  r.lang=currentLang==='es'?'es-MX':currentLang==='en'?'en-US':currentLang==='pt'?'pt-BR':currentLang==='fr'?'fr-FR':currentLang==='de'?'de-DE':currentLang==='it'?'it-IT':currentLang==='ja'?'ja-JP':'es-MX';
+  r.lang=currentLang==='es'?'es-MX':'en-US';
   r.continuous=false;r.interimResults=true;r.maxAlternatives=1;
   _recognition=r;_dictatingFor=bookId;
   const btn=document.getElementById('micBtn'+bookId);
   const ta=document.getElementById('noteText');
   const origText=ta.value;
-  if(btn){btn.classList.add('recording');btn.textContent='● Rec';}
+  if(btn){btn.classList.add('recording');btn.textContent='⏹ '+(currentLang==='en'?'Stop':'Detener');}
+  // Show waveform toast
+  _showDictToast(true,bookId);
   r.onresult=e=>{
     const transcript=[...e.results].map(res=>res[0].transcript).join('');
     ta.value=origText+(origText?' ':'')+transcript;
-    ta.style.borderColor=e.results[e.results.length-1].isFinal?'var(--accent)':'rgba(244,63,94,.5)';
   };
   r.onend=()=>{
     _recognition=null;_dictatingFor=null;
-    if(btn)btn.classList.remove('recording');
-    ta.style.borderColor='';
-    ta.focus();
+    if(btn){btn.classList.remove('recording');btn.textContent='🎙';}
+    ta.style.borderColor='';ta.focus();
+    _showDictToast(false,bookId);
   };
   r.onerror=e=>{
     _recognition=null;_dictatingFor=null;
-    if(btn)btn.classList.remove('recording');
+    if(btn){btn.classList.remove('recording');btn.textContent='🎙';}
+    _showDictToast(false,bookId);
     if(e.error==='not-allowed')alert('Permiso de micrófono denegado. Actívalo en la configuración de tu navegador.');
   };
   r.start();
+}
+function _showDictToast(active,bookId){
+  let el=document.getElementById('_dictToast');
+  if(!active){if(el)el.remove();return;}
+  if(!el){
+    el=document.createElement('div');el.id='_dictToast';
+    el.style.cssText='position:fixed;bottom:calc(env(safe-area-inset-bottom)+110px);left:50%;transform:translateX(-50%);background:rgba(26,23,48,.97);border:1.5px solid var(--accent);border-radius:12px;padding:.65rem 1.1rem;z-index:9999;display:flex;align-items:center;gap:.65rem;box-shadow:0 4px 24px var(--glow)';
+    document.body.appendChild(el);
+  }
+  el.innerHTML=`<div style="display:flex;gap:3px;align-items:center;height:18px">${[1,2,3,4,5].map((_,i)=>`<div style="width:3px;border-radius:2px;background:var(--accent2);animation:dictWave .8s ${i*.1}s ease-in-out infinite alternate;height:${6+i*3}px"></div>`).join('')}</div>
+  <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent2)">${currentLang==='en'?'Listening…':'Escuchando…'}</span>
+  <button onclick="if(window._recognition)window._recognition.stop()" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#f87171;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.22rem .55rem;border-radius:5px;cursor:pointer">${currentLang==='en'?'Stop':'Detener'}</button>`;
+  if(!document.getElementById('_dictWaveCSS')){
+    const s=document.createElement('style');s.id='_dictWaveCSS';
+    s.textContent='@keyframes dictWave{from{transform:scaleY(.4)}to{transform:scaleY(1.4)}}';
+    document.head.appendChild(s);
+  }
 }
 
 // ══════════════════════════
@@ -3487,7 +3557,7 @@ function buildMagWords(){
   const words=[...wordSet].slice(0,55);
   if(!words.length){
     container.style.minHeight='60px';
-    container.innerHTML='<div style="color:var(--dim);font-size:.72rem;font-style:italic;padding:.5rem">Agrega libros y notas para ver tus ideas aquí.</div>';
+    container.innerHTML='<div style="color:var(--dim);font-size:.72rem;font-style:italic;padding:.5rem;text-align:center;width:100%">Agrega libros y notas para ver tus ideas aquí.</div>';
     return;
   }
 
@@ -3591,8 +3661,9 @@ function activateWord(el,word){
 var _qpBookId=null,_qpQuoteText='',_qpBookTitle='',_qpBookAuthor='';
 function showQuotePopup(bookId,quoteText,bookTitle,bookAuthor){
   _qpBookId=bookId;_qpQuoteText=quoteText;_qpBookTitle=bookTitle;_qpBookAuthor=bookAuthor;
+  document.getElementById('qpText').className=`qp-quote ${qSizeClass(_qpQuoteText)}`;
   document.getElementById('qpText').textContent='"'+quoteText+'"';
-  document.getElementById('qpSource').textContent=(currentLang==='en'?'From ':'De ')+(bookTitle||'')+(bookAuthor?' · '+bookAuthor:'');
+  document.getElementById('qpSource').textContent=(_qpBookAuthor?_qpBookAuthor+' · ':'')+(_qpBookTitle||'');
   document.getElementById('qpShareLabel').textContent=currentLang==='en'?'Share as Story':'Compartir como Story';
   document.getElementById('qpOpenBtn').textContent=currentLang==='en'?'View book':'Ver libro';
   const popup=document.getElementById('quotePopup');
@@ -3683,7 +3754,7 @@ async function shareQuoteAsStory(){
 
   // Quote text with auto font scaling — straight serif, not italic
   const quote='\u201C'+_qpQuoteText+'\u201D';
-  const maxW=W-180;
+  const maxW=W*.8; // 80% width with 10% margins on each side
   let fontSize=66,lineH,lines=[];
   for(let sz=66;sz>=28;sz-=3){
     ctx.font=`700 ${sz}px "Source Serif 4",serif`;
@@ -3700,8 +3771,9 @@ async function shareQuoteAsStory(){
   const zoneTop=H*.29,zoneBot=H*.78;
   const totalQH=lines.length*lineH;
   const startY=zoneTop+(zoneBot-zoneTop-totalQH)/2+fontSize;
-  ctx.fillStyle='#f0eeff';ctx.textAlign='center';
-  lines.forEach((ln,i)=>ctx.fillText(ln,W/2,startY+i*lineH));
+  const margin=W*.1;
+  ctx.fillStyle='#f0eeff';ctx.textAlign='left';
+  lines.forEach((ln,i)=>ctx.fillText(ln,margin,startY+i*lineH));
 
   // Author first, then book title
   const afterQ=startY+lines.length*lineH+60;
@@ -3715,9 +3787,12 @@ async function shareQuoteAsStory(){
     ctx.fillText('\u2014 '+(_qpBookTitle||''),W/2,afterQ);
   }
 
-  // Watermark — only @alinea.io
-  ctx.fillStyle=ac+'90';ctx.font='400 34px "DM Mono",monospace';
-  ctx.letterSpacing='6px';ctx.textAlign='center';ctx.fillText('@alinea.io',W/2,H*.94);
+  // Watermark — ALINEA + @alinea.io
+  ctx.fillStyle=ac2+'aa';ctx.font='600 30px "DM Mono",monospace';
+  ctx.textAlign='center';ctx.letterSpacing='10px';
+  ctx.fillText('ALINEA',W/2,H*.91);
+  ctx.fillStyle=ac+'77';ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='4px';
+  ctx.fillText('@alinea.io',W/2,H*.91+36);
 
   if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
 
@@ -3760,7 +3835,7 @@ function renderExplore(){
   if(!m.length){c.innerHTML=`<div class="exp-empty">Sin resultados para "<em>${q}</em>".</div>`;document.getElementById('aiBox').style.display='none';return;}
   c.innerHTML=m.map(({book,note},idx)=>`
     <div class="ec qp-trigger" data-qp-idx="${idx}" style="cursor:pointer">
-      <div class="ec-q">"${note.text}"</div>
+      <div class="ec-q ${qSizeClass(note.text)}">"${note.text}"</div>
       <div class="ec-m">
         <div class="ec-bk">De <strong>${book.title}</strong> · ${book.author}</div>
         ${note.page?`<span style="font-family:'DM Mono',monospace;font-size:.54rem;color:var(--dim)">pág. ${note.page}</span>`:''}
@@ -4036,6 +4111,47 @@ function _exportBitStat(cv){
   },'image/png',1.0);
 }
 
+// ── BOOK SELECTOR FOR SHARING ──────────────────────────
+let _bsBooks=[], _bsTitle='', _bsSelected=new Set();
+function openBookSelector(books, titleText){
+  _bsBooks=[...books]; // clone array so it doesn't go stale
+  _bsTitle=titleText;
+  _bsSelected=new Set(_bsBooks.map(b=>b.id));
+  document.getElementById('bookSelectorTitle').textContent=currentLang==='en'?'Select books':'Seleccionar libros';
+  document.getElementById('bookSelectorSub').textContent=currentLang==='en'?'Choose which to show in your image':'Elige cuáles mostrar en tu imagen';
+  _bsRenderGrid();
+  showModal('mBookSelector');
+}
+function _bsRenderGrid(){
+  const grid=document.getElementById('bookSelectorGrid');
+  const count=document.getElementById('bsCount');
+  if(count)count.textContent=`${_bsSelected.size} / ${_bsBooks.length}`;
+  grid.innerHTML=_bsBooks.map(b=>{
+    const sel=_bsSelected.has(b.id);
+    return`<div onclick="_bsToggle(${b.id})" style="cursor:pointer;text-align:center;opacity:${sel?1:.4};transition:opacity .15s">
+      <div style="width:100%;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:var(--card2);border:2px solid ${sel?'var(--accent)':'transparent'};margin-bottom:.22rem;position:relative">
+        ${b.cover?`<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2rem">📖</div>`}
+        ${sel?`<div style="position:absolute;top:4px;right:4px;background:var(--accent);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#fff">✓</div>`:''}
+      </div>
+      <div style="font-size:.45rem;color:var(--muted);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${b.title}</div>
+    </div>`;
+  }).join('');
+}
+function _bsToggle(id){
+  if(_bsSelected.has(id))_bsSelected.delete(id);else _bsSelected.add(id);
+  _bsRenderGrid();
+}
+function _bsSelectAll(val){
+  if(val)_bsBooks.forEach(b=>_bsSelected.add(b.id));else _bsSelected.clear();
+  _bsRenderGrid();
+}
+function _bsConfirmShare(){
+  const selected=_bsBooks.filter(b=>_bsSelected.has(b.id));
+  closeModal('mBookSelector');
+  if(!selected.length){_showToast(currentLang==='en'?'Select at least one book.':'Selecciona al menos un libro.');return;}
+  setTimeout(()=>_bitShareStat(_bsTitle,[],selected.map(b=>b.id)),200);
+}
+
 function addGlobalKw(){
   const input=document.getElementById('kwModalInput');
   if(!input)return;
@@ -4130,7 +4246,7 @@ function openBitModal(type){
   if(type==='volumen'){
     titleText='📚 '+(t('volumen')||'Volumen');
     html=_bitCoverGrid(realBooks,isEN?'No books yet.':'Sin libros aún.')+
-      `<div style="margin-top:.85rem;text-align:right"><button onclick="_bitShareStat('${isEN?'My Galaxy':'Mi Galaxia'}',[],${JSON.stringify(realBooks.slice(0,9).map(b=>b.id))})" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
+      `<div style="margin-top:.85rem;text-align:right"><button onclick="openBookSelector(realBooks,'${isEN?'My Galaxy':'Mi Galaxia'}')" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
   } else if(type==='knowledge'){
     titleText='✦ '+(t('knowledge')||'Conocimiento');
     const totalNotes=realBooks.reduce((s,b)=>s+(b.notes?.length||0),0);
@@ -4180,17 +4296,17 @@ function openBitModal(type){
     titleText='✅ '+(t('terminados')||'Terminados');
     const doneBooks=realBooks.filter(b=>b.readingStatus==='done'||b.status==='done'||b.status==='read');
     html=_bitCoverGrid(doneBooks,isEN?'No finished books yet.':'Sin libros terminados aún.')+
-      `<div style="margin-top:.85rem;text-align:right"><button onclick="_bitShareStat('${isEN?'Finished':'Terminados'}',[],${JSON.stringify(doneBooks.map(b=>b.id))})" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
+      `<div style="margin-top:.85rem;text-align:right"><button onclick="openBookSelector(doneBooks,'${isEN?'Finished':'Terminados'}')" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
   } else if(type==='reading'){
     titleText='📖 '+(t('leyendo')||'Leyendo');
     const readingBooks=realBooks.filter(b=>b.readingStatus==='reading'||b.status==='reading');
     html=_bitCoverGrid(readingBooks,isEN?'Not reading anything right now.':'No estás leyendo nada actualmente.')+
-      `<div style="margin-top:.85rem;text-align:right"><button onclick="_bitShareStat('${isEN?'Reading':'Leyendo'}',[],${JSON.stringify(readingBooks.map(b=>b.id))})" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
+      `<div style="margin-top:.85rem;text-align:right"><button onclick="openBookSelector(readingBooks,'${isEN?'Reading':'Leyendo'}')" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
   } else if(type==='wishlist'){
     titleText='🚀 Wishlist';
     const wishBooks=lib.filter(b=>b.isWishlist||b.status==='wishlist');
     html=_bitCoverGrid(wishBooks,isEN?'Your wishlist is empty.':'Tu wishlist está vacía.')+
-      `<div style="margin-top:.85rem;text-align:right"><button onclick="_bitShareStat('Wishlist',[],${JSON.stringify(wishBooks.map(b=>b.id))})" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
+      `<div style="margin-top:.85rem;text-align:right"><button onclick="openBookSelector(wishBooks,'Wishlist')" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
   } else if(type==='notes'){
     titleText='📝 '+(t('notasStat')||'Notas');
     const sorted=[...realBooks].sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).filter(b=>(b.notes||[]).length>0);
@@ -5033,12 +5149,14 @@ function shareGalaxySnapshot(){
   // 3. Draw galaxy canvas on top
   ctx.drawImage(cv,0,0,W,H);
 
-  // 4. Watermark — centered @alinea.io
-  const wmSize=Math.round(W*.022);
-  ctx.fillStyle='rgba(196,181,253,.55)';
-  ctx.font=`500 ${wmSize}px "DM Mono",monospace`;
-  ctx.textAlign='center';
-  ctx.fillText('@alinea.io',W/2,H-18);
+  // 4. Watermark: ALINEA + @alinea.io centered
+  ctx.fillStyle='rgba(196,181,253,.7)';
+  ctx.font=`600 ${Math.round(W*.02)}px "DM Mono",monospace`;
+  ctx.textAlign='center';ctx.letterSpacing='8px';
+  ctx.fillText('ALINEA',W/2,H-34);
+  ctx.fillStyle='rgba(196,181,253,.4)';
+  ctx.font=`400 ${Math.round(W*.016)}px "DM Mono",monospace`;ctx.letterSpacing='4px';
+  ctx.fillText('@alinea.io',W/2,H-12);
 
   if(btn){btn.textContent='📸';btn.style.pointerEvents='';}
 
@@ -5133,22 +5251,25 @@ function openBook(id){
   document.getElementById('bmBody').innerHTML=`
     <div>
       <div class="sec">${t('secNotas')||'Notas & Subrayados'}</div>
-      <div class="notes-search" id="notesSearchBox">
-        <span class="notes-search-icon">⌕</span>
-        <input type="text" id="notesSearchIn" placeholder="${t('searchNotes')||'Buscar por palabra, página…'}" oninput="filterNotes(${b.id},this.value)">
-        <span class="notes-count" id="notesCount"></span>
-      </div>
-      <div class="notes-list" id="notesList"></div>
-      <div class="note-box">
+      <!-- ADD NOTE BOX AT TOP -->
+      <div class="note-box" style="margin-bottom:.65rem">
         <textarea id="noteText" placeholder="${t('notePlaceholder')||'Escribe un subrayado, idea o reflexión…'}" rows="3"></textarea>
         <div class="nrow">
           <input type="text" id="notePg" class="nri pg" placeholder="${t('pagePlaceholder')||'Pág.'}">
           <input type="text" id="noteCmt" class="nri cmt" placeholder="${t('commentPlaceholder')||'Comentario (opcional)'}">
-          <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" data-i18n="addNote">${t("addNote")||"＋ Nota"}</button>
-          <button class="btn-note" onclick="openVision(${b.id})" data-i18n="camera">${t("camera")||"Cámara"}</button>
-          <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">${t("dictate")||"Dictar"}</button>
+          <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" style="font-size:.58rem;padding:.45rem 1rem;min-width:90px" data-i18n="addNote">${t("addNote")||"＋ Nota"}</button>
+          <button class="btn-note" onclick="openVision(${b.id})" data-i18n="camera">${t("camera")||"📷"}</button>
+          <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">${t("dictate")||"🎙"}</button>
         </div>
       </div>
+      <!-- SEARCH -->
+      <div class="notes-search" id="notesSearchBox">
+        <span class="notes-search-icon">⌕</span>
+        <input type="text" id="noteSearchIn" placeholder="${t('searchNotes')||'Buscar por palabra, página…'}" oninput="filterNotes(${b.id},this.value)">
+        <span class="notes-count" id="notesCount"></span>
+      </div>
+      <!-- NOTES LIST -->
+      <div class="notes-list" id="notesList"></div>
     </div>
     <div>
       <div class="sec">${t('secKeywords')||'Keywords'}</div>
@@ -5354,7 +5475,7 @@ function renderLib(){
   <div style="font-size:3rem;margin-bottom:1rem;opacity:.15">📚</div>
   <h3 style="font-family:'Source Serif 4',serif;font-size:1.2rem;font-weight:400;color:var(--muted);margin-bottom:.5rem">${lib.length===0?(t('noLibYet')||'Tu galaxia está vacía'):(t('noResults')||'Sin resultados')}</h3>
   <p style="font-size:.75rem;color:var(--dim);margin-bottom:1.5rem">${lib.length===0?(t('noLibSub')||'Usa el botón + para agregar tu primer libro.'):(t('noResultsSub')||'Intenta con otro término o filtro.')}</p>
-  ${lib.length===0?`<button onclick="openAdd()" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1.3rem;border-radius:8px;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4)">＋ Agregar primer libro</button>`:''}
+  ${lib.length===0?`<button onclick="openAdd()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1.3rem;border-radius:8px;cursor:pointer;box-shadow:0 4px 20px var(--glow)">＋ ${t('addFirstBook')||'Agregar primer libro'}</button>`:''}
 </div>`;
     return;
   }
@@ -5769,40 +5890,40 @@ async function runHorizon(){
   }catch{res.innerHTML='<div style="color:var(--dim);font-size:.72rem">'+txt+'</div>';}
 }
 
-function copyGalaxyCode(){
-  const data=JSON.stringify({version:2,library:lib,appState,exported:new Date().toISOString()});
-  navigator.clipboard.writeText(data).then(()=>{
-    alert('✓ Código copiado al portapapeles. Compártelo con tu amigo para que vea tu galaxia.');
-  }).catch(()=>{
-    // Fallback
-    const ta=document.createElement('textarea');ta.value=data;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
-    alert('✓ Código copiado.');
-  });
+function shareGalaxyFile(){
+  const data=JSON.stringify({lib,appState,version:'alinea-galaxy-1.0'},null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const file=new File([blob],'mi-galaxia-alinea.json',{type:'application/json'});
+  const name=appState.libName||'Mi Galaxia';
+  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+    navigator.share({files:[file],title:'ALINEA — '+name,text:'Te comparto mi galaxia de lectura en ALINEA 🌌 alinea.io'}).catch(e=>{if(e.name!=='AbortError')_downloadGalaxyJson(blob);});
+  } else {_downloadGalaxyJson(blob);}
 }
-
-function openFriendGalaxy(){
-  const ta=document.getElementById('friendCodeIn');
-  ta.style.display=ta.style.display==='none'?'block':'none';
-  if(ta.style.display==='block'){
-    ta.placeholder='Pega aquí el JSON de tu amigo y presiona Enter…';
-    ta.onkeydown=e=>{if(e.key==='Enter'&&e.ctrlKey)loadFriendGalaxy();};
-    const btn=document.querySelector('[onclick="openFriendGalaxy()"]');
-    if(btn)btn.textContent=ta.style.display==='block'?'✓ Cargar galaxia':'👁 Ver galaxia de amigo';
-  }
+function _downloadGalaxyJson(blob){
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-galaxia-alinea.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  _showToast(currentLang==='en'?'📂 Galaxy exported!':'📂 ¡Galaxia exportada!');
 }
-
-function loadFriendGalaxy(){
-  const ta=document.getElementById('friendCodeIn');
-  try{
-    const data=JSON.parse(ta.value);
-    if(!data.library)throw new Error('Formato inválido');
-    // Store friend lib temporarily
-    sessionStorage.setItem('eter_friend',JSON.stringify(data.library));
-    alert(`✓ Galaxia de amigo cargada: ${data.library.length} libros. Ve a la vista Galaxia para verla.`);
-    ta.style.display='none';
-    // Switch to graph
-    const graphTab=Array.from(document.querySelectorAll('.ntab')).find(b=>b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'graph'"));if(graphTab)graphTab.click();
-  }catch{alert('Error al leer el código. Asegúrate de pegar el JSON completo.');}
+function loadFriendGalaxyFile(evt){
+  const file=evt.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      const friendLib=data.lib||data;
+      if(!Array.isArray(friendLib)||!friendLib.length){_showToast(currentLang==='en'?'Invalid file.':'Archivo inválido.');return;}
+      window._friendGalaxyLib=friendLib;
+      window._friendGalaxyName=data.appState?.libName||file.name.replace('.json','');
+      // Switch to galaxy view and render both
+      const gTab=Array.from(document.querySelectorAll('.dock-btn')).find(b=>b.onclick?.toString().includes('graph'));
+      if(gTab)gTab.click();else document.querySelector('[onclick*="graph"]')?.click();
+      setTimeout(()=>{
+        if(typeof initGraph==='function')initGraph();
+        _showToast('🌌 '+(currentLang==='en'?'Friend galaxy loaded: ':'Galaxia cargada: ')+window._friendGalaxyName);
+      },400);
+    }catch{_showToast(currentLang==='en'?'Error reading file.':'Error al leer el archivo.');}
+  };
+  reader.readAsText(file);
+  evt.target.value='';
 }
 
 // ══════════════════════════
@@ -5914,6 +6035,7 @@ const ONB_TEXTS = {
     g3t:'Explorador de ideas', g3s:'Busca cualquier palabra y encuentra todo lo que has pensado sobre ella.',
     g4t:'Tu galaxia', g4s:'Crece sola con cada libro que agregas. Arrastra, haz zoom, explora.',
     g5t:'Bitácora de vuelo', g5s:'Estadísticas, conexiones y síntesis IA de toda tu biblioteca.',
+    g6t:'Comparte tu galaxia ✦', g6s:'Exporta tus citas, portadas o galaxia completa a Instagram Stories con un solo toque.',
     launch_title: 'Todo listo.',
     launch_sub: 'Tu universo de conocimiento te espera.\nHagamos visible lo invisible.',
     launch_btn: '✦ Encender ALINEA',
@@ -5931,6 +6053,7 @@ const ONB_TEXTS = {
     g3t:'Idea explorer', g3s:'Search any word and find everything you\'ve thought about it.',
     g4t:'Your galaxy', g4s:'Grows with every book you add. Drag, zoom, explore.',
     g5t:'Flight log', g5s:'Stats, connections and AI synthesis of your entire library.',
+    g6t:'Share your galaxy ✦', g6s:'Export your quotes, covers or full galaxy to Instagram Stories with one tap.',
     launch_title: 'All set.',
     launch_sub: 'Your knowledge universe awaits.\nMake the invisible visible.',
     launch_btn: '✦ Launch ALINEA',
@@ -6074,9 +6197,9 @@ function onbPopulateStep(step){
   if(step===4){
     document.getElementById('onbGuideTitle').textContent=tx.guide_title;
     document.getElementById('onbGuideSub').textContent=tx.guide_sub;
-    for(let i=1;i<=5;i++){
-      document.getElementById('onbG'+i+'t').textContent=tx['g'+i+'t']||'';
-      document.getElementById('onbG'+i+'s').textContent=tx['g'+i+'s']||'';
+    for(let i=1;i<=6;i++){
+      const el=document.getElementById('onbG'+i+'t');if(el)el.textContent=tx['g'+i+'t']||'';
+      const el2=document.getElementById('onbG'+i+'s');if(el2)el2.textContent=tx['g'+i+'s']||'';
     }
   }
   if(step===6){
@@ -6134,6 +6257,7 @@ function finishOnboarding(){
   }
   const onbOvl=document.getElementById('onbOverlay');
   if(onbOvl)onbOvl.style.display='none';
+  document.body.classList.remove('onboarding-active');
   closeModal('mOnboarding');
   document.body.classList.remove('modal-open');
   localStorage.setItem('eter2_onboarded','1');
@@ -6162,6 +6286,7 @@ function forceShowOnboarding(){
     // Show full-screen blocking overlay
     const onbOvl=document.getElementById('onbOverlay');
     if(onbOvl)onbOvl.style.display='block';
+    document.body.classList.add('onboarding-active');
     // Prevent any click from reaching the background
     document.getElementById('overlay').classList.remove('open'); // close regular overlay first
     showModal('mOnboarding');
@@ -6502,11 +6627,28 @@ document.addEventListener('click',e=>{
   <div id="msMsg" style="font-family:'Source Serif 4',serif;font-size:.82rem;font-style:italic;color:var(--text);line-height:1.6"></div>
 </div>
 
+<!-- BOOK SELECTOR MODAL FOR SHARING -->
+<div class="modal" id="mBookSelector" style="width:520px;max-width:94vw;max-height:82vh">
+  <button onclick="closeModal('mBookSelector')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center">✕</button>
+  <h2 id="bookSelectorTitle" style="margin-bottom:.3rem">Seleccionar libros</h2>
+  <p style="font-size:.62rem;color:var(--dim);margin-bottom:.8rem" id="bookSelectorSub">Elige cuáles mostrar en tu imagen</p>
+  <div style="display:flex;gap:.4rem;margin-bottom:.65rem">
+    <button onclick="_bsSelectAll(true)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.28rem .65rem;border-radius:5px;cursor:pointer">Todos</button>
+    <button onclick="_bsSelectAll(false)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.28rem .65rem;border-radius:5px;cursor:pointer">Ninguno</button>
+    <span id="bsCount" style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);margin-left:auto;display:flex;align-items:center"></span>
+  </div>
+  <div id="bookSelectorGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.55rem;overflow-y:auto;flex:1;padding:.1rem"></div>
+  <div class="macts" style="margin-top:.8rem">
+    <button class="btn-ghost" onclick="closeModal('mBookSelector')">Cancelar</button>
+    <button class="btn-ok" onclick="_bsConfirmShare()">📸 Compartir selección</button>
+  </div>
+</div>
+
 <!-- BITSTAT MODAL -->
-<div class="modal" id="mBitStat" style="width:500px;max-width:96vw;max-height:80vh;display:flex;flex-direction:column">
+<div class="modal" id="mBitStat" style="width:500px;max-width:94vw;max-height:82vh">
   <button onclick="closeBitModal()" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10">✕</button>
-  <h2 id="mBitStatTitle" style="margin-bottom:.8rem;font-size:1rem"></h2>
-  <div id="mBitStatBody" style="overflow-y:auto;flex:1;padding-right:.2rem"></div>
+  <h2 id="mBitStatTitle" style="margin-bottom:.8rem;font-size:1rem;padding-right:2rem"></h2>
+  <div id="mBitStatBody" style="overflow-y:auto;max-height:60vh;padding-right:.2rem"></div>
 </div>
 
 <!-- QUOTE POPUP -->
