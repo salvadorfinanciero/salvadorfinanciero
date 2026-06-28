@@ -294,13 +294,8 @@
 
   .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;border-radius:16px;}
 
-  /* Carrusel — testimonios (una card visible, navegación con flechas) */
-  .carousel-wrap{display:flex;align-items:center;justify-content:center;gap:14px;max-width:600px;margin:0 auto;}
-  .testi-carousel{position:relative;width:460px;max-width:100%;overflow:hidden;touch-action:pan-y;padding:4px;}
-  .testi-track{display:flex;transition:transform .45s cubic-bezier(.22,.61,.36,1);will-change:transform;}
-  .testi-track .tcard{flex:0 0 100%;cursor:default;}
-
   /* Carrusel — cómo trabajamos */
+  .carousel-wrap{display:flex;align-items:center;justify-content:center;gap:14px;max-width:600px;margin:0 auto;}
   .modelo-carousel{position:relative;width:520px;max-width:100%;overflow:hidden;touch-action:pan-y;padding:4px;}
   .modelo-track{display:flex;transition:transform .45s cubic-bezier(.22,.61,.36,1);will-change:transform;}
   .modelo-track .modelo-card{flex:0 0 100%;cursor:default;}
@@ -311,7 +306,7 @@
   .carousel-arrow:active{transform:scale(0.92);}
 
   @media(max-width:768px){
-    .testi-carousel,.modelo-carousel{width:78vw;}
+    .modelo-carousel{width:78vw;}
     .carousel-arrow{width:36px;height:36px;}
     .carousel-arrow svg{width:15px;height:15px;}
     .carousel-wrap{gap:8px;}
@@ -320,7 +315,6 @@
   .tcard:nth-child(2){transform:rotate(0);margin-top:0;}
   .tcard:nth-child(3){transform:rotate(0);}
   .tcard:hover{transform:translateY(-6px) !important;box-shadow:0 16px 40px rgba(0,0,0,0.25);background:rgba(255,255,255,0.13);border-color:var(--fern);}
-  .testi-carousel .tcard:hover{transform:none !important;box-shadow:none;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
   .qmark{font-family:'Playfair Display',serif;font-size:4.5rem;color:var(--fern);line-height:0.55;margin-bottom:12px;display:block;}
   .ttext{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.25rem !important;line-height:1.8;color:rgba(255,255,255,0.92);margin-bottom:20px;}
   .tauthor{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;}
@@ -795,32 +789,22 @@
     <div class="section-tag">Lo que dicen ✦</div>
     <h2 class="section-title">Inversionistas que ya confían</h2>
   </div>
-  <div class="carousel-wrap">
-    <button class="carousel-arrow carousel-arrow-prev" id="testiPrev" aria-label="Anterior">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <div class="testi-carousel reveal-scale">
-      <div class="testi-track">
-        <div class="tcard reveal" data-index="0">
-          <span class="qmark">"</span>
-          <p class="ttext">Empecé sin saber nada de inversiones. Hoy tengo un portafolio diversificado que genera flujo mensual. En menos de un año vi resultados reales y entendí cada decisión.</p>
-          <div class="tauthor"><div class="avatar">AR</div><div><div class="aname">Alexia Ramírez</div><div class="arole">Analista de Proyectos de Cadena de Suministro</div></div></div>
-        </div>
-        <div class="tcard reveal" data-index="1">
-          <span class="qmark">"</span>
-          <p class="ttext">La claridad con la que explica cada estrategia es lo que más valoro. No siento que me venden algo — siento que alguien realmente está cuidando mi dinero como si fuera suyo.</p>
-          <div class="tauthor"><div class="avatar">RS</div><div><div class="aname">Rocío Sánchez</div><div class="arole">Abogada</div></div></div>
-        </div>
-        <div class="tcard reveal" data-index="2">
-          <span class="qmark">"</span>
-          <p class="ttext">Llevaba años "ahorrando" sin invertir de verdad. El cuestionario fue el primer paso — desde el mes uno ya veía rendimiento. El proceso es muy sencillo.</p>
-          <div class="tauthor"><div class="avatar">JR</div><div><div class="aname">Jair Ramírez</div><div class="arole">Administrador de Empresas</div></div></div>
-        </div>
-      </div>
+  <div class="tgrid">
+    <div class="tcard reveal" data-index="0">
+      <span class="qmark">"</span>
+      <p class="ttext">Empecé sin saber nada de inversiones. Hoy tengo un portafolio diversificado que genera flujo mensual. En menos de un año vi resultados reales y entendí cada decisión.</p>
+      <div class="tauthor"><div class="avatar">AR</div><div><div class="aname">Alexia Ramírez</div><div class="arole">Analista de Proyectos de Cadena de Suministro</div></div></div>
     </div>
-    <button class="carousel-arrow carousel-arrow-next" id="testiNext" aria-label="Siguiente">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
+    <div class="tcard reveal" data-index="1">
+      <span class="qmark">"</span>
+      <p class="ttext">La claridad con la que explica cada estrategia es lo que más valoro. No siento que me venden algo — siento que alguien realmente está cuidando mi dinero como si fuera suyo.</p>
+      <div class="tauthor"><div class="avatar">RS</div><div><div class="aname">Rocío Sánchez</div><div class="arole">Abogada</div></div></div>
+    </div>
+    <div class="tcard reveal" data-index="2">
+      <span class="qmark">"</span>
+      <p class="ttext">Llevaba años "ahorrando" sin invertir de verdad. El cuestionario fue el primer paso — desde el mes uno ya veía rendimiento. El proceso es muy sencillo.</p>
+      <div class="tauthor"><div class="avatar">JR</div><div><div class="aname">Jair Ramírez</div><div class="arole">Administrador de Empresas</div></div></div>
+    </div>
   </div>
 </section>
 
@@ -1107,12 +1091,10 @@
     return render;
   }
 
-  var renderTesti = initCarousel('.testi-carousel', 'testiPrev', 'testiNext', '.tcard', 4500);
   var renderModelo = initCarousel('.modelo-carousel', 'modeloPrev', 'modeloNext', '.modelo-card', 5000);
 
   // Recalcular posición tras carga completa (fuentes/imágenes pueden cambiar el ancho real de las cards)
   window.addEventListener('load', function() {
-    if (renderTesti) renderTesti();
     if (renderModelo) renderModelo();
   });
 </script>
