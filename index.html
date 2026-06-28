@@ -50,11 +50,18 @@
   .nav-burger.open .burger-bars{opacity:0;}
   .nav-burger.open .burger-arrow{opacity:1;}
 
-  .nav-links-mobile{display:none;list-style:none;position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:99;max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0;margin:0;}
-  .nav-links-mobile.open{max-height:400px;padding-top:64px;padding-bottom:16px;}
-  .nav-links-mobile li{border-top:1px solid rgba(255,255,255,0.1);}
-  .nav-links-mobile a{display:block;padding:14px 24px;font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.75);text-decoration:none;}
-  .nav-links-mobile a:hover{color:var(--fern);}
+  .nav-links-mobile{display:block;list-style:none;position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:99;max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0;margin:0;}
+  .nav-links-mobile.open{max-height:420px;padding-top:64px;padding-bottom:20px;}
+  .nav-links-mobile li{border-top:1px solid rgba(255,255,255,0.1);opacity:0;transform:translateY(-8px);transition:opacity .35s ease,transform .35s ease;}
+  .nav-links-mobile.open li{opacity:1;transform:translateY(0);}
+  .nav-links-mobile.open li:nth-child(1){transition-delay:.05s;}
+  .nav-links-mobile.open li:nth-child(2){transition-delay:.10s;}
+  .nav-links-mobile.open li:nth-child(3){transition-delay:.15s;}
+  .nav-links-mobile.open li:nth-child(4){transition-delay:.20s;}
+  .nav-links-mobile.open li:nth-child(5){transition-delay:.25s;}
+  .nav-links-mobile a{display:flex;align-items:center;gap:10px;padding:16px 24px;font-family:'DM Mono',monospace;font-size:0.8rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.8);text-decoration:none;transition:color .2s,padding-left .2s;}
+  .nav-links-mobile a:hover{color:var(--fern);padding-left:30px;}
+  .nlm-mark{color:var(--fern);font-size:0.7rem;flex-shrink:0;}
 
   /* HERO — dark forest left / soft grey-green right */
   #hero{min-height:100vh;padding-top:80px;display:grid;grid-template-columns:1fr 1fr;align-items:center;overflow:hidden;max-width:100vw;background:var(--forest);gap:0;}
@@ -306,10 +313,15 @@
   .carousel-arrow:active{transform:scale(0.92);}
 
   @media(max-width:768px){
-    .modelo-carousel{width:78vw;}
+    .modelo-carousel{width:94vw;}
     .carousel-arrow{width:36px;height:36px;}
     .carousel-arrow svg{width:15px;height:15px;}
     .carousel-wrap{gap:8px;}
+    .modelo-card{padding:24px !important;}
+    .modelo-card div[style*="font-size:0.75rem"],
+    .modelo-card div[style*="font-size:0.78rem"]{font-size:0.72rem !important;line-height:1.5 !important;}
+    .modelo-card div[style*="font-size:2.8rem"]{font-size:2.2rem !important;margin-bottom:6px !important;}
+    .modelo-card div[style*="font-size:1.4rem"]{font-size:1.15rem !important;margin-bottom:10px !important;}
   }
   .tcard:nth-child(1){transform:rotate(0);}
   .tcard:nth-child(2){transform:rotate(0);margin-top:0;}
@@ -621,11 +633,11 @@
   </button>
 </nav>
 <ul class="nav-links-mobile" id="navLinksMobile">
-  <li><a href="#about">Sobre mí</a></li>
-  <li><a href="#modelo">Cómo trabajamos</a></li>
-  <li><a href="#testimonios">Clientes</a></li>
-  <li><a href="#perfil">Perfil de Riesgo</a></li>
-  <li><a href="#contacto">Contacto</a></li>
+  <li><a href="#about"><span class="nlm-mark">✦</span>Sobre mí</a></li>
+  <li><a href="#modelo"><span class="nlm-mark">✦</span>Cómo trabajamos</a></li>
+  <li><a href="#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
+  <li><a href="#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
+  <li><a href="#contacto"><span class="nlm-mark">✦</span>Contacto</a></li>
 </ul>
 
 <section id="hero">
