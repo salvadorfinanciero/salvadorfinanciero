@@ -36,7 +36,7 @@
 
   /* NAV */
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
-  #about,#modelo,#testimonios,#perfil,#contacto,#familia,#calculadora{scroll-margin-top:110px;}
+  #about,#modelo,#testimonios,#perfil,#consultoria,#contacto{scroll-margin-top:110px;}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);}
   .nav-logo span{color:var(--fern);}
   .nav-links{display:flex;gap:24px;list-style:none;}
@@ -303,8 +303,8 @@
   .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;border-radius:16px;}
 
   /* Carrusel — cómo trabajamos */
-  .carousel-wrap{display:flex;align-items:center;justify-content:center;gap:14px;max-width:680px;margin:0 auto;}
-  .modelo-carousel{position:relative;flex:1 1 auto;min-width:0;max-width:600px;overflow:hidden;touch-action:pan-y;padding:4px;}
+  .carousel-wrap{display:flex;align-items:center;justify-content:center;gap:14px;max-width:600px;margin:0 auto;}
+  .modelo-carousel{position:relative;flex:1 1 auto;min-width:0;max-width:520px;overflow:hidden;touch-action:pan-y;padding:4px;}
   .modelo-track{display:flex;transition:transform .45s cubic-bezier(.22,.61,.36,1);will-change:transform;}
   .modelo-track .modelo-card{flex:0 0 100%;min-width:0;cursor:default;}
 
@@ -317,12 +317,11 @@
     .carousel-arrow{width:36px;height:36px;}
     .carousel-arrow svg{width:15px;height:15px;}
     .carousel-wrap{gap:8px;}
-    .modelo-card{padding:22px !important;}
+    .modelo-card{padding:24px !important;}
     .modelo-card div[style*="font-size:0.75rem"],
-    .modelo-card div[style*="font-size:0.78rem"]{font-size:0.7rem !important;line-height:1.45 !important;margin-bottom:8px !important;}
-    .modelo-card div[style*="font-size:2.8rem"]{font-size:1.9rem !important;margin-bottom:4px !important;}
-    .modelo-card div[style*="font-size:1.4rem"]{font-size:1.05rem !important;margin-bottom:8px !important;}
-    .modelo-card div[style*="font-size:0.68rem"]{padding-top:10px !important;}
+    .modelo-card div[style*="font-size:0.78rem"]{font-size:0.72rem !important;line-height:1.5 !important;}
+    .modelo-card div[style*="font-size:2.8rem"]{font-size:2.2rem !important;margin-bottom:6px !important;}
+    .modelo-card div[style*="font-size:1.4rem"]{font-size:1.15rem !important;margin-bottom:10px !important;}
   }
   .tcard:nth-child(1){transform:rotate(0);}
   .tcard:nth-child(2){transform:rotate(0);margin-top:0;}
@@ -408,7 +407,7 @@
     section { max-width: 100vw !important; overflow-x: hidden !important; }
 
     nav{padding:14px 20px;} .nav-links{display:none;} .nav-burger{display:flex;}
-    #about,#modelo,#testimonios,#perfil,#contacto,#familia,#calculadora{scroll-margin-top:80px;}
+    #about,#modelo,#testimonios,#perfil,#consultoria,#contacto{scroll-margin-top:80px;}
     #hero{grid-template-columns:1fr;padding:80px 0 0;}
     .hero-left{padding:40px 24px;border-right:none;border-bottom:3px solid var(--sage);min-height:auto;}
     .hero-right{height:300px;width:100%;}
@@ -462,6 +461,14 @@
   .modelo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--white);letter-spacing:0.04em;line-height:1;margin-bottom:10px;}
   .modelo-subtitle{font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--fern);letter-spacing:0.1em;}
   .modelo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto 32px;overflow:hidden;}
+  .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;transition:border-color .2s,background .2s;border-radius:var(--r);}
+  .modelo-card:hover{background:rgba(255,255,255,0.1);border-color:var(--fern);}
+  .mc-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--sage);line-height:1;margin-bottom:12px;}
+  .mc-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .mc-tag{background:var(--pine);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;padding:3px 8px;text-transform:uppercase;font-weight:500;border-radius:20px;}
+  .mc-desc{font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.65;margin-bottom:18px;}
+  .mc-note{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;letter-spacing:0.04em;}
+  .mc-note-green{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;letter-spacing:0.04em;font-weight:500;}
   .modelo-footer{max-width:960px;margin:0 auto;}
   .mf-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:rgba(255,255,255,0.65);text-align:center;line-height:1.7;border-top:1px solid rgba(255,255,255,0.12);padding-top:28px;}
   @media(max-width:768px){
@@ -606,6 +613,11 @@
   div[style*="background:var(--sage)"][style*="padding:40px 60px"] {
     padding: 32px 24px !important;
   }
+  #consultoria{padding:60px 24px !important;}
+  #consultoria > div > div[style*="grid-template-columns:1fr auto"]{
+    grid-template-columns:1fr !important;
+    padding:28px 24px !important;
+  }
 }
 
 </style>
@@ -619,8 +631,9 @@
     <li><a href="#modelo">Cómo trabajamos</a></li>
     <li><a href="#testimonios">Clientes</a></li>
     <li><a href="#perfil">Perfil de Riesgo</a></li>
-    <li><a href="#calculadora">Calculadora de Interés Compuesto</a></li>
-    <li><a href="#familia">¿Tienes hijos?</a></li>
+    <li><a href="calculadora-interes-compuesto.html">Calculadora de Interés Compuesto</a></li>
+    <li><a href="el-mejor-regalo.html">¿Tienes hijos?</a></li>
+    <li><a href="#consultoria">Consultoría</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false">
@@ -633,8 +646,9 @@
   <li><a href="#modelo"><span class="nlm-mark">✦</span>Cómo trabajamos</a></li>
   <li><a href="#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
   <li><a href="#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
-  <li><a href="#calculadora"><span class="nlm-mark">✦</span>Calculadora de Interés Compuesto</a></li>
-  <li><a href="#familia"><span class="nlm-mark">✦</span>¿Tienes hijos?</a></li>
+  <li><a href="calculadora-interes-compuesto.html"><span class="nlm-mark">✦</span>Calculadora de Interés Compuesto</a></li>
+  <li><a href="el-mejor-regalo.html"><span class="nlm-mark">✦</span>¿Tienes hijos?</a></li>
+  <li><a href="#consultoria"><span class="nlm-mark">✦</span>Consultoría</a></li>
   <li><a href="#contacto"><span class="nlm-mark">✦</span>Contacto</a></li>
 </ul>
 
@@ -697,27 +711,6 @@
     <span class="ticker-item">Interés Compuesto&nbsp;&nbsp;&nbsp;<span class="ticker-sep">✦</span>&nbsp;&nbsp;&nbsp;</span>
   </div>
 </div>
-
-<section id="stats">
-  <div class="stats-inner" data-stagger-group>
-    <div class="stat-block reveal-stagger">
-      <div class="stat-label">Clientes activos</div>
-      <div class="stat-number" data-stat="0">9</div>
-      <div class="stat-unit">clientes activos</div>
-    </div>
-    <div class="stat-block reveal-stagger">
-      <div class="stat-badge">Actualizado</div>
-      <div class="stat-label">Capital bajo gestión</div>
-      <div class="stat-number" data-stat="1">$1.4M</div>
-      <div class="stat-unit">MXN bajo gestión</div>
-    </div>
-    <div class="stat-block reveal-stagger">
-      <div class="stat-label">Rendimiento promedio</div>
-      <div class="stat-number green" data-stat="2">±14.3%</div>
-      <div class="stat-unit">rendimiento promedio anualizado <span style="font-size:0.6rem;opacity:0.7;">(variable · referencial)</span></div>
-    </div>
-  </div>
-</section>
 
 <section id="modelo" style="background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
   <div style="text-align:center;margin-bottom:52px;" class="reveal-scale">
@@ -819,7 +812,7 @@
 </section>
 
 <!-- MINI SECCIÓN FAMILIA -->
-<div id="familia" class="reveal" style="background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;border-top:3px solid var(--rule);border-bottom:3px solid var(--sage);padding:24px 60px;text-align:center;">
+<div class="reveal" style="background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;border-top:3px solid var(--rule);border-bottom:3px solid var(--sage);padding:24px 60px;text-align:center;">
   <div style="font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:16px;display:inline-flex;align-items:center;gap:10px;"><span style="display:block;width:20px;height:2px;background:var(--sage);"></span>Para papás y mamás<span style="display:block;width:20px;height:2px;background:var(--sage);"></span></div>
   <div style="font-size:1.6rem;margin-bottom:10px;line-height:1.4;white-space:nowrap;">🍼 🧸 🎒 📚 🎓</div>
   <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);color:var(--forest);line-height:0.95;letter-spacing:0.02em;margin-bottom:16px;">¿Tienes hijos?</div>
@@ -859,6 +852,28 @@
   </div>
 </section>
 
+<!-- CONSULTORÍA / GESTORÍA -->
+<section id="consultoria" style="background:var(--cream);padding:88px 60px;">
+  <div style="max-width:960px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:52px;">
+      <div style="display:inline-block;background:var(--sage);color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Otra forma de ayudar ✦</div>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--forest);letter-spacing:0.02em;line-height:1;margin-bottom:14px;">¿Tienes una duda o<br>un trámite pendiente?</h2>
+      <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:var(--mid);max-width:640px;margin:0 auto;line-height:1.7;">No todo es invertir. A veces lo que necesitas es poner en orden algo puntual — una declaración atrasada, un trámite ante el SAT, una duda sobre tu situación fiscal o financiera. Te ayudo con eso también.</p>
+    </div>
+
+    <div class="reveal" style="background:white;border:2px solid var(--rule);border-radius:var(--r);padding:40px 44px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:10px;">Cuéntame tu caso — sin costo</div>
+        <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--mid);line-height:1.7;">Mándame un mensaje por correo o Instagram contándome qué necesitas. Escucharte y decirte si puedo ayudarte no cuesta nada. Si el trámite o la asesoría requiere trabajo de mi parte (gestión, seguimiento, presentar algo ante una dependencia, etc.), te paso una cotización clara antes de empezar — nunca se cobra nada sin que lo sepas y lo autorices primero.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:220px;">
+        <a href="mailto:info.salvadorfinanciero@gmail.com?subject=Consulta%20-%20Salvador%20Financiero" style="display:flex;align-items:center;gap:10px;justify-content:center;background:var(--forest);color:white;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.08em;padding:13px 24px;text-decoration:none;border-radius:var(--r-sm);transition:all .2s;">✉ Escribir por correo</a>
+        <a href="https://ig.me/m/salvadorfinanciero" target="_blank" style="display:flex;align-items:center;gap:10px;justify-content:center;background:transparent;color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.08em;padding:13px 24px;text-decoration:none;border:2px solid var(--forest);border-radius:var(--r-sm);transition:all .2s;">ig Mandar DM</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- REGALO BANNER ANIMATED -->
 <div style="background:var(--forest);border-top:2px solid var(--sage);border-bottom:2px solid var(--sage);padding:14px 0;overflow:hidden;white-space:nowrap;">
   <div style="display:inline-block;animation:ticker 8s linear infinite;will-change:transform;">
@@ -892,7 +907,7 @@
 
 
 <!-- CIERRE FINAL CTA -->
-<div id="calculadora" class="reveal" style="background:var(--forest);border-top:3px solid var(--sage);padding:96px 60px;text-align:center;position:relative;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;">
+<div class="reveal" style="background:var(--forest);border-top:3px solid var(--sage);padding:96px 60px;text-align:center;position:relative;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;">
   <div style="position:absolute;top:32px;left:60px;font-size:1.2rem;color:var(--sage);opacity:0.4;pointer-events:none;">✦</div>
   <div style="position:absolute;top:32px;right:60px;font-size:1.2rem;color:var(--sage);opacity:0.4;pointer-events:none;">✦</div>
   <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:0.9rem;color:var(--sage);opacity:0.25;pointer-events:none;letter-spacing:0.3em;">✦ &nbsp; ✦ &nbsp; ✦</div>
@@ -928,52 +943,6 @@
   document.querySelectorAll('[data-stagger-group]').forEach(group => {
     const items = group.querySelectorAll('.reveal-stagger');
     items.forEach((el, i) => { el.style.transitionDelay = (i * 90) + 'ms'; });
-  });
-
-  // Stats animation - 9 clientes, $1.2M, ±14.3%
-  window.addEventListener('load', function() {
-    var statData = [
-      { sel: '.stat-number:nth-of-type(1)', end: 9,    pre: '',  suf: '',  dec: 0 },
-      { sel: '.stat-number:nth-of-type(2)', end: 1.4,  pre: '$', suf: 'M', dec: 1 },
-      { sel: '.stat-number:nth-of-type(3)', end: 14.3, pre: '±', suf: '%', dec: 1 }
-    ];
-    
-    // Use data-stat attribute for reliable targeting
-    var els = document.querySelectorAll('.stat-number');
-    if (els.length >= 3) {
-      var configs = [
-        { el: els[0], end: 9,    pre: '',  suf: '',  dec: 0 },
-        { el: els[1], end: 1.4,  pre: '$', suf: 'M', dec: 1 },
-        { el: els[2], end: 14.3, pre: '±', suf: '%', dec: 1 }
-      ];
-      
-      // Set initial values immediately
-      configs.forEach(function(c) {
-        c.el.textContent = c.pre + (c.dec > 0 ? c.end.toFixed(c.dec) : c.end) + c.suf;
-      });
-      
-      var statObs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (!entry.isIntersecting) return;
-          var idx = Array.from(els).indexOf(entry.target);
-          if (idx < 0 || idx >= configs.length) return;
-          var c = configs[idx];
-          var startTime = null;
-          function animate(ts) {
-            if (!startTime) startTime = ts;
-            var p = Math.min((ts - startTime) / 1400, 1);
-            var ease = 1 - Math.pow(1 - p, 3);
-            var val = ease * c.end;
-            entry.target.textContent = c.pre + (c.dec > 0 ? val.toFixed(c.dec) : Math.floor(val)) + c.suf;
-            if (p < 1) requestAnimationFrame(animate);
-          }
-          requestAnimationFrame(animate);
-          statObs.unobserve(entry.target);
-        });
-      }, { threshold: 0.3 });
-      
-      els.forEach(function(el) { statObs.observe(el); });
-    }
   });
 
   // Q option cycling
@@ -1101,7 +1070,7 @@
     return render;
   }
 
-  var renderModelo = initCarousel('.modelo-carousel', 'modeloPrev', 'modeloNext', '.modelo-card', 8000);
+  var renderModelo = initCarousel('.modelo-carousel', 'modeloPrev', 'modeloNext', '.modelo-card', 5000);
 
   // Recalcular posición tras carga completa (fuentes/imágenes pueden cambiar el ancho real de las cards)
   window.addEventListener('load', function() {
