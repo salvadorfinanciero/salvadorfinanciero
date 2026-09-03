@@ -302,7 +302,7 @@
   .flip-hint{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--fern);margin-top:6px;}
   .flip-hint.back{margin-top:20px;text-align:center;color:rgba(255,255,255,0.5);}
   .flip-back{background:var(--forest);color:var(--white);padding:34px;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;}
-  @media(max-width:600px){.flip-card{max-width:100%;height:400px;}}
+  @media(max-width:600px){.flip-card{max-width:100%;height:400px;}.flip-back{padding:22px;}.flip-back .card-hl{font-size:0.95rem;}.svc-list{gap:9px;}.svc-list li{font-size:0.66rem;line-height:1.4;}}
   .card-hl-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;background:none;border:none;cursor:pointer;padding:0;text-align:left;}
   .card-hl-arrow{width:20px;height:20px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
   .card-hl-toggle[aria-expanded="true"] .card-hl-arrow{transform:rotate(180deg);}
@@ -639,6 +639,12 @@
   }
 }
 
+/* ROUTER: páginas fusionadas ocultas hasta que se navega a ellas */
+.site-page{display:none;}
+.site-page.active{display:block;}
+.page-back{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;padding:16px 40px 0;transition:color .2s;}
+.page-back:hover{color:#fff;}
+
 </style>
 </head>
 <body>
@@ -674,7 +680,7 @@
     <a href="fondo-emergencia1_1.html">🛡️ Fondo de Emergencia</a>
     <a href="presupuesto-mensual.html">📋 Presupuesto Mensual</a>
     <a href="#perfil">🎯 Perfil de Riesgo</a>
-    <a href="calculadora-interes-compuesto.html">✦ Interés Compuesto</a>
+    <a href="#calculadora">✦ Interés Compuesto</a>
     <a href="comparador-inversion.html">🚀 Comparador de Inversión</a>
     <a href="#independencia">🏝️ Independencia ×150</a>
   </div>
@@ -691,10 +697,11 @@
   <li><a href="#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
   <li><a href="#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
   <li style="display:none;"><a href="#herramientas"><span class="nlm-mark">✦</span>Herramientas</a></li>
-  <li><a href="el-mejor-regalo.html"><span class="nlm-mark">✦</span>¿Tienes hijos?</a></li>
+  <li><a href="#regalo"><span class="nlm-mark">✦</span>¿Tienes hijos?</a></li>
   <li><a href="#contacto"><span class="nlm-mark">✦</span>Contacto</a></li>
 </ul>
 
+<div id="landingWrap">
 <section id="hero">
   <div class="hero-bg">
     <div class="nature-carousel">
@@ -785,7 +792,7 @@
           <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
           <div class="dom-more">Ver más ↓</div>
         </a>
-        <a href="el-mejor-regalo.html" class="dom-card">
+        <a href="#regalo" class="dom-card">
           <div class="dom-icon">🧸</div>
           <div class="dom-ttl">¿Tienes Hijos?</div>
           <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
@@ -827,7 +834,7 @@
           <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
           <div class="dom-more">Ver más ↓</div>
         </a>
-        <a href="el-mejor-regalo.html" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="#regalo" class="dom-card" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">🧸</div>
           <div class="dom-ttl">¿Tienes Hijos?</div>
           <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
@@ -898,8 +905,14 @@
     .regla-desc{display:none;margin-top:14px;padding:14px 16px;background:rgba(0,0,0,0.18);border-radius:10px;font-family:'DM Mono',monospace;font-size:0.66rem;line-height:1.8;color:rgba(255,255,255,0.7);}
     .regla-desc.open{display:block;}
     .regla-desc strong{color:var(--fern);}
-    .meta-explain{padding:16px 30px;border-bottom:1px solid rgba(255,255,255,0.12);background:rgba(168,196,152,0.06);}
-    .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);}
+    .meta-explain{border-bottom:1px solid rgba(255,255,255,0.12);background:rgba(168,196,152,0.06);}
+    .meta-toggle-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;background:none;border:none;cursor:pointer;padding:14px 30px;text-align:left;}
+    .meta-toggle-btn span.mt-label{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);font-weight:600;}
+    .meta-toggle-arrow{width:16px;height:16px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
+    .meta-toggle-btn[aria-expanded="true"] .meta-toggle-arrow{transform:rotate(180deg);}
+    .meta-explain-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+    .meta-explain-panel.open{max-height:400px;}
+    .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);padding:0 30px 16px;}
     .meta-explain strong{color:var(--fern);}
     .indep-grid{display:grid;grid-template-columns:repeat(5,1fr);}
     .indep-kpi{padding:14px 8px 12px;border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);text-align:center;}
@@ -938,7 +951,13 @@
     </div>
 
     <div class="meta-explain">
-      <p>🏝️ <strong>¿Qué es la "meta de independencia"?</strong> Es el capital que, invertido, generaría cada mes un rendimiento equivalente a tu sueldo actual — el punto en el que tu dinero te paga a ti, y ya no dependes de trabajar para vivir. Por eso se calcula como tu sueldo × 150: a una tasa de rendimiento razonable, ese capital es capaz de "pagarte tu sueldo" mes con mes sin que toques el capital.</p>
+      <button class="meta-toggle-btn" id="metaToggleBtn" aria-expanded="false">
+        <span class="mt-label">🏝️ ¿Qué es hacer FIRE?</span>
+        <svg class="meta-toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div class="meta-explain-panel" id="metaExplainPanel">
+        <p><strong>FIRE</strong> (Financial Independence, Retire Early) es llegar al punto donde tu dinero invertido te paga tu sueldo cada mes — y ya no dependes de trabajar para vivir. Esa es tu <strong>meta de independencia</strong>: el capital que, a una tasa de rendimiento razonable, es capaz de "pagarte tu sueldo" mes con mes sin que toques el capital. Por eso se calcula como tu sueldo × 150.</p>
+      </div>
     </div>
 
     <div class="indep-toggle">
@@ -1132,7 +1151,7 @@
   <div style="font-size:1.6rem;margin-bottom:10px;line-height:1.4;white-space:nowrap;">🍼 🧸 🎒 📚 🎓</div>
   <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);color:var(--forest);line-height:0.95;letter-spacing:0.02em;margin-bottom:16px;">¿Tienes hijos?</div>
   <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:var(--mid);line-height:1.75;max-width:500px;margin:0 auto 32px;">El mejor regalo que les puedes dar<br>empieza hoy.</p>
-  <a href="el-mejor-regalo.html" style="display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 36px;text-decoration:none;border:2px solid var(--forest);box-shadow:5px 5px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='7px 7px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='5px 5px 0 var(--sage)'">🌱 &nbsp;Invierte para su futuro →</a>
+  <a href="#regalo" style="display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 36px;text-decoration:none;border:2px solid var(--forest);box-shadow:5px 5px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='7px 7px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='5px 5px 0 var(--sage)'">🌱 &nbsp;Invierte para su futuro →</a>
 </div>
 
 <section id="perfil" style="position:relative;overflow:hidden;">
@@ -1206,7 +1225,7 @@
       <div class="tool-desc">8 preguntas, 3 minutos. Descubre si tu perfil de inversionista es conservador, moderado o agresivo.</div>
       <div class="tool-tag">Gratis</div>
     </a>
-    <a href="calculadora-interes-compuesto.html" class="tool-card">
+    <a href="#calculadora" class="tool-card">
       <div class="tool-icon">✦</div>
       <div class="tool-ttl">Interés Compuesto</div>
       <div class="tool-desc">Simula cuánto puede crecer tu dinero con el tiempo — ponle números concretos a tu futuro.</div>
@@ -1232,7 +1251,7 @@
     <div class="reveal" style="background:white;border:2px solid var(--rule);border-radius:var(--r);padding:40px 44px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;">
       <div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:10px;">Cuéntame tu caso — sin costo</div>
-        <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--mid);line-height:1.7;">Mándame un mensaje por correo o Instagram contándome qué necesitas. Escucharte y decirte si puedo ayudarte no cuesta nada. Si el trámite o la asesoría requiere trabajo de mi parte (gestión, seguimiento, presentar algo ante una dependencia, etc.), te paso una cotización clara antes de empezar — nunca se cobra nada sin que lo sepas y lo autorices primero.</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--mid);line-height:1.7;">Escríbeme por correo o Instagram. Escucharte no cuesta nada — si tu caso requiere trabajo de mi parte, te paso una cotización clara antes de empezar.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px;min-width:220px;">
         <a href="mailto:info.salvadorfinanciero@gmail.com?subject=Consulta%20-%20Salvador%20Financiero" style="display:flex;align-items:center;gap:10px;justify-content:center;background:var(--forest);color:white;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.08em;padding:13px 24px;text-decoration:none;border-radius:var(--r-sm);transition:all .2s;">✉ Escribir por correo</a>
@@ -1284,15 +1303,1029 @@
 
   <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 48px;line-height:1.7;">Descubre cuánto puede crecer tu dinero con el tiempo —<br>ponle números a tu futuro.</p>
 
-  <a href="calculadora-interes-compuesto.html" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 56px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='9px 9px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 var(--sage)'">✦ Simula tu inversión ✦</a>
+  <a href="#calculadora" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 56px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='9px 9px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 var(--sage)'">✦ Simula tu inversión ✦</a>
 </div>
+
+</div>
+
+<section id="privacidad" class="site-page" style="scroll-margin-top:110px;background:#0f2211;background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;">
+<style>
+  #privacidad{font-family:'DM Mono',monospace;color:#fff;}
+  #privacidad .lp-hero{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;padding:60px 40px 48px;border-bottom:3px solid var(--sage);}
+  #privacidad .lp-eyebrow{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--fern);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  #privacidad .lp-eyebrow span{display:block;width:24px;height:2px;background:var(--fern);}
+  #privacidad .lp-hero h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4rem);color:#fff;letter-spacing:0.04em;line-height:1;margin-bottom:12px;}
+  #privacidad .lp-date{font-size:0.62rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+  #privacidad .lp-container{max-width:760px;margin:0 auto;padding:60px 40px 80px;}
+  #privacidad .lp-section{background:var(--forest);border-left:4px solid var(--fern);padding:32px 36px;margin-bottom:16px;}
+  #privacidad .lp-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(255,255,255,0.08);line-height:1;margin-bottom:4px;}
+  #privacidad .lp-section h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;color:#fff;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  #privacidad .lp-section p{font-size:0.78rem;line-height:1.75;color:rgba(255,255,255,0.75);margin-bottom:12px;}
+  #privacidad .lp-section p:last-child{margin-bottom:0;}
+  #privacidad .lp-section ul{list-style:none;margin:8px 0 12px;}
+  #privacidad .lp-section ul li{font-size:0.78rem;line-height:1.7;color:rgba(255,255,255,0.75);padding-left:16px;position:relative;margin-bottom:4px;}
+  #privacidad .lp-section ul li::before{content:'✦';position:absolute;left:0;color:var(--fern);font-size:0.5rem;top:4px;}
+  #privacidad strong{color:var(--fern);font-weight:600;}
+  #privacidad .lp-section a{color:var(--fern);}
+  #privacidad .lp-highlight{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;border-left:4px solid var(--fern);padding:32px 36px;margin-bottom:16px;}
+  #privacidad .lp-highlight h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;color:#fff;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  #privacidad .lp-highlight p{font-size:0.78rem;line-height:1.75;color:rgba(255,255,255,0.75);margin-bottom:8px;}
+  #privacidad .lp-highlight a{color:var(--fern);}
+  @media(max-width:600px){
+    #privacidad .lp-hero{padding:40px 20px 32px;}
+    #privacidad .lp-container{padding:32px 20px 60px;}
+    #privacidad .lp-section,#privacidad .lp-highlight{padding:24px 20px;}
+  }
+</style>
+
+<a href="#hero" class="page-back">← Regresar al inicio</a>
+<div class="lp-hero">
+  <div class="lp-eyebrow"><span></span>Salvador Financiero<span></span></div>
+  <h2>Aviso de<br>Privacidad</h2>
+  <div class="lp-date">Última actualización: Abril 2026</div>
+</div>
+
+<div class="lp-container">
+  <div class="lp-section">
+    <div class="lp-num">01</div>
+    <h3>Identidad del Responsable</h3>
+    <p><strong>Miguel S. Valdez V.</strong>, operando bajo la marca <strong>Salvador Financiero</strong>, es el responsable del tratamiento de sus datos personales.</p>
+    <p>Correo de contacto: <a href="mailto:info.salvadorfinanciero@gmail.com">info.salvadorfinanciero@gmail.com</a></p>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">02</div>
+    <h3>Datos Personales que Recopilamos</h3>
+    <p>A través del cuestionario de perfil de riesgo y la relación de servicio, recopilamos los siguientes datos:</p>
+    <ul>
+      <li>Nombre completo</li>
+      <li>Edad</li>
+      <li>Número de teléfono</li>
+      <li>Correo electrónico</li>
+      <li>Régimen fiscal</li>
+      <li>Información financiera general (capital semilla y aportación semanal planeada)</li>
+      <li>Preferencias y perfil de inversión</li>
+    </ul>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">03</div>
+    <h3>Finalidad del Tratamiento</h3>
+    <p>Los datos personales recabados serán utilizados para:</p>
+    <ul>
+      <li>Determinar el perfil de riesgo de inversión del usuario</li>
+      <li>Contactar al usuario para ofrecer los servicios de mentoría patrimonial</li>
+      <li>Formalizar la relación de servicio mediante contrato</li>
+      <li>Brindar seguimiento personalizado durante la prestación del servicio</li>
+      <li>Mejorar la calidad de los servicios ofrecidos</li>
+    </ul>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">04</div>
+    <h3>Almacenamiento y Herramientas</h3>
+    <p>Para el almacenamiento y procesamiento de datos utilizamos las siguientes plataformas:</p>
+    <ul>
+      <li><strong>Notion</strong> — base de datos interna de clientes</li>
+      <li><strong>Make.com</strong> — automatización del flujo de datos</li>
+      <li><strong>GitHub Pages</strong> — alojamiento de la página web</li>
+    </ul>
+    <p>Todas estas plataformas cuentan con sus propias políticas de privacidad y medidas de seguridad.</p>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">05</div>
+    <h3>Transferencia de Datos</h3>
+    <p>Salvador Financiero <strong>no vende, comparte ni transfiere</strong> sus datos personales a terceros, salvo que sea requerido por autoridad competente conforme a la ley.</p>
+  </div>
+
+  <div class="lp-highlight">
+    <h3>Derechos ARCO</h3>
+    <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales en cualquier momento.</p>
+    <p>Para ejercer cualquiera de estos derechos contáctanos por cualquiera de estos canales:</p>
+    <p><a href="mailto:info.salvadorfinanciero@gmail.com">info.salvadorfinanciero@gmail.com</a></p>
+    <p><a href="https://instagram.com/salvadorfinanciero" target="_blank">Instagram: @salvadorfinanciero</a></p>
+    <p>Responderemos a su solicitud en un plazo máximo de <strong>20 días hábiles</strong>.</p>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">06</div>
+    <h3>Tiempo de Retención</h3>
+    <p>Los datos personales serán conservados durante el tiempo que dure la relación de servicio y por un período adicional de <strong>2 años</strong> después de su término, conforme a las obligaciones legales aplicables.</p>
+  </div>
+
+  <div class="lp-section">
+    <div class="lp-num">07</div>
+    <h3>Cambios al Aviso de Privacidad</h3>
+    <p>Salvador Financiero se reserva el derecho de modificar este aviso en cualquier momento. Los cambios serán notificados a través de los canales oficiales de comunicación o publicados en esta misma página.</p>
+  </div>
+</div>
+</section>
+
+<section id="terminos" class="site-page" style="scroll-margin-top:110px;background:#0f2211;background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;">
+<style>
+  #terminos{font-family:'DM Mono',monospace;color:#fff;}
+  #terminos .lt-hero{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;padding:60px 40px 48px;border-bottom:3px solid var(--sage);}
+  #terminos .lt-eyebrow{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--fern);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  #terminos .lt-eyebrow span{display:block;width:24px;height:2px;background:var(--fern);}
+  #terminos .lt-hero h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4rem);color:#fff;letter-spacing:0.04em;line-height:1;margin-bottom:12px;}
+  #terminos .lt-date{font-size:0.62rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+  #terminos .lt-container{max-width:760px;margin:0 auto;padding:60px 40px 80px;}
+  #terminos .lt-section{background:var(--forest);border-left:4px solid var(--fern);padding:32px 36px;margin-bottom:16px;}
+  #terminos .lt-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(255,255,255,0.08);line-height:1;margin-bottom:4px;}
+  #terminos .lt-section h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;color:#fff;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  #terminos .lt-section p{font-size:0.78rem;line-height:1.75;color:rgba(255,255,255,0.75);margin-bottom:12px;}
+  #terminos .lt-section p:last-child{margin-bottom:0;}
+  #terminos .lt-section ul{list-style:none;margin:8px 0 12px;}
+  #terminos .lt-section ul li{font-size:0.78rem;line-height:1.7;color:rgba(255,255,255,0.75);padding-left:16px;position:relative;margin-bottom:4px;}
+  #terminos .lt-section ul li::before{content:'✦';position:absolute;left:0;color:var(--fern);font-size:0.5rem;top:4px;}
+  #terminos strong{color:var(--fern);font-weight:600;}
+  #terminos .lt-aviso{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;border-left:4px solid var(--fern);padding:32px 36px;margin-bottom:16px;}
+  #terminos .lt-aviso h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;color:#fff;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  #terminos .lt-aviso p{font-size:0.78rem;line-height:1.75;color:rgba(255,255,255,0.75);}
+  #terminos .lt-aviso a{color:var(--fern);text-decoration:none;}
+  @media(max-width:600px){
+    #terminos .lt-hero{padding:40px 20px 32px;}
+    #terminos .lt-container{padding:32px 20px 60px;}
+    #terminos .lt-section,#terminos .lt-aviso{padding:24px 20px;}
+  }
+</style>
+
+<a href="#hero" class="page-back">← Regresar al inicio</a>
+<div class="lt-hero">
+  <div class="lt-eyebrow"><span></span>Salvador Financiero<span></span></div>
+  <h2>Términos y<br>Condiciones</h2>
+  <div class="lt-date">Última actualización: Abril 2026</div>
+</div>
+
+<div class="lt-container">
+  <div class="lt-section">
+    <div class="lt-num">01</div>
+    <h3>Naturaleza del Servicio</h3>
+    <p>Salvador Financiero, representado por <strong>Miguel S. Valdez V.</strong>, ofrece servicios de <strong>mentoría patrimonial y consultoría educativa en finanzas personales</strong>.</p>
+    <p>Salvador Financiero <strong>no</strong> es una casa de bolsa, institución financiera, ni asesor en inversiones certificado ante la CNBV o AMIB. Los servicios prestados no constituyen asesoría financiera certificada ni gestión institucional de carteras.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">02</div>
+    <h3>Alcance del Servicio</h3>
+    <p>Los servicios incluyen acompañamiento estratégico, análisis de portafolio, consultoría técnica y optimización de finanzas personales.</p>
+    <p>Cualquier ejecución de operaciones en plataformas de inversión de terceros se realiza <strong>bajo el mandato, supervisión y autorización expresa del cliente</strong>. Salvador Financiero no puede ni realiza retiros de recursos a cuentas externas — únicamente operaciones de compra y venta de valores.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">03</div>
+    <h3>Mandato de Ejecución</h3>
+    <p>El cliente autoriza expresamente cada operación al proporcionar el <strong>token de acceso temporal</strong> solicitado por Salvador Financiero previo a cada sesión de gestión. Dicho token tiene caducidad inmediata y su entrega constituye autorización válida para ejecutar las operaciones acordadas en ese horario.</p>
+    <p>Las operaciones se realizan en el horario previamente acordado entre ambas partes a través de los canales de comunicación oficiales (WhatsApp o Instagram). Los registros de dichas comunicaciones constituyen evidencia válida del mandato otorgado.</p>
+    <p>Salvador Financiero se compromete a <strong>no almacenar ni compartir</strong> las credenciales de acceso del cliente con terceros.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">04</div>
+    <h3>Uso de la Información</h3>
+    <p>La información proporcionada en el cuestionario de perfil de riesgo es utilizada exclusivamente para:</p>
+    <ul>
+      <li>Determinar el perfil de inversión del usuario</li>
+      <li>Contactar al usuario a través de Instagram (@salvadorfinanciero), correo electrónico o el número de teléfono proporcionado en el cuestionario</li>
+      <li>Mejorar los servicios ofrecidos</li>
+    </ul>
+    <p>No se comparte, vende ni transfiere información a terceros.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">05</div>
+    <h3>Esquema de Cobro</h3>
+    <p>El modelo de cobro se compone de dos elementos:</p>
+    <ul>
+      <li><strong>Suscripción mensual:</strong> cuota fija según el plan contratado, acordada al inicio de la relación</li>
+      <li><strong>Bono de éxito anual:</strong> porcentaje sobre la ganancia neta real generada durante el año, calculado sobre el capital invertido y el rendimiento obtenido según la tabla de precios presentada al cliente</li>
+    </ul>
+    <p>Si no existe rendimiento positivo al cierre del año, <strong>no se cobra bono de éxito</strong>. El esquema completo es presentado y acordado con el cliente antes de iniciar el servicio.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">06</div>
+    <h3>Rendimientos y Riesgos</h3>
+    <p>Los rendimientos pasados <strong>no garantizan rendimientos futuros</strong>. Toda inversión conlleva riesgos inherentes al mercado.</p>
+    <p>Salvador Financiero no garantiza resultados específicos ni asume responsabilidad por pérdidas derivadas de las decisiones de inversión del cliente. El cliente declara haber sido informado de los riesgos antes de iniciar el servicio.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">07</div>
+    <h3>Canales de Comunicación Oficiales</h3>
+    <p>Los canales oficiales de comunicación entre Salvador Financiero y el cliente son <strong>WhatsApp</strong> e <strong>Instagram (@salvadorfinanciero)</strong>. Los registros y acuerdos establecidos a través de estos canales son válidos y constituyen evidencia de los mandatos otorgados.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">08</div>
+    <h3>Contrato de Prestación de Servicios</h3>
+    <p>Todo cliente que contrate los servicios de Salvador Financiero deberá firmar un <strong>Contrato de Prestación de Servicios de Mentoría Patrimonial</strong> previo al inicio de la relación comercial.</p>
+    <p>Dicho contrato establece:</p>
+    <ul>
+      <li>El alcance exacto del servicio contratado</li>
+      <li>El mandato de ejecución otorgado por el cliente</li>
+      <li>El esquema de cobro pactado (suscripción mensual y bono de éxito anual)</li>
+      <li>Los derechos y obligaciones de ambas partes</li>
+      <li>Las condiciones de terminación del servicio</li>
+    </ul>
+    <p>Ninguna operación será ejecutada sin que el contrato esté debidamente firmado por ambas partes.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">09</div>
+    <h3>Confidencialidad</h3>
+    <p>Toda información compartida entre el cliente y Salvador Financiero se maneja con <strong>estricta confidencialidad</strong> y no será divulgada a terceros sin autorización expresa del cliente.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">10</div>
+    <h3>Modificaciones</h3>
+    <p>Salvador Financiero se reserva el derecho de modificar estos términos en cualquier momento. Los cambios serán notificados a través de los canales oficiales.</p>
+  </div>
+
+  <div class="lt-section">
+    <div class="lt-num">11</div>
+    <h3>Jurisdicción</h3>
+    <p>Estos términos se rigen por las leyes de los <strong>Estados Unidos Mexicanos</strong>. Cualquier controversia será resuelta en los tribunales competentes de la Ciudad de México.</p>
+  </div>
+
+  <div class="lt-aviso">
+    <h3>Aviso de Privacidad</h3>
+    <p>Miguel S. Valdez V., como responsable del tratamiento de sus datos personales, informa que la información recabada a través del cuestionario de perfil de riesgo (nombre, correo, teléfono, edad y preferencias financieras) será utilizada únicamente para contactarle y ofrecer los servicios de mentoría patrimonial de Salvador Financiero.</p>
+    <br>
+    <p>Usted tiene derecho a acceder, rectificar, cancelar u oponerse al tratamiento de sus datos personales contactándonos por cualquiera de estos medios:</p>
+    <p><a href="mailto:info.salvadorfinanciero@gmail.com">info.salvadorfinanciero@gmail.com</a></p>
+    <p><a href="https://instagram.com/salvadorfinanciero" target="_blank">Instagram: @salvadorfinanciero</a></p>
+  </div>
+</div>
+</section>
+
+
+<section id="calculadora" class="site-page" style="scroll-margin-top:110px;">
+<style>
+#calculadora *{margin:0;padding:0;box-sizing:border-box;}#calculadora *{max-width:100%;}#calculadora html{scroll-behavior:smooth;background:#1c3a1e;overflow-x:hidden;overscroll-behavior-x:none;}#calculadora body{overflow-x:hidden;max-width:100vw;}#calculadora nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}#calculadora .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}#calculadora .nav-logo span{color:var(--fern);}#calculadora .nav-back{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}#calculadora .nav-back:hover{color:var(--fern);}#calculadora .hero-band{
+    padding-bottom:52px;padding:64px 60px 56px;background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px;}#calculadora h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,7.5rem);line-height:0.88;color:var(--white);letter-spacing:0.01em;margin-bottom:24px;}#calculadora h1 span{color:var(--fern);display:block;margin-top:0.18em;}#calculadora .ci-hero-rule{width:100%;max-width:560px;height:2px;background:var(--sage);margin-bottom:20px;}#calculadora .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:480px;line-height:1.65;}#calculadora .main-grid{display:grid;grid-template-columns:1fr 1.5fr;min-height:calc(100vh - 200px);overflow-x:hidden;}#calculadora .panel-inputs{padding:44px 52px;border-right:3px solid var(--forest);background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.07) 1px,transparent 1px);background-size:36px 36px;}#calculadora .input-group{margin-bottom:36px;}#calculadora .input-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--forest);font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px;}#calculadora .input-label::before{content:'';display:inline-block;width:14px;height:2px;background:var(--sage);flex-shrink:0;}#calculadora .input-value{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--forest);letter-spacing:0.02em;margin-bottom:12px;line-height:1;}#calculadora .input-value span{font-size:0.9rem;color:var(--mid);font-family:'DM Mono',monospace;}#calculadora input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.2);outline:none;border-radius:2px;}#calculadora input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);transition:transform .15s;}#calculadora input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}#calculadora input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}#calculadora .range-labels{display:flex;justify-content:space-between;margin-top:6px;}#calculadora .range-labels span{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(28,58,30,0.35);letter-spacing:0.08em;}#calculadora .inversion-selector{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px;margin-bottom:10px;}#calculadora .inv-btn{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;letter-spacing:0.02em;padding:12px 4px;border:1.5px solid var(--rule);background:var(--white);color:var(--mid);cursor:pointer;text-align:center;transition:all .18s;}#calculadora .inv-btn:hover{border-color:var(--sage);color:var(--forest);}#calculadora .inv-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);}#calculadora .custom-input-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--rule);background:var(--white);padding:8px 12px;transition:border-color .18s;margin-top:4px;}#calculadora .custom-input-wrap:focus-within{border-color:var(--sage);}#calculadora .custom-input-wrap label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--soft);white-space:nowrap;text-transform:uppercase;}#calculadora .custom-input-wrap input[type=number]{flex:1;border:none;outline:none;background:transparent;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--forest);letter-spacing:0.05em;width:100%;-moz-appearance:textfield;}#calculadora .custom-input-wrap input[type=number]::-webkit-outer-spin-button, #calculadora .custom-input-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}#calculadora .custom-apply-btn{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 12px;background:var(--forest);color:var(--white);border:none;cursor:pointer;transition:background .18s;white-space:nowrap;}#calculadora .custom-apply-btn:hover{background:var(--sage);}#calculadora .panel-results{padding:44px 52px;background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;}#calculadora .multiplier-badge{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);margin-bottom:22px;}#calculadora .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}#calculadora .result-card{background:var(--forest);padding:20px 22px;}#calculadora .result-card .rc-label{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:8px;}#calculadora .result-card .rc-value{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--fern);letter-spacing:0.02em;line-height:1;}#calculadora .result-card .rc-sub{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.35);margin-top:5px;}#calculadora .result-card.card-capital{border:2px solid var(--c-capital);border-top:4px solid var(--c-capital);}#calculadora .result-card.card-interes{border:2px solid var(--c-interes);border-top:4px solid var(--c-interes);}#calculadora .result-card.total{grid-column:span 2;background:var(--pine);border:2px solid var(--c-total);border-top:4px solid var(--c-total);}#calculadora .result-card.total .rc-label{color:rgba(255,255,255,0.5);}#calculadora .result-card.total .rc-value{font-size:3.2rem;color:var(--white);}#calculadora .result-card.total .rc-sub{color:rgba(255,255,255,0.35);}#calculadora .insight-box{background:var(--cream);border-left:3px solid var(--sage);padding:14px 18px;margin-bottom:16px;}#calculadora .insight-box p{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:var(--forest);line-height:1.55;}#calculadora .insight-box strong{color:var(--sage);font-style:normal;}#calculadora .chart-section{margin-bottom:24px;}#calculadora .chart-wm-overlay{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(1.4rem,6vw,2.8rem);
+    letter-spacing:0.14em;
+    color:rgba(28,58,30,0.08);
+    white-space:nowrap;
+    pointer-events:none;
+    user-select:none;
+    z-index:1;
+    line-height:1;
+  }#calculadora .chart-wm-overlay span{color:rgba(90,122,74,0.1);}#calculadora .chart-wrap{position:relative;height:240px;background:var(--cream);border:1.5px solid var(--rule);padding:10px 12px 12px;margin-bottom:0;transition:height 0.3s;}
+  @media(max-width:768px){#calculadora .chart-wrap{height:200px;}}#calculadora .zoom-controls{background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:10px 14px;}#calculadora .zoom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}#calculadora .zoom-item label{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:3px;}#calculadora .zoom-item .zoom-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--forest);line-height:1;margin-bottom:3px;}#calculadora .zoom-item input[type=range]{background:rgba(28,58,30,0.15);}#calculadora .zoom-presets{display:flex;gap:5px;flex-wrap:wrap;}#calculadora .zp-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.05em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--rule);background:var(--white);color:var(--soft);cursor:pointer;transition:all .15s;}#calculadora .zp-btn:hover{border-color:var(--sage);color:var(--forest);}#calculadora .zp-btn.active{background:var(--sage);border-color:var(--sage);color:var(--white);}#calculadora .cta-section{border-top:2px solid var(--rule);padding-top:24px;}#calculadora .cta-body{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}#calculadora .cta-text{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);line-height:1.9;flex:1;}#calculadora .ci-cta-btn{display:inline-block;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 36px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:4px 4px 0 var(--pine);white-space:nowrap;flex-shrink:0;}#calculadora .ci-cta-btn:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pine);}#calculadora footer{background:var(--forest);padding:22px 60px 36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--sage);flex-wrap:wrap;gap:10px;}#calculadora .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}#calculadora .flogo span{color:var(--fern);}#calculadora .ftext{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;text-transform:uppercase;}#calculadora .flinks{display:flex;gap:16px;align-items:center;}#calculadora .flinks a{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.55);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color .2s;}#calculadora .flinks a:hover{color:var(--fern);}
+
+  @media(max-width:768px){#calculadora nav{padding:14px 20px;}#calculadora .hero-band{
+    padding-bottom:52px;padding:40px 24px;}#calculadora .main-grid{grid-template-columns:1fr;}#calculadora .panel-inputs{border-right:none;border-bottom:3px solid var(--forest);padding:32px 24px;}#calculadora .panel-results{padding:32px 24px;}#calculadora .inversion-selector{grid-template-columns:repeat(3,1fr);}#calculadora .results-grid{grid-template-columns:1fr;}#calculadora .result-card.total{grid-column:span 1;}#calculadora .result-card .rc-value{font-size:2rem;}#calculadora .result-card.total .rc-value{font-size:2.6rem;}#calculadora .multiplier-badge{font-size:0.55rem;}#calculadora .zoom-controls{overflow-x:hidden;}#calculadora .cta-body{flex-direction:column;align-items:flex-start;}#calculadora .zoom-presets{gap:4px;}#calculadora .zp-btn{font-size:0.48rem;padding:3px 6px;}#calculadora .zoom-row{gap:8px;}#calculadora footer{flex-direction:column;gap:10px;padding:20px 24px;text-align:center;}#calculadora .flinks{justify-content:center;}
+  }
+
+</style>
+<a href="#hero" class="page-back">← Regresar al inicio</a>
+<div class="hero-band">
+  <h1>Calculadora de<br><span>Interés Compuesto</span></h1>
+  <div class="ci-hero-rule"></div>
+  <p class="hero-sub">Descubre el poder del tiempo y la constancia. Ajusta los parámetros y observa cómo tu dinero puede crecer solo.</p>
+</div>
+
+<div class="main-grid">
+  <div class="panel-inputs">
+
+    <div class="input-group">
+      <label class="input-label">Capital inicial</label>
+      <div class="input-value" id="display-capital">— <span>MXN</span></div>
+      <input type="range" id="slider-capital" min="1000" max="500000" step="1000" value="1000">
+      <div class="range-labels"><span>$1,000</span><span>$500,000</span></div>
+      <div class="custom-input-wrap" style="margin-top:12px;">
+        <label>Otro monto:</label>
+        <input type="number" id="custom-capital" placeholder="Ej. 10,000 MXN" min="0" step="100">
+        <button class="custom-apply-btn" id="apply-capital">Aplicar</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Aportación mensual aproximada</label>
+      <div class="input-value" id="display-mensual">— <span>MXN / mes</span></div>
+      <div class="inversion-selector" id="inv-selector">
+        <button class="inv-btn" data-val="1000">$1,000</button>
+        <button class="inv-btn" data-val="1200">$1,200</button>
+        <button class="inv-btn" data-val="2000">$2,000</button>
+        <button class="inv-btn" data-val="2500">$2,500</button>
+        <button class="inv-btn" data-val="5000">$5,000</button>
+        <button class="inv-btn" data-val="8000">$8,000</button>
+        <button class="inv-btn" data-val="10000">$10,000</button>
+        <button class="inv-btn" data-val="15000">$15,000</button>
+        <button class="inv-btn" data-val="20000">$20,000</button>
+      </div>
+      <div class="custom-input-wrap">
+        <label>Otro monto:</label>
+        <input type="number" id="custom-mensual" placeholder="Ej. 30,000 MXN" min="100" step="100">
+        <button class="custom-apply-btn" id="apply-mensual">Aplicar</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Rendimiento anual estimado</label>
+      <div class="input-value" id="display-tasa">5 <span>% anual</span></div>
+      <input type="range" id="slider-tasa" min="3" max="25" step="1" value="5">
+      <div class="range-labels"><span>3%</span><span>25%</span></div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Horizonte de inversión</label>
+      <div class="input-value" id="display-anos">5 <span>años</span></div>
+      <input type="range" id="slider-anos" min="1" max="40" step="1" value="5">
+      <div class="range-labels"><span>1 año</span><span>40 años</span></div>
+    </div>
+
+  </div>
+
+  <div class="panel-results">
+
+    <div class="multiplier-badge" id="multiplier-badge">✦ Tu dinero se multiplica 4.2x</div>
+
+    <div class="results-grid">
+      <div class="result-card card-capital">
+        <div class="rc-label">Capital aportado</div>
+        <div class="rc-value" id="res-aportado">—</div>
+        <div class="rc-sub">lo que tú aportas</div>
+      </div>
+      <div class="result-card card-interes">
+        <div class="rc-label">Interés generado</div>
+        <div class="rc-value" id="res-interes">—</div>
+        <div class="rc-sub">lo que el tiempo hace</div>
+      </div>
+      <div class="result-card total">
+        <div class="rc-label">Total acumulado al final</div>
+        <div class="rc-value" id="res-total">—</div>
+        <div class="rc-sub" id="res-sub">en 15 años · rendimiento al 10% anual</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <p id="insight-text">Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.</p>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-wrap">
+        <div class="chart-wm-overlay">Salvador <span>Financiero</span></div>
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="zoom-controls">
+        <div class="zoom-row">
+          <div class="zoom-item">
+            <label>Desde el año</label>
+            <div class="zoom-val" id="zoom-desde-val">0</div>
+            <input type="range" id="zoom-desde" min="0" max="39" step="1" value="0">
+          </div>
+          <div class="zoom-item">
+            <label>Hasta el año</label>
+            <div class="zoom-val" id="zoom-hasta-val">15</div>
+            <input type="range" id="zoom-hasta" min="1" max="40" step="1" value="15">
+          </div>
+        </div>
+        <div class="zoom-presets">
+          <button class="zp-btn" data-desde="0" data-hasta="5">Año 1–5</button>
+          <button class="zp-btn" data-desde="0" data-hasta="10">Año 1–10</button>
+          <button class="zp-btn" data-desde="0" data-hasta="20">Año 1–20</button>
+          <button class="zp-btn" data-desde="0" data-hasta="40">Año 1–40</button>
+          <button class="zp-btn" data-desde="10" data-hasta="30">Año 10–30</button>
+          <button class="zp-btn active" id="zp-todo" data-desde="0" data-hasta="15">Todo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-body">
+        <p class="cta-text">Estos son números orientativos · Con una estrategia personalizada y acompañamiento constante · los resultados pueden ser aún mejores</p>
+        <a href="perfil-riesgo.html" class="ci-cta-btn">Conoce tu perfil de inversión →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</section>
+
+<script>
+(function() {
+
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
+  let capital = 0, mensual = 0, tasa = 5, anos = 5;
+  let zoomDesde = 0, zoomHasta = 15;
+  let chart;
+  let fullData = { labels: [], dA: [], dT: [], dI: [] };
+
+  const COLOR_TOTAL   = '#3a7d44';
+  const COLOR_CAPITAL = '#4a9e6a';
+  const COLOR_INTERES = '#c47d0e';
+
+  function semanalLabel(m){ return '$' + Math.round(m / 4).toLocaleString('es-MX') + ' a la semana'; }
+  function updateCapitalDisplay(){ document.getElementById('display-capital').innerHTML = fmt(capital) + ' <span>MXN</span>'; document.getElementById('slider-capital').value = Math.min(capital, 500000); }
+  function updateMensualDisplay(){ document.getElementById('display-mensual').innerHTML = fmt(mensual) + ` <span>MXN / mes · ${semanalLabel(mensual)}</span>`; }
+
+  function buildFullData(){
+    const r = tasa / 100 / 12;
+    fullData.labels = []; fullData.dA = []; fullData.dT = []; fullData.dI = [];
+    for(let y = 0; y <= anos; y++){
+      const m = y * 12; let tot = capital;
+      for(let i = 0; i < m; i++) tot = tot * (1 + r) + mensual;
+      const aport = Math.round(capital + mensual * m);
+      const total = Math.round(tot);
+      fullData.labels.push(y === 0 ? 'Hoy' : `Año ${y}`);
+      fullData.dA.push(aport);
+      fullData.dT.push(total);
+      fullData.dI.push(Math.max(0, total - aport));
+    }
+  }
+
+  function getZoomSlice(){
+    const desde = Math.min(zoomDesde, anos);
+    const hasta  = Math.min(zoomHasta, anos);
+    return {
+      labels: fullData.labels.slice(desde, hasta + 1),
+      dT: fullData.dT.slice(desde, hasta + 1),
+      dA: fullData.dA.slice(desde, hasta + 1),
+      dI: fullData.dI.slice(desde, hasta + 1),
+    };
+  }
+
+  function updateZoomUI(){
+    document.getElementById('zoom-desde').max = Math.max(anos - 1, 0);
+    document.getElementById('zoom-hasta').max = anos;
+    document.getElementById('zoom-desde').value = zoomDesde;
+    document.getElementById('zoom-hasta').value  = zoomHasta;
+    document.getElementById('zoom-desde-val').textContent = zoomDesde;
+    document.getElementById('zoom-hasta-val').textContent  = zoomHasta;
+    document.getElementById('zp-todo').dataset.hasta = anos;
+  }
+
+  function renderChart(){
+    const slice = getZoomSlice();
+    if(chart){
+      chart.data.labels = slice.labels;
+      chart.data.datasets[0].data = slice.dT;
+      chart.data.datasets[1].data = slice.dA;
+      chart.data.datasets[2].data = slice.dI;
+      chart.update('none');
+    } else {
+      const ctx = document.getElementById('myChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'line',
+        plugins: [],
+        data: { labels: slice.labels, datasets: [
+          { label: 'Total acumulado',  data: slice.dT, borderColor: COLOR_TOTAL,   backgroundColor: 'rgba(58,125,68,0.1)',   borderWidth: 3,   fill: true,  tension: 0.35, pointRadius: 3, pointBackgroundColor: COLOR_TOTAL,   pointHoverRadius: 6, pointHoverBackgroundColor: COLOR_TOTAL },
+          { label: 'Capital aportado', data: slice.dA, borderColor: COLOR_CAPITAL, backgroundColor: 'rgba(74,158,106,0.07)', borderWidth: 2.5, borderDash: [6,3], fill: true,  tension: 0.35, pointRadius: 2, pointBackgroundColor: COLOR_CAPITAL, pointHoverRadius: 5, pointHoverBackgroundColor: COLOR_CAPITAL },
+          { label: 'Interés generado', data: slice.dI, borderColor: COLOR_INTERES, backgroundColor: 'transparent',            borderWidth: 2.5, borderDash: [3,4], fill: false, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: COLOR_INTERES }
+        ]},
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 300 },
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: {
+                font: { family: 'DM Mono', size: 10 }, boxWidth: 14, padding: 16,
+                generateLabels(ch){
+                  return ch.data.datasets.map((ds, i) => ({
+                    text: ds.label, fillStyle: ds.borderColor, strokeStyle: ds.borderColor,
+                    fontColor: 'rgba(28,58,30,0.6)', lineWidth: 2, datasetIndex: i, hidden: false,
+                  }));
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1c3a1e', borderColor: '#2d5a30', borderWidth: 1,
+              titleColor: '#a8c498', bodyColor: 'rgba(255,255,255,0.85)',
+              titleFont: { family: 'Bebas Neue', size: 14 }, bodyFont: { family: 'DM Mono', size: 11 }, padding: 12,
+              callbacks: {
+                labelColor(c){ const cols = [COLOR_TOTAL, COLOR_CAPITAL, COLOR_INTERES]; return { borderColor: cols[c.datasetIndex], backgroundColor: cols[c.datasetIndex] }; },
+                label: c => ` ${c.dataset.label}: ${fmt(c.raw)}`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(28,58,30,0.08)' }, ticks: { color: 'rgba(28,58,30,0.45)', font: { family: 'DM Mono', size: 10 } } },
+            y: { grid: { color: 'rgba(28,58,30,0.08)' }, ticks: { color: 'rgba(28,58,30,0.45)', font: { family: 'DM Mono', size: 10 }, callback: v => '$' + (v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(0)+'k' : v) } }
+          }
+        }
+      });
+    }
+  }
+
+  function calcular(){
+    if(capital === 0 && mensual === 0){
+      document.getElementById('res-aportado').textContent = '—';
+      document.getElementById('res-interes').textContent  = '—';
+      document.getElementById('res-total').textContent    = '—';
+      document.getElementById('res-sub').textContent = '';
+      document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
+      document.getElementById('insight-text').textContent = 'Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.';
+      if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.data.datasets[1].data=[]; chart.data.datasets[2].data=[]; chart.update('none'); }
+      return;
+    }
+    const r = tasa / 100 / 12, n = anos * 12;
+    const aportado = capital + mensual * n;
+    let total = capital;
+    for(let i = 0; i < n; i++) total = total * (1 + r) + mensual;
+    total = Math.round(total);
+    const interes = total - aportado;
+    const pct = Math.round((interes / total) * 100);
+
+    document.getElementById('res-aportado').textContent = fmt(aportado);
+    document.getElementById('res-interes').textContent  = fmt(interes);
+    document.getElementById('res-total').textContent    = fmt(total);
+    document.getElementById('res-sub').textContent = `en ${anos} año${anos > 1 ? 's' : ''} · rendimiento al ${tasa}% anual`;
+    document.getElementById('multiplier-badge').textContent = `✦ Tu dinero se multiplica ${(total / aportado).toFixed(1)}x`;
+    document.getElementById('insight-text').innerHTML = pct >= 50
+      ? `El interés compuesto generó <strong>${pct}%</strong> de tu riqueza. El tiempo trabajó más que tú.`
+      : `Llevas buen camino. Con más tiempo o mayor aportación, el interés compuesto tomará el control: <strong>${pct}%</strong> ya viene del rendimiento.`;
+
+    zoomDesde = 0;
+    zoomHasta = anos;
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('zp-todo').classList.add('active');
+
+    buildFullData();
+    updateZoomUI();
+    renderChart();
+  }
+
+  document.getElementById('slider-capital').addEventListener('input', function(){ capital = +this.value; document.getElementById('custom-capital').value = ''; updateCapitalDisplay(); calcular(); });
+  document.getElementById('slider-tasa').addEventListener('input', function(){ tasa = +this.value; document.getElementById('display-tasa').innerHTML = tasa + ' <span>% anual</span>'; calcular(); });
+
+  document.getElementById('slider-anos').addEventListener('input', function(){
+    anos = +this.value;
+    document.getElementById('display-anos').innerHTML = anos + ' <span>año' + (anos > 1 ? 's' : '') + '</span>';
+    calcular();
+  });
+
+  function applyCustomCapital(){ const v = parseInt(document.getElementById('custom-capital').value); if(!isNaN(v) && v >= 0){ capital = v; updateCapitalDisplay(); calcular(); } }
+  document.getElementById('apply-capital').addEventListener('click', applyCustomCapital);
+  document.getElementById('custom-capital').addEventListener('keydown', e => { if(e.key === 'Enter') applyCustomCapital(); });
+
+  document.querySelectorAll('.inv-btn').forEach(btn => {
+    btn.addEventListener('click', function(){ document.querySelectorAll('.inv-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); document.getElementById('custom-mensual').value = ''; mensual = +this.dataset.val; updateMensualDisplay(); calcular(); });
+  });
+  function applyCustomMensual(){ const v = parseInt(document.getElementById('custom-mensual').value); if(v && v >= 100){ document.querySelectorAll('.inv-btn').forEach(b => b.classList.remove('active')); mensual = v; updateMensualDisplay(); calcular(); } }
+  document.getElementById('apply-mensual').addEventListener('click', applyCustomMensual);
+  document.getElementById('custom-mensual').addEventListener('keydown', e => { if(e.key === 'Enter') applyCustomMensual(); });
+
+  document.getElementById('zoom-desde').addEventListener('input', function(){
+    zoomDesde = +this.value;
+    if(zoomDesde >= zoomHasta) zoomHasta = Math.min(zoomDesde + 1, anos);
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    updateZoomUI(); renderChart();
+  });
+  document.getElementById('zoom-hasta').addEventListener('input', function(){
+    zoomHasta = +this.value;
+    if(zoomHasta <= zoomDesde) zoomDesde = Math.max(0, zoomHasta - 1);
+    document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+    updateZoomUI(); renderChart();
+  });
+
+  document.querySelectorAll('.zp-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.zp-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      zoomDesde = Math.min(+this.dataset.desde, anos);
+      zoomHasta = Math.min(+this.dataset.hasta, anos);
+      if(zoomDesde >= zoomHasta) zoomDesde = 0;
+      updateZoomUI(); renderChart();
+    });
+  });
+
+  document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
+
+})();
+</script>
+
+
+<section id="regalo" class="site-page" style="scroll-margin-top:110px;">
+<style>
+#regalo *{margin:0;padding:0;box-sizing:border-box;}#regalo html{scroll-behavior:smooth;background:var(--forest);}#regalo body{background:var(--forest);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}#regalo /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--forest);padding:16px 56px;display:flex;align-items:center;justify-content:center;border-bottom:3px solid var(--sage);}#regalo .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}#regalo .nav-brand span{color:var(--fern);}#regalo .nav-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--fern);text-decoration:none;transition:color .2s;}#regalo .nav-back:hover{color:var(--white);}#regalo /* HERO */
+  .hero{
+    background:var(--white);
+    padding:100px 60px 80px;
+    border-bottom:3px solid var(--sage);
+    overflow:hidden;
+  }#regalo .hero-inner{max-width:700px;margin:0 auto;text-align:center;}#regalo .hero-eyebrow{display:inline-flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:28px;}#regalo .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,7.5rem);line-height:0.92;color:var(--forest);letter-spacing:0.01em;margin-bottom:32px;}#regalo .hero h1 em{color:var(--sage);font-style:normal;display:block;}#regalo .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:var(--mid);line-height:1.8;max-width:500px;margin:0 auto 40px;}#regalo .hero-cta{display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 40px;text-decoration:none;border:2px solid var(--forest);box-shadow:0 6px 24px rgba(90,122,74,0.3);transition:all .2s;border-radius:8px;}#regalo .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(90,122,74,0.35);}#regalo /* HERO EDAD */
+  .hero-edad-wrap{background:rgba(90,122,74,0.07);border:1.5px solid var(--fern);padding:20px 24px;margin-top:28px;border-radius:14px;}#regalo .hero-edad-label{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:var(--forest);margin-bottom:4px;}#regalo .hero-edad-val{color:var(--sage);font-weight:500;}#regalo .hero-edad-sublabel{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px;}#regalo .hero-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.2);outline:none;border-radius:2px;}#regalo .hero-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--forest);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}#regalo /* TICKER */
+  .ticker-wrapper{background:var(--pine);overflow:hidden;padding:14px 0;white-space:nowrap;border-bottom:3px solid var(--forest);}#regalo .ticker-inner{display:inline-flex;animation:rg-ticker 30s linear infinite;will-change:transform;}#regalo .ticker-item{font-family:'DM Mono',monospace;font-size:0.78rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);display:inline-flex;align-items:center;white-space:nowrap;}#regalo .ticker-sep{color:var(--fern);margin:0 16px;}
+  @keyframes rg-ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}#regalo /* ETAPAS DE VIDA */
+  .etapas-section{background:var(--white);padding:80px 60px;border-bottom:3px solid var(--rule);}#regalo .etapas-inner{max-width:960px;margin:0 auto;}#regalo .etapas-header{margin-bottom:56px;}#regalo .etapas-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:14px;}#regalo .etapas-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}#regalo .etapas-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--forest);line-height:0.95;margin-bottom:16px;}#regalo .etapas-title span{color:var(--sage);}#regalo .etapas-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.75;max-width:560px;}#regalo .etapas-timeline{position:relative;padding-left:140px;}#regalo .etapas-timeline::before{content:'';position:absolute;left:116px;top:12px;bottom:12px;width:3px;background:linear-gradient(to bottom, var(--mist), var(--sage), var(--forest));border-radius:2px;}#regalo .etapa-item{position:relative;display:flex;align-items:flex-start;gap:28px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--rule);}#regalo .etapa-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}#regalo .etapa-anio{position:absolute;left:-140px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);padding-top:4px;width:100px;text-align:right;}#regalo .etapa-dot{position:absolute;left:-28px;top:8px;width:14px;height:14px;background:var(--fern);border:3px solid var(--white);border-radius:50%;box-shadow:0 0 0 2px var(--sage);}#regalo .etapa-dot-special{background:var(--sage);box-shadow:0 0 0 2px var(--sage),0 0 0 5px rgba(90,122,74,0.2);}#regalo .etapa-dot-final{background:var(--forest);box-shadow:0 0 0 2px var(--forest),0 0 0 5px rgba(28,58,30,0.15);width:18px;height:18px;left:-30px;top:6px;}#regalo .etapa-content{flex:1;}#regalo .etapa-nombre{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:4px;}#regalo .etapa-monto{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--sage);letter-spacing:0.02em;line-height:1;margin-bottom:6px;}#regalo .etapa-monto-final{color:var(--forest);font-size:2.5rem;}#regalo .etapa-desc{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:var(--mid);line-height:1.65;}#regalo .etapas-nota{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-top:32px;display:flex;align-items:center;gap:8px;}#regalo .etapas-nota span{color:var(--fern);}#regalo .etapa-dot-pasada{background:var(--rule);box-shadow:none;}#regalo .etapa-pasada{opacity:0.6;}#regalo .etapa-proxima{background:rgba(168,196,152,0.08);border-left:3px solid var(--fern);padding-left:16px;margin-left:-16px;}#regalo .etapa-badge{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;margin-bottom:6px;border-radius:20px;}#regalo .etapa-tiempo{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;}#regalo /* CALCULADORA */
+  .calc-section{background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.08) 1px,transparent 1px);background-size:36px 36px;border-bottom:3px solid var(--rule);padding:80px 60px;}#regalo .calc-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}#regalo .calc-label-top{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:12px;}#regalo .calc-label-top::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}#regalo .calc-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,3.8rem);color:var(--forest);line-height:0.95;margin-bottom:20px;}#regalo .calc-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.75;margin-bottom:0;}#regalo /* Sliders */
+  .calc-controls{display:flex;flex-direction:column;gap:32px;}#regalo .ctrl-group{}#regalo .ctrl-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--forest);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}#regalo .ctrl-value{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--sage);letter-spacing:0.05em;}#regalo input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(28,58,30,0.15);outline:none;border-radius:2px;}#regalo input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--sage);cursor:pointer;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--sage);}#regalo .ctrl-range-labels{display:flex;justify-content:space-between;margin-top:4px;}#regalo .ctrl-range-labels span{font-family:'DM Mono',monospace;font-size:0.52rem;color:rgba(28,58,30,0.35);}#regalo /* Resultado */
+  .calc-result{background:var(--forest);padding:40px;border:none;position:relative;overflow:hidden;border-radius:16px;box-shadow:0 8px 40px rgba(28,58,30,0.2);}#regalo .calc-result::before{content:'✦';position:absolute;top:16px;right:20px;font-size:1rem;color:var(--fern);opacity:0.3;}#regalo .result-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:8px;}#regalo .result-amount{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);color:var(--fern);line-height:1;letter-spacing:0.01em;margin-bottom:4px;}#regalo .result-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.45);margin-bottom:28px;}#regalo .result-breakdown{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;flex-direction:column;gap:10px;}#regalo .result-row{display:flex;justify-content:space-between;align-items:center;}#regalo .result-row-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);}#regalo .result-row-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.05em;}#regalo .result-row-val.green{color:var(--fern);}#regalo .result-row-val.white{color:rgba(255,255,255,0.7);}#regalo .result-note{font-family:'DM Mono',monospace;font-size:0.52rem;color:rgba(255,255,255,0.25);letter-spacing:0.08em;margin-top:20px;line-height:1.6;text-transform:uppercase;}#regalo /* POR QUÉ HOY */
+  .why-section{background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;padding:80px 60px;border-bottom:3px solid var(--rule);}#regalo .why-inner{max-width:960px;margin:0 auto;}#regalo .why-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:10px;margin-bottom:14px;}#regalo .why-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--sage);}#regalo .why-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--forest);line-height:0.95;margin-bottom:48px;}#regalo .why-title span{color:var(--sage);}#regalo .why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--rule);}#regalo .why-card{background:var(--white);padding:36px 32px;}#regalo .why-num{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--mist);line-height:1;margin-bottom:12px;}#regalo .why-card-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:10px;}#regalo .why-card-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}#regalo /* CÓMO FUNCIONA */
+  .how-section{background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;padding:80px 60px;border-bottom:3px solid var(--sage);}#regalo .how-inner{max-width:960px;margin:0 auto;}#regalo .how-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);display:flex;align-items:center;gap:10px;margin-bottom:14px;}#regalo .how-eyebrow::before{content:'';display:block;width:18px;height:2px;background:var(--fern);}#regalo .how-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);color:var(--white);line-height:0.95;margin-bottom:48px;}#regalo .how-title span{color:var(--fern);}#regalo .how-steps{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:rgba(255,255,255,0.06);}#regalo .how-step{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);padding:36px 32px;}#regalo .how-step-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:rgba(168,196,152,0.15);line-height:1;margin-bottom:10px;}#regalo .how-step-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--white);margin-bottom:10px;}#regalo .how-step-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.75;}#regalo .how-step strong{color:var(--fern);font-style:normal;}#regalo /* RENOVACIÓN ANUAL */
+  .renew-section{background:var(--paper);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;padding:72px 60px;border-bottom:3px solid var(--rule);}#regalo .renew-inner{max-width:760px;margin:0 auto;text-align:center;}#regalo .renew-icon{font-size:2.5rem;margin-bottom:16px;opacity:0.6;}#regalo .renew-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3rem);color:var(--forest);margin-bottom:16px;line-height:1;}#regalo .renew-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--mid);line-height:1.8;max-width:560px;margin:0 auto 28px;}#regalo .renew-text strong{color:var(--pine);font-style:normal;}#regalo /* CTA FINAL */
+  .cta-section{background:var(--forest);border-top:3px solid var(--sage);padding:80px 60px;text-align:center;position:relative;overflow:hidden;}#regalo .cta-deco{position:absolute;font-size:1rem;color:var(--sage);opacity:0.25;pointer-events:none;}#regalo .cta-deco.tl{top:28px;left:60px;}#regalo .cta-deco.tr{top:28px;right:60px;}#regalo .cta-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px;}#regalo .cta-eyebrow::before, #regalo .cta-eyebrow::after{content:'';display:block;width:18px;height:2px;background:var(--fern);}#regalo .cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.5rem);color:var(--white);line-height:0.92;margin-bottom:16px;}#regalo .cta-title span{color:var(--fern);}#regalo .cta-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.55);margin-bottom:36px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto;}#regalo .cta-btn{display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 52px;text-decoration:none;border:3px solid var(--fern);box-shadow:0 6px 24px rgba(90,122,74,0.3);transition:all .2s;}#regalo .cta-btn:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--sage);}#regalo /* FOOTER */
+  footer{background:var(--forest) !important;padding:24px 60px;text-align:center;border-top:3px solid var(--sage);}#regalo .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--white);margin-bottom:4px;}#regalo .footer-brand span{color:var(--fern);}#regalo .footer-sub{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;}#regalo .footer-links{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);}#regalo .footer-links a{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin:0 10px;}#regalo .disclaimer{font-size:0.58rem;color:rgba(255,255,255,0.2);line-height:1.6;margin-top:10px;font-style:italic;font-family:'Instrument Serif',serif;}
+
+  @media(max-width:768px){#regalo nav{padding:14px 20px;}#regalo .hero{padding:48px 24px 0;}#regalo .hero-inner{grid-template-columns:1fr;gap:40px;}#regalo .hero-visual{display:none;}#regalo .hero-sub{margin-bottom:28px;}#regalo .hero-cta{margin-bottom:48px;}#regalo .calc-section{padding:56px 24px;}#regalo .calc-inner{grid-template-columns:1fr;gap:40px;}#regalo .why-section{padding:56px 24px;}#regalo .why-grid{grid-template-columns:1fr;}#regalo .how-section{padding:56px 24px;}#regalo .how-steps{grid-template-columns:1fr;}#regalo .renew-section{padding:56px 24px;}#regalo .cta-section{padding:60px 24px;}#regalo footer{padding:20px 24px;}
+  }
+
+</style>
+<a href="#hero" class="page-back">← Regresar al inicio</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">-PATRIMONIO FAMILIAR-</div>
+    <div id="heroEmoji" style="font-size:5rem;margin-bottom:16px;line-height:1;">🍼</div>
+    <h1>Inversión<br>desde el<br><em id="heroTitulo">Día 1.</em></h1>
+    <p class="hero-sub">El mejor momento para empezar a invertir por tu hijo fue el día que nació. El segundo mejor momento es hoy.</p>
+
+    <!-- EDAD EN EL HERO -->
+    <div class="hero-edad-wrap">
+      <div class="hero-edad-label">¿Cuántos años tiene tu hijo? <span id="labelEdad" class="hero-edad-val"></span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
+        <div>
+          <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo">0</span></div>
+          <input type="range" min="0" max="17" step="1" value="0" id="sliderAniosHijo" oninput="rgSyncEdad(1)" class="hero-slider">
+        </div>
+        <div id="mesesWrap">
+          <div class="hero-edad-sublabel">Meses: <span id="labelMesesHijo">0</span></div>
+          <input type="range" min="0" max="11" step="1" value="0" id="sliderMesesHijo" oninput="rgSyncEdad(1)" class="hero-slider">
+        </div>
+      </div>
+    </div>
+
+    <a href="#calc-section-anchor" class="hero-cta" style="margin-top:32px;">✦ Ver el simulador ✦</a>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrapper">
+  <div class="ticker-inner">
+    <span class="ticker-item">El tiempo es tu mejor aliado<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Interés compuesto desde el día 1<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Tu dinero siempre en tu cuenta<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">18 años de crecimiento constante<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Una decisión hoy, una vida mañana<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Sin candados ni plazos forzosos<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">El tiempo es tu mejor aliado<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Interés compuesto desde el día 1<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Tu dinero siempre en tu cuenta<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">18 años de crecimiento constante<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Una decisión hoy, una vida mañana<span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Sin candados ni plazos forzosos<span class="ticker-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- CALCULADORA -->
+<div class="calc-section" id="calc-section-anchor">
+  <div class="calc-inner">
+    <div>
+      <div class="calc-label-top">Simulador</div>
+      <div id="calcEmoji" style="font-size:4rem;line-height:1;margin-bottom:12px;">🍼</div>
+      <div class="calc-title">Mira crecer el<br>dinero de<br><em style="color:var(--sage);font-style:normal;">tu hijo.</em></div>
+      <p class="calc-sub">Mueve los parámetros y descubre, más abajo, cómo se construye el futuro de tu hijo etapa por etapa.</p>
+
+      <!-- EDAD REPETIDA EN SIMULADOR -->
+      <div class="hero-edad-wrap" style="margin-top:24px;">
+        <div class="hero-edad-label" id="calcEdadLabel">¿Cuántos años tiene? <span id="labelEdad2" class="hero-edad-val"></span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;">
+          <div>
+            <div class="hero-edad-sublabel">Años: <span id="labelAniosHijo2">0</span></div>
+            <input type="range" min="0" max="17" step="1" value="0" id="sliderAniosHijo2" oninput="rgSyncEdad(2)" class="hero-slider">
+          </div>
+          <div id="mesesWrap2">
+            <div class="hero-edad-sublabel">Meses: <span id="labelMesesHijo2">0</span></div>
+            <input type="range" min="0" max="11" step="1" value="0" id="sliderMesesHijo2" oninput="rgSyncEdad(2)" class="hero-slider">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="calc-controls">
+        <div class="ctrl-group">
+          <div class="ctrl-label">Aportación semanal <span class="ctrl-value" id="labelSemanal">$0 MXN</span></div>
+          <input type="range" min="0" max="10000" step="50" value="0" id="sliderSemanal" oninput="rgAportacionMovida=true;document.getElementById('semaналHint') && (document.getElementById('semaналHint').style.display='none');rgCalcular()">
+          <div class="ctrl-range-labels"><span>$0</span><span>$10,000</span></div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:var(--sage);margin-top:8px;" id="mensualWrap">≈ al mes serían: <span id="labelMensual" style="font-size:1.4rem;">$0 MXN</span></div><div id="semaналHint" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);margin-top:6px;display:flex;align-items:center;gap:6px;"><span>←</span> Mueve este valor para ver los resultados</div>
+        </div>
+        <div class="ctrl-group">
+          <div class="ctrl-label">Rendimiento anual estimado <span class="ctrl-value" id="labelRend">8%</span></div>
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sliderRend" oninput="rgCalcular()">
+          <div class="ctrl-range-labels"><span>3%</span><span>25%</span></div>
+        </div>
+      </div>
+
+      <div class="calc-result" style="margin-top:32px;">
+        <div class="result-label" id="resultLabel">Tu hijo tendría a los 18 años</div>
+        <div class="result-amount" id="resultTotal">$0</div>
+        <div class="result-sub" id="resultSub">en su portafolio de inversión</div>
+        <div class="result-breakdown">
+          <div class="result-row">
+            <span class="result-row-label">Lo que aportarías</span>
+            <span class="result-row-val white" id="resultAportado">$0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Lo que genera el mercado</span>
+            <span class="result-row-val green" id="resultGanancia">$0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Tiempo restante</span>
+            <span class="result-row-val white" id="resultTiempo">18 años</span>
+          </div>
+        </div>
+        <div class="result-note">Simulación referencial · Los rendimientos pasados no garantizan resultados futuros · Basado en interés compuesto semanal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RG_ETAPAS DE VIDA -->
+<div class="etapas-section">
+  <div class="etapas-inner">
+    <div class="etapas-header">
+      <div class="etapas-eyebrow">El tiempo no espera</div>
+      <div class="etapas-title">Cada etapa llega.<br><span>¿Estarás listo?</span></div>
+      <p class="etapas-sub">Las grandes etapas de tu hijo van a pasar de todas formas. La pregunta no es si van a llegar — es si van a llegar con un respaldo detrás.</p>
+    </div>
+    <div class="etapas-timeline" id="etapasTimeline">
+      <!-- Se genera dinámicamente con JS -->
+    </div>
+    <div class="etapas-nota">
+      <span>✦</span> Los montos se actualizan según tus parámetros · Ajusta los sliders de arriba
+    </div>
+  </div>
+</div>
+
+<!-- POR QUÉ HOY -->
+<div class="why-section">
+  <div class="why-inner">
+    <div class="why-eyebrow">El factor tiempo</div>
+    <div class="why-title">Por qué cada año<br><span>que esperas importa</span></div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">01</div>
+        <div class="why-card-title">El interés compuesto no descansa</div>
+        <p class="why-card-text">Cada semana que fondeas, los rendimientos se reinvierten y generan sus propios rendimientos. Con el tiempo, el dinero que pone el mercado supera al dinero que tú aportas.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02</div>
+        <div class="why-card-title">Empezar tarde cuesta más de lo que crees</div>
+        <p class="why-card-text">Cada año que pasa sin invertir no es solo un año menos — es un año de rendimientos que ya no van a volver. El dinero que el mercado hubiera generado por ti simplemente desaparece.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03</div>
+        <div class="why-card-title">Pequeñas cantidades, grandes resultados</div>
+        <p class="why-card-text">No necesitas una fortuna para empezar. $300 semanales durante 18 años, con un rendimiento conservador, pueden generar más de $600,000 MXN para cuando tu hijo entre a la universidad.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RENOVACIÓN ANUAL -->
+<div class="renew-section">
+  <div class="renew-inner">
+    <div style="font-size:2.5rem;letter-spacing:0.1em;margin-bottom:20px;line-height:1;">🌱 🌿 🌳</div>
+    <div class="renew-title">Semana a semana,<br>año tras año</div>
+    <p class="renew-text">Estoy al pendiente cada semana — te recuerdo fondear tu cuenta, analizo el mercado y ejecuto las órdenes con tu autorización. Y cada año nos reunimos para revisar juntos cómo creció el portafolio y renovar el contrato.</p>
+    <p class="renew-text" style="margin-top:16px;">Igual que una planta — con constancia, agua y tiempo, crece sola. <strong>Tú pones la intención, yo pongo el cuidado.</strong></p>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <span class="cta-deco tl">✦</span>
+  <span class="cta-deco tr">✦</span>
+  <div class="cta-eyebrow">El mejor momento es hoy</div>
+  <div id="ctaEmoji" style="font-size:4.5rem;margin-bottom:16px;line-height:1;">🍼</div>
+  <h2 class="cta-title">Dale a tu hijo<br><span>el regalo del tiempo.</span></h2>
+  <p class="cta-sub">Empieza con el cuestionario de perfil de riesgo — gratuito, 3 minutos. Me pongo en contacto contigo personalmente.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="perfil-riesgo.html" class="cta-btn">✦ Comenzar cuestionario ✦</a>
+    <a href="https://ig.me/m/salvadorfinanciero" target="_blank" class="cta-btn" style="background:transparent;color:var(--fern);border-color:var(--fern);">✦ Mandar mensaje a @salvadorfinanciero ✦</a>
+  </div>
+</div>
+
+<!-- BOTÓN FLOTANTE -->
+<div id="floatBtn" onclick="document.getElementById('calc-section-anchor').scrollIntoView({behavior:'smooth'})" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;background:var(--forest);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:16px 20px;border:2px solid var(--fern);box-shadow:0 4px 16px rgba(90,122,74,0.25);cursor:pointer;white-space:nowrap;transition:opacity .4s;border-radius:50px;text-align:center;">
+  <span id="floatBtnText">⭐ &nbsp;Mueve el simulador</span>
+</div>
+
+
+</section>
+
+<script>
+
+let rgSimuladorUsado = false;
+let rgAportacionMovida = false;
+let rgEdadMovida = false;
+
+function rgSyncEdad(source){
+  if(source === 1){
+    document.getElementById('sliderAniosHijo2').value = document.getElementById('sliderAniosHijo').value;
+    document.getElementById('sliderMesesHijo2').value = document.getElementById('sliderMesesHijo').value;
+  } else {
+    document.getElementById('sliderAniosHijo').value = document.getElementById('sliderAniosHijo2').value;
+    document.getElementById('sliderMesesHijo').value = document.getElementById('sliderMesesHijo2').value;
+  }
+  rgSimuladorUsado = true;
+  rgEdadMovida = true;
+  const btn = document.getElementById('floatBtn');
+  if(btn){ btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
+  rgCalcular();
+}
+
+function rgFmt(n){
+  if(n>=1000000) return '$'+(n/1000000).toFixed(2)+'M';
+  if(n>=1000) return '$'+(n/1000).toFixed(0)+'K';
+  return '$'+Math.round(n).toLocaleString('es-MX');
+}
+
+function rgCalcularMonto(semanal, rendSem, anios){
+  if(anios<=0) return 0;
+  const s = anios*52;
+  return semanal*((Math.pow(1+rendSem,s)-1)/rendSem);
+}
+
+const RG_ETAPAS = [
+  { nombre:'🎒 Preescolar', edadInicio:3, edadFin:6, dot:'', desc:(anios)=> anios<=2?'⚡ ¡Está a la vuelta de la esquina! Cada mes que pasa sin invertir es tiempo que no recuperas.':'Los primeros años de formación. Una base sólida empieza aquí, mucho antes de que llegue ese día.' },
+  { nombre:'📚 Primaria', edadInicio:6, edadFin:12, dot:'', desc:(anios)=> anios<=2?'⚡ Quedan muy pocos años. El interés compuesto necesita tiempo — empieza hoy.':'Seis años de crecimiento silencioso. El portafolio ya empieza a tomar una forma que sorprende.' },
+  { nombre:'🔬 Secundaria', edadInicio:12, edadFin:15, dot:'', desc:(anios)=> anios<=2?'⚡ Muy cerca. Aún hay tiempo para que el portafolio crezca significativamente.':'El interés compuesto ya lleva años trabajando para ti. Los números empiezan a ser los protagonistas.' },
+  { nombre:'🎓 Preparatoria & los 15 años', edadInicio:15, edadFin:18, dot:'etapa-dot-special', desc:(anios)=> anios<=2?'⚡ Muy cerca. Un portafolio sólido puede cubrir esta etapa con total tranquilidad.':'La preparatoria arranca aquí. Con un buen portafolio, estos años se viven sin presión económica — y los 15 se celebran como se merecen.' },
+  { nombre:'🎓 Universidad', edadInicio:18, edadFin:22, dot:'etapa-dot-final', desc:(anios)=> anios<=3?'⚡ Llegó el momento. Lo que acumules ahora puede marcar la diferencia entre universidad con o sin deuda.':'Tu hijo entra a la universidad sin que eso sea una carga para nadie. Eso es lo que años de constancia construyen.' },
+];
+
+function rgCalcular(){
+  const aniosHijo = parseInt(document.getElementById('sliderAniosHijo').value);
+  const mesesHijo = aniosHijo <= 3 ? parseInt(document.getElementById('sliderMesesHijo').value) : 0;
+  const edadHijoDecimal = aniosHijo + mesesHijo/12;
+  const edadHijo = Math.floor(edadHijoDecimal);
+
+  // Show/hide meses slider
+  document.getElementById('mesesWrap').style.display = aniosHijo <= 3 ? 'block' : 'none';
+
+  // Sync both slider sets visually
+  document.getElementById('sliderAniosHijo2').value = aniosHijo;
+  document.getElementById('sliderMesesHijo2').value = mesesHijo;
+
+  // Labels
+  document.getElementById('labelAniosHijo').textContent = aniosHijo;
+  document.getElementById('labelAniosHijo2').textContent = aniosHijo;
+  document.getElementById('labelMesesHijo').textContent = mesesHijo;
+  document.getElementById('labelMesesHijo2').textContent = mesesHijo;
+  document.getElementById('mesesWrap2').style.display = aniosHijo <= 3 ? 'block' : 'none';
+  let edadLabel = '';
+  if(rgSimuladorUsado){
+    if(aniosHijo === 0 && mesesHijo === 0) edadLabel = 'Recién nacido';
+    else if(aniosHijo === 0) edadLabel = mesesHijo+' mes'+(mesesHijo>1?'es':'');
+    else if(mesesHijo === 0) edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'');
+    else edadLabel = aniosHijo+' año'+(aniosHijo>1?'s':'')+' y '+mesesHijo+' mes'+(mesesHijo>1?'es':'');
+  }
+  document.getElementById('labelEdad').textContent = edadLabel;
+  if(document.getElementById('labelEdad2')) document.getElementById('labelEdad2').textContent = edadLabel;
+
+  // Dynamic emoji based on age
+  let emoji = '🍼';
+  if(edadHijoDecimal >= 15) emoji = '🎓';
+  else if(edadHijoDecimal >= 12) emoji = '🔬';
+  else if(edadHijoDecimal >= 6) emoji = '📚';
+  else if(edadHijoDecimal >= 4) emoji = '🎒';
+  else if(edadHijoDecimal >= 1) emoji = '🧸';
+  else emoji = '🍼';
+
+  document.getElementById('heroEmoji').textContent = emoji;
+  document.getElementById('ctaEmoji').textContent = emoji;
+  document.getElementById('calcEmoji').textContent = emoji;
+
+  // Dynamic title
+  let titulo = 'Día 1.';
+  if(aniosHijo === 0 && mesesHijo === 0) titulo = 'Día 1.';
+  else if(aniosHijo === 0) titulo = 'Mes '+mesesHijo+'.';
+  else titulo = 'Año '+aniosHijo+'.';
+  document.getElementById('heroTitulo').textContent = titulo;
+
+  const semanal = parseFloat(document.getElementById('sliderSemanal').value)||300;
+  const rendAnual = parseFloat(document.getElementById('sliderRend').value)/100;
+  const rendSem = Math.pow(1+rendAnual, 1/52)-1;
+  const mensual = semanal * 4;
+  const hint = document.getElementById("semaналHint");
+  if(hint) hint.style.display = semanal > 0 ? "none" : "flex";
+
+  document.getElementById('labelSemanal').textContent = semanal === 0 ? '$0 MXN' : '$'+semanal.toLocaleString('es-MX')+' MXN';
+  const mensualWrapEl = document.getElementById('mensualWrap');
+if(mensualWrapEl) mensualWrapEl.style.display = semanal === 0 ? 'none' : 'block';
+document.getElementById('labelMensual').textContent = '$'+mensual.toLocaleString('es-MX')+' MXN';
+  document.getElementById('labelRend').textContent = parseFloat(document.getElementById('sliderRend').value)+'%';
+
+  const aniosHastaUniv = Math.max(0, 18 - edadHijoDecimal);
+  const total = rgCalcularMonto(semanal, rendSem, aniosHastaUniv);
+  const aportado = semanal * aniosHastaUniv * 52;
+  const ganancia = total - aportado;
+
+  document.getElementById('resultLabel').textContent = 'Tu hijo tendría a los 18 años';
+  document.getElementById('resultTotal').textContent = rgFmt(total);
+  document.getElementById('resultSub').textContent = 'en '+ Math.round(aniosHastaUniv*10)/10 +' años de inversión constante';
+  document.getElementById('resultAportado').textContent = rgFmt(aportado);
+  document.getElementById('resultGanancia').textContent = '+'+rgFmt(ganancia);
+  document.getElementById('resultTiempo').textContent = aniosHastaUniv > 0 ? Math.round(aniosHastaUniv*10)/10+' años por delante' : 'La universidad está aquí';
+
+  const tl = document.getElementById('etapasTimeline');
+  tl.innerHTML = '';
+  if(!rgAportacionMovida || !rgEdadMovida){
+    tl.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🔒</div><div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:var(--forest);letter-spacing:0.06em;margin-bottom:8px;">Ajusta los dos parámetros</div><p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1rem;color:var(--mid);">Mueve la edad de tu hijo y la aportación semanal para descubrir cuánto tendrá en cada etapa de su vida.</p></div>';
+    return;
+  }
+
+  RG_ETAPAS.forEach((e, idx) => {
+    const esFinal = idx === RG_ETAPAS.length - 1;
+    const yaPaso = edadHijoDecimal >= e.edadFin;
+    const esActual = edadHijoDecimal >= e.edadInicio && edadHijoDecimal < e.edadFin;
+    const esFutura = edadHijoDecimal < e.edadInicio;
+
+    if(yaPaso){
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item etapa-pasada">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot etapa-dot-pasada"></div>
+        <div class="etapa-content">
+          <div class="etapa-nombre" style="opacity:0.4;">${e.nombre}</div>
+          <div class="etapa-monto" style="opacity:0.3;font-size:1.2rem;">Ya pasó</div>
+          <div class="etapa-desc" style="opacity:0.35;">Esta etapa ya quedó atrás — pero las que siguen todavía están a tiempo.</div>
+        </div>
+      </div>`);
+
+    } else if(esActual){
+      const aniosHastaFin = e.edadFin - edadHijoDecimal;
+      const monto = rgCalcularMonto(semanal, rendSem, aniosHastaFin);
+      const anosEnt = Math.floor(aniosHastaFin);
+      const mesesR = Math.round((aniosHastaFin - anosEnt)*12);
+      let tiempoRestante = anosEnt===0 ? mesesR+' mes'+(mesesR!==1?'es':'') : mesesR===0 ? anosEnt+' año'+(anosEnt!==1?'s':'') : anosEnt+' año'+(anosEnt!==1?'s':'')+' y '+mesesR+' mes'+(mesesR!==1?'es':'');
+      const dotClass = (e.dot + (esFinal ? ' etapa-dot-final' : '')).trim();
+      const progreso = (edadHijoDecimal - e.edadInicio) / (e.edadFin - e.edadInicio); // 0 a 1
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item etapa-proxima" id="etapaActual" style="border-left:4px solid var(--sage);background:rgba(168,196,152,0.08);padding-left:20px;margin-left:-20px;position:relative;">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot ${dotClass}" style="background:rgba(168,196,152,0.15);border-color:var(--fern);"></div>
+        <div id="estrella" style="position:absolute;left:-44px;font-size:2rem;line-height:1;pointer-events:none;z-index:10;" data-progreso="${progreso}">⭐</div>
+        <div class="etapa-content">
+          <div class="etapa-badge">Tu hijo está aquí · Faltan ${tiempoRestante} para la siguiente etapa</div>
+          <div class="etapa-nombre">${e.nombre}</div>
+          <div class="etapa-monto etapa-monto-actual">${rgFmt(monto)}</div>
+          <div class="etapa-desc" style="font-size:0.88rem;color:var(--mid);">Con ${rgFmt(monto)} acumulado al terminar esta etapa, el siguiente paso se vive sin presión.</div>
+        </div>
+      </div>`);
+
+    } else {
+      const aniosHastaInicio = e.edadInicio - edadHijoDecimal;
+      const monto = rgCalcularMonto(semanal, rendSem, aniosHastaInicio);
+      const urgencia = aniosHastaInicio <= 3 ? '⚠️ ' : '';
+      const anosEnt = Math.floor(aniosHastaInicio);
+      const mesesR = Math.round((aniosHastaInicio - anosEnt)*12);
+      let tiempoRestante = anosEnt===0 ? mesesR+' mes'+(mesesR!==1?'es':'') : mesesR===0 ? anosEnt+' año'+(anosEnt!==1?'s':'') : anosEnt+' año'+(anosEnt!==1?'s':'')+' y '+mesesR+' mes'+(mesesR!==1?'es':'');
+      const dotClass = (e.dot + (esFinal ? ' etapa-dot-final' : '')).trim();
+      const descripcion = e.desc(aniosHastaInicio);
+      tl.insertAdjacentHTML('beforeend', `<div class="etapa-item">
+        <div class="etapa-anio">Año ${e.edadInicio}</div>
+        <div class="etapa-dot ${dotClass}"></div>
+        <div class="etapa-content">
+          <div class="etapa-nombre">${urgencia}${e.nombre}</div>
+          <div class="etapa-tiempo">Empieza en ${tiempoRestante}</div>
+          <div class="etapa-monto ${esFinal ? 'etapa-monto-final' : ''}">${rgFmt(monto)}</div>
+          <div class="etapa-desc">${descripcion}</div>
+        </div>
+      </div>`);
+    }
+  });
+
+  // Posicionar estrella proporcionalmente en la línea
+  requestAnimationFrame(() => {
+    const estrella = document.getElementById('estrella');
+    const etapaActual = document.getElementById('etapaActual');
+    if(estrella && etapaActual){
+      const progreso = parseFloat(estrella.dataset.progreso);
+      const h = etapaActual.getBoundingClientRect().height;
+      const topPx = progreso * h;
+      estrella.style.top = Math.max(0, topPx - 16) + 'px';
+    }
+  });
+}
+
+// Set initial labels to 0 without calling rgCalcular
+document.getElementById("labelSemanal").textContent = "$0 MXN";
+document.getElementById("labelMensual").textContent = "$0 MXN";
+const mw = document.getElementById("mensualWrap"); if(mw) mw.style.display = "none";
+document.getElementById("labelRend").textContent = "8%";
+
+</script>
+
 
 <footer>
   <a href="#hero" class="flogo" style="text-decoration:none;color:var(--white);">Salvador <span>Financiero</span></a>
   <div class="ftext">© 2026 · Mentoría Patrimonial Independiente · CDMX, México</div>
   <div class="ftext">✦ Hecho con estrategia ✦</div>
   <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-    <a href="terminos-y-condiciones.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Términos y Condiciones</a><a href="aviso-de-privacidad.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Aviso de Privacidad</a><a href="preguntas-frecuentes.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">FAQ</a>
+    <a href="#terminos" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Términos y Condiciones</a><a href="#privacidad" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Aviso de Privacidad</a><a href="preguntas-frecuentes.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">FAQ</a>
   </div>
 </footer>
 
@@ -1378,6 +2411,27 @@
     marquee.addEventListener('mouseenter', function() { paused = true; });
     marquee.addEventListener('mouseleave', function() { paused = false; });
 
+    // Swipe táctil (móvil)
+    var touchStartX = 0, touchStartPos = 0, dragging = false, resumeTimer = null;
+    viewport.addEventListener('touchstart', function(e) {
+      dragging = true;
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      touchStartX = e.touches[0].clientX;
+      touchStartPos = pos;
+    }, {passive: true});
+    viewport.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      var dx = e.touches[0].clientX - touchStartX;
+      var newPos = touchStartPos - dx;
+      while (newPos < 0) newPos += singleSetWidth;
+      pos = newPos % singleSetWidth;
+    }, {passive: true});
+    viewport.addEventListener('touchend', function() {
+      dragging = false;
+      resumeTimer = setTimeout(function() { paused = false; }, 2500);
+    });
+
     var prevBtn = document.getElementById('domPrev');
     var nextBtn = document.getElementById('domNext');
     var cardStep = 304; // ancho de tarjeta + gap aprox
@@ -1419,6 +2473,18 @@
     requestAnimationFrame(frame);
   })();
 
+  // Toggle de "¿Qué es hacer FIRE?"
+  (function() {
+    var btn = document.getElementById('metaToggleBtn');
+    var panel = document.getElementById('metaExplainPanel');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function() {
+      var isOpen = panel.classList.contains('open');
+      panel.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  })();
+
   // Tarjeta que se voltea: foto ↔ "Tu mentor patrimonial hace"
   (function() {
     var card = document.getElementById('mentorFlip');
@@ -1427,6 +2493,8 @@
       card.classList.toggle('flipped');
     });
   })();
+
+  // (Router movido a un <script> independiente al final del documento)
 
   // Menú acordeón de escritorio (Servicios / Herramientas)
   (function() {
@@ -1551,6 +2619,49 @@
   window.addEventListener('load', function() {
     if (renderModelo) renderModelo();
   });
+</script>
+<script>
+  // Router independiente — muestra la página fusionada correspondiente al ancla,
+  // u oculta todas y regresa al landing. Vive en su propio <script> para que
+  // siempre corra aunque cualquier otro script del sitio falle.
+  try {
+    var SITE_PAGES = ['privacidad', 'terminos', 'calculadora', 'regalo'];
+    var landingWrap = document.getElementById('landingWrap');
+    function siteRoute() {
+      try {
+        var hash = window.location.hash.replace('#', '');
+        if (!hash) {
+          if (landingWrap) landingWrap.style.display = '';
+          SITE_PAGES.forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.remove('active'); });
+          return;
+        }
+        var target = document.getElementById(hash);
+        var pageAncestor = target ? target.closest('.site-page') : null;
+        if (SITE_PAGES.indexOf(hash) !== -1 || pageAncestor) {
+          var activeId = pageAncestor ? pageAncestor.id : hash;
+          if (landingWrap) landingWrap.style.display = 'none';
+          SITE_PAGES.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.toggle('active', id === activeId);
+          });
+          if (pageAncestor && hash !== activeId) {
+            setTimeout(function() { target.scrollIntoView(); }, 0);
+          } else {
+            window.scrollTo(0, 0);
+          }
+        } else {
+          if (landingWrap) landingWrap.style.display = '';
+          SITE_PAGES.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.remove('active');
+          });
+          if (target) setTimeout(function() { target.scrollIntoView(); }, 0);
+        }
+      } catch (e) { /* nunca dejar que un error rompa la navegación */ }
+    }
+    window.addEventListener('hashchange', siteRoute);
+    siteRoute();
+  } catch (e) { /* noop */ }
 </script>
 </body>
 </html>
