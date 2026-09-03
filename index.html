@@ -302,7 +302,7 @@
   .flip-hint{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--fern);margin-top:6px;}
   .flip-hint.back{margin-top:20px;text-align:center;color:rgba(255,255,255,0.5);}
   .flip-back{background:var(--forest);color:var(--white);padding:34px;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;}
-  @media(max-width:600px){.flip-card{max-width:100%;height:400px;}}
+  @media(max-width:600px){.flip-card{max-width:100%;height:400px;}.flip-back{padding:22px;}.flip-back .card-hl{font-size:0.95rem;}.svc-list{gap:9px;}.svc-list li{font-size:0.66rem;line-height:1.4;}}
   .card-hl-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;background:none;border:none;cursor:pointer;padding:0;text-align:left;}
   .card-hl-arrow{width:20px;height:20px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
   .card-hl-toggle[aria-expanded="true"] .card-hl-arrow{transform:rotate(180deg);}
@@ -639,6 +639,7 @@
   }
 }
 
+
 </style>
 </head>
 <body>
@@ -898,8 +899,14 @@
     .regla-desc{display:none;margin-top:14px;padding:14px 16px;background:rgba(0,0,0,0.18);border-radius:10px;font-family:'DM Mono',monospace;font-size:0.66rem;line-height:1.8;color:rgba(255,255,255,0.7);}
     .regla-desc.open{display:block;}
     .regla-desc strong{color:var(--fern);}
-    .meta-explain{padding:16px 30px;border-bottom:1px solid rgba(255,255,255,0.12);background:rgba(168,196,152,0.06);}
-    .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);}
+    .meta-explain{border-bottom:1px solid rgba(255,255,255,0.12);background:rgba(168,196,152,0.06);}
+    .meta-toggle-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;background:none;border:none;cursor:pointer;padding:14px 30px;text-align:left;}
+    .meta-toggle-btn span.mt-label{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);font-weight:600;}
+    .meta-toggle-arrow{width:16px;height:16px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
+    .meta-toggle-btn[aria-expanded="true"] .meta-toggle-arrow{transform:rotate(180deg);}
+    .meta-explain-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+    .meta-explain-panel.open{max-height:400px;}
+    .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);padding:0 30px 16px;}
     .meta-explain strong{color:var(--fern);}
     .indep-grid{display:grid;grid-template-columns:repeat(5,1fr);}
     .indep-kpi{padding:14px 8px 12px;border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);text-align:center;}
@@ -938,7 +945,13 @@
     </div>
 
     <div class="meta-explain">
-      <p>🏝️ <strong>¿Qué es la "meta de independencia"?</strong> Es el capital que, invertido, generaría cada mes un rendimiento equivalente a tu sueldo actual — el punto en el que tu dinero te paga a ti, y ya no dependes de trabajar para vivir. Por eso se calcula como tu sueldo × 150: a una tasa de rendimiento razonable, ese capital es capaz de "pagarte tu sueldo" mes con mes sin que toques el capital.</p>
+      <button class="meta-toggle-btn" id="metaToggleBtn" aria-expanded="false">
+        <span class="mt-label">🏝️ ¿Qué es hacer FIRE?</span>
+        <svg class="meta-toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div class="meta-explain-panel" id="metaExplainPanel">
+        <p><strong>FIRE</strong> (Financial Independence, Retire Early) es llegar al punto donde tu dinero invertido te paga tu sueldo cada mes — y ya no dependes de trabajar para vivir. Esa es tu <strong>meta de independencia</strong>: el capital que, a una tasa de rendimiento razonable, es capaz de "pagarte tu sueldo" mes con mes sin que toques el capital. Por eso se calcula como tu sueldo × 150.</p>
+      </div>
     </div>
 
     <div class="indep-toggle">
@@ -1232,7 +1245,7 @@
     <div class="reveal" style="background:white;border:2px solid var(--rule);border-radius:var(--r);padding:40px 44px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;">
       <div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:var(--forest);margin-bottom:10px;">Cuéntame tu caso — sin costo</div>
-        <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--mid);line-height:1.7;">Mándame un mensaje por correo o Instagram contándome qué necesitas. Escucharte y decirte si puedo ayudarte no cuesta nada. Si el trámite o la asesoría requiere trabajo de mi parte (gestión, seguimiento, presentar algo ante una dependencia, etc.), te paso una cotización clara antes de empezar — nunca se cobra nada sin que lo sepas y lo autorices primero.</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--mid);line-height:1.7;">Escríbeme por correo o Instagram. Escucharte no cuesta nada — si tu caso requiere trabajo de mi parte, te paso una cotización clara antes de empezar.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px;min-width:220px;">
         <a href="mailto:info.salvadorfinanciero@gmail.com?subject=Consulta%20-%20Salvador%20Financiero" style="display:flex;align-items:center;gap:10px;justify-content:center;background:var(--forest);color:white;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.08em;padding:13px 24px;text-decoration:none;border-radius:var(--r-sm);transition:all .2s;">✉ Escribir por correo</a>
@@ -1378,6 +1391,27 @@
     marquee.addEventListener('mouseenter', function() { paused = true; });
     marquee.addEventListener('mouseleave', function() { paused = false; });
 
+    // Swipe táctil (móvil)
+    var touchStartX = 0, touchStartPos = 0, dragging = false, resumeTimer = null;
+    viewport.addEventListener('touchstart', function(e) {
+      dragging = true;
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      touchStartX = e.touches[0].clientX;
+      touchStartPos = pos;
+    }, {passive: true});
+    viewport.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      var dx = e.touches[0].clientX - touchStartX;
+      var newPos = touchStartPos - dx;
+      while (newPos < 0) newPos += singleSetWidth;
+      pos = newPos % singleSetWidth;
+    }, {passive: true});
+    viewport.addEventListener('touchend', function() {
+      dragging = false;
+      resumeTimer = setTimeout(function() { paused = false; }, 2500);
+    });
+
     var prevBtn = document.getElementById('domPrev');
     var nextBtn = document.getElementById('domNext');
     var cardStep = 304; // ancho de tarjeta + gap aprox
@@ -1419,6 +1453,18 @@
     requestAnimationFrame(frame);
   })();
 
+  // Toggle de "¿Qué es hacer FIRE?"
+  (function() {
+    var btn = document.getElementById('metaToggleBtn');
+    var panel = document.getElementById('metaExplainPanel');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function() {
+      var isOpen = panel.classList.contains('open');
+      panel.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  })();
+
   // Tarjeta que se voltea: foto ↔ "Tu mentor patrimonial hace"
   (function() {
     var card = document.getElementById('mentorFlip');
@@ -1427,6 +1473,8 @@
       card.classList.toggle('flipped');
     });
   })();
+
+  // (Router movido a un <script> independiente al final del documento)
 
   // Menú acordeón de escritorio (Servicios / Herramientas)
   (function() {
