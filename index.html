@@ -76,41 +76,25 @@
   .nav-links-mobile a:hover{color:var(--fern);padding-left:30px;}
   .nlm-mark{color:var(--fern);font-size:0.7rem;flex-shrink:0;}
 
-  /* HERO — dark forest left / soft grey-green right */
-  #hero{min-height:100vh;padding-top:80px;display:grid;grid-template-columns:1fr 1fr;align-items:center;overflow:hidden;max-width:100vw;background:var(--forest);gap:0;}
+  /* HERO — foto de fondo completa, texto encima */
+  #hero{position:relative;min-height:100vh;padding-top:80px;overflow:hidden;max-width:100vw;background:var(--forest);}
+  .hero-bg{position:absolute;inset:0;z-index:0;}
+  .hero-content{position:relative;z-index:2;min-height:calc(100vh - 80px);display:flex;flex-direction:column;justify-content:center;padding:60px 44px 60px 60px;}
 
   .hero-left{
-    background:var(--forest);
-    
-    padding:60px 44px 60px 60px;min-height:calc(100vh - 80px);
+    padding:0;min-height:auto;
     display:flex;flex-direction:column;justify-content:center;
-    
-  background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;}
+  }
   .hero-issue{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:28px;}
   .hero-issue::before{content:'';display:block;width:22px;height:2px;background:var(--fern);}
-  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8.5vw,8rem);line-height:0.9;color:var(--white);letter-spacing:0.01em;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8.5vw,8rem);line-height:0.9;color:var(--white);letter-spacing:0.01em;text-shadow:0 4px 24px rgba(0,0,0,0.5);}
   .hero-title .hi{color:var(--fern);display:block;}
-  .hero-rule{width:100%;height:2px;background:var(--sage);margin:26px 0;}
-  .hero-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:rgba(255,255,255,0.72);max-width:420px;line-height:1.7;margin-bottom:38px;}
+  .hero-rule{width:100%;max-width:520px;height:2px;background:var(--sage);margin:26px 0;}
+  .hero-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:rgba(255,255,255,0.85);max-width:460px;line-height:1.7;margin-bottom:38px;text-shadow:0 2px 12px rgba(0,0,0,0.5);}
   .hero-cta{display:inline-block;align-self:flex-start;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 38px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:0 4px 20px rgba(28,58,30,0.35);border-radius:var(--r-sm);}
   .hero-cta:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translateY(-2px);box-shadow:0 8px 28px rgba(28,58,30,0.4);}
   @media(max-width:768px){
     .hero-cta{font-size:0.85rem;letter-spacing:0.08em;padding:12px 20px;white-space:nowrap;}
-  }
-
-  .hero-right{
-    background:var(--forest);
-    background-image:linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.045) 1px,transparent 1px);
-    background-size:36px 36px;
-    position:relative;height:calc(100vh - 80px);
-    display:flex;align-items:center;justify-content:center;overflow:hidden;
-    margin:0;padding:48px;
-  }
-  .hero-photo-frame{
-    position:relative;width:100%;height:100%;max-width:520px;max-height:640px;
-    border-radius:20px;overflow:hidden;
-    box-shadow:0 24px 60px rgba(0,0,0,0.4);
-    border:1px solid rgba(255,255,255,0.12);
   }
 
   /* REAL IMAGE STICKERS */
@@ -206,7 +190,8 @@
   }
   .nc-overlay{
     position:absolute;inset:0;
-    background:linear-gradient(0deg, rgba(15,32,19,0.35) 0%, transparent 40%);
+    background:linear-gradient(90deg, rgba(15,32,19,0.88) 0%, rgba(15,32,19,0.55) 35%, rgba(15,32,19,0.25) 60%, rgba(15,32,19,0.15) 100%),
+               linear-gradient(0deg, rgba(15,32,19,0.5) 0%, transparent 45%);
     pointer-events:none;
   }
 
@@ -311,7 +296,7 @@
   .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
   .flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);overflow:hidden;box-shadow:0 12px 40px rgba(28,58,30,0.3);}
   .flip-front{background:var(--forest);}
-  .flip-photo{width:100%;height:100%;object-fit:cover;display:block;}
+  .flip-photo{width:100%;height:100%;object-fit:cover;object-position:center 65%;display:block;}
   .flip-front-caption{position:absolute;left:0;right:0;bottom:0;padding:20px 22px;background:linear-gradient(0deg,rgba(15,32,19,0.92) 0%,rgba(15,32,19,0.4) 70%,transparent 100%);}
   .flip-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.05em;color:var(--white);}
   .flip-hint{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--fern);margin-top:6px;}
@@ -445,9 +430,9 @@
 
     nav{padding:14px 20px;} .nav-links{display:none;} .nav-burger{display:flex;}
     #about,#modelo,#testimonios,#perfil,#consultoria,#contacto{scroll-margin-top:80px;}
-    #hero{grid-template-columns:1fr;padding:80px 0 0;}
-    .hero-left{padding:40px 24px;border-right:none;border-bottom:3px solid var(--sage);min-height:auto;}
-    .hero-right{height:300px;width:100%;padding:20px;}
+    #hero{padding-top:80px;min-height:92vh;}
+    .hero-content{padding:40px 24px;min-height:calc(92vh - 80px);}
+    .hero-left{padding:0;}
     
     
     
@@ -589,7 +574,6 @@
     max-width: 100%;
   }
   .nature-carousel,
-  .hero-right,
   #hero,
   #modelo,
   #about,
@@ -621,9 +605,7 @@
   }
   @media (max-width: 768px) {
     html, body { overflow-x: hidden !important; }
-    #hero { grid-template-columns: 1fr !important; }
-    .hero-left { min-height: auto !important; border-right: none !important; border-bottom: none !important; }
-    .hero-right { height: 260px !important; }
+    .hero-left { min-height: auto !important; }
     .stats-inner { grid-template-columns: 1fr !important; }
     .stat-block { border-right: none !important; border-bottom: 2px solid var(--forest); }
     .stat-block:last-child { border-bottom: none; }
@@ -714,29 +696,27 @@
 </ul>
 
 <section id="hero">
-  <div class="hero-left" style="background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;">
-    <div class="hero-issue">Consultor Patrimonial Independiente · CDMX</div>
-    <h1 class="hero-title">Crece tu dinero<br>con confianza.<br><span class="hi">Invierte con dirección.</span></h1>
-    <div class="hero-rule"></div>
-    <p class="hero-subtitle">Mentoría patrimonial · Acceso a mercados internacionales y nacionales · Tu dinero, siempre en tu cuenta</p>
-    <a href="perfil-riesgo.html" class="hero-cta">✦ Descubre tu Perfil de Riesgo ✦</a>
-    
-    
-  </div>
-  <div class="hero-right">
-    <div class="hero-photo-frame">
-      <div class="nature-carousel">
-        <div class="nc-slide active">
-          <img src="images/img-01.jpg" alt="Árbol crecimiento">
-        </div>
-        <div class="nc-slide">
-          <img src="images/img-02.jpg" alt="Cueva naturaleza">
-        </div>
-        <div class="nc-slide">
-          <img src="images/img-03.jpg" alt="Árbol ramificado">
-        </div>
-        <div class="nc-overlay"></div>
+  <div class="hero-bg">
+    <div class="nature-carousel">
+      <div class="nc-slide active">
+        <img src="images/img-01.jpg" alt="Árbol crecimiento">
       </div>
+      <div class="nc-slide">
+        <img src="images/img-02.jpg" alt="Cueva naturaleza">
+      </div>
+      <div class="nc-slide">
+        <img src="images/img-03.jpg" alt="Árbol ramificado">
+      </div>
+      <div class="nc-overlay"></div>
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-issue">Consultor Patrimonial Independiente · CDMX</div>
+      <h1 class="hero-title">Crece tu dinero<br>con confianza.<br><span class="hi">Invierte con dirección.</span></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-subtitle">Mentoría patrimonial · Acceso a mercados internacionales y nacionales · Tu dinero, siempre en tu cuenta</p>
+      <a href="perfil-riesgo.html" class="hero-cta">✦ Descubre tu Perfil de Riesgo ✦</a>
     </div>
   </div>
 </section>
