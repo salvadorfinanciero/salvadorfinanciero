@@ -100,9 +100,17 @@
 
   .hero-right{
     background:var(--forest);
+    background-image:linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.045) 1px,transparent 1px);
+    background-size:36px 36px;
     position:relative;height:calc(100vh - 80px);
     display:flex;align-items:center;justify-content:center;overflow:hidden;
-    margin:0;padding:0;
+    margin:0;padding:48px;
+  }
+  .hero-photo-frame{
+    position:relative;width:100%;height:100%;max-width:520px;max-height:640px;
+    border-radius:20px;overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,0.4);
+    border:1px solid rgba(255,255,255,0.12);
   }
 
   /* REAL IMAGE STICKERS */
@@ -193,16 +201,12 @@
   }
   .nc-slide.active{opacity:1;}
   .nc-slide img{
-    width:100%;height:100%;object-fit:contain;
-    background-color:var(--forest);
-    background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);
-    background-size:36px 36px;
-    filter:brightness(0.85) saturate(0.95);
+    width:100%;height:100%;object-fit:cover;
+    filter:brightness(0.88) saturate(0.95);
   }
   .nc-overlay{
     position:absolute;inset:0;
-    background:linear-gradient(to right, var(--forest) 0%, rgba(28,58,30,0.6) 20%, transparent 45%),
-               linear-gradient(to bottom, transparent 70%, rgba(28,58,30,0.3) 100%);
+    background:linear-gradient(0deg, rgba(15,32,19,0.35) 0%, transparent 40%);
     pointer-events:none;
   }
 
@@ -301,6 +305,19 @@
   }
 
   .dark-card{background:var(--forest);color:var(--white);padding:44px;position:relative;transform:rotate(-1.2deg);box-shadow:0 12px 40px rgba(28,58,30,0.3);border-radius:var(--r);}
+
+  .flip-card{max-width:340px;height:440px;perspective:1600px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);overflow:hidden;box-shadow:0 12px 40px rgba(28,58,30,0.3);}
+  .flip-front{background:var(--forest);}
+  .flip-photo{width:100%;height:100%;object-fit:cover;display:block;}
+  .flip-front-caption{position:absolute;left:0;right:0;bottom:0;padding:20px 22px;background:linear-gradient(0deg,rgba(15,32,19,0.92) 0%,rgba(15,32,19,0.4) 70%,transparent 100%);}
+  .flip-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.05em;color:var(--white);}
+  .flip-hint{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--fern);margin-top:6px;}
+  .flip-hint.back{margin-top:20px;text-align:center;color:rgba(255,255,255,0.5);}
+  .flip-back{background:var(--forest);color:var(--white);padding:34px;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;}
+  @media(max-width:600px){.flip-card{max-width:100%;height:400px;}}
   .card-hl-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;background:none;border:none;cursor:pointer;padding:0;text-align:left;}
   .card-hl-arrow{width:20px;height:20px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
   .card-hl-toggle[aria-expanded="true"] .card-hl-arrow{transform:rotate(180deg);}
@@ -430,7 +447,7 @@
     #about,#modelo,#testimonios,#perfil,#consultoria,#contacto{scroll-margin-top:80px;}
     #hero{grid-template-columns:1fr;padding:80px 0 0;}
     .hero-left{padding:40px 24px;border-right:none;border-bottom:3px solid var(--sage);min-height:auto;}
-    .hero-right{height:300px;width:100%;}
+    .hero-right{height:300px;width:100%;padding:20px;}
     
     
     
@@ -707,17 +724,19 @@
     
   </div>
   <div class="hero-right">
-    <div class="nature-carousel">
-      <div class="nc-slide active">
-        <img src="images/img-01.jpg" alt="Árbol crecimiento">
+    <div class="hero-photo-frame">
+      <div class="nature-carousel">
+        <div class="nc-slide active">
+          <img src="images/img-01.jpg" alt="Árbol crecimiento">
+        </div>
+        <div class="nc-slide">
+          <img src="images/img-02.jpg" alt="Cueva naturaleza">
+        </div>
+        <div class="nc-slide">
+          <img src="images/img-03.jpg" alt="Árbol ramificado">
+        </div>
+        <div class="nc-overlay"></div>
       </div>
-      <div class="nc-slide active">
-        <img src="images/img-02.jpg" alt="Cueva naturaleza">
-      </div>
-      <div class="nc-slide active">
-        <img src="images/img-03.jpg" alt="Árbol ramificado">
-      </div>
-      <div class="nc-overlay"></div>
     </div>
   </div>
 </section>
@@ -1074,24 +1093,27 @@
   </div>
 
   <div class="reveal-right">
-    <div class="about-grad-wrap reveal-scale" style="max-width:280px;margin-bottom:24px;">
-      <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="about-grad-img">
-      <div class="about-grad-caption">Miguel Valdez · Mentor Patrimonial</div>
-    </div>
-    <div class="dark-card" id="mentorTab">
-      <button class="card-hl-toggle" id="mentorTabBtn" aria-expanded="false">
-        <span class="card-hl">Tu mentor patrimonial hace ✦</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="card-hl-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <div class="card-hl-panel" id="mentorTabPanel">
-        <ul class="svc-list" data-stagger-group>
-          <li class="reveal-stagger">Diagnóstico y análisis de tu situación financiera actual</li>
-          <li class="reveal-stagger">Diseño de portafolio personalizado según tu perfil de riesgo</li>
-          <li class="reveal-stagger">Inversiones para generación de flujo pasivo</li>
-          <li class="reveal-stagger">Acceso al mercado internacional via SIC</li>
-          <li class="reveal-stagger">Seguimiento mensual y rebalanceo estratégico</li>
-          <li class="reveal-stagger">Acompañamiento continuo — cualquier duda financiera, estoy disponible</li>
-        </ul>
+    <div class="flip-card reveal-scale" id="mentorFlip">
+      <div class="flip-inner" id="mentorFlipInner">
+        <div class="flip-face flip-front">
+          <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="flip-photo">
+          <div class="flip-front-caption">
+            <div class="flip-name">Miguel Valdez · Mentor Patrimonial</div>
+            <div class="flip-hint">✦ Toca la foto para ver más ✦</div>
+          </div>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="card-hl">Tu mentor patrimonial hace ✦</div>
+          <ul class="svc-list">
+            <li>Diagnóstico y análisis de tu situación financiera actual</li>
+            <li>Diseño de portafolio personalizado según tu perfil de riesgo</li>
+            <li>Inversiones para generación de flujo pasivo</li>
+            <li>Acceso al mercado internacional via SIC</li>
+            <li>Seguimiento mensual y rebalanceo estratégico</li>
+            <li>Acompañamiento continuo — cualquier duda financiera, estoy disponible</li>
+          </ul>
+          <div class="flip-hint back">✦ Toca para regresar ✦</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1328,7 +1350,7 @@
     if (!slides.length) return;
     var current = 0;
     setInterval(function() {
-      slides[current].classList.remove('active');
+      slides.forEach(function(s) { s.classList.remove('active'); });
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 7000);
@@ -1417,15 +1439,12 @@
     requestAnimationFrame(frame);
   })();
 
-  // Toggle de "Tu mentor patrimonial hace"
+  // Tarjeta que se voltea: foto ↔ "Tu mentor patrimonial hace"
   (function() {
-    var btn = document.getElementById('mentorTabBtn');
-    var panel = document.getElementById('mentorTabPanel');
-    if (!btn || !panel) return;
-    btn.addEventListener('click', function() {
-      var isOpen = panel.classList.contains('open');
-      panel.classList.toggle('open', !isOpen);
-      btn.setAttribute('aria-expanded', String(!isOpen));
+    var card = document.getElementById('mentorFlip');
+    if (!card) return;
+    card.addEventListener('click', function() {
+      card.classList.toggle('flipped');
     });
   })();
 
