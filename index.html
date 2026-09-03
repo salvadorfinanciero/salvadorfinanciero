@@ -36,12 +36,24 @@
 
   /* NAV */
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
-  #about,#modelo,#testimonios,#perfil,#consultoria,#contacto{scroll-margin-top:110px;}
+  #about,#modelo,#testimonios,#perfil,#consultoria,#contacto,#independencia,#herramientas{scroll-margin-top:110px;}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);}
   .nav-logo span{color:var(--fern);}
   .nav-links{display:flex;gap:24px;list-style:none;}
   .nav-links a{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
   .nav-links a:hover{color:var(--fern);}
+  .nav-acc-btn{background:none;border:none;font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0;transition:color .2s;}
+  .nav-acc-btn:hover,.nav-acc-btn.open{color:var(--fern);}
+  .nav-acc-btn svg{width:10px;height:10px;transition:transform .25s;}
+  .nav-acc-btn.open svg{transform:rotate(180deg);}
+  .nav-accordion{position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:150;max-height:0;overflow:hidden;transition:max-height .35s ease;box-shadow:0 16px 40px rgba(0,0,0,0.25);}
+  .nav-accordion.open{max-height:340px;}
+  .nav-accordion-inner{max-width:1000px;margin:0 auto;padding:96px 40px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 24px;}
+  .nav-accordion-inner a{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:rgba(255,255,255,0.78);text-decoration:none;padding:10px 14px;border-radius:8px;transition:background .15s,color .15s;display:flex;align-items:center;gap:10px;}
+  .nav-accordion-inner a:hover{background:rgba(255,255,255,0.08);color:var(--fern);}
+  .nav-accordion-scrim{position:fixed;inset:0;background:rgba(15,25,15,0.35);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .nav-accordion-scrim.open{opacity:1;pointer-events:auto;}
+  @media(max-width:768px){.nav-acc-btn{display:none;}.nav-accordion{display:none;}}
 
   .nav-burger{display:none;align-items:center;justify-content:center;width:32px;height:32px;background:none;border:none;cursor:pointer;padding:0;z-index:101;position:relative;}
   .nav-burger .burger-bars{display:flex;flex-direction:column;justify-content:center;gap:5px;width:100%;height:100%;position:absolute;top:0;left:0;opacity:1;transition:opacity .2s;}
@@ -628,12 +640,10 @@
   <a href="#hero" class="nav-logo" style="text-decoration:none;">Salvador <span>Financiero</span></a>
   <ul class="nav-links">
     <li><a href="#about">Sobre mí</a></li>
-    <li><a href="#modelo">Cómo trabajamos</a></li>
+    <li><button class="nav-acc-btn" id="btnServicios" data-panel="panelServicios">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></li>
     <li><a href="#testimonios">Clientes</a></li>
     <li><a href="#perfil">Perfil de Riesgo</a></li>
-    <li><a href="calculadora-interes-compuesto.html">Calculadora de Interés Compuesto</a></li>
-    <li><a href="el-mejor-regalo.html">¿Tienes hijos?</a></li>
-    <li><a href="#consultoria">Consultoría</a></li>
+    <li style="display:none;"><button class="nav-acc-btn" id="btnHerramientas" data-panel="panelHerramientas">Herramientas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false">
@@ -641,14 +651,40 @@
     <span class="burger-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--white);"><polyline points="5 15 12 8 19 15"></polyline></svg></span>
   </button>
 </nav>
+<div class="nav-accordion-scrim" id="navScrim"></div>
+<div class="nav-accordion" id="panelServicios">
+  <div class="nav-accordion-inner">
+    <a href="asesoria-patrimonial.html#diagnostico">🧭 Diagnóstico Patrimonial</a>
+    <a href="asesoria-patrimonial.html#portafolio">📈 Gestión de Portafolio</a>
+    <a href="asesoria-patrimonial.html#retiro">🏝️ Planeación de Retiro</a>
+    <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
+    <a href="#contacto">🏢 Empresas y Emprendedores</a>
+    <a href="#consultoria">📄 Trámites y Asesoría Fiscal</a>
+  </div>
+</div>
+<div class="nav-accordion" id="panelHerramientas">
+  <div class="nav-accordion-inner">
+    <a href="fondo-emergencia1_1.html">🛡️ Fondo de Emergencia</a>
+    <a href="presupuesto-mensual.html">📋 Presupuesto Mensual</a>
+    <a href="#perfil">🎯 Perfil de Riesgo</a>
+    <a href="calculadora-interes-compuesto.html">✦ Interés Compuesto</a>
+    <a href="comparador-inversion.html">🚀 Comparador de Inversión</a>
+    <a href="#independencia">🏝️ Independencia ×150</a>
+  </div>
+</div>
 <ul class="nav-links-mobile" id="navLinksMobile">
   <li><a href="#about"><span class="nlm-mark">✦</span>Sobre mí</a></li>
-  <li><a href="#modelo"><span class="nlm-mark">✦</span>Cómo trabajamos</a></li>
+  <li style="border-top:1px solid rgba(255,255,255,0.1);padding:12px 24px 4px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--fern);">Servicios</li>
+  <li><a href="asesoria-patrimonial.html#diagnostico" style="padding-left:40px;"><span class="nlm-mark">✦</span>Diagnóstico Patrimonial</a></li>
+  <li><a href="asesoria-patrimonial.html#portafolio" style="padding-left:40px;"><span class="nlm-mark">✦</span>Gestión de Portafolio</a></li>
+  <li><a href="asesoria-patrimonial.html#retiro" style="padding-left:40px;"><span class="nlm-mark">✦</span>Planeación de Retiro</a></li>
+  <li><a href="asesoria-patrimonial.html#educacion" style="padding-left:40px;"><span class="nlm-mark">✦</span>Educación Financiera</a></li>
+  <li><a href="#contacto" style="padding-left:40px;"><span class="nlm-mark">✦</span>Empresas y Emprendedores</a></li>
+  <li><a href="#consultoria" style="padding-left:40px;"><span class="nlm-mark">✦</span>Trámites Fiscales</a></li>
   <li><a href="#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
   <li><a href="#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
-  <li><a href="calculadora-interes-compuesto.html"><span class="nlm-mark">✦</span>Calculadora de Interés Compuesto</a></li>
+  <li style="display:none;"><a href="#herramientas"><span class="nlm-mark">✦</span>Herramientas</a></li>
   <li><a href="el-mejor-regalo.html"><span class="nlm-mark">✦</span>¿Tienes hijos?</a></li>
-  <li><a href="#consultoria"><span class="nlm-mark">✦</span>Consultoría</a></li>
   <li><a href="#contacto"><span class="nlm-mark">✦</span>Contacto</a></li>
 </ul>
 
@@ -678,9 +714,126 @@
   </div>
 </section>
 
+<section id="dominios" style="background:var(--paper);padding:80px 0;background-image:linear-gradient(rgba(28,58,30,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(28,58,30,0.045) 1px, transparent 1px);background-size:36px 36px;overflow:hidden;">
+  <style>
+    .dom-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--r);padding:26px 24px;text-decoration:none;transition:box-shadow .2s,border-color .2s;display:flex;flex-direction:column;width:280px;flex-shrink:0;will-change:transform;}
+    .dom-card:hover{border-color:var(--forest);box-shadow:0 16px 32px rgba(28,58,30,0.2);}
+    .dom-icon{font-size:1.6rem;margin-bottom:12px;}
+    .dom-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:var(--forest);letter-spacing:0.03em;margin-bottom:8px;}
+    .dom-desc{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--mid);line-height:1.6;flex:1;}
+    .dom-more{margin-top:12px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);}
+    .dom-stage{max-width:100%;margin:0 auto;padding:40px 0 8px;}
+    .dom-viewport{overflow-x:hidden;overflow-y:visible;position:relative;padding:26px 40px;}
+    .dom-marquee{display:flex;gap:24px;width:max-content;}
+    .dom-arrow{background:var(--white);border:1.5px solid var(--rule);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;color:var(--forest);position:absolute;top:50%;margin-top:-21px;z-index:5;}
+    .dom-arrow:hover{background:var(--forest);color:var(--white);border-color:var(--forest);}
+    .dom-arrow svg{width:18px;height:18px;}
+    .dom-arrow.prev{left:0;}
+    .dom-arrow.next{right:0;}
+    @media(max-width:600px){#dominios{padding:56px 0 !important;}.dom-card{width:230px;padding:22px 18px;}.dom-viewport{padding:26px 16px;}.dom-arrow{width:34px;height:34px;margin-top:-17px;}}
+  </style>
+  <div style="text-align:center;margin-bottom:44px;padding:0 40px;" class="reveal-scale">
+    <div class="eyebrow" style="justify-content:center;">Asesoría integral ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.4rem);color:var(--forest);letter-spacing:0.03em;line-height:1.05;margin-bottom:10px;">Todo lo que cubro,<br>en un mismo lugar.</h2>
+    <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);max-width:520px;margin:0 auto;">Dale clic al tema que te interesa para ver más a detalle.</p>
+  </div>
+  <div class="dom-stage">
+    <div class="dom-viewport" id="domViewport">
+      <button class="dom-arrow prev" id="domPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <button class="dom-arrow next" id="domNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+      <div class="dom-marquee" id="domMarquee">
+        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card">
+          <div class="dom-icon">🧭</div>
+          <div class="dom-ttl">Diagnóstico Patrimonial</div>
+          <div class="dom-desc">Un mapa completo de en dónde estás hoy y hacia dónde vas.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#portafolio" class="dom-card">
+          <div class="dom-icon">📈</div>
+          <div class="dom-ttl">Gestión de Portafolio</div>
+          <div class="dom-desc">Acompañamiento semana a semana en tus inversiones.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#retiro" class="dom-card">
+          <div class="dom-icon">🏝️</div>
+          <div class="dom-ttl">Planeación de Retiro</div>
+          <div class="dom-desc">Construye, desde hoy, el capital que te va a sostener.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#educacion" class="dom-card">
+          <div class="dom-icon">📚</div>
+          <div class="dom-ttl">Educación Financiera</div>
+          <div class="dom-desc">Mentoría continua para que entiendas cada decisión.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="#contacto" class="dom-card">
+          <div class="dom-icon">🏢</div>
+          <div class="dom-ttl">Empresas y Emprendedores</div>
+          <div class="dom-desc">Estructura financiera para tu negocio y tu patrimonio personal.</div>
+          <div class="dom-more">Contáctame →</div>
+        </a>
+        <a href="#consultoria" class="dom-card">
+          <div class="dom-icon">📄</div>
+          <div class="dom-ttl">Trámites y Asesoría Fiscal</div>
+          <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
+          <div class="dom-more">Ver más ↓</div>
+        </a>
+        <a href="el-mejor-regalo.html" class="dom-card">
+          <div class="dom-icon">🧸</div>
+          <div class="dom-ttl">¿Tienes Hijos?</div>
+          <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">🧭</div>
+          <div class="dom-ttl">Diagnóstico Patrimonial</div>
+          <div class="dom-desc">Un mapa completo de en dónde estás hoy y hacia dónde vas.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#portafolio" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">📈</div>
+          <div class="dom-ttl">Gestión de Portafolio</div>
+          <div class="dom-desc">Acompañamiento semana a semana en tus inversiones.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#retiro" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">🏝️</div>
+          <div class="dom-ttl">Planeación de Retiro</div>
+          <div class="dom-desc">Construye, desde hoy, el capital que te va a sostener.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="asesoria-patrimonial.html#educacion" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">📚</div>
+          <div class="dom-ttl">Educación Financiera</div>
+          <div class="dom-desc">Mentoría continua para que entiendas cada decisión.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+        <a href="#contacto" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">🏢</div>
+          <div class="dom-ttl">Empresas y Emprendedores</div>
+          <div class="dom-desc">Estructura financiera para tu negocio y tu patrimonio personal.</div>
+          <div class="dom-more">Contáctame →</div>
+        </a>
+        <a href="#consultoria" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">📄</div>
+          <div class="dom-ttl">Trámites y Asesoría Fiscal</div>
+          <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
+          <div class="dom-more">Ver más ↓</div>
+        </a>
+        <a href="el-mejor-regalo.html" class="dom-card" aria-hidden="true" tabindex="-1">
+          <div class="dom-icon">🧸</div>
+          <div class="dom-ttl">¿Tienes Hijos?</div>
+          <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
+          <div class="dom-more">Ver más →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- REGALO BANNER 3 -->
 <div style="background:white;border-top:2px solid #1c3a1e;border-bottom:2px solid #1c3a1e;padding:14px 40px;text-align:center;">
-  <span style="font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1c3a1e;">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style="font-size:0.65rem;font-weight:400;opacity:0.65;">*V&aacute;lido al agendar tu primera sesi&oacute;n</span></span>
+  <span style="font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1c3a1e;">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style="font-size:0.65rem;font-weight:400;opacity:0.65;">*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio</span></span>
 </div>
 
 <div class="ticker-wrapper" style="background:#2d5a30 !important;display:block;">
@@ -712,46 +865,195 @@
   </div>
 </div>
 
-<section id="modelo" style="background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;">
-  <div style="text-align:center;margin-bottom:52px;" class="reveal-scale">
-    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Cómo trabajamos ✦</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
-    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
+<section id="independencia" style="background:#1c3a1e;padding:52px 60px;border-top:3px solid #5a7a4a;border-bottom:3px solid #5a7a4a;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;">
+  <style>
+    .indep-head{text-align:center;margin-bottom:24px;}
+    .indep-eyebrow{display:inline-block;background:var(--sage);color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;}
+    .indep-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.7rem,3.6vw,2.5rem);color:white;letter-spacing:0.03em;line-height:1.05;margin-bottom:8px;}
+    .indep-title span{color:var(--fern);}
+    .indep-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.92rem;color:rgba(255,255,255,0.65);max-width:520px;margin:0 auto;line-height:1.55;}
+    .indep-card{max-width:760px;margin:0 auto;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r);overflow:hidden;}
+    .indep-input-row{padding:16px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.12);}
+    .indep-input-lbl{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);}
+    .indep-input-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:200px;}
+    .indep-input-wrap span{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--fern);}
+    #sueldo-input{background:transparent;border:none;border-bottom:2px solid var(--sage);color:white;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.02em;padding:2px 0;outline:none;width:100%;max-width:220px;}
+    #sueldo-input::placeholder{color:rgba(255,255,255,0.22);}
+    .indep-toggle{padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.12);}
+    .indep-toggle-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .indep-toggle-lbl{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-right:6px;}
+    .regla-wrap{display:flex;align-items:center;gap:4px;}
+    .regla-btn{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.06em;padding:8px 15px;background:transparent;border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.6);cursor:pointer;border-radius:20px;transition:all .2s;}
+    .regla-btn:hover{border-color:var(--fern);color:var(--fern);}
+    .regla-btn.active{background:var(--fern);border-color:var(--fern);color:var(--forest);font-weight:600;}
+    .regla-info{width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.5);background:transparent;font-family:'DM Mono',monospace;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+    .regla-info:hover,.regla-info.active{border-color:var(--fern);color:var(--fern);}
+    .regla-desc{display:none;margin-top:14px;padding:14px 16px;background:rgba(0,0,0,0.18);border-radius:10px;font-family:'DM Mono',monospace;font-size:0.66rem;line-height:1.8;color:rgba(255,255,255,0.7);}
+    .regla-desc.open{display:block;}
+    .regla-desc strong{color:var(--fern);}
+    .meta-explain{padding:16px 30px;border-bottom:1px solid rgba(255,255,255,0.12);background:rgba(168,196,152,0.06);}
+    .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);}
+    .meta-explain strong{color:var(--fern);}
+    .indep-grid{display:grid;grid-template-columns:repeat(5,1fr);}
+    .indep-kpi{padding:14px 8px 12px;border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);text-align:center;}
+    .indep-kpi:last-child{border-right:none;}
+    .indep-kpi-emoji{font-size:1rem;margin-bottom:5px;}
+    .indep-kpi-lbl{font-family:'DM Mono',monospace;font-size:0.48rem;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:5px;line-height:1.3;min-height:2em;}
+    .indep-kpi-val{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:white;line-height:1;}
+    .indep-kpi-val.hi{color:var(--fern);}
+    .indep-cta{text-align:center;margin-top:20px;}
+    .indep-cta a{display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:11px 28px;text-decoration:none;border-radius:var(--r-sm);transition:all .2s;}
+    .indep-cta a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+    .indep-cta-note{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;color:rgba(255,255,255,0.35);margin-top:12px;}
+    @media(max-width:900px){.indep-grid{grid-template-columns:repeat(3,1fr);}.indep-kpi:nth-child(3n){border-right:none;}}
+    @media(max-width:600px){
+      #independencia{padding:56px 20px;}
+      .indep-input-row,.indep-toggle,.meta-explain{padding-left:20px;padding-right:20px;}
+      .indep-grid{grid-template-columns:1fr 1fr;}
+      .indep-kpi:nth-child(2n){border-right:none;}
+      .regla-wrap{width:100%;justify-content:space-between;}
+    }
+  </style>
+
+  <div class="indep-head">
+    <div class="indep-eyebrow">Ponle números a tu libertad ✦</div>
+    <h2 class="indep-title">¿Cuánto necesitas para<br><span>no depender de tu sueldo?</span></h2>
+    <p class="indep-sub">Con tu sueldo mensual y una regla de presupuesto, esto es lo que necesitas saber sobre tu camino a la independencia financiera.</p>
   </div>
-  <div class="carousel-wrap" style="margin-bottom:56px;">
-    <button class="carousel-arrow carousel-arrow-prev" id="modeloPrev" aria-label="Anterior">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <div class="modelo-carousel reveal-scale">
-      <div class="modelo-track">
-        <div class="modelo-card" data-index="0">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">01</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:white;margin-bottom:14px;">Suscripción mensual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;border-radius:20px;">Variable</span></div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:12px;">Una vez que empiezas a fondear tu cuenta (en la casa de bolsa de tu elección), te acompaño estratégicamente en tu portafolio semana a semana — colocando órdenes de compra con un análisis previo, personalizado a tus objetivos y horizonte de inversión.</div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.85);line-height:1.65;margin-bottom:18px;">Pagas una suscripción mensual variable según tu nivel de inversión — entre más capital gestionamos, mayor es el acompañamiento.</div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">Desde $299 / mes · según tu nivel de inversión</div>
-        </div>
-        <div class="modelo-card" data-index="1">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#5a7a4a;line-height:1;margin-bottom:12px;">02</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:white;margin-bottom:14px;">Bono de éxito anual <span style="display:inline-block;background:#2d5a30;color:#a8c498;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 7px;text-transform:uppercase;vertical-align:middle;border-radius:20px;">Solo si hay rendimiento</span></div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.88);line-height:1.65;margin-bottom:18px;">Al cierre del año revisamos cuánto creció tu inversión. Si hubo rendimiento, cobro un porcentaje únicamente sobre esa ganancia. Si no ganaste, yo no cobro ese bono. Así los dos tenemos el mismo objetivo: que tu dinero crezca.</div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#a8c498;border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;font-weight:500;">Si no hay rendimiento, no hay bono. Punto.</div>
-        </div>
+
+  <div class="indep-card">
+    <div class="indep-input-row">
+      <div class="indep-input-lbl">Mi sueldo mensual es</div>
+      <div class="indep-input-wrap">
+        <span>$</span>
+        <input type="text" id="sueldo-input" inputmode="numeric" placeholder="30,000">
       </div>
     </div>
-    <button class="carousel-arrow carousel-arrow-next" id="modeloNext" aria-label="Siguiente">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
+
+    <div class="meta-explain">
+      <p>🏝️ <strong>¿Qué es la "meta de independencia"?</strong> Es el capital que, invertido, generaría cada mes un rendimiento equivalente a tu sueldo actual — el punto en el que tu dinero te paga a ti, y ya no dependes de trabajar para vivir. Por eso se calcula como tu sueldo × 150: a una tasa de rendimiento razonable, ese capital es capaz de "pagarte tu sueldo" mes con mes sin que toques el capital.</p>
+    </div>
+
+    <div class="indep-toggle">
+      <div class="indep-toggle-row">
+        <span class="indep-toggle-lbl">Regla de presupuesto</span>
+        <div class="regla-wrap"><button class="regla-btn active" data-regla="702010" id="btn-702010">70 / 20 / 10</button><button class="regla-info" data-info="702010">i</button></div>
+        <div class="regla-wrap"><button class="regla-btn" data-regla="503020" id="btn-503020">50 / 30 / 20</button><button class="regla-info" data-info="503020">i</button></div>
+        <div class="regla-wrap"><button class="regla-btn" data-regla="8020" id="btn-8020">80 / 20</button><button class="regla-info" data-info="8020">i</button></div>
+      </div>
+      <div class="regla-desc" id="desc-702010">
+        <strong>70/20/10</strong> — 70% para gastos fijos, 20% para gustos, 10% para inversión o ahorro. Se usa mucho como alternativa al 50/30/20 cuando tus gastos fijos (renta, servicios) pesan más sobre tu sueldo — típico en ciudades con costo de vida alto, como CDMX.
+      </div>
+      <div class="regla-desc" id="desc-503020">
+        <strong>50/30/20</strong> — 50% necesidades, 30% deseos, 20% ahorro o inversión. Es la regla de presupuesto más conocida a nivel mundial, popularizada originalmente en Estados Unidos y hoy recomendada por bancos y asesores financieros en muchos países como punto de partida.
+      </div>
+      <div class="regla-desc" id="desc-8020">
+        <strong>80/20</strong> — la versión más simple: aparta 20% para inversión o ahorro apenas te llega el ingreso ("págate a ti primero"), y usa el 80% restante como quieras, sin dividir entre necesidades y gustos. Es la favorita de quienes buscan simplicidad o persiguen la independencia financiera anticipada.
+      </div>
+    </div>
+
+    <div class="indep-grid" id="indep-grid"></div>
   </div>
-  <div style="max-width:960px;margin:0 auto;">
-    <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:rgba(255,255,255,0.8);text-align:center;line-height:1.7;border-top:1px solid rgba(255,255,255,0.12);padding-top:32px;">A diferencia de los bancos que cobran sin importar si ganaste o perdiste, aquí el incentivo es uno solo — que tu patrimonio crezca. Si tú ganas, yo gano.</p>
+
+  <div class="indep-cta">
+    <a href="#contacto">Arma tu plan real →</a>
+    <div class="indep-cta-note">Estos números son de referencia — tu estrategia real se ajusta a tu caso.</div>
   </div>
 </section>
+
+<script>
+(function(){
+  var regla='702010';
+  function parse(v){if(!v)return 0;return parseFloat(String(v).replace(/[^0-9.]/g,''))||0;}
+  function fmt(n){return '$'+Math.round(n).toLocaleString('es-MX');}
+
+  var REGLAS={
+    '702010':{cats:[
+      {key:'fijos',emoji:'🏠',label:'Tope gastos fijos al mes',pct:0.7},
+      {key:'entretenimiento',emoji:'🎉',label:'Tope entretenimiento al mes',pct:0.2},
+      {key:'aporte',emoji:'📈',label:'Inversión sugerida al mes',pct:0.1}
+    ]},
+    '503020':{cats:[
+      {key:'fijos',emoji:'🏠',label:'Tope necesidades al mes',pct:0.5},
+      {key:'entretenimiento',emoji:'🎉',label:'Tope deseos al mes',pct:0.3},
+      {key:'aporte',emoji:'📈',label:'Inversión sugerida al mes',pct:0.2}
+    ]},
+    '8020':{cats:[
+      {key:'vivir',emoji:'🎈',label:'Para vivir, sin dividir',pct:0.8},
+      {key:'aporte',emoji:'📈',label:'Inversión sugerida al mes',pct:0.2}
+    ]}
+  };
+
+  function buildGrid(sueldo){
+    var grid=document.getElementById('indep-grid');
+    grid.innerHTML='';
+    var fijos=[
+      {emoji:'🏝️',label:'Meta de independencia (×150)',val:sueldo*150,hi:true},
+      {emoji:'🛡️',label:'Fondo de emergencia (×6)',val:sueldo*6,hi:false}
+    ];
+    var r=REGLAS[regla];
+    var todas=fijos.concat(r.cats.map(function(c){return {emoji:c.emoji,label:c.label,val:sueldo*c.pct,hi:false};}));
+    todas.forEach(function(k){
+      var div=document.createElement('div');
+      div.className='indep-kpi';
+      div.innerHTML='<div class="indep-kpi-emoji">'+k.emoji+'</div><div class="indep-kpi-lbl">'+k.label+'</div><div class="indep-kpi-val'+(k.hi?' hi':'')+'">'+fmt(k.val)+'</div>';
+      grid.appendChild(div);
+    });
+  }
+
+  function recalc(){
+    var sueldo=parse(document.getElementById('sueldo-input').value);
+    buildGrid(sueldo);
+  }
+
+  function syncOpenTooltip(){
+    var openDesc=document.querySelector('.regla-desc.open');
+    if(!openDesc)return;
+    document.querySelectorAll('.regla-desc').forEach(function(d){d.classList.remove('open');});
+    document.querySelectorAll('.regla-info').forEach(function(b){b.classList.remove('active');});
+    var target=document.getElementById('desc-'+regla);
+    var infoBtn=document.querySelector('.regla-info[data-info="'+regla+'"]');
+    if(target){target.classList.add('open');}
+    if(infoBtn){infoBtn.classList.add('active');}
+  }
+
+  document.getElementById('sueldo-input').addEventListener('input',function(){
+    var v=parse(this.value);
+    this.value=v>0?v.toLocaleString('es-MX'):'';
+    recalc();
+  });
+
+  ['702010','503020','8020'].forEach(function(id){
+    document.getElementById('btn-'+id).addEventListener('click',function(){
+      regla=id;
+      document.querySelectorAll('.regla-btn').forEach(function(b){b.classList.remove('active');});
+      this.classList.add('active');
+      syncOpenTooltip();
+      recalc();
+    });
+  });
+
+  document.querySelectorAll('.regla-info').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var id=this.dataset.info;
+      var desc=document.getElementById('desc-'+id);
+      var isOpen=desc.classList.contains('open');
+      document.querySelectorAll('.regla-desc').forEach(function(d){d.classList.remove('open');});
+      document.querySelectorAll('.regla-info').forEach(function(b){b.classList.remove('active');});
+      if(!isOpen){desc.classList.add('open');this.classList.add('active');}
+    });
+  });
+
+  document.getElementById('sueldo-input').value='30,000';
+  recalc();
+})();
+</script>
+
 
 <!-- REGALO BANNER 2 -->
 <div style="background:var(--forest);border-top:2px solid var(--sage);border-bottom:2px solid var(--sage);padding:14px 0;overflow:hidden;white-space:nowrap;">
   <div style="display:inline-block;animation:ticker 8s linear infinite;will-change:transform;">
-    <span style="font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span style="font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;</span>
   </div>
 </div>
 
@@ -761,13 +1063,18 @@
     <h2 class="about-title">Finanzas claras,<br><em>decisiones inteligentes.</em></h2>
     <p class="about-text">Soy Mentor Patrimonial independiente con Maestría en Administración y formación en finanzas. Cuento con un Diplomado en Educación Financiera por parte de la CONDUSEF y cursos especializados en la Bolsa Mexicana de Valores — especializado en construir estrategias de inversión a largo plazo para personas y empresas en México.</p>
     <p class="about-text">Mi enfoque es que siempre sepas exactamente en dónde está tu dinero y por qué. Transparencia total: tú ves cada movimiento, entiendes cada decisión, y si en cualquier momento necesitas tu dinero — lo puedes sacar.</p>
-
-  </div>
-
-    <div class="about-grad-wrap reveal-scale">
-      <img src="images/img-04.png" alt="Formación académica" class="about-grad-img">
-      <div class="about-grad-caption">Formación académica + experiencia de mercado</div>
+    <div style="display:inline-flex;align-items:center;gap:12px;margin-top:8px;padding:10px 16px 10px 10px;background:var(--white);border:1.5px solid var(--rule);border-radius:12px;" class="reveal-scale">
+      <img src="images/miguel-maestria.jpg" alt="Grado de Maestría en Administración, La Salle" style="width:44px;height:44px;object-fit:cover;border-radius:8px;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.04em;color:var(--forest);line-height:1.1;">Maestría en Administración</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--soft);letter-spacing:0.06em;text-transform:uppercase;">La Salle Nezahualcóyotl</div>
+      </div>
     </div>
+    <div class="about-grad-wrap reveal-scale" style="margin-top:24px;max-width:280px;">
+      <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="about-grad-img">
+      <div class="about-grad-caption">Miguel Valdez · Mentor Patrimonial</div>
+    </div>
+  </div>
 
   <div class="reveal-right">
     <div class="dark-card">
@@ -853,6 +1160,59 @@
 </section>
 
 <!-- CONSULTORÍA / GESTORÍA -->
+<!-- Sección oculta temporalmente a petición de Miguel — está en desarrollo, pendiente de platicar bien el enfoque antes de mostrarla en vivo -->
+<section id="herramientas" style="display:none;background:#1c3a1e;padding:88px 60px;border-top:3px solid #5a7a4a;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;">
+  <style>
+    .tools-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+    .tool-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r);padding:26px;text-decoration:none;transition:all .2s;display:flex;flex-direction:column;}
+    .tool-card:hover{background:rgba(255,255,255,0.11);border-color:var(--fern);transform:translateY(-4px);}
+    .tool-icon{font-size:1.6rem;margin-bottom:14px;}
+    .tool-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);letter-spacing:0.03em;margin-bottom:8px;}
+    .tool-desc{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.6;flex:1;}
+    .tool-tag{align-self:flex-start;margin-top:14px;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--fern);color:var(--forest);}
+    .tool-tag.premium{background:var(--sage);color:var(--white);}
+    @media(max-width:900px){.tools-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.tools-grid{grid-template-columns:1fr;}#herramientas{padding:56px 20px !important;}}
+  </style>
+  <div style="text-align:center;margin-bottom:52px;" class="reveal-scale">
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Herramientas ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No solo lees —<br>calculas.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Cinco herramientas interactivas para ponerle número a tus finanzas.</p>
+  </div>
+  <div class="tools-grid">
+    <a href="fondo-emergencia1_1.html" class="tool-card">
+      <div class="tool-icon">🛡️</div>
+      <div class="tool-ttl">Fondo de Emergencia</div>
+      <div class="tool-desc">Calcula tu meta de fondo de emergencia y cuánto tiempo te toma llegar, con proyección mes a mes.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="presupuesto-mensual.html" class="tool-card">
+      <div class="tool-icon">📋</div>
+      <div class="tool-ttl">Presupuesto Mensual</div>
+      <div class="tool-desc">Plantilla completa para planear y dar seguimiento a tu presupuesto, categoría por categoría.</div>
+      <div class="tool-tag premium">Clientes</div>
+    </a>
+    <a href="#perfil" class="tool-card">
+      <div class="tool-icon">🎯</div>
+      <div class="tool-ttl">Perfil de Riesgo</div>
+      <div class="tool-desc">8 preguntas, 3 minutos. Descubre si tu perfil de inversionista es conservador, moderado o agresivo.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="calculadora-interes-compuesto.html" class="tool-card">
+      <div class="tool-icon">✦</div>
+      <div class="tool-ttl">Interés Compuesto</div>
+      <div class="tool-desc">Simula cuánto puede crecer tu dinero con el tiempo — ponle números concretos a tu futuro.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="comparador-inversion.html" class="tool-card">
+      <div class="tool-icon">🚀</div>
+      <div class="tool-ttl">Comparador de Inversión</div>
+      <div class="tool-desc">🐌 Dinero parado vs 🚀 invertido con acompañamiento — mira cuánto te cuesta no invertir.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+  </div>
+</section>
+
 <section id="consultoria" style="background:var(--cream);padding:88px 60px;">
   <div style="max-width:960px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:52px;">
@@ -877,7 +1237,7 @@
 <!-- REGALO BANNER ANIMATED -->
 <div style="background:var(--forest);border-top:2px solid var(--sage);border-bottom:2px solid var(--sage);padding:14px 0;overflow:hidden;white-space:nowrap;">
   <div style="display:inline-block;animation:ticker 8s linear infinite;will-change:transform;">
-    <span style="font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;</span>
+    <span style="font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio&nbsp;&nbsp;&nbsp;<span style="color:var(--sage);">✦</span>&nbsp;&nbsp;&nbsp;</span>
   </div>
 </div>
 
@@ -985,6 +1345,104 @@
     menu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() { setOpen(false); });
     });
+  })();
+
+  // Carrusel de dominios — scroll continuo con curvatura real calculada en cada frame
+  (function() {
+    var viewport = document.getElementById('domViewport');
+    var marquee = document.getElementById('domMarquee');
+    if (!viewport || !marquee) return;
+    var cards = Array.prototype.slice.call(marquee.children);
+    var half = cards.length / 2;
+    var singleSetWidth = 0;
+    function measure() {
+      singleSetWidth = 0;
+      for (var i = 0; i < half; i++) {
+        singleSetWidth += cards[i].getBoundingClientRect().width + 24;
+      }
+    }
+    measure();
+    window.addEventListener('resize', measure);
+
+    var pos = 0;
+    var speed = 40; // px por segundo
+    var paused = false;
+    marquee.addEventListener('mouseenter', function() { paused = true; });
+    marquee.addEventListener('mouseleave', function() { paused = false; });
+
+    var prevBtn = document.getElementById('domPrev');
+    var nextBtn = document.getElementById('domNext');
+    var cardStep = 304; // ancho de tarjeta + gap aprox
+    function nudge(delta) {
+      pos += delta;
+      if (pos < 0) pos += singleSetWidth;
+      if (pos >= singleSetWidth) pos -= singleSetWidth;
+    }
+    if (prevBtn) prevBtn.addEventListener('click', function() { nudge(-cardStep); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { nudge(cardStep); });
+
+    var lastTime = null;
+    function frame(t) {
+      if (lastTime === null) lastTime = t;
+      var dt = (t - lastTime) / 1000;
+      lastTime = t;
+      if (!paused) {
+        pos += speed * dt;
+        if (pos >= singleSetWidth) pos -= singleSetWidth;
+      }
+      marquee.style.transform = 'translateX(-' + pos + 'px)';
+
+      var vpRect = viewport.getBoundingClientRect();
+      var centerX = vpRect.left + vpRect.width / 2;
+      var halfRange = vpRect.width / 2 + 140;
+      cards.forEach(function(card) {
+        var r = card.getBoundingClientRect();
+        var cardCenter = r.left + r.width / 2;
+        var dx = cardCenter - centerX;
+        var tNorm = Math.max(-1, Math.min(1, dx / halfRange));
+        var lift = -22 * (1 - tNorm * tNorm);
+        var scale = 1 - 0.1 * (tNorm * tNorm);
+        var rotate = tNorm * 6;
+        card.style.transform = 'translateY(' + lift + 'px) scale(' + scale + ') rotate(' + rotate + 'deg)';
+      });
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  // Menú acordeón de escritorio (Servicios / Herramientas)
+  (function() {
+    var scrim = document.getElementById('navScrim');
+    var btns = [
+      {btn: document.getElementById('btnServicios'), panel: document.getElementById('panelServicios')},
+      {btn: document.getElementById('btnHerramientas'), panel: document.getElementById('panelHerramientas')}
+    ];
+    function closeAll() {
+      btns.forEach(function(o) {
+        if (o.btn) o.btn.classList.remove('open');
+        if (o.panel) o.panel.classList.remove('open');
+      });
+      if (scrim) scrim.classList.remove('open');
+    }
+    btns.forEach(function(o) {
+      if (!o.btn || !o.panel) return;
+      o.btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var willOpen = !o.panel.classList.contains('open');
+        closeAll();
+        if (willOpen) {
+          o.btn.classList.add('open');
+          o.panel.classList.add('open');
+          if (scrim) scrim.classList.add('open');
+        }
+      });
+      o.panel.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', closeAll);
+      });
+    });
+    if (scrim) scrim.addEventListener('click', closeAll);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
   })();
 
   // Carrusel simple — reutilizable para testimonios y modelo (una card visible a la vez)
