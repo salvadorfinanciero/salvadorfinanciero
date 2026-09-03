@@ -193,7 +193,10 @@
   }
   .nc-slide.active{opacity:1;}
   .nc-slide img{
-    width:100%;height:100%;object-fit:cover;
+    width:100%;height:100%;object-fit:contain;
+    background-color:var(--forest);
+    background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);
+    background-size:36px 36px;
     filter:brightness(0.85) saturate(0.95);
   }
   .nc-overlay{
@@ -298,8 +301,13 @@
   }
 
   .dark-card{background:var(--forest);color:var(--white);padding:44px;position:relative;transform:rotate(-1.2deg);box-shadow:0 12px 40px rgba(28,58,30,0.3);border-radius:var(--r);}
+  .card-hl-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;background:none;border:none;cursor:pointer;padding:0;text-align:left;}
+  .card-hl-arrow{width:20px;height:20px;color:var(--fern);flex-shrink:0;transition:transform .3s;}
+  .card-hl-toggle[aria-expanded="true"] .card-hl-arrow{transform:rotate(180deg);}
+  .card-hl-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+  .card-hl-panel.open{max-height:600px;margin-top:22px;}
   
-  .card-hl{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:0.1em;color:var(--fern);margin-bottom:22px;}
+  .card-hl{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:0.1em;color:var(--fern);}
   .svc-list{list-style:none;display:flex;flex-direction:column;gap:13px;}
   .svc-list li{display:flex;align-items:flex-start;gap:10px;font-family:'DM Mono',monospace;font-size:0.78rem;line-height:1.5;color:rgba(255,255,255,0.75);}
   .svc-list li::before{content:'✦';color:var(--fern);font-size:0.65rem;margin-top:2px;flex-shrink:0;}
@@ -1063,30 +1071,28 @@
     <h2 class="about-title">Finanzas claras,<br><em>decisiones inteligentes.</em></h2>
     <p class="about-text">Soy Mentor Patrimonial independiente con Maestría en Administración y formación en finanzas. Cuento con un Diplomado en Educación Financiera por parte de la CONDUSEF y cursos especializados en la Bolsa Mexicana de Valores — especializado en construir estrategias de inversión a largo plazo para personas y empresas en México.</p>
     <p class="about-text">Mi enfoque es que siempre sepas exactamente en dónde está tu dinero y por qué. Transparencia total: tú ves cada movimiento, entiendes cada decisión, y si en cualquier momento necesitas tu dinero — lo puedes sacar.</p>
-    <div style="display:inline-flex;align-items:center;gap:12px;margin-top:8px;padding:10px 16px 10px 10px;background:var(--white);border:1.5px solid var(--rule);border-radius:12px;" class="reveal-scale">
-      <img src="images/miguel-maestria.jpg" alt="Grado de Maestría en Administración, La Salle" style="width:44px;height:44px;object-fit:cover;border-radius:8px;">
-      <div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.04em;color:var(--forest);line-height:1.1;">Maestría en Administración</div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--soft);letter-spacing:0.06em;text-transform:uppercase;">La Salle Nezahualcóyotl</div>
-      </div>
-    </div>
-    <div class="about-grad-wrap reveal-scale" style="margin-top:24px;max-width:280px;">
-      <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="about-grad-img">
-      <div class="about-grad-caption">Miguel Valdez · Mentor Patrimonial</div>
-    </div>
   </div>
 
   <div class="reveal-right">
-    <div class="dark-card">
-      <div class="card-hl">Tu mentor patrimonial hace ✦</div>
-      <ul class="svc-list" data-stagger-group>
-        <li class="reveal-stagger">Diagnóstico y análisis de tu situación financiera actual</li>
-        <li class="reveal-stagger">Diseño de portafolio personalizado según tu perfil de riesgo</li>
-        <li class="reveal-stagger">Inversiones para generación de flujo pasivo</li>
-        <li class="reveal-stagger">Acceso al mercado internacional via SIC</li>
-        <li class="reveal-stagger">Seguimiento mensual y rebalanceo estratégico</li>
-        <li class="reveal-stagger">Acompañamiento continuo — cualquier duda financiera, estoy disponible</li>
-      </ul>
+    <div class="about-grad-wrap reveal-scale" style="max-width:280px;margin-bottom:24px;">
+      <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="about-grad-img">
+      <div class="about-grad-caption">Miguel Valdez · Mentor Patrimonial</div>
+    </div>
+    <div class="dark-card" id="mentorTab">
+      <button class="card-hl-toggle" id="mentorTabBtn" aria-expanded="false">
+        <span class="card-hl">Tu mentor patrimonial hace ✦</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="card-hl-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div class="card-hl-panel" id="mentorTabPanel">
+        <ul class="svc-list" data-stagger-group>
+          <li class="reveal-stagger">Diagnóstico y análisis de tu situación financiera actual</li>
+          <li class="reveal-stagger">Diseño de portafolio personalizado según tu perfil de riesgo</li>
+          <li class="reveal-stagger">Inversiones para generación de flujo pasivo</li>
+          <li class="reveal-stagger">Acceso al mercado internacional via SIC</li>
+          <li class="reveal-stagger">Seguimiento mensual y rebalanceo estratégico</li>
+          <li class="reveal-stagger">Acompañamiento continuo — cualquier duda financiera, estoy disponible</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1409,6 +1415,18 @@
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+  })();
+
+  // Toggle de "Tu mentor patrimonial hace"
+  (function() {
+    var btn = document.getElementById('mentorTabBtn');
+    var panel = document.getElementById('mentorTabPanel');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function() {
+      var isOpen = panel.classList.contains('open');
+      panel.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
   })();
 
   // Menú acordeón de escritorio (Servicios / Herramientas)
