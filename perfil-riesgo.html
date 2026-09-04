@@ -751,8 +751,13 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="res-summary"></div>
     </div>
     <div style="background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;">Tus respuestas</div>
-      <div id="res-qa" style="display:flex;flex-direction:column;gap:14px;"></div>
+      <button type="button" id="qaToggleBtn" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;background:none;border:none;cursor:pointer;padding:0;text-align:left;">
+        <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);">Tus respuestas ▾</span>
+        <svg id="qaToggleArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:var(--sage);transition:transform .3s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div id="qaPanel" style="max-height:0;overflow:hidden;transition:max-height .4s ease;">
+        <div id="res-qa" style="display:flex;flex-direction:column;gap:14px;padding-top:18px;"></div>
+      </div>
     </div>
     </div>
     </div>
@@ -1042,6 +1047,10 @@ function shareResult(includeInfo) {
   var restoreDisplay = infoBlock ? infoBlock.style.display : '';
   if (infoBlock) infoBlock.style.display = includeInfo ? '' : 'none';
 
+  var qaPanel = document.getElementById('qaPanel');
+  var restoreQaMaxHeight = qaPanel ? qaPanel.style.maxHeight : '';
+  if (qaPanel && includeInfo) qaPanel.style.maxHeight = 'none';
+
   var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
   Promise.all([
@@ -1049,7 +1058,31 @@ function shareResult(includeInfo) {
     fontsReady
   ]).then(function(results) {
     var shotCanvas = results[0];
-    var storyW = 1080, storyH = 1920;
+    var storyW = 1080;
+    var maxW = storyW - 100;
+    var headerH = 180, footerH = 180;
+
+    var scaleW = maxW / shotCanvas.width;
+    var drawW = shotCanvas.width * scaleW;
+    var drawH = shotCanvas.height * scaleW;
+    var startY, storyH;
+
+    if (includeInfo) {
+      // Con información: el alto se ajusta al contenido, sin forzar el formato historia,
+      // así el texto siempre se ve a tamaño legible.
+      storyH = headerH + drawH + footerH;
+      startY = headerH;
+    } else {
+      // Sin información: formato historia fijo (1080×1920), como antes.
+      storyH = 1920;
+      var availH = storyH - headerH - footerH;
+      var shrink = drawH > availH ? (availH / drawH) : 1;
+      scaleW = scaleW * shrink;
+      drawW = shotCanvas.width * scaleW;
+      drawH = shotCanvas.height * scaleW;
+      startY = headerH + Math.max(0, (availH - drawH) / 2);
+    }
+
     var out = document.createElement('canvas');
     out.width = storyW; out.height = storyH;
     var ctx = out.getContext('2d');
@@ -1075,16 +1108,6 @@ function shareResult(includeInfo) {
     ctx.fillStyle = '#a8c498';
     ctx.fillText(word2, startX + w1, 110);
     ctx.textAlign = 'center';
-
-    var headerH = 180, footerH = 180;
-    var availH = storyH - headerH - footerH;
-    var maxW = storyW - 100;
-    var scaleW = maxW / shotCanvas.width;
-    var h0 = shotCanvas.height * scaleW;
-    var shrink = h0 > availH ? (availH / h0) : 1;
-    var scale = scaleW * shrink;
-    var drawW = shotCanvas.width * scale, drawH = shotCanvas.height * scale;
-    var startY = headerH + Math.max(0, (availH - drawH) / 2);
 
     ctx.save();
     ctx.shadowColor = 'rgba(0,0,0,0.4)';
@@ -1122,12 +1145,14 @@ function shareResult(includeInfo) {
       }
 
       if (infoBlock) infoBlock.style.display = restoreDisplay;
+      if (qaPanel) qaPanel.style.maxHeight = restoreQaMaxHeight;
       btn.textContent = originalText;
       btn.disabled = false;
       resetSaveChoice();
     }, 'image/png');
   }).catch(function() {
     if (infoBlock) infoBlock.style.display = restoreDisplay;
+    if (qaPanel) qaPanel.style.maxHeight = restoreQaMaxHeight;
     btn.textContent = originalText;
     btn.disabled = false;
   });
@@ -1139,6 +1164,18 @@ function resetSaveChoice() {
   if (wrap) wrap.style.display = 'flex';
   if (choice) choice.style.display = 'none';
 }
+
+(function() {
+  var qaBtn = document.getElementById('qaToggleBtn');
+  var qaPanel = document.getElementById('qaPanel');
+  var qaArrow = document.getElementById('qaToggleArrow');
+  if (!qaBtn || !qaPanel) return;
+  qaBtn.addEventListener('click', function() {
+    var isOpen = qaPanel.style.maxHeight && qaPanel.style.maxHeight !== '0px';
+    qaPanel.style.maxHeight = isOpen ? '0px' : '1000px';
+    if (qaArrow) qaArrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+  });
+})();
 
 window.addEventListener('load', function() {
   var mainBtn = document.getElementById('shareResultBtn');
