@@ -47,12 +47,7 @@
   .nav-acc-btn svg{width:10px;height:10px;transition:transform .25s;}
   .nav-acc-btn.open svg{transform:rotate(180deg);}
   .nav-accordion{position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:150;max-height:0;overflow:hidden;transition:max-height .35s ease;box-shadow:0 16px 40px rgba(0,0,0,0.25);}
-  .nav-accordion.open{max-height:340px;}
-  .nav-accordion.open.expanded{max-height:520px;}
-  .nav-accordion-extra{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 40px;}
-  .nav-accordion-extra.open{max-height:200px;padding-top:8px;}
-  .nav-accordion-more{display:block;margin:0 auto 20px;background:none;border:1px solid rgba(255,255,255,0.2);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:6px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
-  .nav-accordion-more:hover{border-color:var(--fern);background:rgba(255,255,255,0.06);}
+  .nav-accordion.open{max-height:420px;}
   .nav-accordion-inner{max-width:1000px;margin:0 auto;padding:96px 40px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 24px;}
   .nav-accordion-inner a{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:rgba(255,255,255,0.78);text-decoration:none;padding:10px 14px;border-radius:8px;transition:background .15s,color .15s;display:flex;align-items:center;gap:10px;}
   .nav-accordion-inner a:hover{background:rgba(255,255,255,0.08);color:var(--fern);}
@@ -667,16 +662,13 @@
 <div class="nav-accordion-scrim" id="navScrim"></div>
 <div class="nav-accordion" id="panelServicios">
   <div class="nav-accordion-inner">
-    <a href="asesoria-patrimonial.html#portafolio">📈 Gestión de Portafolio</a>
-    <a href="#contacto">🏢 Empresas y Emprendedores</a>
-    <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
-  </div>
-  <div class="nav-accordion-inner nav-accordion-extra" id="servExtra">
     <a href="asesoria-patrimonial.html#diagnostico">🧭 Diagnóstico Patrimonial</a>
+    <a href="asesoria-patrimonial.html#portafolio">📈 Gestión de Portafolio</a>
     <a href="asesoria-patrimonial.html#retiro">🏝️ Planeación de Retiro</a>
+    <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
+    <a href="#contacto">🏢 Empresas y Emprendedores</a>
     <a href="#consultoria">📄 Trámites y Asesoría Fiscal</a>
   </div>
-  <button class="nav-accordion-more" id="servMoreBtn">Ver más ▾</button>
 </div>
 <div class="nav-accordion" id="panelHerramientas">
   <div class="nav-accordion-inner">
@@ -1011,6 +1003,7 @@
     .meta-explain strong{color:var(--fern);}
     .indep-grid{display:grid;grid-template-columns:repeat(5,1fr);}
     .indep-kpi{position:relative;}
+    .indep-kpi.locked{cursor:pointer;}
     .indep-kpi.locked .indep-kpi-val{filter:blur(5px);user-select:none;}
     .indep-kpi-lockicon{position:absolute;top:8px;right:8px;font-size:0.7rem;opacity:0.6;}
     .indep-kpi{padding:14px 8px 12px;border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);text-align:center;}
@@ -1108,6 +1101,7 @@
     ]}
   };
 
+  var indepUnlocked = false;
   function buildGrid(sueldo){
     var grid=document.getElementById('indep-grid');
     grid.innerHTML='';
@@ -1127,9 +1121,18 @@
     var VISIBLES=['emergencia','aporte'];
     todas.forEach(function(k){
       var div=document.createElement('div');
-      var locked = VISIBLES.indexOf(k.key) === -1;
+      var locked = !indepUnlocked && VISIBLES.indexOf(k.key) === -1;
       div.className='indep-kpi'+(locked?' locked':'');
       div.innerHTML='<div class="indep-kpi-emoji">'+k.emoji+'</div><div class="indep-kpi-lbl">'+k.label+'</div><div class="indep-kpi-val'+(k.hi?' hi':'')+'">'+fmt(k.val)+'</div>'+(locked?'<div class="indep-kpi-lockicon">🔒</div>':'');
+      if (locked) {
+        div.addEventListener('click', function() {
+          var pass = prompt('Contraseña para ver los números reales:');
+          if (pass && pass.trim().toLowerCase() === 'salvadorfinanciero29') {
+            indepUnlocked = true;
+            recalc();
+          }
+        });
+      }
       grid.appendChild(div);
     });
   }
@@ -1518,12 +1521,6 @@
         if (o.panel) o.panel.classList.remove('open');
       });
       if (scrim) scrim.classList.remove('open');
-      var extra = document.getElementById('servExtra');
-      var panelServ = document.getElementById('panelServicios');
-      var moreBtn = document.getElementById('servMoreBtn');
-      if (extra) extra.classList.remove('open');
-      if (panelServ) panelServ.classList.remove('expanded');
-      if (moreBtn) moreBtn.textContent = 'Ver más ▾';
     }
     btns.forEach(function(o) {
       if (!o.btn || !o.panel) return;
@@ -1543,18 +1540,6 @@
     });
     if (scrim) scrim.addEventListener('click', closeAll);
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
-
-    var moreBtn = document.getElementById('servMoreBtn');
-    var extra = document.getElementById('servExtra');
-    var panelServ = document.getElementById('panelServicios');
-    if (moreBtn && extra && panelServ) {
-      moreBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var isOpen = extra.classList.toggle('open');
-        panelServ.classList.toggle('expanded', isOpen);
-        moreBtn.textContent = isOpen ? 'Ver menos ▴' : 'Ver más ▾';
-      });
-    }
   })();
 
   // Carrusel simple — reutilizable para testimonios y modelo (una card visible a la vez)
