@@ -48,6 +48,11 @@
   .nav-acc-btn.open svg{transform:rotate(180deg);}
   .nav-accordion{position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:150;max-height:0;overflow:hidden;transition:max-height .35s ease;box-shadow:0 16px 40px rgba(0,0,0,0.25);}
   .nav-accordion.open{max-height:340px;}
+  .nav-accordion.open.expanded{max-height:520px;}
+  .nav-accordion-extra{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 40px;}
+  .nav-accordion-extra.open{max-height:200px;padding-top:8px;}
+  .nav-accordion-more{display:block;margin:0 auto 20px;background:none;border:1px solid rgba(255,255,255,0.2);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:6px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+  .nav-accordion-more:hover{border-color:var(--fern);background:rgba(255,255,255,0.06);}
   .nav-accordion-inner{max-width:1000px;margin:0 auto;padding:96px 40px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 24px;}
   .nav-accordion-inner a{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:rgba(255,255,255,0.78);text-decoration:none;padding:10px 14px;border-radius:8px;transition:background .15s,color .15s;display:flex;align-items:center;gap:10px;}
   .nav-accordion-inner a:hover{background:rgba(255,255,255,0.08);color:var(--fern);}
@@ -63,8 +68,8 @@
   .nav-burger.open .burger-bars{opacity:0;}
   .nav-burger.open .burger-arrow{opacity:1;}
 
-  .nav-links-mobile{display:block;list-style:none;position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:99;max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0;margin:0;}
-  .nav-links-mobile.open{max-height:420px;padding-top:64px;padding-bottom:20px;}
+  .nav-links-mobile{display:block;list-style:none;position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:99;max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.16,.84,.44,1);padding:0;margin:0;}
+  .nav-links-mobile.open{max-height:100vh;overflow-y:auto;padding-top:64px;padding-bottom:20px;-webkit-overflow-scrolling:touch;}
   .nav-links-mobile li{border-top:1px solid rgba(255,255,255,0.1);opacity:0;transform:translateY(-8px);transition:opacity .35s ease,transform .35s ease;}
   .nav-links-mobile.open li{opacity:1;transform:translateY(0);}
   .nav-links-mobile.open li:nth-child(1){transition-delay:.05s;}
@@ -662,13 +667,16 @@
 <div class="nav-accordion-scrim" id="navScrim"></div>
 <div class="nav-accordion" id="panelServicios">
   <div class="nav-accordion-inner">
-    <a href="asesoria-patrimonial.html#diagnostico">🧭 Diagnóstico Patrimonial</a>
     <a href="asesoria-patrimonial.html#portafolio">📈 Gestión de Portafolio</a>
-    <a href="asesoria-patrimonial.html#retiro">🏝️ Planeación de Retiro</a>
-    <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
     <a href="#contacto">🏢 Empresas y Emprendedores</a>
+    <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
+  </div>
+  <div class="nav-accordion-inner nav-accordion-extra" id="servExtra">
+    <a href="asesoria-patrimonial.html#diagnostico">🧭 Diagnóstico Patrimonial</a>
+    <a href="asesoria-patrimonial.html#retiro">🏝️ Planeación de Retiro</a>
     <a href="#consultoria">📄 Trámites y Asesoría Fiscal</a>
   </div>
+  <button class="nav-accordion-more" id="servMoreBtn">Ver más ▾</button>
 </div>
 <div class="nav-accordion" id="panelHerramientas">
   <div class="nav-accordion-inner">
@@ -713,10 +721,10 @@
   </div>
   <div class="hero-content">
     <div class="hero-left">
-      <div class="hero-issue">Consultor Patrimonial Independiente · CDMX</div>
+      <div class="hero-issue">Maestro en Administración Patrimonial · CDMX</div>
       <h1 class="hero-title">Crece tu dinero<br>con confianza.<br><span class="hi">Invierte con dirección.</span></h1>
       <div class="hero-rule"></div>
-      <p class="hero-subtitle">Mentoría patrimonial · Acceso a mercados internacionales y nacionales · Tu dinero, siempre en tu cuenta</p>
+      <p class="hero-subtitle">Maestro en Administración Patrimonial · Acceso a mercados internacionales y nacionales · Tu dinero, siempre en tu cuenta</p>
       <a href="perfil-riesgo.html" class="hero-cta">✦ Descubre tu Perfil de Riesgo ✦</a>
     </div>
   </div>
@@ -839,6 +847,99 @@
   </div>
 </section>
 
+<script>
+  (function() {
+    var viewport = document.getElementById('domViewport');
+    var marquee = document.getElementById('domMarquee');
+    if (!viewport || !marquee) return;
+    var cards = Array.prototype.slice.call(marquee.children);
+    var half = cards.length / 2;
+    var singleSetWidth = 0;
+    var offsets = [];
+    var cardWidths = [];
+    var viewportWidth = 0;
+    function measure() {
+      singleSetWidth = 0;
+      offsets = [];
+      cardWidths = [];
+      var acc = 0;
+      cards.forEach(function(card, i) {
+        var w = card.getBoundingClientRect().width;
+        cardWidths.push(w);
+        offsets.push(acc);
+        acc += w + 24;
+        if (i < half) singleSetWidth += w + 24;
+      });
+      viewportWidth = viewport.getBoundingClientRect().width;
+    }
+    measure();
+    window.addEventListener('resize', measure);
+
+    var pos = 0;
+    var speed = 40;
+    var paused = false;
+    marquee.addEventListener('mouseenter', function() { paused = true; });
+    marquee.addEventListener('mouseleave', function() { paused = false; });
+
+    var touchStartX = 0, touchStartPos = 0, dragging = false, resumeTimer = null;
+    viewport.addEventListener('touchstart', function(e) {
+      dragging = true;
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      touchStartX = e.touches[0].clientX;
+      touchStartPos = pos;
+    }, {passive: true});
+    viewport.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      var dx = e.touches[0].clientX - touchStartX;
+      var newPos = touchStartPos - dx;
+      while (newPos < 0) newPos += singleSetWidth;
+      pos = newPos % singleSetWidth;
+    }, {passive: true});
+    viewport.addEventListener('touchend', function() {
+      dragging = false;
+      resumeTimer = setTimeout(function() { paused = false; }, 2500);
+    });
+
+    var prevBtn = document.getElementById('domPrev');
+    var nextBtn = document.getElementById('domNext');
+    var cardStep = 304;
+    function nudge(delta) {
+      pos += delta;
+      if (pos < 0) pos += singleSetWidth;
+      if (pos >= singleSetWidth) pos -= singleSetWidth;
+    }
+    if (prevBtn) prevBtn.addEventListener('click', function() { nudge(-cardStep); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { nudge(cardStep); });
+
+    var lastTime = null;
+    function frame(t) {
+      if (lastTime === null) lastTime = t;
+      var dt = (t - lastTime) / 1000;
+      lastTime = t;
+      if (!paused) {
+        pos += speed * dt;
+        if (pos >= singleSetWidth) pos -= singleSetWidth;
+      }
+      marquee.style.transform = 'translateX(-' + pos + 'px)';
+
+      var halfRange = viewportWidth / 2 + 140;
+      for (var i = 0; i < cards.length; i++) {
+        var cardCenter = offsets[i] + cardWidths[i] / 2 - pos;
+        var dx = cardCenter - viewportWidth / 2;
+        var tNorm = Math.max(-1, Math.min(1, dx / halfRange));
+        var lift = -22 * (1 - tNorm * tNorm);
+        var scale = 1 - 0.1 * (tNorm * tNorm);
+        var rotate = tNorm * 6;
+        cards[i].style.transform = 'translateY(' + lift + 'px) scale(' + scale + ') rotate(' + rotate + 'deg)';
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+
 <!-- REGALO BANNER 3 -->
 <div style="background:white;border-top:2px solid #1c3a1e;border-bottom:2px solid #1c3a1e;padding:14px 40px;text-align:center;">
   <span style="font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1c3a1e;">&#127873; Tu primer mes de regalo*&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style="font-size:0.65rem;font-weight:400;opacity:0.65;">*V&aacute;lido al agendar tu primera sesi&oacute;n de gesti&oacute;n de portafolio</span></span>
@@ -909,6 +1010,9 @@
     .meta-explain p{font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.85;color:rgba(255,255,255,0.75);padding:0 30px 16px;}
     .meta-explain strong{color:var(--fern);}
     .indep-grid{display:grid;grid-template-columns:repeat(5,1fr);}
+    .indep-kpi{position:relative;}
+    .indep-kpi.locked .indep-kpi-val{filter:blur(5px);user-select:none;}
+    .indep-kpi-lockicon{position:absolute;top:8px;right:8px;font-size:0.7rem;opacity:0.6;}
     .indep-kpi{padding:14px 8px 12px;border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);text-align:center;}
     .indep-kpi:last-child{border-right:none;}
     .indep-kpi-emoji{font-size:1rem;margin-bottom:5px;}
@@ -1008,15 +1112,24 @@
     var grid=document.getElementById('indep-grid');
     grid.innerHTML='';
     var fijos=[
-      {emoji:'🏝️',label:'Meta de independencia (×150)',val:sueldo*150,hi:true},
-      {emoji:'🛡️',label:'Fondo de emergencia (×6)',val:sueldo*6,hi:false}
+      {key:'meta',emoji:'🏝️',label:'Meta de independencia (×150)',val:sueldo*150,hi:true},
+      {key:'emergencia',emoji:'🛡️',label:'Fondo de emergencia (×6)',val:sueldo*6,hi:false}
     ];
     var r=REGLAS[regla];
-    var todas=fijos.concat(r.cats.map(function(c){return {emoji:c.emoji,label:c.label,val:sueldo*c.pct,hi:false};}));
+    var todas=fijos.concat(r.cats.map(function(c){return {key:c.key,emoji:c.emoji,label:c.label,val:sueldo*c.pct,hi:false};}));
+    var iMeta=-1, iAporte=-1;
+    todas.forEach(function(k,i){ if(k.key==='meta') iMeta=i; if(k.key==='aporte') iAporte=i; });
+    if (iMeta !== -1 && iAporte !== -1) {
+      var tmp = todas[iMeta];
+      todas[iMeta] = todas[iAporte];
+      todas[iAporte] = tmp;
+    }
+    var VISIBLES=['emergencia','aporte'];
     todas.forEach(function(k){
       var div=document.createElement('div');
-      div.className='indep-kpi';
-      div.innerHTML='<div class="indep-kpi-emoji">'+k.emoji+'</div><div class="indep-kpi-lbl">'+k.label+'</div><div class="indep-kpi-val'+(k.hi?' hi':'')+'">'+fmt(k.val)+'</div>';
+      var locked = VISIBLES.indexOf(k.key) === -1;
+      div.className='indep-kpi'+(locked?' locked':'');
+      div.innerHTML='<div class="indep-kpi-emoji">'+k.emoji+'</div><div class="indep-kpi-lbl">'+k.label+'</div><div class="indep-kpi-val'+(k.hi?' hi':'')+'">'+fmt(k.val)+'</div>'+(locked?'<div class="indep-kpi-lockicon">🔒</div>':'');
       grid.appendChild(div);
     });
   }
@@ -1079,9 +1192,10 @@
 
 <section id="about">
   <div class="reveal-left">
-    <div class="eyebrow">>Consultor Patrimonial Independiente · CDMX</div>
+    <div class="eyebrow">>Maestro en Administración Patrimonial · CDMX</div>
     <h2 class="about-title">Finanzas claras,<br><em>decisiones inteligentes.</em></h2>
-    <p class="about-text">Soy Mentor Patrimonial independiente con Maestría en Administración y formación en finanzas. Cuento con un Diplomado en Educación Financiera por parte de la CONDUSEF y cursos especializados en la Bolsa Mexicana de Valores — especializado en construir estrategias de inversión a largo plazo para personas y empresas en México.</p>
+    <p class="about-text">Soy Maestro en Administración, con formación especializada en finanzas. Cuento con un Diplomado en Educación Financiera por parte de la CONDUSEF y cursos especializados en la Bolsa Mexicana de Valores — enfocado en construir estrategias de inversión a largo plazo para personas y empresas en México.</p>
+    <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--soft);letter-spacing:0.04em;margin-top:-8px;margin-bottom:16px;">Maestría en Administración · Cédula Profesional 15539875</div>
     <p class="about-text">Mi enfoque es que siempre sepas exactamente en dónde está tu dinero y por qué. Transparencia total: tú ves cada movimiento, entiendes cada decisión, y si en cualquier momento necesitas tu dinero — lo puedes sacar.</p>
   </div>
 
@@ -1089,14 +1203,14 @@
     <div class="flip-card reveal-scale" id="mentorFlip">
       <div class="flip-inner" id="mentorFlipInner">
         <div class="flip-face flip-front">
-          <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Mentor Patrimonial" class="flip-photo">
+          <img src="images/miguel-headshot.jpg" alt="Miguel Valdez, Maestro en Administración Patrimonial" class="flip-photo">
           <div class="flip-front-caption">
-            <div class="flip-name">Miguel Valdez · Mentor Patrimonial</div>
+            <div class="flip-name">Miguel Valdez · Maestro en Administración Patrimonial</div>
             <div class="flip-hint">✦ Toca la foto para ver más ✦</div>
           </div>
         </div>
         <div class="flip-face flip-back">
-          <div class="card-hl">Tu mentor patrimonial hace ✦</div>
+          <div class="card-hl">Tu Maestro en Administración Patrimonial hace ✦</div>
           <ul class="svc-list">
             <li>Diagnóstico y análisis de tu situación financiera actual</li>
             <li>Diseño de portafolio personalizado según tu perfil de riesgo</li>
@@ -1302,7 +1416,7 @@
 
 <footer>
   <a href="#hero" class="flogo" style="text-decoration:none;color:var(--white);">Salvador <span>Financiero</span></a>
-  <div class="ftext">© 2026 · Mentoría Patrimonial Independiente · CDMX, México</div>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México</div>
   <div class="ftext">✦ Hecho con estrategia ✦</div>
   <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
     <a href="terminos-y-condiciones.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Términos y Condiciones</a><a href="aviso-de-privacidad.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:16px;">Aviso de Privacidad</a><a href="preguntas-frecuentes.html" style="font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">FAQ</a>
@@ -1368,91 +1482,6 @@
     });
   })();
 
-  // Carrusel de dominios — scroll continuo con curvatura real calculada en cada frame
-  (function() {
-    var viewport = document.getElementById('domViewport');
-    var marquee = document.getElementById('domMarquee');
-    if (!viewport || !marquee) return;
-    var cards = Array.prototype.slice.call(marquee.children);
-    var half = cards.length / 2;
-    var singleSetWidth = 0;
-    function measure() {
-      singleSetWidth = 0;
-      for (var i = 0; i < half; i++) {
-        singleSetWidth += cards[i].getBoundingClientRect().width + 24;
-      }
-    }
-    measure();
-    window.addEventListener('resize', measure);
-
-    var pos = 0;
-    var speed = 40; // px por segundo
-    var paused = false;
-    marquee.addEventListener('mouseenter', function() { paused = true; });
-    marquee.addEventListener('mouseleave', function() { paused = false; });
-
-    // Swipe táctil (móvil)
-    var touchStartX = 0, touchStartPos = 0, dragging = false, resumeTimer = null;
-    viewport.addEventListener('touchstart', function(e) {
-      dragging = true;
-      paused = true;
-      if (resumeTimer) clearTimeout(resumeTimer);
-      touchStartX = e.touches[0].clientX;
-      touchStartPos = pos;
-    }, {passive: true});
-    viewport.addEventListener('touchmove', function(e) {
-      if (!dragging) return;
-      var dx = e.touches[0].clientX - touchStartX;
-      var newPos = touchStartPos - dx;
-      while (newPos < 0) newPos += singleSetWidth;
-      pos = newPos % singleSetWidth;
-    }, {passive: true});
-    viewport.addEventListener('touchend', function() {
-      dragging = false;
-      resumeTimer = setTimeout(function() { paused = false; }, 2500);
-    });
-
-    var prevBtn = document.getElementById('domPrev');
-    var nextBtn = document.getElementById('domNext');
-    var cardStep = 304; // ancho de tarjeta + gap aprox
-    function nudge(delta) {
-      pos += delta;
-      if (pos < 0) pos += singleSetWidth;
-      if (pos >= singleSetWidth) pos -= singleSetWidth;
-    }
-    if (prevBtn) prevBtn.addEventListener('click', function() { nudge(-cardStep); });
-    if (nextBtn) nextBtn.addEventListener('click', function() { nudge(cardStep); });
-
-    var lastTime = null;
-    function frame(t) {
-      if (lastTime === null) lastTime = t;
-      var dt = (t - lastTime) / 1000;
-      lastTime = t;
-      if (!paused) {
-        pos += speed * dt;
-        if (pos >= singleSetWidth) pos -= singleSetWidth;
-      }
-      marquee.style.transform = 'translateX(-' + pos + 'px)';
-
-      var vpRect = viewport.getBoundingClientRect();
-      var centerX = vpRect.left + vpRect.width / 2;
-      var halfRange = vpRect.width / 2 + 140;
-      cards.forEach(function(card) {
-        var r = card.getBoundingClientRect();
-        var cardCenter = r.left + r.width / 2;
-        var dx = cardCenter - centerX;
-        var tNorm = Math.max(-1, Math.min(1, dx / halfRange));
-        var lift = -22 * (1 - tNorm * tNorm);
-        var scale = 1 - 0.1 * (tNorm * tNorm);
-        var rotate = tNorm * 6;
-        card.style.transform = 'translateY(' + lift + 'px) scale(' + scale + ') rotate(' + rotate + 'deg)';
-      });
-
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  })();
-
   // Toggle de "¿Qué es hacer FIRE?"
   (function() {
     var btn = document.getElementById('metaToggleBtn');
@@ -1489,6 +1518,12 @@
         if (o.panel) o.panel.classList.remove('open');
       });
       if (scrim) scrim.classList.remove('open');
+      var extra = document.getElementById('servExtra');
+      var panelServ = document.getElementById('panelServicios');
+      var moreBtn = document.getElementById('servMoreBtn');
+      if (extra) extra.classList.remove('open');
+      if (panelServ) panelServ.classList.remove('expanded');
+      if (moreBtn) moreBtn.textContent = 'Ver más ▾';
     }
     btns.forEach(function(o) {
       if (!o.btn || !o.panel) return;
@@ -1508,6 +1543,18 @@
     });
     if (scrim) scrim.addEventListener('click', closeAll);
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
+
+    var moreBtn = document.getElementById('servMoreBtn');
+    var extra = document.getElementById('servExtra');
+    var panelServ = document.getElementById('panelServicios');
+    if (moreBtn && extra && panelServ) {
+      moreBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = extra.classList.toggle('open');
+        panelServ.classList.toggle('expanded', isOpen);
+        moreBtn.textContent = isOpen ? 'Ver menos ▴' : 'Ver más ▾';
+      });
+    }
   })();
 
   // Carrusel simple — reutilizable para testimonios y modelo (una card visible a la vez)
