@@ -744,8 +744,16 @@
       <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--forest);line-height:1.72;margin-bottom:24px;padding-left:14px;border-left:3px solid var(--sage);" id="res-meaning">—</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">Tipos de instrumentos que podrían encajar contigo</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;" id="res-tags"></div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;border-top:1.5px dashed var(--rule);padding-top:20px;">Tu información registrada</div>
+    </div>
+    <div id="infoBlock">
+    <div style="background:var(--white);border:1.5px solid var(--rule);border-top:none;padding:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;">Tu información registrada</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="res-summary"></div>
+    </div>
+    <div style="background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;">Tus respuestas</div>
+      <div id="res-qa" style="display:flex;flex-direction:column;gap:14px;"></div>
+    </div>
     </div>
     </div>
 
@@ -753,9 +761,16 @@
     <div style="background:var(--pine);padding:24px 28px;border:2px solid var(--forest);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:8px;">¡Gracias por completar el cuestionario!</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:18px;">Guarda tu resultado, y de paso sígueme en Instagram.</div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" id="saveBtnWrap">
         <button id="shareResultBtn" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:13px 28px;border:2px solid var(--fern);border-radius:var(--r-sm);cursor:pointer;">💾 Guardar mi información</button>
         <a href="https://www.instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:var(--white);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:13px 28px;text-decoration:none;border:2px solid var(--white);border-radius:var(--r-sm);">IG @salvadorfinanciero →</a>
+      </div>
+      <div id="saveChoiceWrap" style="display:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.8);margin-bottom:10px;">¿Cómo quieres guardar tu imagen?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button id="saveWithInfoBtn" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.08em;padding:12px 20px;border:2px solid var(--fern);border-radius:var(--r-sm);cursor:pointer;">Con mi información</button>
+          <button id="saveWithoutInfoBtn" style="display:inline-block;background:transparent;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.08em;padding:12px 20px;border:2px solid rgba(255,255,255,0.5);border-radius:var(--r-sm);cursor:pointer;">Sin mi información</button>
+        </div>
       </div>
     </div>
 
@@ -965,6 +980,22 @@ function calcular() {
     return '<div style="background:white;padding:10px 12px;border:1px solid #ccc8bc;"><div style="font-family:DM Mono,monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#999;margin-bottom:3px;">'+item[0]+'</div><div style="font-family:DM Mono,monospace;font-size:0.75rem;color:#1c3a1e;font-weight:500;word-break:break-all;">'+item[1]+'</div></div>';
   }).join('');
 
+  var QA_QUESTIONS = [
+    ['q1', '¿Cuál es el objetivo principal de tu inversión?'],
+    ['q2', '¿Por cuánto tiempo planeas mantener tu inversión sin retirar el capital?'],
+    ['q3', 'Si tu portafolio cayera un 20% en un mes por volatilidad del mercado, ¿qué harías?'],
+    ['q4', '¿Qué porcentaje de tus ahorros o activos totales representa esta inversión?'],
+    ['q5', '¿Cuál es tu nivel de experiencia previa en la Bolsa de Valores?'],
+    ['q6', 'En términos de rentabilidad anual esperada, ¿qué perfil buscas?'],
+    ['q7', '¿Entiendes que los rendimientos pasados no garantizan rendimientos futuros y que el capital puede fluctuar?'],
+    ['q8', 'Si el mercado cae un 10% y tus finanzas personales están estables, ¿tienes liquidez extra para invertir más?']
+  ];
+  var qaEl = document.getElementById('res-qa');
+  if (qaEl) qaEl.innerHTML = QA_QUESTIONS.map(function(item){
+    var respuesta = state[item[0] + '_texto'] || '—';
+    return '<div><div style="font-family:DM Mono,monospace;font-size:0.62rem;color:#5a7a4a;line-height:1.6;margin-bottom:4px;">'+item[1]+'</div><div style="font-family:Instrument Serif,serif;font-style:italic;font-size:0.92rem;color:#1c3a1e;line-height:1.5;">'+respuesta+'</div></div>';
+  }).join('');
+
   // ── SEND TO MAKE WEBHOOK ──
   var webhookUrl = 'https://hook.us1.make.com/ldc86a9ejku0es5fdnv1gm0xmnjbujik'; // <-- aquí va tu URL de Make
   var payload = {
@@ -999,13 +1030,17 @@ function calcular() {
   showStep('result');
 }
 
-function shareResult() {
-  var btn = document.getElementById('shareResultBtn');
+function shareResult(includeInfo) {
+  var btn = includeInfo ? document.getElementById('saveWithInfoBtn') : document.getElementById('saveWithoutInfoBtn');
   var capture = document.getElementById('shareCapture');
+  var infoBlock = document.getElementById('infoBlock');
   if (!btn || !capture || typeof html2canvas === 'undefined') return;
   var originalText = btn.textContent;
   btn.textContent = 'Generando imagen...';
   btn.disabled = true;
+
+  var restoreDisplay = infoBlock ? infoBlock.style.display : '';
+  if (infoBlock) infoBlock.style.display = includeInfo ? '' : 'none';
 
   var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
@@ -1086,18 +1121,39 @@ function shareResult() {
         fallbackDownload();
       }
 
+      if (infoBlock) infoBlock.style.display = restoreDisplay;
       btn.textContent = originalText;
       btn.disabled = false;
+      resetSaveChoice();
     }, 'image/png');
   }).catch(function() {
+    if (infoBlock) infoBlock.style.display = restoreDisplay;
     btn.textContent = originalText;
     btn.disabled = false;
   });
 }
 
+function resetSaveChoice() {
+  var wrap = document.getElementById('saveBtnWrap');
+  var choice = document.getElementById('saveChoiceWrap');
+  if (wrap) wrap.style.display = 'flex';
+  if (choice) choice.style.display = 'none';
+}
+
 window.addEventListener('load', function() {
-  var shareBtn = document.getElementById('shareResultBtn');
-  if (shareBtn) shareBtn.addEventListener('click', shareResult);
+  var mainBtn = document.getElementById('shareResultBtn');
+  var wrap = document.getElementById('saveBtnWrap');
+  var choice = document.getElementById('saveChoiceWrap');
+  if (mainBtn && wrap && choice) {
+    mainBtn.addEventListener('click', function() {
+      wrap.style.display = 'none';
+      choice.style.display = 'block';
+    });
+  }
+  var withBtn = document.getElementById('saveWithInfoBtn');
+  var withoutBtn = document.getElementById('saveWithoutInfoBtn');
+  if (withBtn) withBtn.addEventListener('click', function() { shareResult(true); });
+  if (withoutBtn) withoutBtn.addEventListener('click', function() { shareResult(false); });
 
   var correoInput = document.getElementById('correo');
   var domainWrap = document.getElementById('correo-domains');
