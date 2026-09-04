@@ -21,6 +21,8 @@
     --c-total:   #3a7d44;
     --c-capital: #4a9e6a;
     --c-interes: #c47d0e;
+    --r: 16px;
+    --r-sm: 8px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   *{max-width:100%;}
@@ -28,7 +30,7 @@
   body{overflow-x:hidden;max-width:100vw;}
 
 
-  nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
+  nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);box-shadow:0 4px 20px rgba(0,0,0,0.15);}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-logo span{color:var(--fern);}
   .nav-back{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
@@ -36,17 +38,26 @@
 
   .hero-band{
     padding-bottom:52px;padding:64px 60px 56px;background:var(--forest);background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px;}
-  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,7.5rem);line-height:0.88;color:var(--white);letter-spacing:0.01em;margin-bottom:24px;}
-  h1 span{color:var(--fern);display:block;margin-top:0.18em;}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,7.5rem);line-height:0.88;color:var(--white);letter-spacing:0.01em;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.07);}
+  #rotLine2{color:var(--fern);display:block;margin-top:0.18em;}
+  #rotLine1,#rotLine2{transition:opacity .4s ease;}
   .hero-rule{width:100%;max-width:560px;height:2px;background:var(--sage);margin-bottom:20px;}
   .hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:480px;line-height:1.65;}
 
-  .main-grid{display:grid;grid-template-columns:1fr 1.5fr;min-height:calc(100vh - 200px);overflow-x:hidden;}
+  .main-grid-wrap{padding:36px 40px 60px;background:var(--cream);}
+  .main-grid{display:grid;grid-template-columns:1fr 1.5fr;min-height:auto;overflow:hidden;gap:0;max-width:1280px;margin:0 auto;border-radius:var(--r);box-shadow:0 20px 60px rgba(0,0,0,0.12);}
 
-  .panel-inputs{padding:44px 52px;border-right:3px solid var(--forest);background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.07) 1px,transparent 1px);background-size:36px 36px;}
+  .panel-inputs{padding:48px 52px;border-right:3px solid var(--forest);background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.07) 1px,transparent 1px);background-size:36px 36px;}
   .input-group{margin-bottom:36px;}
+  @media(min-width:1024px){
+    .input-group{margin-bottom:68px;}
+    .input-value{font-size:3.8rem;margin-bottom:20px;}
+    .input-label{font-size:0.9rem;margin-bottom:20px;}
+    .panel-inputs{padding-top:64px;padding-bottom:64px;}
+    .range-labels span{font-size:0.68rem;}
+  }
   .input-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--forest);font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .input-label::before{content:'';display:inline-block;width:14px;height:2px;background:var(--sage);flex-shrink:0;}
+  .input-label::before{content:'✦';color:var(--sage);font-size:0.65rem;flex-shrink:0;}
   .input-value{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--forest);letter-spacing:0.02em;margin-bottom:12px;line-height:1;}
   .input-value span{font-size:0.9rem;color:var(--mid);font-family:'DM Mono',monospace;}
 
@@ -58,35 +69,45 @@
   .range-labels span{font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(28,58,30,0.35);letter-spacing:0.08em;}
 
   .inversion-selector{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px;margin-bottom:10px;}
-  .inv-btn{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;letter-spacing:0.02em;padding:12px 4px;border:1.5px solid var(--rule);background:var(--white);color:var(--mid);cursor:pointer;text-align:center;transition:all .18s;}
+  .inv-btn{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;letter-spacing:0.02em;padding:12px 4px;border:1.5px solid var(--rule);background:var(--white);color:var(--mid);cursor:pointer;text-align:center;transition:all .18s;border-radius:var(--r-sm);}
   .inv-btn:hover{border-color:var(--sage);color:var(--forest);}
-  .inv-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);}
+  .inv-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);box-shadow:0 4px 12px rgba(28,58,30,0.3);}
 
-  .custom-input-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--rule);background:var(--white);padding:8px 12px;transition:border-color .18s;margin-top:4px;}
+  .custom-input-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--rule);background:var(--white);padding:8px 12px;transition:border-color .18s;margin-top:4px;border-radius:var(--r-sm);}
   .custom-input-wrap:focus-within{border-color:var(--sage);}
   .custom-input-wrap label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--soft);white-space:nowrap;text-transform:uppercase;}
   .custom-input-wrap input[type=number]{flex:1;border:none;outline:none;background:transparent;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--forest);letter-spacing:0.05em;width:100%;-moz-appearance:textfield;}
   .custom-input-wrap input[type=number]::-webkit-outer-spin-button,
   .custom-input-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-  .custom-apply-btn{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 12px;background:var(--forest);color:var(--white);border:none;cursor:pointer;transition:background .18s;white-space:nowrap;}
+  .custom-apply-btn{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 12px;background:var(--forest);color:var(--white);border:none;cursor:pointer;transition:background .18s;white-space:nowrap;border-radius:6px;}
   .custom-apply-btn:hover{background:var(--sage);}
 
   .panel-results{padding:44px 52px;background:var(--white);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;}
-  .multiplier-badge{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);margin-bottom:22px;}
+  .proyeccion-ticket{position:relative;background:var(--white);border:1.5px solid var(--rule);border-radius:var(--r);padding:30px 28px 20px;margin-bottom:20px;box-shadow:0 12px 32px rgba(0,0,0,0.08);}
+  .proyeccion-ticket::before,.proyeccion-ticket::after{content:'';position:absolute;top:36px;width:22px;height:22px;background:var(--cream);border:1.5px solid var(--rule);border-radius:50%;}
+  .proyeccion-ticket::before{left:-12px;}
+  .proyeccion-ticket::after{right:-12px;}
+  .ticket-serial{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:var(--soft);text-transform:uppercase;border-bottom:1.5px dashed var(--rule);padding-bottom:16px;margin-bottom:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+  .stamp-row{margin-bottom:20px;}
+  .stamp-mult{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--forest);line-height:1;display:inline;letter-spacing:0.02em;}
+  .stamp-label{display:none;}
+  .stamp-caption{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:var(--forest);line-height:1.5;}
+  .download-btn{display:block;width:100%;margin-bottom:24px;background:var(--cream);border:1.5px dashed var(--sage);color:var(--forest);font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;padding:12px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+  .download-btn:hover{background:var(--sage);color:var(--white);border-style:solid;}
 
   .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
-  .result-card{background:var(--forest);padding:20px 22px;}
+  .result-card{background:var(--forest);padding:20px 22px;border-radius:var(--r-sm);}
   .result-card .rc-label{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:8px;}
   .result-card .rc-value{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--fern);letter-spacing:0.02em;line-height:1;}
   .result-card .rc-sub{font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.35);margin-top:5px;}
-  .result-card.card-capital{border:2px solid var(--c-capital);border-top:4px solid var(--c-capital);}
-  .result-card.card-interes{border:2px solid var(--c-interes);border-top:4px solid var(--c-interes);}
-  .result-card.total{grid-column:span 2;background:var(--pine);border:2px solid var(--c-total);border-top:4px solid var(--c-total);}
+  .result-card.card-capital{border:2px solid var(--c-capital);border-top:4px solid var(--c-capital);box-shadow:0 6px 16px rgba(74,158,106,0.15);}
+  .result-card.card-interes{border:2px solid var(--c-interes);border-top:4px solid var(--c-interes);box-shadow:0 6px 16px rgba(196,125,14,0.15);}
+  .result-card.total{grid-column:span 2;background:var(--pine);border:2px solid var(--c-total);border-top:4px solid var(--c-total);box-shadow:0 10px 28px rgba(58,125,68,0.25);}
   .result-card.total .rc-label{color:rgba(255,255,255,0.5);}
   .result-card.total .rc-value{font-size:3.2rem;color:var(--white);}
   .result-card.total .rc-sub{color:rgba(255,255,255,0.35);}
 
-  .insight-box{background:var(--cream);border-left:3px solid var(--sage);padding:14px 18px;margin-bottom:16px;}
+  .insight-box{background:var(--cream);border-left:3px solid var(--sage);padding:16px 20px;margin-bottom:16px;border-radius:0 var(--r-sm) var(--r-sm) 0;}
   .insight-box p{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:var(--forest);line-height:1.55;}
   .insight-box strong{color:var(--sage);font-style:normal;}
 
@@ -106,24 +127,27 @@
     line-height:1;
   }
   .chart-wm-overlay span{color:rgba(90,122,74,0.1);}
-  .chart-wrap{position:relative;height:240px;background:var(--cream);border:1.5px solid var(--rule);padding:10px 12px 12px;margin-bottom:0;transition:height 0.3s;}
+  .chart-wrap{position:relative;height:240px;background:var(--cream);border:1.5px solid var(--rule);padding:10px 12px 12px;margin-bottom:0;transition:height 0.3s;border-radius:var(--r-sm) var(--r-sm) 0 0;}
   @media(max-width:768px){.chart-wrap{height:200px;}}
 
-  .zoom-controls{background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:10px 14px;}
+  .zoom-controls{background:var(--cream);border:1.5px solid var(--rule);border-top:none;padding:10px 14px;border-radius:0 0 var(--r-sm) var(--r-sm);}
   .zoom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
   .zoom-item label{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:3px;}
   .zoom-item .zoom-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--forest);line-height:1;margin-bottom:3px;}
   .zoom-item input[type=range]{background:rgba(28,58,30,0.15);}
   .zoom-presets{display:flex;gap:5px;flex-wrap:wrap;}
-  .zp-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.05em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--rule);background:var(--white);color:var(--soft);cursor:pointer;transition:all .15s;}
+  .zp-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.05em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--rule);background:var(--white);color:var(--soft);cursor:pointer;transition:all .15s;border-radius:14px;}
   .zp-btn:hover{border-color:var(--sage);color:var(--forest);}
   .zp-btn.active{background:var(--sage);border-color:var(--sage);color:var(--white);}
 
   .cta-section{border-top:2px solid var(--rule);padding-top:24px;}
-  .cta-body{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-  .cta-text{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);line-height:1.9;flex:1;}
-  .cta-btn{display:inline-block;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 36px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:4px 4px 0 var(--pine);white-space:nowrap;flex-shrink:0;}
-  .cta-btn:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pine);}
+  .cta-body{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;}
+  .cta-text{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);line-height:1.9;max-width:480px;}
+  .cta-btn{display:inline-block;background:var(--sage);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;padding:14px 36px;text-decoration:none;border:2px solid var(--sage);transition:all .2s;box-shadow:0 6px 20px rgba(90,122,74,0.4);white-space:nowrap;flex-shrink:0;border-radius:var(--r-sm);}
+  .cta-btn:hover{background:transparent;color:var(--fern);border-color:var(--fern);transform:translateY(-3px);box-shadow:0 10px 28px rgba(90,122,74,0.5);}
+  .cta-btn.ghost{background:transparent;color:var(--forest);border-color:var(--forest);box-shadow:none;}
+  .cta-btn.ghost:hover{background:var(--forest);color:var(--white);}
+  .cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
 
   footer{background:var(--forest);padding:22px 60px 36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--sage);flex-wrap:wrap;gap:10px;}
   .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
@@ -137,7 +161,8 @@
     nav{padding:14px 20px;}
     .hero-band{
     padding-bottom:52px;padding:40px 24px;}
-    .main-grid{grid-template-columns:1fr;}
+    .main-grid-wrap{padding:20px 16px 40px;}
+    .main-grid{grid-template-columns:1fr;border-radius:var(--r-sm);}
     .panel-inputs{border-right:none;border-bottom:3px solid var(--forest);padding:32px 24px;}
     .panel-results{padding:32px 24px;}
     .inversion-selector{grid-template-columns:repeat(3,1fr);}
@@ -145,10 +170,10 @@
     .result-card.total{grid-column:span 1;}
     .result-card .rc-value{font-size:2rem;}
     .result-card.total .rc-value{font-size:2.6rem;}
-    .multiplier-badge{font-size:0.55rem;}
+    .stamp-mult{font-size:1.9rem;}.stamp-caption{font-size:0.9rem;}
 
     .zoom-controls{overflow-x:hidden;}
-    .cta-body{flex-direction:column;align-items:flex-start;}
+    .cta-body{align-items:center;}
     .zoom-presets{gap:4px;}
     .zp-btn{font-size:0.48rem;padding:3px 6px;}
     .zoom-row{gap:8px;}
@@ -161,16 +186,16 @@
 
 <nav>
   <a href="index.html" class="nav-logo">Salvador <span>Financiero</span></a>
-  
+  <a href="index.html" class="nav-back">← Regresar al inicio</a>
 </nav>
 
 <div class="hero-band">
-  <h1>Calculadora de<br><span>Interés Compuesto</span></h1>
+  <h1 id="rotTitle"><span id="rotLine1">Calculadora de</span><br><span id="rotLine2">Interés Compuesto</span></h1>
   <div class="hero-rule"></div>
   <p class="hero-sub">Descubre el poder del tiempo y la constancia. Ajusta los parámetros y observa cómo tu dinero puede crecer solo.</p>
 </div>
 
-<div class="main-grid">
+<div class="main-grid-wrap"><div class="main-grid">
   <div class="panel-inputs">
 
     <div class="input-group">
@@ -224,7 +249,12 @@
 
   <div class="panel-results">
 
-    <div class="multiplier-badge" id="multiplier-badge">✦ Tu dinero se multiplica 4.2x</div>
+    <div class="proyeccion-ticket" id="ticketCapture">
+      <div class="ticket-serial"><span>✦ Proyección personalizada</span><span id="ticket-date"></span></div>
+      <div class="stamp-row">
+        <div class="stamp-mult" id="stamp-mult">—</div>
+        <p class="stamp-caption" id="stamp-caption">Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.</p>
+      </div>
 
     <div class="results-grid">
       <div class="result-card card-capital">
@@ -247,9 +277,12 @@
     <div class="insight-box">
       <p id="insight-text">Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.</p>
     </div>
+    </div>
+
+    <button class="download-btn" id="downloadStoryBtn">📲 Descargar proyección</button>
 
     <div class="chart-section">
-      <div class="chart-wrap">
+      <div class="chart-wrap" id="chartCapture">
         <div class="chart-wm-overlay">Salvador <span>Financiero</span></div>
         <canvas id="myChart"></canvas>
       </div>
@@ -280,16 +313,19 @@
     <div class="cta-section">
       <div class="cta-body">
         <p class="cta-text">Estos son números orientativos · Con una estrategia personalizada y acompañamiento constante · los resultados pueden ser aún mejores</p>
-        <a href="perfil-riesgo.html" class="cta-btn">Conoce tu perfil de inversión →</a>
+        <div class="cta-btns">
+          <a href="perfil-riesgo.html" class="cta-btn ghost">Conoce tu perfil →</a>
+          <a href="javascript:void(0)" id="agendarBtn" class="cta-btn">📅 Agenda tu cita →</a>
+        </div>
       </div>
     </div>
 
   </div>
-</div>
+</div></div>
 
 <footer>
   <a href="index.html" class="flogo">Salvador <span>Financiero</span></a>
-  <div class="ftext">© 2025 · Mentoría Patrimonial Independiente · CDMX, México · Hecho con estrategia ✦</div>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México · Hecho con estrategia ✦</div>
   <div class="flinks">
     <a href="terminos-y-condiciones.html">Términos y condiciones</a>
     <a href="aviso-de-privacidad.html">Aviso de privacidad</a>
@@ -297,6 +333,7 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
   const fmt = n => '$' + Math.round(n).toLocaleString('es-MX');
   let capital = 0, mensual = 0, tasa = 5, anos = 5;
@@ -410,7 +447,8 @@
       document.getElementById('res-interes').textContent  = '—';
       document.getElementById('res-total').textContent    = '—';
       document.getElementById('res-sub').textContent = '';
-      document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
+      document.getElementById('stamp-mult').textContent = '—';
+      document.getElementById('stamp-caption').textContent = 'Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.';
       document.getElementById('insight-text').textContent = 'Ajusta los parámetros para ver cómo crece tu dinero en el tiempo.';
       if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.data.datasets[1].data=[]; chart.data.datasets[2].data=[]; chart.update('none'); }
       return;
@@ -427,7 +465,8 @@
     document.getElementById('res-interes').textContent  = fmt(interes);
     document.getElementById('res-total').textContent    = fmt(total);
     document.getElementById('res-sub').textContent = `en ${anos} año${anos > 1 ? 's' : ''} · rendimiento al ${tasa}% anual`;
-    document.getElementById('multiplier-badge').textContent = `✦ Tu dinero se multiplica ${(total / aportado).toFixed(1)}x`;
+    document.getElementById('stamp-mult').textContent = (total / aportado).toFixed(1) + 'x tu dinero';
+    document.getElementById('stamp-caption').textContent = `Eso es lo que tendrías en ${anos} año${anos>1?'s':''}, con esta estrategia.`;
     document.getElementById('insight-text').innerHTML = pct >= 50
       ? `El interés compuesto generó <strong>${pct}%</strong> de tu riqueza. El tiempo trabajó más que tú.`
       : `Llevas buen camino. Con más tiempo o mayor aportación, el interés compuesto tomará el control: <strong>${pct}%</strong> ya viene del rendimiento.`;
@@ -495,7 +534,144 @@
   });
 
   // Inicio limpio — sin datos precargados
-  document.getElementById('multiplier-badge').textContent = '✦ Ingresa tus datos para ver la proyección';
+  document.getElementById('stamp-mult').textContent = '—';
+  var today = new Date();
+  document.getElementById('ticket-date').textContent = today.toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'});
+
+  // Descargar comprobante como imagen para historia de Instagram
+  (function() {
+    var btn = document.getElementById('downloadStoryBtn');
+    var ticket = document.getElementById('ticketCapture');
+    var chartEl = document.getElementById('chartCapture');
+    if (!btn || !ticket || typeof html2canvas === 'undefined') return;
+    btn.addEventListener('click', function() {
+      var originalText = btn.textContent;
+      btn.textContent = 'Generando imagen...';
+      btn.disabled = true;
+
+      var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+      Promise.all([
+        html2canvas(ticket, {backgroundColor: '#ffffff', scale: 2}),
+        chartEl ? html2canvas(chartEl, {backgroundColor: '#f5f3ee', scale: 2}) : Promise.resolve(null),
+        fontsReady
+      ]).then(function(results) {
+        var ticketCanvas = results[0];
+        var chartCanvas = results[1];
+
+        var storyW = 1080, storyH = 1920;
+        var out = document.createElement('canvas');
+        out.width = storyW;
+        out.height = storyH;
+        var ctx = out.getContext('2d');
+
+        // Fondo con degradado forest
+        var grad = ctx.createLinearGradient(0, 0, 0, storyH);
+        grad.addColorStop(0, '#1c3a1e');
+        grad.addColorStop(1, '#0f2211');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, storyW, storyH);
+
+        // Cuadrícula sutil
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        for (var x = 0; x <= storyW; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, storyH); ctx.stroke(); }
+        for (var y = 0; y <= storyH; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(storyW, y); ctx.stroke(); }
+
+        // Marca — misma tipografía del logo del sitio (Bebas Neue, Salvador blanco + Financiero verde)
+        ctx.textAlign = 'center';
+        ctx.font = '400 46px "Bebas Neue", sans-serif';
+        var word1 = 'SALVADOR ', word2 = 'FINANCIERO';
+        var w1 = ctx.measureText(word1).width, w2 = ctx.measureText(word2).width;
+        var startX = storyW / 2 - (w1 + w2) / 2;
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(word1, startX, 110);
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText(word2, startX + w1, 110);
+        ctx.textAlign = 'center';
+
+        // Calcular tamaños y posiciones (ticket arriba, gráfica debajo)
+        var maxW = storyW - 100;
+        var gap = 30;
+        var tScale = Math.min(maxW / ticketCanvas.width, 1);
+        var tW = ticketCanvas.width * tScale, tH = ticketCanvas.height * tScale;
+        var cW = 0, cH = 0, cScale = 1;
+        if (chartCanvas) {
+          cScale = Math.min(maxW / chartCanvas.width, 1);
+          cW = chartCanvas.width * cScale;
+          cH = chartCanvas.height * cScale;
+        }
+        var totalH = tH + (chartCanvas ? gap + cH : 0);
+        var startY = 200 + (storyH - 200 - 140 - totalH) / 2;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 40;
+        ctx.drawImage(ticketCanvas, (storyW - tW) / 2, startY, tW, tH);
+        if (chartCanvas) {
+          ctx.drawImage(chartCanvas, (storyW - cW) / 2, startY + tH + gap, cW, cH);
+        }
+        ctx.restore();
+
+        // Pie
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.font = 'italic 26px "Instrument Serif", serif';
+        ctx.fillText('Hecho con estrategia ✦', storyW / 2, startY + totalH + 70);
+        ctx.font = '400 30px "Bebas Neue", sans-serif';
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText('AGENDA TU CITA →', storyW / 2, startY + totalH + 116);
+
+        var link = document.createElement('a');
+        link.download = 'proyeccion-salvador-financiero.png';
+        link.href = out.toDataURL('image/png');
+        link.click();
+
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }).catch(function() {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      });
+    });
+  })();
+
+  // Título rotativo
+  (function() {
+    var l1 = document.getElementById('rotLine1');
+    var l2 = document.getElementById('rotLine2');
+    if (!l1 || !l2) return;
+    var phrases = [
+      ['Calculadora de', 'Interés Compuesto'],
+      ['Simula tu', 'Inversión'],
+      ['Ponle números', 'a tu futuro']
+    ];
+    var i = 0;
+    setInterval(function() {
+      l1.style.opacity = '0';
+      l2.style.opacity = '0';
+      setTimeout(function() {
+        i = (i + 1) % phrases.length;
+        l1.textContent = phrases[i][0];
+        l2.textContent = phrases[i][1];
+        l1.style.opacity = '1';
+        l2.style.opacity = '1';
+      }, 400);
+    }, 6000);
+  })();
+
+  // Agendar cita por Instagram
+  (function() {
+    var btn = document.getElementById('agendarBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var msg = 'Hola! Quiero agendar mi cita para platicar mi estrategia de inversión.';
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg);
+      } catch (e) {}
+      window.open('https://ig.me/m/salvadorfinanciero', '_blank');
+    });
+  })();
 </script>
 </body>
 </html>
