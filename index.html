@@ -639,6 +639,20 @@
   }
 }
 
+/* MODAL DE SERVICIO → INSTAGRAM */
+.igmodal-overlay{position:fixed;inset:0;background:rgba(15,25,15,0.72);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+.igmodal-overlay.open{display:flex;}
+.igmodal-box{background:var(--white);border-radius:16px;max-width:420px;width:100%;padding:32px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.35);}
+.igmodal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--soft);width:28px;height:28px;}
+.igmodal-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--forest);letter-spacing:0.02em;margin-bottom:6px;}
+.igmodal-sub{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--mid);margin-bottom:20px;line-height:1.6;}
+.igmodal-opt{display:block;width:100%;text-align:left;background:var(--cream);border:1.5px solid var(--rule);padding:12px 16px;margin-bottom:8px;border-radius:10px;font-family:'DM Mono',monospace;font-size:0.76rem;color:var(--forest);cursor:pointer;transition:all .15s;}
+.igmodal-opt:hover{border-color:var(--sage);background:var(--white);}
+.igmodal-otro-wrap{display:none;margin-top:10px;}
+.igmodal-otro-wrap.open{display:block;}
+.igmodal-otro-wrap textarea{width:100%;border:1.5px solid var(--rule);border-radius:10px;padding:10px;font-family:'DM Mono',monospace;font-size:0.76rem;resize:vertical;min-height:64px;box-sizing:border-box;}
+.igmodal-send{margin-top:10px;width:100%;background:var(--forest);color:white;border:none;padding:12px;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.05em;cursor:pointer;}
+.igmodal-send:hover{background:var(--sage);}
 
 </style>
 </head>
@@ -1073,7 +1087,7 @@
   </div>
 
   <div class="indep-cta">
-    <a href="#contacto">Arma tu plan real →</a>
+    <a href="javascript:void(0)" class="ig-cta">Arma tu plan real →</a>
     <div class="indep-cta-note">Estos números son de referencia — tu estrategia real se ajusta a tu caso.</div>
   </div>
 </section>
@@ -1215,12 +1229,12 @@
         <div class="flip-face flip-back">
           <div class="card-hl">Tu Maestro en Administración Patrimonial hace ✦</div>
           <ul class="svc-list">
-            <li>Diagnóstico y análisis de tu situación financiera actual</li>
-            <li>Diseño de portafolio personalizado según tu perfil de riesgo</li>
-            <li>Inversiones para generación de flujo pasivo</li>
-            <li>Acceso al mercado internacional via SIC</li>
-            <li>Seguimiento mensual y rebalanceo estratégico</li>
-            <li>Acompañamiento continuo — cualquier duda financiera, estoy disponible</li>
+            <li>Diagnóstico patrimonial completo — ingresos, gastos, deudas y metas</li>
+            <li>Gestión de portafolio con acompañamiento semana a semana</li>
+            <li>Planeación de retiro e independencia financiera</li>
+            <li>Educación financiera continua — entiendes cada decisión</li>
+            <li>Estructura financiera para tu negocio o emprendimiento</li>
+            <li>Trámites y dudas fiscales puntuales (SAT, declaraciones)</li>
           </ul>
           <div class="flip-hint back">✦ Toca para regresar ✦</div>
         </div>
@@ -1400,6 +1414,9 @@
       <div class="cicon">in</div>
       <div><div class="clabel">LinkedIn</div><div class="cval">Salvador Financiero</div></div>
     </a>
+    <a href="javascript:void(0)" class="ig-cta ccard" style="background:var(--sage);border-color:var(--sage);justify-content:center;">
+      <div><div class="clabel" style="color:rgba(255,255,255,0.7);">✦</div><div class="cval" style="color:white;">Mandar mensaje — Empecemos</div></div>
+    </a>
   </div>
 </section>
 
@@ -1415,6 +1432,27 @@
   <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 48px;line-height:1.7;">Descubre cuánto puede crecer tu dinero con el tiempo —<br>ponle números a tu futuro.</p>
 
   <a href="calculadora-interes-compuesto.html" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;padding:16px 56px;text-decoration:none;border:3px solid var(--fern);box-shadow:6px 6px 0 var(--sage);transition:all .2s;" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='9px 9px 0 var(--sage)'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 var(--sage)'">✦ Simula tu inversión ✦</a>
+</div>
+
+<div class="igmodal-overlay" id="igModalOverlay">
+  <div class="igmodal-box">
+    <button class="igmodal-close" id="igModalClose">✕</button>
+    <div class="igmodal-title">¿En qué te puedo ayudar?</div>
+    <div class="igmodal-sub">Elige el tema y te armo el mensaje listo para mandarlo por Instagram.</div>
+    <div id="igModalOpts">
+      <button class="igmodal-opt" data-serv="Diagnóstico Patrimonial">🧭 Diagnóstico Patrimonial</button>
+      <button class="igmodal-opt" data-serv="Gestión de Portafolio">📈 Gestión de Portafolio</button>
+      <button class="igmodal-opt" data-serv="Planeación de Retiro">🏝️ Planeación de Retiro</button>
+      <button class="igmodal-opt" data-serv="Educación Financiera">📚 Educación Financiera</button>
+      <button class="igmodal-opt" data-serv="Empresas y Emprendedores">🏢 Empresas y Emprendedores</button>
+      <button class="igmodal-opt" data-serv="Trámites y Asesoría Fiscal">📄 Trámites y Asesoría Fiscal</button>
+      <button class="igmodal-opt" data-serv="otro">✎ Otro</button>
+    </div>
+    <div class="igmodal-otro-wrap" id="igOtroWrap">
+      <textarea id="igOtroText" placeholder="Cuéntame brevemente qué necesitas..."></textarea>
+      <button class="igmodal-send" id="igOtroSend">Enviar →</button>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -1482,6 +1520,73 @@
     });
     menu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() { setOpen(false); });
+    });
+  })();
+
+  // Modal: elegir servicio → armar mensaje → copiar y abrir Instagram
+  (function() {
+    var overlay = document.getElementById('igModalOverlay');
+    var opts = document.getElementById('igModalOpts');
+    var otroWrap = document.getElementById('igOtroWrap');
+    var otroText = document.getElementById('igOtroText');
+    if (!overlay) return;
+
+    function openModal() {
+      overlay.classList.add('open');
+      opts.style.display = '';
+      otroWrap.classList.remove('open');
+      otroText.value = '';
+    }
+    function closeModal() {
+      overlay.classList.remove('open');
+    }
+
+    function sendMessage(servicio) {
+      var msg = 'Hola! Me interesa platicar sobre ' + servicio + '. ¿Podemos agendar una llamada?';
+      var copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(msg);
+          copied = true;
+        }
+      } catch (e) {}
+      window.open('https://ig.me/m/salvadorfinanciero', '_blank');
+      closeModal();
+      setTimeout(function() {
+        if (copied) {
+          alert('✅ Mensaje copiado. Solo pégalo (Cmd/Ctrl+V) en el chat de Instagram que se acaba de abrir:\n\n"' + msg + '"');
+        } else {
+          window.prompt('Copia este mensaje y pégalo en Instagram:', msg);
+        }
+      }, 300);
+    }
+
+    document.getElementById('igModalClose').addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+    opts.querySelectorAll('.igmodal-opt').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var serv = btn.dataset.serv;
+        if (serv === 'otro') {
+          opts.style.display = 'none';
+          otroWrap.classList.add('open');
+        } else {
+          sendMessage(serv);
+        }
+      });
+    });
+    document.getElementById('igOtroSend').addEventListener('click', function() {
+      var txt = otroText.value.trim();
+      if (!txt) return;
+      sendMessage(txt);
+    });
+
+    document.querySelectorAll('.ig-cta').forEach(function(trigger) {
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+      });
     });
   })();
 
