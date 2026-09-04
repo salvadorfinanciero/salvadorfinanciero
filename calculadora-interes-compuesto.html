@@ -622,13 +622,31 @@
         ctx.fillStyle = '#a8c498';
         ctx.fillText('AGENDA TU CITA →', storyW / 2, startY + totalH + 116);
 
-        var link = document.createElement('a');
-        link.download = 'proyeccion-salvador-financiero.png';
-        link.href = out.toDataURL('image/png');
-        link.click();
+        out.toBlob(function(blob) {
+          var file = new File([blob], 'proyeccion-salvador-financiero.png', {type: 'image/png'});
 
-        btn.textContent = originalText;
-        btn.disabled = false;
+          function fallbackDownload() {
+            var link = document.createElement('a');
+            link.download = 'proyeccion-salvador-financiero.png';
+            link.href = out.toDataURL('image/png');
+            link.click();
+          }
+
+          if (navigator.canShare && navigator.canShare({files: [file]})) {
+            navigator.share({
+              files: [file],
+              title: 'Mi proyección · Salvador Financiero',
+              text: 'Así puede crecer mi dinero con interés compuesto ✦'
+            }).catch(function(err) {
+              if (err && err.name !== 'AbortError') fallbackDownload();
+            });
+          } else {
+            fallbackDownload();
+          }
+
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 'image/png');
       }).catch(function() {
         btn.textContent = originalText;
         btn.disabled = false;
