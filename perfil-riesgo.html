@@ -8,12 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --forest:#1c3a1e; --pine:#2d5a30; --sage:#5a7a4a;
     --moss:#7a9e6a; --fern:#a8c498; --mist:#d4e8c8;
     --white:#ffffff; --cream:#f5f3ee; --paper:#eceae2;
     --ink:#1a1a1a; --mid:#555; --soft:#999; --rule:#ccc8bc;
+    --r: 16px; --r-sm: 8px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -32,7 +34,7 @@
   .container{max-width:720px;margin:0 auto;padding:48px 24px 80px;}
 
   .section-intro{margin-bottom:36px;}
-  .section-badge{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;transform:rotate(-0.5deg);}
+  .section-badge{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:14px;}
   .section-title{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--forest);letter-spacing:0.04em;line-height:1;margin-bottom:8px;}
   .section-desc{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--mid);line-height:1.6;letter-spacing:0.04em;}
 
@@ -40,13 +42,13 @@
   .step.active{display:block;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
-  .q-card{background:var(--white);border:2px solid var(--forest);padding:32px 36px;margin-bottom:20px;position:relative;}
-  .q-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);}
+  .q-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--r);padding:32px 36px;margin-bottom:20px;position:relative;box-shadow:0 6px 20px rgba(28,58,30,0.06);}
+  .q-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);border-radius:var(--r) 0 0 var(--r);}
   .q-number{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;}
   .q-text{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--forest);line-height:1.45;margin-bottom:20px;}
 
   .options{display:flex;flex-direction:column;gap:10px;}
-  .option{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1.5px solid var(--rule);cursor:pointer;transition:all .18s;background:var(--cream);}
+  .option{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1.5px solid var(--rule);border-radius:var(--r-sm);cursor:pointer;transition:all .18s;background:var(--cream);}
   .option:hover{border-color:var(--sage);background:#f0f5ec;}
   .option.selected{border-color:var(--forest);background:var(--mist);}
   .option-dot{width:18px;height:18px;border:2px solid var(--rule);border-radius:50%;flex-shrink:0;margin-top:1px;transition:all .18s;display:flex;align-items:center;justify-content:center;}
@@ -58,47 +60,50 @@
   @media(max-width:560px){.input-row{grid-template-columns:1fr;}}
 
   .input-group{margin-bottom:20px;}
+  .domain-btn{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.02em;padding:6px 12px;border:1.5px solid var(--rule);border-radius:20px;background:var(--cream);color:var(--mid);cursor:pointer;transition:all .15s;}
+  .domain-btn:hover{border-color:var(--sage);color:var(--forest);background:var(--white);}
+  .domain-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);}
   .input-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:6px;display:block;}
-  .input-field{width:100%;padding:12px 16px;border:1.5px solid var(--rule);background:var(--cream);font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
+  .input-field{width:100%;padding:12px 16px;border:1.5px solid var(--rule);border-radius:var(--r-sm);background:var(--cream);font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
   .input-field:focus{border-color:var(--forest);}
   .input-note{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--soft);margin-top:4px;font-style:italic;}
 
   .select-wrap{position:relative;}
   .select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--sage);pointer-events:none;font-size:0.9rem;}
-  .input-select{width:100%;padding:12px 16px;border:1.5px solid var(--rule);background:var(--cream);font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--ink);outline:none;transition:border-color .2s;appearance:none;cursor:pointer;}
+  .input-select{width:100%;padding:12px 16px;border:1.5px solid var(--rule);border-radius:var(--r-sm);background:var(--cream);font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--ink);outline:none;transition:border-color .2s;appearance:none;cursor:pointer;}
   .input-select:focus{border-color:var(--forest);}
 
   .btn-row{display:flex;gap:12px;margin-top:28px;}
-  .btn-back{padding:13px 28px;border:2px solid var(--rule);background:transparent;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--mid);cursor:pointer;transition:all .2s;}
+  .btn-back{padding:13px 28px;border:2px solid var(--rule);border-radius:var(--r-sm);background:transparent;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--mid);cursor:pointer;transition:all .2s;}
   .btn-back:hover{border-color:var(--forest);color:var(--forest);}
-  .btn-next{padding:13px 36px;border:2px solid var(--forest);background:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--white);cursor:pointer;transition:all .2s;box-shadow:3px 3px 0 var(--sage);}
-  .btn-next:hover{background:var(--pine);border-color:var(--pine);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--sage);}
+  .btn-next{padding:13px 36px;border:2px solid var(--forest);border-radius:var(--r-sm);background:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--white);cursor:pointer;transition:all .2s;box-shadow:0 6px 18px rgba(28,58,30,0.3);}
+  .btn-next:hover{background:var(--pine);border-color:var(--pine);transform:translateY(-2px);box-shadow:0 10px 24px rgba(28,58,30,0.4);}
 
   .err{font-family:'DM Mono',monospace;font-size:0.65rem;color:#b03a2e;margin-top:8px;display:none;}
   .err.show{display:block;}
 
   /* RESULT */
-  .result-header{background:var(--forest);padding:40px;position:relative;overflow:hidden;}
+  .result-header{background:var(--forest);padding:40px;position:relative;overflow:hidden;border-radius:var(--r) var(--r) 0 0;}
   .result-header::after{content:'$';position:absolute;right:-10px;bottom:-20px;font-size:120px;font-family:Georgia,serif;font-weight:bold;color:rgba(255,255,255,0.04);}
   .result-eyebrow{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);margin-bottom:12px;}
   .result-profile-name{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--white);letter-spacing:0.04em;line-height:1.1;margin-bottom:0;}
 
-  .result-body{background:var(--white);border:2px solid var(--forest);border-top:none;padding:36px;}
+  .result-body{background:var(--white);border:1.5px solid var(--rule);border-top:none;padding:36px;}
   .result-meaning-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;}
   .result-meaning{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--forest);line-height:1.65;margin-bottom:32px;padding-left:14px;border-left:3px solid var(--sage);}
 
   .result-summary-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:14px;}
   .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .summary-item{background:var(--cream);padding:13px 16px;border:1px solid var(--rule);}
+  .summary-item{background:var(--cream);padding:13px 16px;border:1px solid var(--rule);border-radius:var(--r-sm);}
   .si-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;}
   .si-value{font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--forest);font-weight:500;word-break:break-word;}
 
-  .result-cta{background:var(--pine);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;border:2px solid var(--forest);border-top:none;}
+  .result-cta{background:var(--pine);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;border:1.5px solid var(--rule);border-top:none;border-radius:0 0 var(--r) var(--r);}
   .result-cta-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.5;}
-  .result-cta-btn{background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;padding:13px 28px;text-decoration:none;white-space:nowrap;border:2px solid var(--fern);transition:all .2s;cursor:pointer;flex-shrink:0;display:inline-block;}
+  .result-cta-btn{background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;padding:13px 28px;border-radius:var(--r-sm);text-decoration:none;white-space:nowrap;border:2px solid var(--fern);transition:all .2s;cursor:pointer;flex-shrink:0;display:inline-block;}
   .result-cta-btn:hover{background:transparent;color:var(--fern);}
 
-  .btn-restart{margin-top:16px;background:transparent;border:1.5px solid var(--rule);padding:10px 20px;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);cursor:pointer;transition:all .2s;}
+  .btn-restart{margin-top:16px;background:transparent;border:1.5px solid var(--rule);border-radius:20px;padding:10px 20px;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);cursor:pointer;transition:all .2s;}
   .btn-restart:hover{border-color:var(--forest);color:var(--forest);}
 
   @media(max-width:600px){
@@ -238,9 +243,11 @@
   /* ── RESULT PAGE ── */
   .result-wrap {
     background:var(--white);
-    border:2px solid var(--forest);
+    border:1.5px solid var(--rule);
+    border-radius:var(--r);
     overflow:hidden;
     margin-bottom:20px;
+    box-shadow:0 12px 32px rgba(28,58,30,0.1);
   }
   .result-top {
     background:var(--forest);
@@ -308,6 +315,7 @@
   .result-tag {
     padding:6px 14px;
     border:1.5px solid var(--pine);
+    border-radius:20px;
     font-family:'DM Mono',monospace;
     font-size:0.65rem;
     letter-spacing:0.1em;
@@ -369,6 +377,7 @@
     font-size:1rem;
     letter-spacing:0.12em;
     padding:12px 28px;
+    border-radius:var(--r-sm);
     text-decoration:none;
     border:2px solid var(--white);
     transition:all .2s;
@@ -503,6 +512,13 @@
       <div class="input-group" style="margin-bottom:0">
         <label class="input-label">Correo electrónico *</label>
         <input class="input-field" type="email" id="correo" placeholder="Ej. maria@correo.com">
+        <div id="correo-domains" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+          <button type="button" class="domain-btn" data-domain="@gmail.com">@gmail.com</button>
+          <button type="button" class="domain-btn" data-domain="@hotmail.com">@hotmail.com</button>
+          <button type="button" class="domain-btn" data-domain="@outlook.com">@outlook.com</button>
+          <button type="button" class="domain-btn" data-domain="@yahoo.com">@yahoo.com</button>
+          <button type="button" class="domain-btn" data-domain="@icloud.com">@icloud.com</button>
+        </div>
       </div>
     </div>
 
@@ -712,33 +728,35 @@
     </div>
 
     <!-- Profile header with floating sticker image -->
+    <div id="shareCapture" style="border-radius:var(--r);overflow:hidden;">
     <div style="background:var(--forest);padding:40px 36px 36px;margin-bottom:0;position:relative;overflow:hidden;border-left:4px solid var(--fern);">
       <div style="position:absolute;right:-20px;bottom:-10px;pointer-events:none;z-index:0;">
-        <img id="res-profile-img" src="" style="width:280px;opacity:0.35;display:none;transform:rotate(5deg);filter:drop-shadow(0 8px 20px rgba(0,0,0,0.2));">
+        <img id="res-profile-img" src="" style="width:280px;opacity:0.35;display:none;transform:rotate(5deg);filter:drop-shadow(0 8px 20px rgba(0,0,0,0.2));-webkit-mask-image:linear-gradient(to right, transparent, black 35%, black 100%);mask-image:linear-gradient(to right, transparent, black 35%, black 100%);">
       </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--white);margin-bottom:18px;position:relative;z-index:1;">TU PERFIL DE INVERSIONISTA</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--fern);margin-bottom:14px;position:relative;z-index:1;" id="res-greeting">—</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,4.5rem);color:var(--white);letter-spacing:0.04em;line-height:0.95;position:relative;z-index:1;" id="res-profile-name">—</div>
     </div>
 
     <!-- Meaning -->
-    <div style="background:var(--white);border:2px solid var(--forest);border-top:none;padding:32px;">
+    <div style="background:var(--white);border:1.5px solid var(--rule);border-top:none;padding:32px;">
       <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;">¿Qué significa este perfil?</div>
       <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--forest);line-height:1.72;margin-bottom:24px;padding-left:14px;border-left:3px solid var(--sage);" id="res-meaning">—</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">Tipos de instrumentos que podrían encajar contigo</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="res-tags"></div>
-    </div>
-
-    <!-- Summary with hello sticker -->
-    <div style="background:var(--cream);border:2px solid var(--forest);border-top:none;padding:28px 32px;position:relative;">
-      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;">Tu información registrada</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;" id="res-tags"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;border-top:1.5px dashed var(--rule);padding-top:20px;">Tu información registrada</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="res-summary"></div>
+    </div>
     </div>
 
     <!-- CTA -->
-    <div style="background:var(--pine);padding:24px 28px;border:2px solid var(--forest);border-top:none;">
+    <div style="background:var(--pine);padding:24px 28px;border:2px solid var(--forest);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--white);margin-bottom:8px;">¡Gracias por completar el cuestionario!</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:18px;">¿Ya tomaste captura de tu perfil? Compártelo — recuerda seguirme en Instagram.</div>
-      <a href="https://www.instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:var(--white);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 28px;text-decoration:none;">IG @salvadorfinanciero →</a>
+      <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:18px;">Guarda tu resultado, y de paso sígueme en Instagram.</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button id="shareResultBtn" style="display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:13px 28px;border:2px solid var(--fern);border-radius:var(--r-sm);cursor:pointer;">💾 Guardar mi información</button>
+        <a href="https://www.instagram.com/salvadorfinanciero" target="_blank" style="display:inline-block;background:var(--white);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:13px 28px;text-decoration:none;border:2px solid var(--white);border-radius:var(--r-sm);">IG @salvadorfinanciero →</a>
+      </div>
     </div>
 
     <button class="btn-restart" onclick="restart()" style="margin-top:16px;">↺ Reiniciar cuestionario</button>
@@ -753,6 +771,15 @@ var state = {
   q1:null, q2:null, q3:null, q4:null,
   q5:null, q6:null, q7:null, q8:null, canal:''
 };
+
+function formatMoneyDisplay(v) {
+  if (!v) return '';
+  var digits = String(v).replace(/[^0-9.]/g, '');
+  if (!digits) return v;
+  var num = parseFloat(digits);
+  if (isNaN(num)) return v;
+  return '$' + num.toLocaleString('es-MX');
+}
 
 function updateProgress(step) {
   var pct = step === 'result' ? 100 : Math.min(((step-1)/3)*100, 100);
@@ -931,7 +958,7 @@ function calcular() {
     ['Regimen Fiscal', state.regimen],
     ['Interes en invertir', state.interesa || '-'],
     ['Fondo de Emergencia', state.emergencia || '-'],
-    ['Capital Semilla', state.capital || 'No definido'],
+    ['Capital Semilla', formatMoneyDisplay(state.capital) || 'No definido'],
     ['Aportacion Semanal', state.semanal],
     ['Canal Preferido', state.canal],
   ].map(function(item){
@@ -971,6 +998,125 @@ function calcular() {
 
   showStep('result');
 }
+
+function shareResult() {
+  var btn = document.getElementById('shareResultBtn');
+  var capture = document.getElementById('shareCapture');
+  if (!btn || !capture || typeof html2canvas === 'undefined') return;
+  var originalText = btn.textContent;
+  btn.textContent = 'Generando imagen...';
+  btn.disabled = true;
+
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+  Promise.all([
+    html2canvas(capture, {backgroundColor: null, scale: 2}),
+    fontsReady
+  ]).then(function(results) {
+    var shotCanvas = results[0];
+    var storyW = 1080, storyH = 1920;
+    var out = document.createElement('canvas');
+    out.width = storyW; out.height = storyH;
+    var ctx = out.getContext('2d');
+
+    var grad = ctx.createLinearGradient(0, 0, 0, storyH);
+    grad.addColorStop(0, '#1c3a1e');
+    grad.addColorStop(1, '#0f2211');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, storyW, storyH);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (var x = 0; x <= storyW; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, storyH); ctx.stroke(); }
+    for (var y = 0; y <= storyH; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(storyW, y); ctx.stroke(); }
+
+    ctx.textAlign = 'left';
+    ctx.font = '400 46px "Bebas Neue", sans-serif';
+    var word1 = 'SALVADOR ', word2 = 'FINANCIERO';
+    var w1 = ctx.measureText(word1).width, w2 = ctx.measureText(word2).width;
+    var startX = storyW / 2 - (w1 + w2) / 2;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(word1, startX, 110);
+    ctx.fillStyle = '#a8c498';
+    ctx.fillText(word2, startX + w1, 110);
+    ctx.textAlign = 'center';
+
+    var headerH = 180, footerH = 180;
+    var availH = storyH - headerH - footerH;
+    var maxW = storyW - 100;
+    var scaleW = maxW / shotCanvas.width;
+    var h0 = shotCanvas.height * scaleW;
+    var shrink = h0 > availH ? (availH / h0) : 1;
+    var scale = scaleW * shrink;
+    var drawW = shotCanvas.width * scale, drawH = shotCanvas.height * scale;
+    var startY = headerH + Math.max(0, (availH - drawH) / 2);
+
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 40;
+    ctx.drawImage(shotCanvas, (storyW - drawW) / 2, startY, drawW, drawH);
+    ctx.restore();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = 'italic 26px "Instrument Serif", serif';
+    ctx.fillText('Hecho con estrategia ✦', storyW / 2, startY + drawH + 70);
+    ctx.font = '400 30px "Bebas Neue", sans-serif';
+    ctx.fillStyle = '#a8c498';
+    ctx.fillText('DESCUBRE EL TUYO →', storyW / 2, startY + drawH + 116);
+
+    out.toBlob(function(blob) {
+      var file = new File([blob], 'mi-perfil-salvador-financiero.png', {type: 'image/png'});
+
+      function fallbackDownload() {
+        var link = document.createElement('a');
+        link.download = 'mi-perfil-salvador-financiero.png';
+        link.href = out.toDataURL('image/png');
+        link.click();
+      }
+
+      if (navigator.canShare && navigator.canShare({files: [file]})) {
+        navigator.share({
+          files: [file],
+          title: 'Mi perfil de inversionista · Salvador Financiero',
+          text: 'Descubrí mi perfil de inversionista ✦'
+        }).catch(function(err) {
+          if (err && err.name !== 'AbortError') fallbackDownload();
+        });
+      } else {
+        fallbackDownload();
+      }
+
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }, 'image/png');
+  }).catch(function() {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  });
+}
+
+window.addEventListener('load', function() {
+  var shareBtn = document.getElementById('shareResultBtn');
+  if (shareBtn) shareBtn.addEventListener('click', shareResult);
+
+  var correoInput = document.getElementById('correo');
+  var domainWrap = document.getElementById('correo-domains');
+  if (correoInput && domainWrap) {
+    domainWrap.querySelectorAll('.domain-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var current = correoInput.value.trim();
+        var local = current.split('@')[0];
+        correoInput.value = local + btn.dataset.domain;
+        domainWrap.querySelectorAll('.domain-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        correoInput.focus();
+      });
+    });
+    correoInput.addEventListener('input', function() {
+      domainWrap.querySelectorAll('.domain-btn').forEach(function(b) { b.classList.remove('active'); });
+    });
+  }
+});
 
 function restart() {
   Object.keys(state).forEach(function(k){ state[k] = (k.startsWith('q') ? null : ''); });
