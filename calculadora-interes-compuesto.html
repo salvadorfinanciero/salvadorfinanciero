@@ -552,7 +552,7 @@
       var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
       Promise.all([
-        html2canvas(ticket, {backgroundColor: '#ffffff', scale: 2}),
+        html2canvas(ticket, {backgroundColor: '#ffffff', scale: 2, ignoreElements: function(el) { return el.classList && el.classList.contains('insight-box'); }}),
         chartEl ? html2canvas(chartEl, {backgroundColor: '#f5f3ee', scale: 2}) : Promise.resolve(null),
         fontsReady
       ]).then(function(results) {
@@ -591,19 +591,29 @@
         ctx.fillText(word2, startX + w1, 110);
         ctx.textAlign = 'center';
 
-        // Calcular tamaños y posiciones (ticket arriba, gráfica debajo)
+        // Calcular tamaños y posiciones (ticket arriba, gráfica debajo) — siempre cabe entre encabezado y pie
+        var headerH = 180, footerH = 180;
+        var availH = storyH - headerH - footerH;
         var maxW = storyW - 100;
         var gap = 30;
-        var tScale = Math.min(maxW / ticketCanvas.width, 1);
+
+        var tScaleW = maxW / ticketCanvas.width;
+        var cScaleW = chartCanvas ? maxW / chartCanvas.width : 1;
+        var tH0 = ticketCanvas.height * tScaleW;
+        var cH0 = chartCanvas ? chartCanvas.height * cScaleW : 0;
+        var totalH0 = tH0 + (chartCanvas ? gap + cH0 : 0);
+        var shrink = totalH0 > availH ? (availH / totalH0) : 1;
+
+        var tScale = tScaleW * shrink;
         var tW = ticketCanvas.width * tScale, tH = ticketCanvas.height * tScale;
-        var cW = 0, cH = 0, cScale = 1;
+        var cW = 0, cH = 0;
         if (chartCanvas) {
-          cScale = Math.min(maxW / chartCanvas.width, 1);
+          var cScale = cScaleW * shrink;
           cW = chartCanvas.width * cScale;
           cH = chartCanvas.height * cScale;
         }
         var totalH = tH + (chartCanvas ? gap + cH : 0);
-        var startY = 200 + (storyH - 200 - 140 - totalH) / 2;
+        var startY = headerH + Math.max(0, (availH - totalH) / 2);
 
         ctx.save();
         ctx.shadowColor = 'rgba(0,0,0,0.4)';
