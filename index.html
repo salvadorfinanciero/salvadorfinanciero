@@ -315,12 +315,10 @@
   .svc-list li::before{content:'✦';color:var(--fern);font-size:0.65rem;margin-top:2px;flex-shrink:0;}
 
   /* TESTIMONIOS — sage green bg */
-  #testimonios{background:var(--pine);padding:88px 60px;position:relative;overflow:hidden;background-image:linear-gradient(rgba(28,58,30,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(28,58,30,0.055) 1px, transparent 1px);background-size:36px 36px;border-top:3px solid var(--forest);border-bottom:3px solid var(--forest);}
+  #testimonios{background:var(--pine);padding:60px 60px;position:relative;overflow:hidden;background-image:linear-gradient(rgba(28,58,30,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(28,58,30,0.055) 1px, transparent 1px);background-size:36px 36px;border-top:3px solid var(--forest);border-bottom:3px solid var(--forest);}
   .section-header{text-align:center;margin-bottom:56px;}
   .section-tag{display:inline-block;background:var(--sage);color:var(--white);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;}
   .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:var(--white);letter-spacing:0.04em;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,0.07);}
-  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
-  .tcard{background:rgba(255,255,255,0.08);padding:30px;border:1.5px solid rgba(255,255,255,0.15);position:relative;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;border-radius:var(--r);}
 
   .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:36px;border-radius:16px;}
 
@@ -329,6 +327,25 @@
   .modelo-carousel{position:relative;flex:1 1 auto;min-width:0;max-width:520px;overflow:hidden;touch-action:pan-y;padding:4px;}
   .modelo-track{display:flex;transition:transform .45s cubic-bezier(.22,.61,.36,1);will-change:transform;}
   .modelo-track .modelo-card{flex:0 0 100%;min-width:0;cursor:default;}
+
+  /* Testimonios — carrusel por páginas, siempre tarjetas completas */
+  .testi-pager{position:relative;max-width:1100px;margin:0 auto;padding:0 56px;}
+  .testi-window{overflow:hidden;}
+  .testi-track{display:flex;transition:transform .5s cubic-bezier(.22,.61,.36,1);}
+  .testi-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;box-sizing:border-box;}
+  .tcard{background:rgba(255,255,255,0.08);padding:26px;border:1.5px solid rgba(255,255,255,0.15);border-radius:var(--r);transition:box-shadow .2s,background .2s,border-color .2s;display:flex;flex-direction:column;}
+  .tcard:hover{box-shadow:0 16px 40px rgba(0,0,0,0.25);background:rgba(255,255,255,0.13);border-color:var(--fern);}
+  .qmark{font-family:'Playfair Display',serif;font-size:2.6rem;color:var(--fern);line-height:0.5;margin-bottom:10px;display:block;}
+  .ttext{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;line-height:1.6;color:rgba(255,255,255,0.92);margin-bottom:16px;flex:1;}
+  .tauthor{display:flex;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,0.18);padding-top:14px;margin-top:auto;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:0.85rem;flex-shrink:0;}
+  .aname{font-weight:700;font-size:0.76rem;color:var(--white);font-family:'DM Mono',monospace;}
+  .arole{font-size:0.62rem;color:var(--fern);font-family:'DM Mono',monospace;}
+  .testi-dots{display:flex;justify-content:center;gap:8px;margin-top:28px;}
+  .testi-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;transition:background .2s,transform .2s;padding:0;}
+  .testi-dot.active{background:var(--fern);transform:scale(1.3);}
+  @media(max-width:900px){.testi-page{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.testi-page{grid-template-columns:1fr;}.testi-pager{padding:0 44px;}}
 
   .carousel-arrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;transition:background .2s,border-color .2s,transform .15s;}
   .carousel-arrow svg{width:18px;height:18px;}
@@ -345,16 +362,6 @@
     .modelo-card div[style*="font-size:2.8rem"]{font-size:2.2rem !important;margin-bottom:6px !important;}
     .modelo-card div[style*="font-size:1.4rem"]{font-size:1.15rem !important;margin-bottom:10px !important;}
   }
-  .tcard:nth-child(1){transform:rotate(0);}
-  .tcard:nth-child(2){transform:rotate(0);margin-top:0;}
-  .tcard:nth-child(3){transform:rotate(0);}
-  .tcard:hover{transform:translateY(-6px) !important;box-shadow:0 16px 40px rgba(0,0,0,0.25);background:rgba(255,255,255,0.13);border-color:var(--fern);}
-  .qmark{font-family:'Playfair Display',serif;font-size:4.5rem;color:var(--fern);line-height:0.55;margin-bottom:12px;display:block;}
-  .ttext{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.25rem !important;line-height:1.8;color:rgba(255,255,255,0.92);margin-bottom:20px;}
-  .tauthor{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;}
-  .avatar{width:38px;height:38px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1rem;flex-shrink:0;}
-  .aname{font-weight:700;font-size:0.88rem;color:var(--white);font-family:'DM Mono',monospace;}
-  .arole{font-size:0.7rem;color:var(--fern);font-family:'DM Mono',monospace;}
 
   /* PERFIL — grey-green / mist */
   #perfil{padding:100px 60px;background:#d4e8d0;position:relative;overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;}
@@ -440,8 +447,6 @@
     .stat-block{border-right:none;border-bottom:2px solid var(--forest);}
     .stat-block:last-child{border-bottom:none;}
     #about{grid-template-columns:1fr;padding:60px 24px;gap:40px;}
-    .tgrid{grid-template-columns:1fr;}
-    .tcard:nth-child(n){transform:rotate(0);margin-top:0;}
     #perfil{grid-template-columns:1fr;padding:60px 24px;}
     .qprev{display:none;}
     #contacto{grid-template-columns:1fr;padding:60px 24px;gap:40px;}
@@ -1254,29 +1259,44 @@
     <div class="section-tag">Lo que dicen ✦</div>
     <h2 class="section-title">Inversionistas que ya confían</h2>
   </div>
-  <div class="tgrid">
-    <div class="tcard reveal" data-index="0">
-      <span class="qmark">"</span>
-      <p class="ttext">Empecé sin saber nada de inversiones. Hoy tengo un portafolio diversificado que genera flujo mensual. En menos de un año vi resultados reales y entendí cada decisión.</p>
-      <div class="tauthor"><div class="avatar">AR</div><div><div class="aname">Alexia Ramírez</div><div class="arole">Analista de Proyectos de Cadena de Suministro</div></div></div>
+  <div class="testi-pager">
+    <button class="dom-arrow prev" id="testiPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+    <button class="dom-arrow next" id="testiNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+    <div class="testi-window">
+      <div class="testi-track" id="testiTrack"></div>
     </div>
-    <div class="tcard reveal" data-index="1">
-      <span class="qmark">"</span>
-      <p class="ttext">La claridad con la que explica cada estrategia es lo que más valoro. No siento que me venden algo — siento que alguien realmente está cuidando mi dinero como si fuera suyo.</p>
-      <div class="tauthor"><div class="avatar">RS</div><div><div class="aname">Rocío Sánchez</div><div class="arole">Abogada</div></div></div>
-    </div>
-    <div class="tcard reveal" data-index="2">
-      <span class="qmark">"</span>
-      <p class="ttext">Llevaba años "ahorrando" sin invertir de verdad. El cuestionario fue el primer paso — desde el mes uno ya veía rendimiento. El proceso es muy sencillo.</p>
-      <div class="tauthor"><div class="avatar">JR</div><div><div class="aname">Jair Ramírez</div><div class="arole">Administrador de Empresas</div></div></div>
-    </div>
-    <div class="tcard reveal" data-index="3">
-      <span class="qmark">"</span>
-      <p class="ttext">Excelente servicio de principio a fin. Me ayudó a poner en orden mis declaraciones del SAT con muchísima paciencia y transparencia, explicando cada paso con claridad. Resultados excelentes y una tranquilidad enorme. Lo recomiendo ampliamente.</p>
-      <div class="tauthor"><div class="avatar">FL</div><div><div class="aname">Frida Lució</div><div class="arole">Dentista</div></div></div>
-    </div>
+    <div class="testi-dots" id="testiDots"></div>
   </div>
 </section>
+
+<script>
+  var TESTIMONIOS_DATA = [
+    {
+      initials: 'AR',
+      name: 'Alexia Ramírez',
+      role: 'Analista de Proyectos',
+      text: 'Empecé sin saber absolutamente nada de inversiones y hoy tengo un portafolio diversificado que me genera flujo mensual. Me explicó cada movimiento antes de hacerlo, sin tecnicismos que no entendiera. En menos de un año ya veía resultados reales, y lo más valioso es que ahora entiendo cada decisión que se toma con mi dinero.'
+    },
+    {
+      initials: 'RS',
+      name: 'Rocío Sánchez',
+      role: 'Abogada',
+      text: 'La claridad con la que explica cada estrategia es lo que más valoro — nunca sentí que me estaban vendiendo algo. Contesta mis dudas a cualquier hora y me ha ido guiando con mucha paciencia desde el primer día. Siento que alguien realmente está cuidando mi dinero como si fuera suyo, y eso no tiene precio.'
+    },
+    {
+      initials: 'JR',
+      name: 'Jair Ramírez',
+      role: 'Administrador de Empresas',
+      text: 'Llevaba años "ahorrando" sin invertir de verdad, solo dejando el dinero quieto en el banco. El cuestionario de perfil de riesgo fue el primer paso, y desde el mes uno ya empecé a ver rendimiento real. El proceso es muy sencillo, y el acompañamiento constante me dio la confianza que me faltaba.'
+    },
+    {
+      initials: 'FL',
+      name: 'Frida Lució',
+      role: 'Dentista',
+      text: 'Excelente servicio de principio a fin. Me ayudó a poner en orden mis declaraciones del SAT con muchísima paciencia y transparencia, explicando cada paso con claridad. Resultados excelentes y una tranquilidad enorme. Lo recomiendo ampliamente.'
+    }
+  ];
+</script>
 
 <!-- MINI SECCIÓN FAMILIA -->
 <div class="reveal" style="background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.06) 1px,transparent 1px);background-size:36px 36px;border-top:3px solid var(--rule);border-bottom:3px solid var(--sage);padding:24px 60px;text-align:center;">
@@ -1754,6 +1774,130 @@
   window.addEventListener('load', function() {
     if (renderModelo) renderModelo();
   });
+
+  // Carrusel de testimonios — por páginas, siempre tarjetas completas (nunca a medias)
+  (function() {
+    var track = document.getElementById('testiTrack');
+    var dotsWrap = document.getElementById('testiDots');
+    var prevBtn = document.getElementById('testiPrev');
+    var nextBtn = document.getElementById('testiNext');
+    if (!track || typeof TESTIMONIOS_DATA === 'undefined') return;
+
+    var current = 0;
+    var itemsPerPage = 3;
+    var pageCount = 1;
+    var timer = null;
+    var paused = false;
+
+    // Mezclar el orden de los testimonios cada vez que se carga la página
+    for (var s = TESTIMONIOS_DATA.length - 1; s > 0; s--) {
+      var j = Math.floor(Math.random() * (s + 1));
+      var tmp = TESTIMONIOS_DATA[s];
+      TESTIMONIOS_DATA[s] = TESTIMONIOS_DATA[j];
+      TESTIMONIOS_DATA[j] = tmp;
+    }
+
+    function getItemsPerPage() {
+      var w = window.innerWidth;
+      if (w <= 600) return 1;
+      if (w <= 900) return 2;
+      return 3;
+    }
+
+    function buildPages() {
+      itemsPerPage = getItemsPerPage();
+      pageCount = Math.ceil(TESTIMONIOS_DATA.length / itemsPerPage);
+      current = Math.min(current, pageCount - 1);
+      track.innerHTML = '';
+      for (var p = 0; p < pageCount; p++) {
+        var pageEl = document.createElement('div');
+        pageEl.className = 'testi-page';
+        var items = TESTIMONIOS_DATA.slice(p * itemsPerPage, p * itemsPerPage + itemsPerPage);
+        items.forEach(function(t) {
+          var card = document.createElement('div');
+          card.className = 'tcard';
+          card.innerHTML = '<span class="qmark">&quot;</span>' +
+            '<p class="ttext">' + t.text + '</p>' +
+            '<div class="tauthor"><div class="avatar">' + t.initials + '</div><div><div class="aname">' + t.name + '</div><div class="arole">' + t.role + '</div></div></div>';
+          pageEl.appendChild(card);
+        });
+        track.appendChild(pageEl);
+      }
+      buildDots();
+      render();
+    }
+
+    function buildDots() {
+      if (!dotsWrap) return;
+      dotsWrap.innerHTML = '';
+      for (var i = 0; i < pageCount; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'testi-dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Página ' + (i + 1));
+        (function(idx) {
+          dot.addEventListener('click', function() { goTo(idx); });
+        })(i);
+        dotsWrap.appendChild(dot);
+      }
+    }
+
+    function render() {
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      if (dotsWrap) {
+        Array.prototype.forEach.call(dotsWrap.children, function(dot, i) {
+          dot.classList.toggle('active', i === current);
+        });
+      }
+    }
+
+    function goTo(i) {
+      current = ((i % pageCount) + pageCount) % pageCount;
+      render();
+    }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    if (prevBtn) prevBtn.addEventListener('click', function() { prev(); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { next(); });
+
+    var pager = document.querySelector('.testi-pager');
+    if (pager) {
+      pager.addEventListener('mouseenter', function() { paused = true; });
+      pager.addEventListener('mouseleave', function() { paused = false; });
+    }
+
+    var touchStartX = 0, isSwiping = false;
+    if (pager) {
+      pager.addEventListener('touchstart', function(e) {
+        paused = true;
+        touchStartX = e.touches[0].clientX;
+        isSwiping = true;
+      }, {passive: true});
+      pager.addEventListener('touchend', function(e) {
+        if (isSwiping) {
+          var dx = e.changedTouches[0].clientX - touchStartX;
+          if (dx > 40) prev();
+          else if (dx < -40) next();
+        }
+        isSwiping = false;
+        setTimeout(function() { paused = false; }, 1500);
+      }, {passive: true});
+    }
+
+    function startAutoplay() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function() { if (!paused && pageCount > 1) next(); }, 6000);
+    }
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildPages, 200);
+    });
+
+    buildPages();
+    startAutoplay();
+  })();
 </script>
 </body>
 </html>
