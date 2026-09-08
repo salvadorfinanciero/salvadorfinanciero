@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<meta charset="UTF-8">
+<meta name="theme-color" content="#1c3a1e">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.3, user-scalable=yes">
+<title>Asesoría Patrimonial · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #1c3a1e;
+    --pine:     #2d5a30;
+    --sage:     #5a7a4a;
+    --moss:     #7a9e6a;
+    --fern:     #a8c498;
+    --mist:     #d4e8c8;
+    --grey-grn: #8a9e88;
+    --white:    #ffffff;
+    --cream:    #f5f3ee;
+    --paper:    #eceae2;
+    --ink:      #1a1a1a;
+    --mid:      #555;
+    --soft:     #999;
+    --rule:     #ccc8bc;
+    --r: 16px;
+    --r-sm: 8px;
+    --r-xs: 6px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--cream);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
+  #diagnostico,#portafolio,#retiro,#educacion,#fiscal,#contacto-cta{scroll-margin-top:110px;}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+  .nav-logo span{color:var(--fern);}
+  .nav-links{display:flex;gap:24px;list-style:none;}
+  .nav-links a{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--fern);}
+  .nav-acc-btn{background:none;border:none;font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0;transition:color .2s;}
+  .nav-acc-btn:hover,.nav-acc-btn.open{color:var(--fern);}
+  .nav-acc-btn svg{width:10px;height:10px;transition:transform .25s;}
+  .nav-acc-btn.open svg{transform:rotate(180deg);}
+  .nav-accordion{position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:150;max-height:0;overflow:hidden;transition:max-height .35s ease;box-shadow:0 16px 40px rgba(0,0,0,0.25);}
+  .nav-accordion.open{max-height:340px;}
+  .nav-accordion-inner{max-width:1000px;margin:0 auto;padding:96px 40px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 24px;}
+  .nav-accordion-inner a{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:rgba(255,255,255,0.78);text-decoration:none;padding:10px 14px;border-radius:8px;transition:background .15s,color .15s;display:flex;align-items:center;gap:10px;}
+  .nav-accordion-inner a:hover{background:rgba(255,255,255,0.08);color:var(--fern);}
+  .nav-accordion-scrim{position:fixed;inset:0;background:rgba(15,25,15,0.35);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .nav-accordion-scrim.open{opacity:1;pointer-events:auto;}
+  @media(max-width:768px){.nav-acc-btn{display:none;}.nav-accordion{display:none;}}
+
+  .nav-burger{display:none;align-items:center;justify-content:center;width:32px;height:32px;background:none;border:none;cursor:pointer;padding:0;z-index:101;position:relative;}
+  .nav-burger .burger-bars{display:flex;flex-direction:column;justify-content:center;gap:5px;width:100%;height:100%;position:absolute;top:0;left:0;opacity:1;transition:opacity .2s;}
+  .nav-burger .burger-bars span{display:block;width:100%;height:2px;background:var(--white);}
+  .nav-burger .burger-arrow{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
+  .nav-burger .burger-arrow svg{width:20px;height:20px;}
+  .nav-burger.open .burger-bars{opacity:0;}
+  .nav-burger.open .burger-arrow{opacity:1;}
+
+  .nav-links-mobile{display:block;list-style:none;position:fixed;top:0;left:0;right:0;background:var(--forest);border-bottom:3px solid var(--sage);z-index:99;max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0;margin:0;overflow-y:auto;}
+  .nav-links-mobile.open{max-height:100vh;padding-top:64px;padding-bottom:20px;}
+  .nav-links-mobile li{border-top:1px solid rgba(255,255,255,0.1);}
+  .nav-links-mobile a{display:flex;align-items:center;gap:10px;padding:14px 24px;font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.8);text-decoration:none;transition:color .2s;}
+  .nav-links-mobile a:hover{color:var(--fern);}
+  .nlm-mark{color:var(--fern);font-size:0.7rem;flex-shrink:0;}
+
+  .sub-hero{background:var(--forest);padding:150px 60px 70px;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;border-bottom:3px solid var(--sage);}
+  .sub-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:20px;}
+  .sub-eyebrow::before{content:'';display:block;width:22px;height:2px;background:var(--fern);}
+  .sub-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,6vw,5rem);line-height:0.95;color:var(--white);letter-spacing:0.01em;max-width:780px;}
+  .sub-title span{color:var(--fern);}
+  .sub-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:rgba(255,255,255,0.72);max-width:560px;line-height:1.65;margin-top:20px;}
+
+  .dsec{padding:80px 60px;border-bottom:1px solid var(--rule);}
+  .dsec:nth-child(odd){background:var(--paper);}
+  .dsec-inner{max-width:920px;margin:0 auto;}
+  .dsec-tag{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 14px;margin-bottom:16px;border-radius:20px;}
+  .dsec-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--forest);letter-spacing:0.02em;margin-bottom:16px;}
+  .dsec-txt{font-size:1.05rem;line-height:1.85;color:var(--mid);max-width:760px;}
+
+  /* Diagnóstico Patrimonial — fondo de video */
+  #diagnostico.diag-section{position:relative;overflow:hidden;padding:140px 60px;border-bottom:1px solid var(--rule);background:var(--forest);}
+  .diag-video-bg{position:absolute;inset:0;z-index:0;background-image:url('images/diagnostico-poster.jpg');background-size:cover;background-position:center;}
+  .diag-video{width:100%;height:100%;object-fit:cover;filter:brightness(0.82) saturate(0.95);display:block;}
+  .diag-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,32,19,0.92) 0%,rgba(15,32,19,0.72) 42%,rgba(15,32,19,0.32) 100%),linear-gradient(0deg,rgba(15,32,19,0.35) 0%,transparent 40%);pointer-events:none;}
+  .diag-content{position:relative;z-index:1;}
+  .diag-tag{display:inline-block;background:var(--sage);color:white;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 14px;margin-bottom:16px;border-radius:20px;}
+  .diag-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--white);letter-spacing:0.02em;margin-bottom:16px;text-shadow:0 2px 10px rgba(0,0,0,0.25);}
+  .diag-txt{font-size:1.05rem;line-height:1.85;color:rgba(255,255,255,0.88);max-width:640px;}
+  @media(max-width:768px){
+    #diagnostico.diag-section{padding:80px 20px;}
+    .diag-video{display:none;}
+    .diag-overlay{background:linear-gradient(180deg,rgba(15,32,19,0.85) 0%,rgba(15,32,19,0.55) 55%,rgba(15,32,19,0.35) 100%);}
+  }
+
+  #portafolio{background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;}
+  .modelo-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;}
+  .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:32px;border-radius:16px;color:var(--white);}
+  .modelo-num{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--sage);line-height:1;margin-bottom:12px;}
+  .modelo-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:12px;}
+  .modelo-tag{display:inline-block;background:var(--pine);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 8px;text-transform:uppercase;vertical-align:middle;margin-left:8px;border-radius:20px;}
+  .modelo-body{font-family:'DM Mono',monospace;font-size:0.76rem;color:rgba(255,255,255,0.86);line-height:1.65;margin-bottom:14px;}
+  .modelo-foot{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;}
+  .portafolio-quote{max-width:880px;margin:44px auto 0;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,0.8);text-align:center;line-height:1.75;border-top:1px solid rgba(255,255,255,0.14);padding-top:32px;}
+
+  /* Mini flow de portafolio — "así se ve en la práctica" */
+  .flow-label{text-align:center;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin:40px 0 22px;}
+  .flow-strip{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .flow-step{text-align:center;padding:0 10px;position:relative;}
+  .flow-step::before{content:'';position:absolute;top:19px;left:-50%;width:100%;height:2px;background:rgba(255,255,255,0.15);z-index:0;}
+  .flow-step:first-child::before{display:none;}
+  .flow-circ{width:38px;height:38px;border-radius:50%;background:#1e4220;border:1.5px solid var(--sage);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;position:relative;z-index:1;}
+  .flow-lbl{font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.82);line-height:1.5;max-width:150px;margin:0 auto;}
+  @media(max-width:640px){
+    .flow-strip{grid-template-columns:1fr;gap:22px;}
+    .flow-step::before{display:none;}
+  }
+
+  /* Educación Financiera — tarjetas de temas */
+  .edu-head{max-width:760px;margin:0 auto 40px;text-align:center;}
+  .edu-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .edu-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--r);padding:28px;transition:all .2s;}
+  .edu-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 10px 26px rgba(28,58,30,0.08);}
+  .edu-icon{font-size:1.5rem;margin-bottom:14px;}
+  .edu-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:0.03em;color:var(--forest);margin-bottom:8px;}
+  .edu-desc{font-family:'DM Mono',monospace;font-size:0.76rem;color:var(--mid);line-height:1.65;}
+  .edu-quote{max-width:760px;margin:40px auto 0;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--forest);text-align:center;line-height:1.7;border-top:2px solid var(--rule);padding-top:30px;}
+
+  /* Trámites y Asesoría Fiscal */
+  #fiscal{background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;}
+  .modelo-grid-3{max-width:1000px;margin:36px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:900px){.modelo-grid-3{grid-template-columns:1fr;}}
+
+  .cta-final{background:var(--paper);padding:80px 60px;text-align:center;}
+  .cta-final-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);color:var(--forest);margin-bottom:16px;}
+  .cta-final-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:var(--mid);max-width:480px;margin:0 auto 30px;line-height:1.7;}
+  .cta-final-btn{display:inline-block;background:var(--forest);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;padding:15px 40px;text-decoration:none;border:2px solid var(--forest);transition:all .2s;border-radius:var(--r-sm);}
+  .cta-final-btn:hover{background:transparent;color:var(--forest);transform:translateY(-2px);}
+
+  footer{background:var(--forest) !important;padding:16px 40px;display:flex;align-items:center;justify-content:center;border-top:2px solid var(--pine);flex-wrap:wrap;gap:16px;text-align:center;}
+  .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
+  .flogo span{color:var(--fern);}
+  .ftext{font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,.84,.44,1),transform .7s cubic-bezier(.16,.84,.44,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:768px){
+    nav{padding:14px 20px;} .nav-links{display:none;} .nav-burger{display:flex;}
+    .sub-hero{padding:120px 20px 50px;}
+    .dsec,#portafolio,#fiscal,.cta-final{padding:50px 20px;}
+    .modelo-grid,.edu-grid{grid-template-columns:1fr;}
+    footer{flex-direction:column;gap:10px;padding:20px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#hero" class="nav-logo" style="text-decoration:none;">Salvador <span>Financiero</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">Sobre mí</a></li>
+    <li><button class="nav-acc-btn" id="btnServicios">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></li>
+    <li><a href="index.html#testimonios">Clientes</a></li>
+    <li><a href="index.html#perfil">Perfil de Riesgo</a></li>
+    <li><button class="nav-acc-btn" id="btnHerramientas">Herramientas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false">
+    <span class="burger-bars"><span></span><span></span><span></span></span>
+    <span class="burger-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--white);"><polyline points="5 15 12 8 19 15"></polyline></svg></span>
+  </button>
+</nav>
+<div class="nav-accordion-scrim" id="navScrim"></div>
+<div class="nav-accordion" id="panelServicios">
+  <div class="nav-accordion-inner">
+    <a href="#diagnostico">🧭 Diagnóstico Patrimonial</a>
+    <a href="#portafolio">📈 Gestión de Portafolio</a>
+    <a href="#retiro">🏝️ Planeación de Retiro</a>
+    <a href="#educacion">📚 Educación Financiera</a>
+    <a href="index.html#contacto">🏢 Empresas y Emprendedores</a>
+    <a href="#fiscal">📄 Trámites y Asesoría Fiscal</a>
+  </div>
+</div>
+<div class="nav-accordion" id="panelHerramientas">
+  <div class="nav-accordion-inner">
+    <a href="fondo-emergencia1_1.html">🛡️ Fondo de Emergencia</a>
+    <a href="presupuesto-mensual.html">📋 Presupuesto Mensual</a>
+    <a href="index.html#perfil">🎯 Perfil de Riesgo</a>
+    <a href="calculadora-interes-compuesto.html">✦ Interés Compuesto</a>
+    <a href="comparador-inversion.html">🚀 Comparador de Inversión</a>
+    <a href="index.html#independencia">🏝️ Independencia ×150</a>
+  </div>
+</div>
+<ul class="nav-links-mobile" id="navLinksMobile">
+  <li><a href="index.html#about"><span class="nlm-mark">✦</span>Sobre mí</a></li>
+  <li><a href="#diagnostico"><span class="nlm-mark">✦</span>Diagnóstico Patrimonial</a></li>
+  <li><a href="#portafolio"><span class="nlm-mark">✦</span>Gestión de Portafolio</a></li>
+  <li><a href="#retiro"><span class="nlm-mark">✦</span>Planeación de Retiro</a></li>
+  <li><a href="#educacion"><span class="nlm-mark">✦</span>Educación Financiera</a></li>
+  <li><a href="#fiscal"><span class="nlm-mark">✦</span>Trámites y Asesoría Fiscal</a></li>
+  <li><a href="index.html#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
+  <li><a href="index.html#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
+  <li><a href="index.html#herramientas"><span class="nlm-mark">✦</span>Herramientas</a></li>
+  <li><a href="index.html#contacto"><span class="nlm-mark">✦</span>Contacto</a></li>
+</ul>
+
+<div class="sub-hero">
+  <div class="sub-eyebrow">Servicios · Asesoría Patrimonial</div>
+  <h1 class="sub-title">Diagnóstico, portafolio,<br>retiro y <span>educación financiera</span> —<br>todo en un mismo plan.</h1>
+  <p class="sub-sub">Esto es lo que cubre mi acompañamiento como Maestro en Administración Patrimonial, a detalle.</p>
+</div>
+
+<section id="diagnostico" class="diag-section">
+  <div class="diag-video-bg">
+    <video class="diag-video" autoplay muted loop playsinline poster="images/diagnostico-poster.jpg">
+      <source src="images/diagnostico-bg.mp4" type="video/mp4">
+    </video>
+    <div class="diag-overlay"></div>
+  </div>
+  <div class="dsec-inner diag-content reveal">
+    <div class="diag-tag">🧭 Diagnóstico Patrimonial</div>
+    <h2 class="diag-ttl">Un mapa completo de en dónde estás y hacia dónde vas.</h2>
+    <p class="diag-txt">Antes de mover un peso, revisamos juntos tu situación real: ingresos, gastos, deudas, ahorro actual y tus metas de corto y largo plazo. De ahí sale una estrategia hecha a tu medida — no una plantilla genérica. Este diagnóstico es el punto de partida de cualquier otro servicio: gestión de portafolio, retiro, o tu negocio.</p>
+  </div>
+</section>
+
+<section id="portafolio">
+  <div style="text-align:center;margin-bottom:20px;" class="reveal">
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">📈 Gestión de Portafolio · Cómo trabajamos ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
+  </div>
+  <div class="modelo-grid reveal">
+    <div class="modelo-card">
+      <div class="modelo-num">01</div>
+      <div class="modelo-ttl">Suscripción mensual <span class="modelo-tag">Variable</span></div>
+      <div class="modelo-body">Una vez que empiezas a fondear tu cuenta (en la casa de bolsa de tu elección), te acompaño estratégicamente en tu portafolio semana a semana — colocando órdenes de compra con un análisis previo, personalizado a tus objetivos y horizonte de inversión.</div>
+      <div class="modelo-foot">Desde $299 / mes · según tu nivel de inversión</div>
+    </div>
+    <div class="modelo-card">
+      <div class="modelo-num">02</div>
+      <div class="modelo-ttl">Bono de éxito anual <span class="modelo-tag">Solo si hay rendimiento</span></div>
+      <div class="modelo-body">Al cierre del año revisamos cuánto creció tu inversión. Si hubo rendimiento, cobro un porcentaje únicamente sobre esa ganancia. Si no ganaste, yo no cobro ese bono. Así los dos tenemos el mismo objetivo: que tu dinero crezca.</div>
+      <div class="modelo-foot">Si no hay rendimiento, no hay bono. Punto.</div>
+    </div>
+  </div>
+
+  <div class="flow-label reveal">Así se ve en la práctica ✦</div>
+  <div class="flow-strip reveal">
+    <div class="flow-step">
+      <div class="flow-circ">1</div>
+      <div class="flow-lbl">Diagnóstico inicial</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-circ">2</div>
+      <div class="flow-lbl">Fondeas tu casa de bolsa</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-circ">3</div>
+      <div class="flow-lbl">Acompañamiento semana a semana</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-circ">4</div>
+      <div class="flow-lbl">Revisión y ajuste continuo</div>
+    </div>
+  </div>
+
+  <p class="portafolio-quote reveal">A diferencia de los bancos que cobran sin importar si ganaste o perdiste, aquí el incentivo es uno solo — que tu patrimonio crezca. Si tú ganas, yo gano.</p>
+</section>
+
+<section id="retiro" class="dsec">
+  <div class="dsec-inner reveal">
+    <div class="dsec-tag">🏝️ Planeación de Retiro</div>
+    <h2 class="dsec-ttl">Construye, desde hoy, el capital que te va a sostener.</h2>
+    <p class="dsec-txt">Definimos tu meta de independencia financiera — el capital que necesitas para que tu dinero te pague tu sueldo, mes con mes, sin que dependas de trabajar. Podemos empezar ahora mismo con la <a href="index.html#independencia" style="color:var(--forest);font-weight:600;">calculadora de Independencia ×150</a>, y de ahí armamos un plan de aportación real para tu edad y horizonte.</p>
+  </div>
+</section>
+
+<section id="educacion" class="dsec">
+  <div class="edu-head reveal">
+    <div class="dsec-tag">📚 Educación Financiera</div>
+    <h2 class="dsec-ttl">Mentoría continua, no solo gestión.</h2>
+    <p class="dsec-txt" style="margin:0 auto;">No se trata de que confíes ciegamente en que "algo se está haciendo" con tu dinero — se trata de que entiendas cada decisión. Ese acompañamiento continuo es parte del servicio, no un extra.</p>
+  </div>
+
+  <div class="edu-grid reveal">
+    <div class="edu-card">
+      <div class="edu-icon">📊</div>
+      <div class="edu-ttl">Fundamentos de Inversión</div>
+      <div class="edu-desc">Qué es una acción, un ETF, una Fibra o un CETE — y cómo se mueven realmente en el mercado.</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">🧠</div>
+      <div class="edu-ttl">Psicología del Dinero</div>
+      <div class="edu-desc">Cómo manejar el miedo en las caídas y la euforia en las subidas, sin decisiones impulsivas.</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">📱</div>
+      <div class="edu-ttl">Tu Casa de Bolsa, Sin Misterio</div>
+      <div class="edu-desc">Aprende a leer tu app, entender comisiones y colocar tus propias órdenes con confianza.</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">💬</div>
+      <div class="edu-ttl">Dudas Sin Límite</div>
+      <div class="edu-desc">Cualquier pregunta que te surja en el camino, la resolvemos juntos — sin costo extra, sin límite de veces.</div>
+    </div>
+  </div>
+
+  <p class="edu-quote reveal">El objetivo no es que dependas de mí para siempre — es que cada vez sepas más sobre tu propio dinero.</p>
+</section>
+
+<section id="fiscal">
+  <div style="text-align:center;margin-bottom:20px;" class="reveal">
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">📄 Trámites y Asesoría Fiscal · Otra forma de ayudar ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No todo es invertir.<br>A veces es poner orden.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Declaraciones, trámites ante el SAT, dudas puntuales — sin rodeos.</p>
+  </div>
+  <div class="modelo-grid-3 reveal">
+    <div class="modelo-card">
+      <div class="modelo-num">01</div>
+      <div class="modelo-ttl">Declaraciones al Día <span class="modelo-tag">Anuales o atrasadas</span></div>
+      <div class="modelo-body">Te ayudo a poner en orden tus declaraciones — anuales, atrasadas o mensuales — y evitar recargos innecesarios por trámites pendientes.</div>
+    </div>
+    <div class="modelo-card">
+      <div class="modelo-num">02</div>
+      <div class="modelo-ttl">Trámites ante el SAT <span class="modelo-tag">RFC · Buzón · Datos</span></div>
+      <div class="modelo-body">RFC, buzón tributario, actualización de datos o cualquier trámite puntual que necesites resolver, sin perder tiempo en filas.</div>
+    </div>
+    <div class="modelo-card">
+      <div class="modelo-num">03</div>
+      <div class="modelo-ttl">Dudas Fiscales Puntuales <span class="modelo-tag">Sin costo por platicar</span></div>
+      <div class="modelo-body">¿Te llegó una carta invitación? ¿No sabes si debes declarar? Resolvemos tu duda de forma clara, sin tecnicismos.</div>
+    </div>
+  </div>
+  <p class="portafolio-quote reveal">Escucharte no cuesta nada. Si tu caso requiere trabajo de mi parte, te paso una cotización clara antes de empezar — nunca por sorpresa.</p>
+</section>
+
+<div class="cta-final">
+  <div class="cta-final-ttl reveal">¿Le ponemos número a tu caso?</div>
+  <p class="cta-final-sub reveal">El primer paso cuesta cero — cuéntame dónde estás parado y hacia dónde quieres llegar.</p>
+  <a href="index.html#contacto" class="cta-final-btn reveal">Hablemos →</a>
+</div>
+
+<footer>
+  <a href="index.html#hero" class="flogo" style="text-decoration:none;">Salvador <span>Financiero</span></a>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México</div>
+  <div class="ftext">✦ Hecho con estrategia ✦</div>
+</footer>
+
+<script>
+  var obs = new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+  });}, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+  (function() {
+    var burger = document.getElementById('navBurger');
+    var menu = document.getElementById('navLinksMobile');
+    if (!burger || !menu) return;
+    function setOpen(isOpen) {
+      menu.classList.toggle('open', isOpen);
+      burger.classList.toggle('open', isOpen);
+      burger.setAttribute('aria-expanded', isOpen);
+      burger.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+    }
+    burger.addEventListener('click', function() { setOpen(!menu.classList.contains('open')); });
+    menu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', function() { setOpen(false); }); });
+  })();
+
+  (function() {
+    var scrim = document.getElementById('navScrim');
+    var btns = [
+      {btn: document.getElementById('btnServicios'), panel: document.getElementById('panelServicios')},
+      {btn: document.getElementById('btnHerramientas'), panel: document.getElementById('panelHerramientas')}
+    ];
+    function closeAll() {
+      btns.forEach(function(o) {
+        if (o.btn) o.btn.classList.remove('open');
+        if (o.panel) o.panel.classList.remove('open');
+      });
+      if (scrim) scrim.classList.remove('open');
+    }
+    btns.forEach(function(o) {
+      if (!o.btn || !o.panel) return;
+      o.btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var willOpen = !o.panel.classList.contains('open');
+        closeAll();
+        if (willOpen) {
+          o.btn.classList.add('open');
+          o.panel.classList.add('open');
+          if (scrim) scrim.classList.add('open');
+        }
+      });
+      o.panel.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeAll); });
+    });
+    if (scrim) scrim.addEventListener('click', closeAll);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
+  })();
+</script>
+</body>
+</html>
