@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#1c3a1e">
 <title>Calculadora de Costos — Salvador Financiero</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --forest: #1c3a1e;
@@ -90,6 +91,11 @@
   .no-califica p { font-size:0.7rem; line-height:1.7; color:rgba(100,30,30,0.85); }
   .no-califica strong { color:#7a1f1f; }
 
+  /* INDICADOR RÁPIDO APLICA/NO APLICA */
+  .bono-quick { display:inline-block; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.05em; padding:6px 16px; margin-bottom:14px; border-radius:20px; }
+  .bono-quick.ok { background:rgba(90,122,74,0.15); color:var(--sage); }
+  .bono-quick.no { background:rgba(160,50,50,0.1); color:#a03232; }
+
   /* BONO EXTRA */
   .bono-extra { margin-top:18px; padding-top:18px; border-top:1px solid rgba(28,58,30,0.1); }
   .bono-extra-title { font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(28,58,30,0.35); margin-bottom:12px; }
@@ -120,6 +126,44 @@
   }
   .btn-pdf:hover { background:var(--pine); }
   .btn-pdf svg { width:16px; height:16px; fill:var(--fern); }
+  .btn-img {
+    display:inline-flex; align-items:center; gap:10px;
+    background:transparent; color:var(--forest); border:1.5px solid var(--sage);
+    font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;
+    padding:13px 28px; cursor:pointer; transition:all .2s; margin-left:10px;
+  }
+  .btn-img:hover { background:var(--sage); color:white; }
+  .btn-img:disabled, .btn-pdf:disabled { opacity:0.4; cursor:not-allowed; }
+
+  /* AGREGAR AL CARRITO */
+  .btn-add { display:inline-flex; align-items:center; gap:6px; margin-top:14px; background:var(--forest); color:var(--fern); border:none; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; padding:10px 18px; cursor:pointer; transition:background .2s; }
+  .btn-add:hover { background:var(--pine); }
+
+  /* SECCIÓN 03 — OTROS SERVICIOS */
+  select#sel-servicio {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.85rem;
+    padding:12px 16px; outline:none; cursor:pointer;
+  }
+  select#sel-servicio:focus { border-color:var(--sage); }
+  .servicio-row { display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap; }
+  .servicio-row .input-group { flex:1; min-width:180px; margin-bottom:0; }
+  .servicio-hint { font-size:0.6rem; color:rgba(28,58,30,0.4); margin-top:6px; line-height:1.6; }
+
+  /* DESGLOSE / CARRITO */
+  .desglose-section { background:var(--white); border-top:4px solid var(--sage); padding:36px; box-shadow:0 2px 16px rgba(28,58,30,0.07); }
+  .desglose-section h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--sage); margin-bottom:6px; }
+  .desglose-empty { font-size:0.72rem; color:rgba(28,58,30,0.35); padding:20px 0; text-align:center; font-style:italic; }
+  .desglose-item { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid rgba(28,58,30,0.08); }
+  .desglose-item-info { flex:1; }
+  .desglose-item-label { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--forest); letter-spacing:0.02em; }
+  .desglose-item-sub { font-size:0.62rem; color:rgba(28,58,30,0.45); margin-top:2px; }
+  .desglose-item-monto { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--sage); white-space:nowrap; }
+  .desglose-item-del { background:none; border:none; color:rgba(160,50,50,0.55); cursor:pointer; font-size:1rem; padding:4px 8px; line-height:1; }
+  .desglose-item-del:hover { color:#a03232; }
+  .desglose-total { display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:18px; }
+  .desglose-total-label { font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(28,58,30,0.5); }
+  .desglose-total-val { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:var(--forest); }
 
   /* TICKET PREVIEW (print target) */
   #ticket-preview { display:none; }
@@ -135,10 +179,12 @@
     nav { padding:13px max(20px, env(safe-area-inset-right)) 13px max(20px, env(safe-area-inset-left)); }
     .hero { padding:36px max(20px, env(safe-area-inset-right)) 30px max(20px, env(safe-area-inset-left)); }
     .container { padding:24px max(16px, env(safe-area-inset-right)) 60px max(16px, env(safe-area-inset-left)); }
-    .card, .ticket-section, .client-bar { padding:22px 18px; }
+    .card, .ticket-section, .client-bar, .desglose-section { padding:22px 18px; }
     .result-grid { grid-template-columns:1fr; }
     .client-bar-grid { grid-template-columns:1fr; }
     footer { padding:20px max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
+    .btn-img { margin-left:0; margin-top:10px; }
+    .desglose-item { flex-wrap:wrap; }
   }
 
   /* ── PRINT STYLES ── */
@@ -183,7 +229,7 @@
   <!-- MENSUALIDAD -->
   <div class="card">
     <div class="card-label">Sección 01</div>
-    <h2>Mensualidad Mensual</h2>
+    <h2>📈 Mensualidad Mensual</h2>
 
     <div class="toggle-row">
       <button class="toggle-btn active" id="btn-semanal" onclick="setModo('semanal')">Por semana</button>
@@ -220,7 +266,7 @@
   <!-- BONO ANUAL -->
   <div class="card">
     <div class="card-label">Sección 02</div>
-    <h2>Bono de Éxito Anual</h2>
+    <h2>🏆 Bono de Éxito Anual</h2>
 
     <div class="input-group">
       <label>Capital total en cuenta al corte anual</label>
@@ -248,14 +294,56 @@
     </div>
   </div>
 
+  <!-- OTROS SERVICIOS -->
+  <div class="card">
+    <div class="card-label">Sección 03</div>
+    <h2>🗂️ Otros Servicios</h2>
+
+    <div class="servicio-row">
+      <div class="input-group">
+        <label>Servicio</label>
+        <select id="sel-servicio" onchange="onServicioChange()">
+          <option value="diagnostico">🧭 Diagnóstico Patrimonial</option>
+          <option value="educacion">📚 Educación Financiera (1 hora)</option>
+          <option value="fiscal">📄 Trámites y Asesoría Fiscal</option>
+          <option value="empresas">🏢 Empresas y Emprendedores</option>
+          <option value="hijos">🧸 ¿Tienes Hijos? (mismo esquema que Portafolio)</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Precio</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="inp-precio-servicio" placeholder="0" min="0">
+          <span class="suffix">MXN</span>
+        </div>
+      </div>
+    </div>
+    <div class="servicio-hint" id="servicio-hint"></div>
+    <button class="btn-add" onclick="agregarServicioSeleccionado()">+ Agregar al ticket</button>
+  </div>
+
+  <!-- DESGLOSE -->
+  <div class="desglose-section">
+    <h2>Desglose del Ticket</h2>
+    <div id="desglose-lista">
+      <div class="desglose-empty">Aún no has agregado ningún servicio.</div>
+    </div>
+    <div class="desglose-total" id="desglose-total-wrap" style="display:none;">
+      <div class="desglose-total-label">Total a cobrar</div>
+      <div class="desglose-total-val" id="desglose-total-val">$0</div>
+    </div>
+  </div>
+
   <!-- TICKET / PDF -->
   <div class="ticket-section">
     <h2>Generar Ticket</h2>
     <div class="ts-sub">Resumen para compartir al inversionista</div>
-    <button class="btn-pdf" onclick="generarTicket()">
+    <button class="btn-pdf" id="btn-imprimir" onclick="generarTicket('print')">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 17h8v1H8v-1zm0-3h8v1H8v-1zm0-3h5v1H8v-1z"/></svg>
-      Descargar PDF / Captura
+      Imprimir / PDF
     </button>
+    <button class="btn-img" id="btn-imagen" onclick="generarTicket('imagen')">📲 Descargar como imagen</button>
     <div id="ticket-preview"></div>
   </div>
 
@@ -273,6 +361,15 @@
   let modo = 'semanal';
   let estadoMensual = null;
   let estadoBono = null;
+  let carrito = [];
+
+  const catalogoServicios = {
+    diagnostico: { label: '🧭 Diagnóstico Patrimonial', precio: () => 750, hint: 'Precio fijo por paquete de diagnóstico.' },
+    educacion:   { label: '📚 Educación Financiera (1 hora)', precio: () => (estadoMensual && estadoMensual.califica) ? 500 : 750, hint: () => (estadoMensual && estadoMensual.califica) ? 'Ya es cliente de Portafolio — tarifa preferencial $500/hora.' : 'No es cliente de Portafolio — tarifa independiente $750/hora.' },
+    fiscal:      { label: '📄 Trámites y Asesoría Fiscal', precio: () => '', hint: 'Sin precio fijo — se cotiza según el caso. Escríbelo manualmente.' },
+    empresas:    { label: '🏢 Empresas y Emprendedores', precio: () => '', hint: 'Sin precio fijo — se cotiza según el caso. Escríbelo manualmente.' },
+    hijos:       { label: '🧸 ¿Tienes Hijos? (Portafolio a nombre de hijos)', precio: () => '', hint: 'Usa el mismo esquema de Gestión de Portafolio — calcula en Sección 01 y agrégalo desde ahí, o escribe el monto acordado aquí.' },
+  };
 
   const planesMensual = [
     { key:'capital-bajo', label:'Capital Bajo',  minSem:0,    maxSem:299,    mensual:null,            presentacion:399  },
@@ -300,6 +397,73 @@
     const [y, m] = val.split('-');
     const nombres = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     return nombres[parseInt(m)] + ' ' + y;
+  }
+
+  // ── CARRITO / DESGLOSE ──────────────────────
+  function agregarAlCarrito(label, sub, monto) {
+    monto = Number(monto) || 0;
+    if (monto <= 0) return;
+    carrito.push({ id: Date.now() + Math.random(), label, sub, monto });
+    renderCarrito();
+  }
+
+  function quitarDelCarrito(id) {
+    carrito = carrito.filter(item => item.id !== id);
+    renderCarrito();
+  }
+
+  function renderCarrito() {
+    const lista = document.getElementById('desglose-lista');
+    const totalWrap = document.getElementById('desglose-total-wrap');
+    const totalVal = document.getElementById('desglose-total-val');
+
+    if (carrito.length === 0) {
+      lista.innerHTML = `<div class="desglose-empty">Aún no has agregado ningún servicio.</div>`;
+      totalWrap.style.display = 'none';
+      return;
+    }
+
+    lista.innerHTML = carrito.map(item => `
+      <div class="desglose-item">
+        <div class="desglose-item-info">
+          <div class="desglose-item-label">${item.label}</div>
+          <div class="desglose-item-sub">${item.sub}</div>
+        </div>
+        <div class="desglose-item-monto">${fmt(item.monto)}</div>
+        <button class="desglose-item-del" onclick="quitarDelCarrito(${item.id})" aria-label="Quitar" title="Quitar">✕</button>
+      </div>`).join('');
+
+    const total = carrito.reduce((sum, item) => sum + item.monto, 0);
+    totalVal.textContent = fmt(total);
+    totalWrap.style.display = 'flex';
+  }
+
+  // ── OTROS SERVICIOS ──────────────────────
+  function onServicioChange() {
+    const key = document.getElementById('sel-servicio').value;
+    const def = catalogoServicios[key];
+    const precioInput = document.getElementById('inp-precio-servicio');
+    const hintEl = document.getElementById('servicio-hint');
+    const precio = typeof def.precio === 'function' ? def.precio() : def.precio;
+    precioInput.value = precio === '' ? '' : precio;
+    hintEl.textContent = typeof def.hint === 'function' ? def.hint() : def.hint;
+  }
+
+  function agregarServicioSeleccionado() {
+    const key = document.getElementById('sel-servicio').value;
+    const def = catalogoServicios[key];
+    const precio = parseFloat(document.getElementById('inp-precio-servicio').value) || 0;
+    if (precio <= 0) {
+      const hintEl = document.getElementById('servicio-hint');
+      hintEl.textContent = 'Escribe un precio antes de agregarlo al ticket.';
+      hintEl.style.color = '#a03232';
+      return;
+    }
+    agregarAlCarrito(def.label, 'Servicio adicional', precio);
+    document.getElementById('inp-precio-servicio').value = '';
+    const hintEl = document.getElementById('servicio-hint');
+    hintEl.style.color = '';
+    hintEl.textContent = '✓ Agregado al ticket.';
   }
 
   function setModo(m) {
@@ -348,10 +512,15 @@
       ? `<div><div class="r-label">Mensualidad</div><div class="r-value accent">7% anual</div><div class="r-sub">sobre capital invertido</div></div>`
       : `<div><div class="r-label">Mensualidad a cobrar</div><div class="r-value accent">${fmt(plan.mensual)}</div><div class="r-sub">MXN este mes</div></div>`;
 
+    const btnAdd = plan.key === 'patrimonial'
+      ? `<div class="servicio-hint">Nivel Patrimonial cobra % variable — agrégalo manualmente en "Otros Servicios" con el monto acordado.</div>`
+      : `<button class="btn-add" onclick="agregarAlCarrito('📈 Gestión de Portafolio — ${plan.label}', 'Mensualidad · equiv. ${fmt(Math.round(semEq))}/sem', ${plan.mensual})">+ Agregar al ticket</button>`;
+
     el.innerHTML = `
       <div class="result-category">${plan.label}</div>
       <div class="result-desc">Equiv. semanal: ${fmt(Math.round(semEq))} &nbsp;·&nbsp; Total mes: ${fmt(Math.round(totalMes))} MXN</div>
-      <div class="result-grid">${mensualHTML}</div>`;
+      <div class="result-grid">${mensualHTML}</div>
+      ${btnAdd}`;
     el.classList.remove('hidden');
 
     estadoMensual = { califica: true, categoria: plan.label, mensual: mensualMonto, semEq, totalMes };
@@ -366,7 +535,7 @@
     if (capital <= 0) { el.classList.add('hidden'); return; }
 
     if (capital < 5000) {
-      el.innerHTML = `<div class="no-califica"><p>
+      el.innerHTML = `<div class="bono-quick no">❌ No aplica</div><div class="no-califica"><p>
         <strong>Capital insuficiente para bono de éxito.</strong><br>
         Mínimo: <strong>$5,000 MXN</strong>. Capital al corte: ${fmt(capital)} MXN.
       </p></div>`;
@@ -382,6 +551,7 @@
     if (row) row.classList.add('active-row');
 
     el.innerHTML = `
+      <div class="bono-quick ok">✅ Aplica</div>
       <div class="result-category">${plan.label}</div>
       <div class="result-desc">Capital al corte: ${fmt(capital)} MXN &nbsp;·&nbsp; Comisión: ${plan.pct}% sobre utilidad neta</div>
       <div class="result-grid">
@@ -404,6 +574,7 @@
             <div class="br-value">—</div>
           </div>
         </div>
+        <div id="btn-add-bono-wrap"></div>
       </div>`;
     el.classList.remove('hidden');
     estadoBono = { califica: true, categoria: plan.label, pct: plan.pct, capital };
@@ -416,65 +587,35 @@
     const bono = Math.round(utilidad * pct / 100);
     if (estadoBono) estadoBono.utilidad = utilidad, estadoBono.bono = bono;
     box.innerHTML = `<div class="br-label">Bono a cobrar</div><div class="br-value">${utilidad > 0 ? fmt(bono) : '—'}</div>`;
+    const btnWrap = document.getElementById('btn-add-bono-wrap');
+    if (btnWrap) {
+      btnWrap.innerHTML = (utilidad > 0 && bono > 0)
+        ? `<button class="btn-add" onclick="agregarAlCarrito('🏆 Bono de Éxito Anual — ${estadoBono.categoria}', '${pct}% sobre utilidad neta de ${fmt(utilidad)}', ${bono})">+ Agregar al ticket</button>`
+        : '';
+    }
   }
 
   // ── TICKET PDF ──────────────────────────────
-  function generarTicket() {
+  function generarTicket(modo) {
+    if (carrito.length === 0) {
+      alert('Agrega al menos un servicio al ticket antes de generarlo (usa los botones "+ Agregar al ticket" en cada sección).');
+      return;
+    }
+
     const nombre = document.getElementById('inp-nombre').value.trim() || '—';
     const mes    = fmtMes(document.getElementById('inp-mes').value);
     const fecha  = new Date().toLocaleDateString('es-MX', {day:'2-digit', month:'long', year:'numeric'});
+    const total  = carrito.reduce((sum, item) => sum + item.monto, 0);
 
-    let bloqMensual = '';
-    if (estadoMensual) {
-      if (!estadoMensual.califica) {
-        bloqMensual = `<div class="tk-block tk-red">
-          <div class="tk-block-label">Mensualidad</div>
-          <div class="tk-block-val">No califica para servicio mensual</div>
-          <div class="tk-block-sub">Aportación equiv. ${fmt(Math.round(estadoMensual.semEq))}/sem · ${fmt(Math.round(estadoMensual.totalMes))}/mes</div>
-        </div>`;
-      } else {
-        bloqMensual = `<div class="tk-block">
-          <div class="tk-block-label">Mensualidad — ${estadoMensual.categoria}</div>
-          <div class="tk-block-val">${estadoMensual.mensual}</div>
-          <div class="tk-block-sub">Equiv. semanal: ${fmt(Math.round(estadoMensual.semEq))} · Total mes: ${fmt(Math.round(estadoMensual.totalMes))} MXN</div>
-        </div>`;
-      }
-    } else {
-      bloqMensual = `<div class="tk-block tk-empty"><div class="tk-block-label">Mensualidad</div><div class="tk-block-val tk-dash">Sin calcular</div></div>`;
-    }
-
-    let bloqBono = '';
-    if (estadoBono) {
-      if (!estadoBono.califica) {
-        bloqBono = `<div class="tk-block tk-red">
-          <div class="tk-block-label">Bono de Éxito Anual</div>
-          <div class="tk-block-val">No aplica</div>
-          <div class="tk-block-sub">Capital al corte (${fmt(estadoBono.capital)}) por debajo del mínimo de $5,000 MXN</div>
-        </div>`;
-      } else {
-        const bonoLinea = estadoBono.bono
-          ? `<div class="tk-block-bono">Bono calculado: <strong>${fmt(estadoBono.bono)} MXN</strong> (sobre utilidad neta de ${fmt(estadoBono.utilidad)} MXN)</div>`
-          : '';
-        bloqBono = `<div class="tk-block">
-          <div class="tk-block-label">Bono de Éxito Anual — ${estadoBono.categoria}</div>
-          <div class="tk-block-val">${estadoBono.pct}% sobre utilidad neta</div>
-          <div class="tk-block-sub">Capital en cuenta al corte: ${fmt(estadoBono.capital)} MXN</div>
-          ${bonoLinea}
-        </div>`;
-      }
-    } else {
-      bloqBono = `<div class="tk-block tk-empty"><div class="tk-block-label">Bono de Éxito Anual</div><div class="tk-block-val tk-dash">Sin calcular</div></div>`;
-    }
+    const bloques = carrito.map(item => `
+      <div class="tk-block">
+        <div class="tk-block-label">${item.label}</div>
+        <div class="tk-block-val">${fmt(item.monto)}</div>
+        <div class="tk-block-sub">${item.sub}</div>
+      </div>`).join('');
 
     const html = `
-    <div id="tk-root" style="
-      font-family:'DM Mono',monospace;
-      background:#ffffff;
-      color:#1c3a1e;
-      width:100%;
-      max-width:560px;
-      margin:0 auto;
-    ">
+    <div id="tk-root" style="font-family:'DM Mono',monospace;background:#ffffff;color:#1c3a1e;width:100%;max-width:560px;margin:0 auto;">
       <!-- HEADER -->
       <div style="background:#1c3a1e;padding:28px 32px 24px;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:#ffffff;">
@@ -500,19 +641,23 @@
       </div>
 
       <!-- BODY -->
-      <div style="padding:24px 32px 28px;display:flex;flex-direction:column;gap:16px;">
+      <div style="padding:24px 32px 8px;display:flex;flex-direction:column;gap:14px;">
         <style>
           .tk-block { padding:16px 20px; background:#f5f3ee; border-left:4px solid #5a7a4a; }
-          .tk-block.tk-red { background:#fdf5f5; border-left-color:#c0392b; }
-          .tk-block.tk-empty { opacity:0.5; }
           .tk-block-label { font-size:0.56rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:4px; }
           .tk-block-val { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.06em; color:#1c3a1e; line-height:1.1; }
-          .tk-block-val.tk-dash { color:rgba(28,58,30,0.3); font-size:1rem; }
           .tk-block-sub { font-size:0.6rem; color:rgba(28,58,30,0.45); margin-top:4px; line-height:1.5; }
-          .tk-block-bono { font-size:0.68rem; color:#2d5a30; margin-top:8px; padding-top:8px; border-top:1px solid rgba(28,58,30,0.12); }
+          .tk-total { margin-top:6px; padding:20px; background:#1c3a1e; display:flex; justify-content:space-between; align-items:center; }
+          .tk-total-label { font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.55); font-family:'DM Mono',monospace; }
+          .tk-total-val { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; color:#a8c498; }
         </style>
-        ${bloqMensual}
-        ${bloqBono}
+        ${bloques}
+      </div>
+      <div style="padding:0 32px 28px;">
+        <div class="tk-total">
+          <div class="tk-total-label">Total a cobrar</div>
+          <div class="tk-total-val">${fmt(total)}</div>
+        </div>
       </div>
 
       <!-- FOOTER TICKET -->
@@ -521,30 +666,65 @@
       </div>
     </div>`;
 
-    // Show preview
     const preview = document.getElementById('ticket-preview');
     preview.innerHTML = html;
     preview.classList.add('visible');
 
-    // Inject into print area and trigger print
-    const printArea = document.getElementById('print-area');
-    printArea.innerHTML = `
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-      <style>
-        body { margin:0; background:white; }
-        .tk-block { padding:16px 20px; background:#f5f3ee; border-left:4px solid #5a7a4a; margin-bottom:14px; }
-        .tk-block.tk-red { background:#fdf5f5; border-left-color:#c0392b; }
-        .tk-block.tk-empty { opacity:0.5; }
-        .tk-block-label { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:3px; font-family:'DM Mono',monospace; }
-        .tk-block-val { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:#1c3a1e; line-height:1.1; }
-        .tk-block-val.tk-dash { color:rgba(28,58,30,0.3); font-size:14px; }
-        .tk-block-sub { font-size:9px; color:rgba(28,58,30,0.45); margin-top:3px; font-family:'DM Mono',monospace; }
-        .tk-block-bono { font-size:10px; color:#2d5a30; margin-top:6px; padding-top:6px; border-top:1px solid rgba(28,58,30,0.12); font-family:'DM Mono',monospace; }
-      </style>
-      ${html}`;
+    if (modo === 'print') {
+      const printArea = document.getElementById('print-area');
+      printArea.innerHTML = `
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <style>
+          body { margin:0; background:white; }
+          .tk-block { padding:16px 20px; background:#f5f3ee; border-left:4px solid #5a7a4a; margin-bottom:14px; }
+          .tk-block-label { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:3px; font-family:'DM Mono',monospace; }
+          .tk-block-val { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:#1c3a1e; line-height:1.1; }
+          .tk-block-sub { font-size:9px; color:rgba(28,58,30,0.45); margin-top:3px; font-family:'DM Mono',monospace; }
+          .tk-total { margin-top:6px; padding:20px; background:#1c3a1e; display:flex; justify-content:space-between; align-items:center; }
+          .tk-total-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.55); font-family:'DM Mono',monospace; }
+          .tk-total-val { font-family:'Bebas Neue',sans-serif; font-size:26px; color:#a8c498; }
+        </style>
+        ${html}`;
+      setTimeout(() => window.print(), 300);
+      return;
+    }
 
-    setTimeout(() => window.print(), 300);
+    // modo === 'imagen'
+    if (typeof html2canvas === 'undefined') { alert('No se pudo cargar el generador de imagen — revisa tu conexión e intenta de nuevo.'); return; }
+    const btnImg = document.getElementById('btn-imagen');
+    const originalText = btnImg.textContent;
+    btnImg.textContent = 'Generando imagen...';
+    btnImg.disabled = true;
+
+    const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    setTimeout(() => {
+      fontsReady.then(() => html2canvas(document.getElementById('tk-root'), { backgroundColor: '#ffffff', scale: 2 })).then(canvas => {
+        canvas.toBlob(blob => {
+          const file = new File([blob], 'ticket-salvador-financiero.png', { type: 'image/png' });
+
+          function fallbackDownload() {
+            const link = document.createElement('a');
+            link.download = 'ticket-salvador-financiero.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+          }
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Ticket · Salvador Financiero' }).catch(err => {
+              if (err && err.name !== 'AbortError') fallbackDownload();
+            });
+          } else {
+            fallbackDownload();
+          }
+          btnImg.textContent = originalText;
+          btnImg.disabled = false;
+        }, 'image/png');
+      });
+    }, 50);
   }
+
+  // Precargar el precio del primer servicio de la lista al abrir la página
+  onServicioChange();
 </script>
 </body>
 </html>
