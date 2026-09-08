@@ -6,6 +6,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.3, user-scalable=yes">
 <title>Salvador Financiero</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -662,6 +663,16 @@
 .igmodal-send{margin-top:10px;width:100%;background:var(--forest);color:white;border:none;padding:12px;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.05em;cursor:pointer;}
 .igmodal-send:hover{background:var(--sage);}
 
+/* MODAL DE TARJETA DE SERVICIO ("Todo lo que cubro") */
+.svcmodal-icon{font-size:2.4rem;margin-bottom:10px;}
+.svcmodal-tag{display:inline-block;background:var(--cream);color:var(--forest);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px;border:1px solid var(--rule);}
+.svcmodal-desc{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:var(--mid);line-height:1.65;margin-bottom:24px;}
+.svcmodal-actions{display:flex;flex-direction:column;gap:10px;}
+.svcmodal-btn-primary{display:block;text-align:center;background:var(--sage);color:white;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.06em;padding:13px;border-radius:10px;text-decoration:none;transition:all .2s;}
+.svcmodal-btn-primary:hover{background:var(--forest);}
+.svcmodal-btn-secondary{display:block;text-align:center;background:transparent;color:var(--forest);font-family:'DM Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;padding:11px;border-radius:10px;text-decoration:none;border:1.5px solid var(--rule);transition:all .2s;}
+.svcmodal-btn-secondary:hover{border-color:var(--sage);color:var(--sage);}
+
 </style>
 </head>
 <body>
@@ -689,7 +700,7 @@
     <a href="asesoria-patrimonial.html#retiro">🏝️ Planeación de Retiro</a>
     <a href="asesoria-patrimonial.html#educacion">📚 Educación Financiera</a>
     <a href="#contacto">🏢 Empresas y Emprendedores</a>
-    <a href="#consultoria">📄 Trámites y Asesoría Fiscal</a>
+    <a href="asesoria-patrimonial.html#fiscal">📄 Trámites y Asesoría Fiscal</a>
   </div>
 </div>
 <div class="nav-accordion" id="panelHerramientas">
@@ -710,7 +721,7 @@
   <li><a href="asesoria-patrimonial.html#retiro" style="padding-left:40px;"><span class="nlm-mark">✦</span>Planeación de Retiro</a></li>
   <li><a href="asesoria-patrimonial.html#educacion" style="padding-left:40px;"><span class="nlm-mark">✦</span>Educación Financiera</a></li>
   <li><a href="#contacto" style="padding-left:40px;"><span class="nlm-mark">✦</span>Empresas y Emprendedores</a></li>
-  <li><a href="#consultoria" style="padding-left:40px;"><span class="nlm-mark">✦</span>Trámites Fiscales</a></li>
+  <li><a href="asesoria-patrimonial.html#fiscal" style="padding-left:40px;"><span class="nlm-mark">✦</span>Trámites Fiscales</a></li>
   <li><a href="#testimonios"><span class="nlm-mark">✦</span>Clientes</a></li>
   <li><a href="#perfil"><span class="nlm-mark">✦</span>Perfil de Riesgo</a></li>
   <li style="display:none;"><a href="#herramientas"><span class="nlm-mark">✦</span>Herramientas</a></li>
@@ -772,85 +783,85 @@
       <button class="dom-arrow prev" id="domPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
       <button class="dom-arrow next" id="domNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
       <div class="dom-marquee" id="domMarquee">
-        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card">
+        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card" data-service="diagnostico">
           <div class="dom-icon">🧭</div>
           <div class="dom-ttl">Diagnóstico Patrimonial</div>
           <div class="dom-desc">Un mapa completo de en dónde estás hoy y hacia dónde vas.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#portafolio" class="dom-card">
+        <a href="asesoria-patrimonial.html#portafolio" class="dom-card" data-service="portafolio">
           <div class="dom-icon">📈</div>
           <div class="dom-ttl">Gestión de Portafolio</div>
           <div class="dom-desc">Acompañamiento semana a semana en tus inversiones.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#retiro" class="dom-card">
+        <a href="asesoria-patrimonial.html#retiro" class="dom-card" data-service="retiro">
           <div class="dom-icon">🏝️</div>
           <div class="dom-ttl">Planeación de Retiro</div>
           <div class="dom-desc">Construye, desde hoy, el capital que te va a sostener.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#educacion" class="dom-card">
+        <a href="asesoria-patrimonial.html#educacion" class="dom-card" data-service="educacion">
           <div class="dom-icon">📚</div>
           <div class="dom-ttl">Educación Financiera</div>
           <div class="dom-desc">Mentoría continua para que entiendas cada decisión.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="#contacto" class="dom-card">
+        <a href="#contacto" class="dom-card" data-service="empresas">
           <div class="dom-icon">🏢</div>
           <div class="dom-ttl">Empresas y Emprendedores</div>
           <div class="dom-desc">Estructura financiera para tu negocio y tu patrimonio personal.</div>
           <div class="dom-more">Contáctame →</div>
         </a>
-        <a href="#consultoria" class="dom-card">
+        <a href="asesoria-patrimonial.html#fiscal" class="dom-card" data-service="fiscal">
           <div class="dom-icon">📄</div>
           <div class="dom-ttl">Trámites y Asesoría Fiscal</div>
           <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
-          <div class="dom-more">Ver más ↓</div>
+          <div class="dom-more">Ver más →</div>
         </a>
-        <a href="el-mejor-regalo.html" class="dom-card">
+        <a href="el-mejor-regalo.html" class="dom-card" data-service="hijos">
           <div class="dom-icon">🧸</div>
           <div class="dom-ttl">¿Tienes Hijos?</div>
           <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="asesoria-patrimonial.html#diagnostico" class="dom-card" data-service="diagnostico" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">🧭</div>
           <div class="dom-ttl">Diagnóstico Patrimonial</div>
           <div class="dom-desc">Un mapa completo de en dónde estás hoy y hacia dónde vas.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#portafolio" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="asesoria-patrimonial.html#portafolio" class="dom-card" data-service="portafolio" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">📈</div>
           <div class="dom-ttl">Gestión de Portafolio</div>
           <div class="dom-desc">Acompañamiento semana a semana en tus inversiones.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#retiro" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="asesoria-patrimonial.html#retiro" class="dom-card" data-service="retiro" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">🏝️</div>
           <div class="dom-ttl">Planeación de Retiro</div>
           <div class="dom-desc">Construye, desde hoy, el capital que te va a sostener.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="asesoria-patrimonial.html#educacion" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="asesoria-patrimonial.html#educacion" class="dom-card" data-service="educacion" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">📚</div>
           <div class="dom-ttl">Educación Financiera</div>
           <div class="dom-desc">Mentoría continua para que entiendas cada decisión.</div>
           <div class="dom-more">Ver más →</div>
         </a>
-        <a href="#contacto" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="#contacto" class="dom-card" data-service="empresas" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">🏢</div>
           <div class="dom-ttl">Empresas y Emprendedores</div>
           <div class="dom-desc">Estructura financiera para tu negocio y tu patrimonio personal.</div>
           <div class="dom-more">Contáctame →</div>
         </a>
-        <a href="#consultoria" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="asesoria-patrimonial.html#fiscal" class="dom-card" data-service="fiscal" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">📄</div>
           <div class="dom-ttl">Trámites y Asesoría Fiscal</div>
           <div class="dom-desc">Declaraciones atrasadas, dudas ante el SAT, trámites puntuales.</div>
-          <div class="dom-more">Ver más ↓</div>
+          <div class="dom-more">Ver más →</div>
         </a>
-        <a href="el-mejor-regalo.html" class="dom-card" aria-hidden="true" tabindex="-1">
+        <a href="el-mejor-regalo.html" class="dom-card" data-service="hijos" aria-hidden="true" tabindex="-1">
           <div class="dom-icon">🧸</div>
           <div class="dom-ttl">¿Tienes Hijos?</div>
           <div class="dom-desc">Cómo empezar a construir su futuro financiero desde ahora.</div>
@@ -1483,6 +1494,20 @@
   </div>
 </div>
 
+<div class="igmodal-overlay" id="svcModalOverlay">
+  <div class="igmodal-box">
+    <button class="igmodal-close" id="svcModalClose">✕</button>
+    <div class="svcmodal-icon" id="svcModalIcon"></div>
+    <div class="igmodal-title" id="svcModalTitle"></div>
+    <div class="svcmodal-tag" id="svcModalTag" style="display:none;"></div>
+    <p class="svcmodal-desc" id="svcModalDesc"></p>
+    <div class="svcmodal-actions">
+      <a href="javascript:void(0)" class="svcmodal-btn-primary" id="svcModalIgBtn">✦ Empecemos →</a>
+      <a href="#" class="svcmodal-btn-secondary" id="svcModalLink">Ver más →</a>
+    </div>
+  </div>
+</div>
+
 <footer>
   <a href="#hero" class="flogo" style="text-decoration:none;color:var(--white);">Salvador <span>Financiero</span></a>
   <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México</div>
@@ -1598,6 +1623,7 @@
       window.open('https://ig.me/m/salvadorfinanciero', '_blank');
       showToast(copied ? '✅ Mensaje copiado — solo pégalo (Cmd/Ctrl+V) y envíalo' : '✉ Escríbenos: ' + msg);
     }
+    window.__sfSendMessage = sendMessage;
 
     document.getElementById('igModalClose').addEventListener('click', closeModal);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
@@ -1624,6 +1650,87 @@
       trigger.addEventListener('click', function(e) {
         e.preventDefault();
         openModal();
+      });
+    });
+  })();
+
+  // Modal: tarjetas de "Todo lo que cubro" → info rápida por servicio, sin salir de la página
+  (function() {
+    var overlay = document.getElementById('svcModalOverlay');
+    if (!overlay) return;
+
+    var SERVICIOS_DATA = {
+      diagnostico: {
+        icon: '🧭', title: 'Diagnóstico Patrimonial',
+        desc: 'Antes de mover un peso, revisamos juntos ingresos, gastos, deudas, ahorro y tus metas. De ahí sale una estrategia hecha a tu medida — el punto de partida de cualquier otro servicio.',
+        href: 'asesoria-patrimonial.html#diagnostico', hrefLabel: 'Ver el servicio completo →', ig: 'Diagnóstico Patrimonial'
+      },
+      portafolio: {
+        icon: '📈', title: 'Gestión de Portafolio', tag: 'Desde $299/mes',
+        desc: 'Acompañamiento semana a semana en tus inversiones, con análisis previo a cada orden. Suscripción variable + bono de éxito, solo si hay rendimiento.',
+        href: 'asesoria-patrimonial.html#portafolio', hrefLabel: 'Ver el servicio completo →', ig: 'Gestión de Portafolio'
+      },
+      retiro: {
+        icon: '🏝️', title: 'Planeación de Retiro',
+        desc: 'Definimos tu meta de independencia financiera y armamos un plan de aportación real para tu edad y horizonte, con la calculadora de Independencia ×150.',
+        href: 'asesoria-patrimonial.html#retiro', hrefLabel: 'Ver el servicio completo →', ig: 'Planeación de Retiro'
+      },
+      educacion: {
+        icon: '📚', title: 'Educación Financiera',
+        desc: 'Mentoría continua: fundamentos de inversión, psicología del dinero, tu casa de bolsa sin misterio, y dudas sin límite ni costo extra.',
+        href: 'asesoria-patrimonial.html#educacion', hrefLabel: 'Ver el servicio completo →', ig: 'Educación Financiera'
+      },
+      empresas: {
+        icon: '🏢', title: 'Empresas y Emprendedores',
+        desc: 'Estructura financiera para tu negocio y tu patrimonio personal, por separado y en orden — para que uno no ponga en riesgo al otro.',
+        href: '#contacto', hrefLabel: 'Contáctame →', ig: 'Empresas y Emprendedores'
+      },
+      fiscal: {
+        icon: '📄', title: 'Trámites y Asesoría Fiscal',
+        desc: 'Declaraciones al día, trámites ante el SAT, dudas fiscales puntuales. Escucharte no cuesta nada — te paso una cotización clara antes de empezar.',
+        href: 'asesoria-patrimonial.html#fiscal', hrefLabel: 'Ver el servicio completo →', ig: 'Trámites y Asesoría Fiscal'
+      },
+      hijos: {
+        icon: '🧸', title: '¿Tienes Hijos?',
+        desc: 'El mismo acompañamiento de Gestión de Portafolio, pensado para invertir a nombre de tus hijos desde ahora — el mejor regalo empieza hoy.',
+        href: 'el-mejor-regalo.html', hrefLabel: 'Ver más →', ig: 'Inversión para mis hijos'
+      }
+    };
+
+    var icon = document.getElementById('svcModalIcon');
+    var title = document.getElementById('svcModalTitle');
+    var tag = document.getElementById('svcModalTag');
+    var desc = document.getElementById('svcModalDesc');
+    var igBtn = document.getElementById('svcModalIgBtn');
+    var linkBtn = document.getElementById('svcModalLink');
+
+    function openSvcModal(key) {
+      var d = SERVICIOS_DATA[key];
+      if (!d) return;
+      icon.textContent = d.icon;
+      title.textContent = d.title;
+      desc.textContent = d.desc;
+      if (d.tag) { tag.textContent = d.tag; tag.style.display = 'inline-block'; }
+      else { tag.style.display = 'none'; }
+      linkBtn.setAttribute('href', d.href);
+      linkBtn.textContent = d.hrefLabel;
+      igBtn.onclick = function(e) {
+        e.preventDefault();
+        if (window.__sfSendMessage) window.__sfSendMessage(d.ig);
+      };
+      overlay.classList.add('open');
+    }
+    function closeSvcModal() { overlay.classList.remove('open'); }
+
+    document.getElementById('svcModalClose').addEventListener('click', closeSvcModal);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeSvcModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSvcModal(); });
+
+    document.querySelectorAll('.dom-card[data-service]').forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        openSvcModal(card.dataset.service);
       });
     });
   })();
