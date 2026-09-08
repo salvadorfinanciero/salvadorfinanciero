@@ -32,10 +32,10 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{background:var(--cream);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
+  body{background:var(--forest);font-family:'Instrument Serif',Georgia,serif;color:var(--ink);overflow-x:hidden;}
 
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 56px;background:var(--forest);border-bottom:3px solid var(--sage);}
-  #diagnostico,#portafolio,#retiro,#educacion,#fiscal,#contacto-cta{scroll-margin-top:110px;}
+  #diagnostico,#portafolio,#retiro,#educacion,#fiscal,#empresas,#contacto-cta{scroll-margin-top:110px;}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
   .nav-logo span{color:var(--fern);}
   .nav-links{display:flex;gap:24px;list-style:none;}
@@ -76,8 +76,24 @@
   .sub-title span{color:var(--fern);}
   .sub-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:rgba(255,255,255,0.72);max-width:560px;line-height:1.65;margin-top:20px;}
 
-  .dsec{padding:80px 60px;border-bottom:1px solid var(--rule);}
-  .dsec:nth-child(odd){background:var(--paper);}
+  /* Chips de servicios en el hero + modal rápido de info */
+  .svc-quicknav{display:flex;flex-wrap:wrap;gap:10px;max-width:640px;margin-top:30px;}
+  .svc-chip{background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'DM Mono',monospace;font-size:0.74rem;letter-spacing:0.02em;padding:10px 18px;border-radius:30px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;flex-shrink:0;white-space:nowrap;}
+  .svc-chip:hover{background:var(--fern);border-color:var(--fern);color:var(--forest);}
+  .svc-chip.svc-chip-active{background:var(--fern);border-color:var(--fern);color:var(--forest);}
+
+  /* Secciones de servicio: ocultas hasta que se elige su chip */
+  .svc-panel{display:none;}
+  .svc-panel.svc-open{display:block;margin-top:32px;}
+
+  /* Barra de chips en carrusel, justo debajo del header */
+  .svc-quicknav-bar{background:var(--forest);border-bottom:1px solid rgba(255,255,255,0.12);padding:16px 0;overflow:hidden;display:none;}
+  .svc-quicknav-bar.svc-bar-visible{display:block;position:sticky;top:88px;z-index:90;}
+  .svc-viewport{overflow-x:hidden;width:100%;}
+  .svc-track{display:flex;gap:10px;width:max-content;padding:0 24px;}
+
+  .dsec{padding:80px 60px;border-bottom:1px solid var(--rule);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;}
+  .dsec:nth-child(odd){background-color:var(--paper);}
   .dsec-inner{max-width:920px;margin:0 auto;}
   .dsec-tag{display:inline-block;background:var(--forest);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 14px;margin-bottom:16px;border-radius:20px;}
   .dsec-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--forest);letter-spacing:0.02em;margin-bottom:16px;}
@@ -92,43 +108,46 @@
   .video-tag{display:inline-block;background:var(--sage);color:white;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 14px;margin-bottom:16px;border-radius:20px;}
   .video-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--white);letter-spacing:0.02em;margin-bottom:16px;text-shadow:0 2px 10px rgba(0,0,0,0.25);}
   .video-txt{font-size:1.05rem;line-height:1.85;color:rgba(255,255,255,0.88);max-width:640px;}
+  .video-list{margin-top:22px;display:flex;flex-direction:column;gap:13px;max-width:620px;}
+  .video-list-item{font-family:'DM Mono',monospace;font-size:0.86rem;color:rgba(255,255,255,0.85);line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+  .video-list-item span{flex-shrink:0;}
   @media(max-width:768px){
     .video-section{padding:80px 20px;}
     .video-el{display:none;}
     .video-overlay{background:linear-gradient(180deg,rgba(15,32,19,0.85) 0%,rgba(15,32,19,0.55) 55%,rgba(15,32,19,0.35) 100%);}
   }
 
-  #portafolio{background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;}
+  #portafolio{background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-bottom:1px solid var(--rule);}
   .modelo-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;}
-  .modelo-card{background:#1e4220;border:1.5px solid rgba(255,255,255,0.15);padding:32px;border-radius:16px;color:var(--white);}
+  .modelo-card{background:var(--white);border:1.5px solid var(--rule);padding:32px;border-radius:16px;color:var(--ink);box-shadow:0 6px 20px rgba(28,58,30,0.06);}
   .modelo-num{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--sage);line-height:1;margin-bottom:12px;}
-  .modelo-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:12px;}
+  .modelo-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:12px;color:var(--forest);}
   .modelo-tag{display:inline-block;background:var(--pine);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:2px 8px;text-transform:uppercase;vertical-align:middle;margin-left:8px;border-radius:20px;}
-  .modelo-body{font-family:'DM Mono',monospace;font-size:0.76rem;color:rgba(255,255,255,0.86);line-height:1.65;margin-bottom:14px;}
-  .modelo-foot{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--fern);border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;}
-  .portafolio-quote{max-width:880px;margin:44px auto 0;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,0.8);text-align:center;line-height:1.75;border-top:1px solid rgba(255,255,255,0.14);padding-top:32px;}
+  .modelo-body{font-family:'DM Mono',monospace;font-size:0.76rem;color:var(--mid);line-height:1.65;margin-bottom:14px;}
+  .modelo-foot{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--sage);border-top:1px solid var(--rule);padding-top:14px;}
+  .portafolio-quote{max-width:880px;margin:44px auto 0;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:var(--forest);text-align:center;line-height:1.75;border-top:1px solid var(--rule);padding-top:32px;}
 
   /* Botón + tabla de desglose de precios (con contraseña) */
-  .ver-mas-btn{display:block;margin:32px auto 0;background:transparent;border:1.5px solid var(--sage);color:var(--fern);font-family:'DM Mono',monospace;font-size:0.74rem;letter-spacing:0.06em;padding:11px 24px;border-radius:30px;cursor:pointer;transition:all .2s;}
+  .ver-mas-btn{display:block;margin:32px auto 0;background:transparent;border:1.5px solid var(--sage);color:var(--forest);font-family:'DM Mono',monospace;font-size:0.74rem;letter-spacing:0.06em;padding:11px 24px;border-radius:30px;cursor:pointer;transition:all .2s;}
   .ver-mas-btn:hover{background:var(--sage);color:white;}
-  .precios-breakdown{display:none;max-width:820px;margin:28px auto 0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r);padding:28px;overflow-x:auto;}
-  .precios-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:0.78rem;color:rgba(255,255,255,0.88);min-width:660px;}
-  .precios-table th{text-align:left;font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--fern);padding:0 12px 12px;border-bottom:1px solid rgba(255,255,255,0.15);}
-  .precios-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .precios-breakdown{display:none;max-width:820px;margin:28px auto 0;background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:28px;overflow-x:auto;box-shadow:0 6px 20px rgba(28,58,30,0.06);}
+  .precios-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--ink);min-width:660px;}
+  .precios-table th{text-align:left;font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--sage);padding:0 12px 12px;border-bottom:1px solid var(--rule);}
+  .precios-table td{padding:12px;border-bottom:1px solid var(--rule);}
   .precios-table tr:last-child td{border-bottom:none;}
-  .precios-table tr.active-row td{background:rgba(168,196,152,0.16);color:var(--fern);font-weight:600;}
-  .precios-note{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.7);text-align:center;margin-top:20px;line-height:1.6;}
+  .precios-table tr.active-row td{background:rgba(90,122,74,0.12);color:var(--forest);font-weight:600;}
+  .precios-note{font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:var(--mid);text-align:center;margin-top:20px;line-height:1.6;}
 
   /* Generar imagen de presupuesto */
   .presupuesto-box{max-width:420px;margin:28px auto 0;text-align:center;}
-  .presupuesto-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:rgba(255,255,255,0.75);margin-bottom:14px;}
-  .presupuesto-input{display:block;width:100%;box-sizing:border-box;margin:0 auto 12px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);border-radius:10px;color:white;font-family:'DM Mono',monospace;font-size:0.85rem;padding:12px 16px;text-align:center;outline:none;}
-  .presupuesto-input::placeholder{color:rgba(255,255,255,0.35);}
-  .presupuesto-input:focus{border-color:var(--fern);}
-  .presupuesto-btn{background:var(--fern);color:var(--forest);border:none;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.06em;padding:13px 28px;border-radius:30px;cursor:pointer;transition:all .2s;}
-  .presupuesto-btn:hover{background:white;}
+  .presupuesto-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:var(--mid);margin-bottom:14px;}
+  .presupuesto-input{display:block;width:100%;box-sizing:border-box;margin:0 auto 12px;background:var(--white);border:1.5px solid var(--rule);border-radius:10px;color:var(--ink);font-family:'DM Mono',monospace;font-size:0.85rem;padding:12px 16px;text-align:center;outline:none;}
+  .presupuesto-input::placeholder{color:var(--soft);}
+  .presupuesto-input:focus{border-color:var(--sage);}
+  .presupuesto-btn{background:var(--forest);color:white;border:none;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.06em;padding:13px 28px;border-radius:30px;cursor:pointer;transition:all .2s;}
+  .presupuesto-btn:hover{background:var(--sage);}
   .presupuesto-btn:disabled{opacity:0.55;cursor:default;}
-  .presupuesto-hint{font-family:'DM Mono',monospace;font-size:0.64rem;color:rgba(255,255,255,0.5);margin-top:10px;}
+  .presupuesto-hint{font-family:'DM Mono',monospace;font-size:0.64rem;color:var(--soft);margin-top:10px;}
 
   .presupuesto-ticket{position:fixed;left:-9999px;top:0;width:480px;background:var(--white);border-radius:20px;padding:36px 32px;font-family:'DM Mono',monospace;}
   .pt-serial{display:flex;justify-content:space-between;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);margin-bottom:24px;}
@@ -144,32 +163,33 @@
 
   /* Calculadora pública de aportación semanal */
   .calc-mode-row{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
-  .calc-mode-btn{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.06em;padding:8px 18px;background:transparent;border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.6);cursor:pointer;border-radius:20px;transition:all .2s;}
-  .calc-mode-btn:hover{border-color:var(--fern);color:var(--fern);}
-  .calc-mode-btn.active{background:var(--fern);border-color:var(--fern);color:var(--forest);font-weight:600;}
-  .calc-box{max-width:480px;margin:40px auto 0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r);padding:28px 30px;text-align:center;}
-  .calc-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:rgba(255,255,255,0.75);margin-bottom:14px;}
+  .calc-mode-btn{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.06em;padding:8px 18px;background:transparent;border:1.5px solid var(--rule);color:var(--mid);cursor:pointer;border-radius:20px;transition:all .2s;}
+  .calc-mode-btn:hover{border-color:var(--sage);color:var(--sage);}
+  .calc-mode-btn.active{background:var(--sage);border-color:var(--sage);color:white;font-weight:600;}
+  .calc-box{max-width:480px;margin:40px auto 0;background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:28px 30px;text-align:center;box-shadow:0 6px 20px rgba(28,58,30,0.06);}
+  .calc-label{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:var(--mid);margin-bottom:14px;}
   .calc-input-wrap{display:flex;align-items:center;justify-content:center;gap:6px;}
-  .calc-input-wrap span{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--fern);}
-  .calc-input-wrap input{background:transparent;border:none;border-bottom:2px solid var(--sage);color:white;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.02em;padding:4px 0;outline:none;width:140px;text-align:center;}
-  .calc-input-wrap input::placeholder{color:rgba(255,255,255,0.22);}
+  .calc-input-wrap span{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--sage);}
+  .calc-input-wrap input{background:transparent;border:none;border-bottom:2px solid var(--sage);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.02em;padding:4px 0;outline:none;width:140px;text-align:center;}
+  .calc-input-wrap input::placeholder{color:var(--soft);}
   .calc-result{display:flex;gap:14px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
-  .calc-item{background:rgba(0,0,0,0.18);border-radius:10px;padding:14px 20px;min-width:140px;}
-  .calc-item.hi{border:1px solid var(--fern);}
-  .calc-lbl{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:6px;}
-  .calc-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:white;}
-  .calc-item.hi .calc-val{color:var(--fern);}
-  .calc-note{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.6);margin-top:16px;}
-  .calc-asterisk{font-family:'DM Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.45);margin-top:18px;line-height:1.6;}
+  .calc-item{background:var(--paper);border-radius:10px;padding:14px 20px;min-width:140px;}
+  .calc-item.hi{border:1px solid var(--sage);}
+  .calc-lbl{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--soft);margin-bottom:6px;}
+  .calc-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--forest);}
+  .calc-item.hi .calc-val{color:var(--sage);}
+  .calc-note{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--mid);margin-top:16px;}
+  .calc-asterisk{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--soft);margin-top:18px;line-height:1.6;}
 
-  /* Mini flow de portafolio — "así se ve en la práctica" */
-  .flow-label{text-align:center;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin:40px 0 22px;}
+  /* Mini flow — "así se ve en la práctica" */
+  .flow-label{text-align:center;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);margin:40px 0 22px;}
   .flow-strip{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .flow-strip-3{grid-template-columns:repeat(3,1fr);}
   .flow-step{text-align:center;padding:0 10px;position:relative;}
-  .flow-step::before{content:'';position:absolute;top:19px;left:-50%;width:100%;height:2px;background:rgba(255,255,255,0.15);z-index:0;}
+  .flow-step::before{content:'';position:absolute;top:19px;left:-50%;width:100%;height:2px;background:var(--rule);z-index:0;}
   .flow-step:first-child::before{display:none;}
-  .flow-circ{width:38px;height:38px;border-radius:50%;background:#1e4220;border:1.5px solid var(--sage);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;position:relative;z-index:1;}
-  .flow-lbl{font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.82);line-height:1.5;max-width:150px;margin:0 auto;}
+  .flow-circ{width:38px;height:38px;border-radius:50%;background:var(--forest);border:1.5px solid var(--sage);color:var(--fern);font-family:'Bebas Neue',sans-serif;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;position:relative;z-index:1;}
+  .flow-lbl{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--mid);line-height:1.5;max-width:150px;margin:0 auto;}
   @media(max-width:640px){
     .flow-strip{grid-template-columns:1fr;gap:22px;}
     .flow-step::before{display:none;}
@@ -192,7 +212,7 @@
   .edu-price-val span{font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--sage);font-weight:500;letter-spacing:0;margin-left:4px;}
 
   /* Trámites y Asesoría Fiscal */
-  #fiscal{background:#1c3a1e;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;}
+  #fiscal{background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-bottom:1px solid var(--rule);}
   .modelo-grid-3{max-width:1000px;margin:36px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   @media(max-width:900px){.modelo-grid-3{grid-template-columns:1fr;}}
 
@@ -214,8 +234,9 @@
 
   @media(max-width:768px){
     nav{padding:14px 20px;} .nav-links{display:none;} .nav-burger{display:flex;}
+    .svc-quicknav-bar.svc-bar-visible{top:64px;}
     .sub-hero{padding:120px 20px 50px;}
-    .dsec,#portafolio,#fiscal,.cta-final{padding:50px 20px;}
+    .dsec,#portafolio,#fiscal,#empresas,.cta-final{padding:50px 20px;}
     .modelo-grid,.edu-grid{grid-template-columns:1fr;}
     footer{flex-direction:column;gap:10px;padding:20px 24px;}
   }
@@ -238,6 +259,26 @@
     <span class="burger-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--white);"><polyline points="5 15 12 8 19 15"></polyline></svg></span>
   </button>
 </nav>
+<div class="svc-quicknav-bar" id="svcQuicknavBar">
+  <div class="svc-viewport" id="svcViewport">
+    <div class="svc-track" id="svcTrack">
+      <a href="#diagnostico" class="svc-chip">🧭 Diagnóstico</a>
+      <a href="#portafolio" class="svc-chip">📈 Portafolio</a>
+      <a href="#retiro" class="svc-chip">🛶 Retiro</a>
+      <a href="#educacion" class="svc-chip">📚 Educación</a>
+      <a href="#fiscal" class="svc-chip">📄 Fiscal</a>
+      <a href="#empresas" class="svc-chip">🏢 Empresas</a>
+      <a href="el-mejor-regalo.html" class="svc-chip">🧸 ¿Tienes hijos?</a>
+      <a href="#diagnostico" class="svc-chip" aria-hidden="true" tabindex="-1">🧭 Diagnóstico</a>
+      <a href="#portafolio" class="svc-chip" aria-hidden="true" tabindex="-1">📈 Portafolio</a>
+      <a href="#retiro" class="svc-chip" aria-hidden="true" tabindex="-1">🛶 Retiro</a>
+      <a href="#educacion" class="svc-chip" aria-hidden="true" tabindex="-1">📚 Educación</a>
+      <a href="#fiscal" class="svc-chip" aria-hidden="true" tabindex="-1">📄 Fiscal</a>
+      <a href="#empresas" class="svc-chip" aria-hidden="true" tabindex="-1">🏢 Empresas</a>
+      <a href="el-mejor-regalo.html" class="svc-chip" aria-hidden="true" tabindex="-1">🧸 ¿Tienes hijos?</a>
+    </div>
+  </div>
+</div>
 <div class="nav-accordion-scrim" id="navScrim"></div>
 <div class="nav-accordion" id="panelServicios">
   <div class="nav-accordion-inner">
@@ -245,7 +286,7 @@
     <a href="#portafolio">📈 Gestión de Portafolio</a>
     <a href="#retiro">🛶 Planeación de Retiro</a>
     <a href="#educacion">📚 Educación Financiera</a>
-    <a href="index.html#contacto">🏢 Empresas y Emprendedores</a>
+    <a href="#empresas">🏢 Empresas y Emprendedores</a>
     <a href="#fiscal">📄 Trámites y Asesoría Fiscal</a>
   </div>
 </div>
@@ -274,11 +315,20 @@
 
 <div class="sub-hero">
   <div class="sub-eyebrow">Servicios · Asesoría Patrimonial</div>
-  <h1 class="sub-title">Diagnóstico, portafolio,<br>retiro y <span>educación financiera</span> —<br>todo en un mismo plan.</h1>
+  <h1 class="sub-title">Diagnóstico, portafolio,<br>retiro y <span>educación financiera</span> —<br>todo en un mismo lugar.</h1>
   <p class="sub-sub">Esto es lo que cubre mi acompañamiento como Maestro en Administración Patrimonial, a detalle.</p>
+  <div class="svc-quicknav reveal">
+    <a href="#diagnostico" class="svc-chip">🧭 Diagnóstico</a>
+    <a href="#portafolio" class="svc-chip">📈 Portafolio</a>
+    <a href="#retiro" class="svc-chip">🛶 Retiro</a>
+    <a href="#educacion" class="svc-chip">📚 Educación</a>
+    <a href="#fiscal" class="svc-chip">📄 Fiscal</a>
+    <a href="#empresas" class="svc-chip">🏢 Empresas</a>
+    <a href="el-mejor-regalo.html" class="svc-chip">🧸 ¿Tienes hijos?</a>
+  </div>
 </div>
 
-<section id="diagnostico" class="video-section">
+<section id="diagnostico" class="video-section svc-panel">
   <div class="video-bg" style="background-image:url('images/diagnostico-poster.jpg');">
     <video class="video-el" autoplay muted loop playsinline poster="images/diagnostico-poster.jpg">
       <source src="images/diagnostico-bg.mp4" type="video/mp4">
@@ -289,14 +339,20 @@
     <div class="video-tag">🧭 Diagnóstico Patrimonial</div>
     <h2 class="video-ttl">Un mapa completo de en dónde estás y hacia dónde vas.</h2>
     <p class="video-txt">Antes de mover un peso, revisamos juntos tu situación real: ingresos, gastos, deudas, ahorro actual y tus metas de corto y largo plazo. De ahí sale una estrategia hecha a tu medida — no una plantilla genérica. Este diagnóstico es el punto de partida de cualquier otro servicio: gestión de portafolio, retiro, o tu negocio.</p>
+    <div class="video-list">
+      <div class="video-list-item"><span>💰</span> Ingresos, gastos fijos y variables — a dónde se va tu dinero realmente cada mes.</div>
+      <div class="video-list-item"><span>📉</span> Deudas activas: cuáles pesan más y en qué orden conviene atacarlas.</div>
+      <div class="video-list-item"><span>🐷</span> Ahorro actual y qué tan protegido está ante un imprevisto.</div>
+      <div class="video-list-item"><span>🎯</span> Metas de corto y largo plazo, para que la estrategia tenga un destino claro.</div>
+    </div>
   </div>
 </section>
 
-<section id="portafolio">
+<section id="portafolio" class="svc-panel">
   <div style="text-align:center;margin-bottom:20px;" class="reveal">
     <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">📈 Gestión de Portafolio · Cómo trabajamos ✦</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
-    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:var(--forest);letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Así es como<br>trabajamos juntos</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--sage);letter-spacing:0.1em;">Simple, transparente y diseñado para que tu dinero trabaje.</p>
   </div>
 
   <div class="calc-box reveal">
@@ -394,7 +450,7 @@
   <p class="portafolio-quote reveal">A diferencia de los bancos que cobran sin importar si ganaste o perdiste, aquí el incentivo es uno solo — que tu patrimonio crezca. Si tú ganas, yo gano.</p>
 </section>
 
-<section id="retiro" class="video-section">
+<section id="retiro" class="video-section svc-panel">
   <div class="video-bg" style="background-image:url('images/retiro-poster.jpg');">
     <div class="video-overlay"></div>
   </div>
@@ -402,10 +458,15 @@
     <div class="video-tag">🛶 Planeación de Retiro</div>
     <h2 class="video-ttl">Construye, desde hoy, el capital que te va a sostener.</h2>
     <p class="video-txt">Definimos tu meta de independencia financiera — el capital que necesitas para que tu dinero te pague tu sueldo, mes con mes, sin que dependas de trabajar. Podemos empezar ahora mismo con la <a href="index.html#independencia" style="color:var(--fern);font-weight:600;">calculadora de Independencia ×150</a>, y de ahí armamos un plan de aportación real para tu edad y horizonte.</p>
+    <div class="video-list">
+      <div class="video-list-item"><span>🎯</span> Definimos cuánto necesitas acumular para vivir de tus rendimientos, no de tu sueldo.</div>
+      <div class="video-list-item"><span>📈</span> Aportación mensual realista, calculada para tu edad y tu horizonte real — no una regla genérica.</div>
+      <div class="video-list-item"><span>🔄</span> Revisamos el plan conforme cambian tus ingresos, tus metas o el mercado.</div>
+    </div>
   </div>
 </section>
 
-<section id="educacion" class="dsec">
+<section id="educacion" class="dsec svc-panel">
   <div class="edu-head reveal">
     <div class="dsec-tag">📚 Educación Financiera · Consultoría por hora ✦</div>
     <h2 class="dsec-ttl">Una hora que cambia cómo ves tu dinero.</h2>
@@ -449,11 +510,11 @@
   <p class="edu-quote reveal">El objetivo no es que dependas de mí para siempre — es que cada vez sepas más sobre tu propio dinero.</p>
 </section>
 
-<section id="fiscal">
+<section id="fiscal" class="svc-panel">
   <div style="text-align:center;margin-bottom:20px;" class="reveal">
     <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">📄 Trámites y Asesoría Fiscal · Otra forma de ayudar ✦</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No todo es invertir.<br>A veces es poner orden.</h2>
-    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Declaraciones, trámites ante el SAT, dudas puntuales — sin rodeos.</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:var(--forest);letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No todo es invertir.<br>A veces es poner orden.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--sage);letter-spacing:0.1em;">Declaraciones, trámites ante el SAT, dudas puntuales — sin rodeos.</p>
   </div>
   <div class="modelo-grid-3 reveal">
     <div class="modelo-card">
@@ -472,12 +533,56 @@
       <div class="modelo-body">¿Te llegó una carta invitación? ¿No sabes si debes declarar? Resolvemos tu duda de forma clara, sin tecnicismos.</div>
     </div>
   </div>
+
+  <div class="flow-label reveal">Así funciona ✦</div>
+  <div class="flow-strip flow-strip-3 reveal">
+    <div class="flow-step">
+      <div class="flow-circ">1</div>
+      <div class="flow-lbl">Me cuentas tu situación</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-circ">2</div>
+      <div class="flow-lbl">Reviso qué aplica en tu caso</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-circ">3</div>
+      <div class="flow-lbl">Te doy una ruta clara y, si aplica, cotización</div>
+    </div>
+  </div>
+
   <p class="portafolio-quote reveal">Escucharte no cuesta nada. Si tu caso requiere trabajo de mi parte, te paso una cotización clara antes de empezar — nunca por sorpresa.</p>
 </section>
 
+<section id="empresas" class="svc-panel" style="background:var(--paper);background-image:linear-gradient(rgba(28,58,30,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.045) 1px,transparent 1px);background-size:36px 36px;padding:88px 60px;border-bottom:1px solid var(--rule);">
+  <div style="text-align:center;margin-bottom:20px;" class="reveal">
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">🏢 Empresas y Emprendedores · Otra forma de ayudar ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,3.6rem);color:var(--forest);letter-spacing:0.04em;line-height:1;margin-bottom:10px;">Tu negocio y tu patrimonio,<br>por separado y en orden.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--sage);letter-spacing:0.1em;">Para que uno nunca ponga en riesgo al otro.</p>
+  </div>
+  <div class="modelo-grid-3 reveal">
+    <div class="modelo-card">
+      <div class="modelo-num">01</div>
+      <div class="modelo-ttl">Finanzas Separadas <span class="modelo-tag">Personal vs. negocio</span></div>
+      <div class="modelo-body">Ponemos límites claros entre lo que es tuyo y lo que es de tu empresa — para que un mal mes del negocio no te deje sin colchón personal.</div>
+    </div>
+    <div class="modelo-card">
+      <div class="modelo-num">02</div>
+      <div class="modelo-ttl">Flujo de Efectivo <span class="modelo-tag">Proyecciones reales</span></div>
+      <div class="modelo-body">Entendemos cuánto entra, cuánto sale y cuándo — para que decisiones como contratar, invertir o esperar se tomen con datos, no con intuición.</div>
+    </div>
+    <div class="modelo-card">
+      <div class="modelo-num">03</div>
+      <div class="modelo-ttl">Estructura para Crecer <span class="modelo-tag">Reinversión y ahorro</span></div>
+      <div class="modelo-body">Definimos qué parte de las ganancias regresa al negocio, cuál se ahorra y cuál se convierte en tu propio patrimonio a largo plazo.</div>
+    </div>
+  </div>
+  <p class="portafolio-quote reveal">Cada negocio es distinto — por eso no hay un plan genérico. Platicamos tu caso primero, y de ahí armamos la estructura.</p>
+  <a href="index.html#contacto" class="cta-final-btn reveal" style="display:block;max-width:220px;margin:28px auto 0;text-align:center;">Hablemos →</a>
+</section>
+
 <div class="cta-final">
-  <div class="cta-final-ttl reveal">¿Le ponemos número a tu caso?</div>
-  <p class="cta-final-sub reveal">El primer paso cuesta cero — cuéntame dónde estás parado y hacia dónde quieres llegar.</p>
+  <div class="cta-final-ttl reveal">¿Iniciamos?</div>
+  <p class="cta-final-sub reveal">El primer paso lo das tú. Los que siguen, los damos juntos.</p>
   <a href="index.html#contacto" class="cta-final-btn reveal">Hablemos →</a>
 </div>
 
@@ -676,15 +781,18 @@
         fontsReady
       ]).then(function(results) {
         var ticketCanvas = results[0];
-        var storyW = 1080;
+        var storyW = 1080, storyH = 1920;
         var maxW = storyW - 100;
         var headerH = 180, footerH = 180;
+        var availH = storyH - headerH - footerH;
 
         var scaleW = maxW / ticketCanvas.width;
-        var drawW = ticketCanvas.width * scaleW;
-        var drawH = ticketCanvas.height * scaleW;
-        var storyH = headerH + drawH + footerH;
-        var startY = headerH;
+        var drawH0 = ticketCanvas.height * scaleW;
+        var shrink = drawH0 > availH ? (availH / drawH0) : 1;
+        var scale = scaleW * shrink;
+        var drawW = ticketCanvas.width * scale;
+        var drawH = ticketCanvas.height * scale;
+        var startY = headerH + Math.max(0, (availH - drawH) / 2);
 
         var out = document.createElement('canvas');
         out.width = storyW; out.height = storyH;
@@ -752,6 +860,120 @@
         }, 'image/png');
       });
     });
+  })();
+
+  // Carrusel de chips debajo del header — mismo mecanismo que el del index, pero más lento
+  (function() {
+    var viewport = document.getElementById('svcViewport');
+    var track = document.getElementById('svcTrack');
+    if (!viewport || !track) return;
+
+    var chips = Array.prototype.slice.call(track.children);
+    var half = chips.length / 2;
+    var singleSetWidth = 0;
+
+    function measure() {
+      singleSetWidth = 0;
+      var acc = 0;
+      chips.forEach(function(chip, i) {
+        var w = chip.getBoundingClientRect().width;
+        acc += w + 10;
+        if (i < half) singleSetWidth += w + 10;
+      });
+    }
+    measure();
+    window.addEventListener('resize', measure);
+    if (window.ResizeObserver) {
+      var svcResizeObs = new ResizeObserver(function() { measure(); });
+      svcResizeObs.observe(track);
+    }
+
+    var pos = 0;
+    var speed = 22; // px/seg — más lento que el carrusel del index (40)
+    var paused = false;
+
+    viewport.addEventListener('mouseenter', function() { paused = true; });
+    viewport.addEventListener('mouseleave', function() { paused = false; });
+
+    var touchStartX = 0, touchStartPos = 0, dragging = false, resumeTimer = null;
+    viewport.addEventListener('touchstart', function(e) {
+      dragging = true;
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      touchStartX = e.touches[0].clientX;
+      touchStartPos = pos;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', function(e) {
+      if (!dragging || !singleSetWidth) return;
+      var dx = e.touches[0].clientX - touchStartX;
+      var newPos = touchStartPos - dx;
+      while (newPos < 0) newPos += singleSetWidth;
+      pos = newPos % singleSetWidth;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function() {
+      dragging = false;
+      resumeTimer = setTimeout(function() { paused = false; }, 2000);
+    });
+
+    var lastTime = null;
+    function frame(t) {
+      if (lastTime === null) lastTime = t;
+      var dt = (t - lastTime) / 1000;
+      lastTime = t;
+      if (!paused && singleSetWidth > 0) {
+        pos += speed * dt;
+        if (pos >= singleSetWidth) pos -= singleSetWidth;
+      }
+      track.style.transform = 'translateX(-' + pos + 'px)';
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  // Mostrar solo la sección de servicio elegida — se activa desde cualquier link a #diagnostico, #portafolio, #retiro, #educacion o #fiscal
+  (function() {
+    var PANEL_IDS = ['diagnostico', 'portafolio', 'retiro', 'educacion', 'fiscal', 'empresas'];
+
+    function showPanel(id) {
+      PANEL_IDS.forEach(function(p) {
+        var el = document.getElementById(p);
+        if (el) el.classList.toggle('svc-open', p === id);
+      });
+      document.querySelectorAll('.svc-chip').forEach(function(chip) {
+        chip.classList.toggle('svc-chip-active', chip.getAttribute('href') === '#' + id);
+      });
+      var bar = document.getElementById('svcQuicknavBar');
+      if (bar) bar.classList.add('svc-bar-visible');
+      var hero = document.querySelector('.sub-hero');
+      if (hero) hero.style.display = 'none';
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      var id = link.getAttribute('href').slice(1);
+      if (PANEL_IDS.indexOf(id) === -1) return;
+      e.preventDefault();
+      showPanel(id);
+      var target = document.getElementById(id);
+      if (target) {
+        requestAnimationFrame(function() {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    });
+
+    // Si se llega con un hash desde otra página (ej. index.html#fiscal), mostrar esa sección de una vez
+    if (location.hash) {
+      var initId = location.hash.slice(1);
+      if (PANEL_IDS.indexOf(initId) !== -1) {
+        showPanel(initId);
+        window.addEventListener('load', function() {
+          var target = document.getElementById(initId);
+          if (target) target.scrollIntoView({ block: 'start' });
+        });
+      }
+    }
   })();
 </script>
 </body>
