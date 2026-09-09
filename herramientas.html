@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<meta name="theme-color" content="#1c3a1e">
+<meta name="robots" content="noindex, nofollow">
+<title>Herramientas · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1c3a1e;
+    --sage:   #5a7a4a;
+    --fern:   #a8c498;
+    --white:  #ffffff;
+    --mid:    #555;
+    --rule:   #ccc8bc;
+    --r: 16px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; overflow-x:hidden; }
+  body { background:var(--forest); font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh; overflow-x:hidden; }
+
+  nav { background:var(--forest); padding:16px 40px; padding-left:max(40px, env(safe-area-inset-left)); padding-right:max(40px, env(safe-area-inset-right)); display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--sage); }
+  .nav-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.1em; color:var(--white); text-decoration:none; }
+  .nav-brand span { color:var(--fern); }
+  .nav-back { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fern); text-decoration:none; }
+  .nav-back:hover { color:var(--white); }
+
+  #herramientas { background:#1c3a1e; padding:88px 60px; background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px); background-size:36px 36px; }
+  .tools-grid { max-width:1080px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .tool-card { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:var(--r); padding:26px; text-decoration:none; transition:all .2s; display:flex; flex-direction:column; }
+  .tool-card:hover { background:rgba(255,255,255,0.11); border-color:var(--fern); transform:translateY(-4px); }
+  .tool-icon { font-size:1.6rem; margin-bottom:14px; }
+  .tool-ttl { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--white); letter-spacing:0.03em; margin-bottom:8px; }
+  .tool-desc { font-family:'DM Mono',monospace; font-size:0.7rem; color:rgba(255,255,255,0.65); line-height:1.6; flex:1; }
+  .tool-tag { align-self:flex-start; margin-top:14px; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; padding:3px 10px; border-radius:20px; background:var(--fern); color:var(--forest); }
+  .tool-tag.premium { background:var(--sage); color:var(--white); }
+
+  .herr-lock { max-width:380px; margin:0 auto; background:var(--white); padding:36px 32px; border-radius:16px; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,0.3); }
+  .herr-lock-icon { font-size:2rem; margin-bottom:12px; }
+  .herr-lock-ttl { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--forest); letter-spacing:0.03em; margin-bottom:8px; }
+  .herr-lock-sub { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--mid); margin-bottom:22px; line-height:1.6; }
+  .herr-lock-input { width:100%; padding:12px 14px; border:1.5px solid var(--rule); border-radius:10px; font-family:'DM Mono',monospace; font-size:0.9rem; text-align:center; letter-spacing:0.1em; margin-bottom:12px; outline:none; box-sizing:border-box; }
+  .herr-lock-input:focus { border-color:var(--sage); }
+  .herr-lock-btn { width:100%; background:var(--forest); color:white; border:none; padding:13px; border-radius:10px; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.06em; cursor:pointer; }
+  .herr-lock-btn:hover { background:var(--sage); }
+  .herr-lock-error { font-family:'DM Mono',monospace; font-size:0.68rem; color:#c0564d; margin-top:12px; display:none; }
+
+  footer { background:var(--forest); padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08); }
+  .ftext { font-size:0.58rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
+
+  @media(max-width:900px){ .tools-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:600px){
+    nav { padding:13px max(20px, env(safe-area-inset-right)) 13px max(20px, env(safe-area-inset-left)); }
+    .tools-grid { grid-template-columns:1fr; }
+    #herramientas { padding:56px 20px !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">SALVADOR <span>FINANCIERO</span></a>
+  <a href="index.html" class="nav-back">← Regresar al inicio</a>
+</nav>
+
+<section id="herramientas">
+  <div style="text-align:center;margin-bottom:52px;">
+    <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Herramientas ✦</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No solo lees —<br>calculas.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Diez herramientas interactivas para ponerle número a tus finanzas.</p>
+  </div>
+
+  <div class="herr-lock" id="herrLock">
+    <div class="herr-lock-icon">🔒</div>
+    <div class="herr-lock-ttl">Acceso a Herramientas</div>
+    <div class="herr-lock-sub">Esta sección todavía está en ajuste — ingresa la contraseña para verla mientras tanto.</div>
+    <input type="password" class="herr-lock-input" id="herrLockInput" placeholder="Contraseña" autocomplete="off">
+    <button class="herr-lock-btn" id="herrLockBtn" type="button">Entrar →</button>
+    <div class="herr-lock-error" id="herrLockError">Contraseña incorrecta — intenta de nuevo.</div>
+  </div>
+
+  <div class="tools-grid" id="herrGrid" style="display:none;">
+    <a href="fondo-emergencia1_1.html" class="tool-card">
+      <div class="tool-icon">🛡️</div>
+      <div class="tool-ttl">Fondo de Emergencia</div>
+      <div class="tool-desc">Calcula tu meta de fondo de emergencia y cuánto tiempo te toma llegar, con proyección mes a mes.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="presupuesto-mensual.html" class="tool-card">
+      <div class="tool-icon">📋</div>
+      <div class="tool-ttl">Presupuesto Mensual</div>
+      <div class="tool-desc">Plantilla completa para planear y dar seguimiento a tu presupuesto, categoría por categoría.</div>
+      <div class="tool-tag premium">Clientes</div>
+    </a>
+    <a href="index.html#perfil" class="tool-card">
+      <div class="tool-icon">🎯</div>
+      <div class="tool-ttl">Perfil de Riesgo</div>
+      <div class="tool-desc">8 preguntas, 3 minutos. Descubre si tu perfil de inversionista es conservador, moderado o agresivo.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="calculadora-interes-compuesto.html" class="tool-card">
+      <div class="tool-icon">✦</div>
+      <div class="tool-ttl">Interés Compuesto</div>
+      <div class="tool-desc">Simula cuánto puede crecer tu dinero con el tiempo — ponle números concretos a tu futuro.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="comparador-inversion.html" class="tool-card">
+      <div class="tool-icon">🚀</div>
+      <div class="tool-ttl">Comparador de Inversión</div>
+      <div class="tool-desc">🐌 Dinero parado vs 🚀 invertido con acompañamiento — mira cuánto te cuesta no invertir.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="motor-eliminacion-deudas.html" class="tool-card">
+      <div class="tool-icon">💳</div>
+      <div class="tool-ttl">Eliminación de Deudas</div>
+      <div class="tool-desc">Compara Snowball, Avalanche e Híbrida con tus deudas reales — y sal con un plan de a cuál pagarle primero.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="presupuesto-sin-verguenza.html" class="tool-card">
+      <div class="tool-icon">😌</div>
+      <div class="tool-ttl">Presupuesto Sin Vergüenza</div>
+      <div class="tool-desc">Tu 50/30/20 adaptado a tu vida real, con guiones para decir que no sin sentirte mal.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="bloqueador-gastos-impulsivos.html" class="tool-card">
+      <div class="tool-icon">✋</div>
+      <div class="tool-ttl">Gastos Impulsivos</div>
+      <div class="tool-desc">Fricción antes de comprar — regla de espera, lista de deseos, y un test rápido de "¿debo comprarlo?".</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="sistema-ahorro-automatico.html" class="tool-card">
+      <div class="tool-icon">🪜</div>
+      <div class="tool-ttl">Ahorro Automático</div>
+      <div class="tool-desc">Tu jerarquía de ahorro en orden — de tu colchón inicial a tu fondo de emergencia completo.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+    <a href="panel-claridad-financiera.html" class="tool-card">
+      <div class="tool-icon">📊</div>
+      <div class="tool-ttl">Claridad Financiera</div>
+      <div class="tool-desc">Todo tu dinero en un solo lugar: patrimonio neto, deudas, ahorro y objetivos, de un vistazo.</div>
+      <div class="tool-tag">Gratis</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México · Hecho con estrategia ✦</div>
+</footer>
+
+<script>
+  (function() {
+    var lockBox = document.getElementById('herrLock');
+    var grid = document.getElementById('herrGrid');
+    var input = document.getElementById('herrLockInput');
+    var btn = document.getElementById('herrLockBtn');
+    var error = document.getElementById('herrLockError');
+    if (!lockBox || !grid || !input || !btn) return;
+
+    function tryUnlock() {
+      var val = (input.value || '').trim().toLowerCase();
+      if (val === 'sf29') {
+        lockBox.style.display = 'none';
+        grid.style.display = 'grid';
+      } else {
+        error.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    }
+    btn.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryUnlock(); });
+    input.focus();
+  })();
+</script>
+</body>
+</html>
