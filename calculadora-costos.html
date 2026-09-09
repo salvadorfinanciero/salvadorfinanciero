@@ -17,8 +17,8 @@
     --white:  #ffffff;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { background:#f0ede6; font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh;
+  html { scroll-behavior:smooth; overflow-x:hidden; }
+  body { background:#f0ede6; font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh; overflow-x:hidden;
     background-image:
       linear-gradient(rgba(28,58,30,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(28,58,30,0.06) 1px, transparent 1px);
@@ -106,9 +106,9 @@
   .bono-result-box .br-value { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--fern); line-height:1; }
 
   /* TABLE */
-  .ref-table { margin-top:28px; padding-top:22px; border-top:1px solid rgba(28,58,30,0.08); }
+  .ref-table { margin-top:28px; padding-top:22px; border-top:1px solid rgba(28,58,30,0.08); overflow-x:auto; -webkit-overflow-scrolling:touch; }
   .ref-table-title { font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(28,58,30,0.35); margin-bottom:10px; }
-  table { width:100%; border-collapse:collapse; font-size:0.68rem; }
+  table { width:100%; min-width:520px; border-collapse:collapse; font-size:0.68rem; }
   th { text-align:left; padding:8px 10px; background:rgba(28,58,30,0.05); color:rgba(28,58,30,0.45); font-size:0.56rem; letter-spacing:0.11em; text-transform:uppercase; border-bottom:1px solid rgba(28,58,30,0.1); }
   td { padding:8px 10px; color:rgba(28,58,30,0.62); border-bottom:1px solid rgba(28,58,30,0.05); transition:all .15s; }
   tr.active-row td { background:rgba(90,122,74,0.09); color:var(--forest); font-weight:500; }
@@ -698,14 +698,69 @@
 
     const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     setTimeout(() => {
-      fontsReady.then(() => html2canvas(document.getElementById('tk-root'), { backgroundColor: '#ffffff', scale: 2 })).then(canvas => {
-        canvas.toBlob(blob => {
+      Promise.all([
+        html2canvas(document.getElementById('tk-root'), { backgroundColor: '#ffffff', scale: 2 }),
+        fontsReady
+      ]).then(([ticketCanvas]) => {
+        const storyW = 1080, storyH = 1920;
+        const maxW = storyW - 100;
+        const headerH = 180, footerH = 180;
+        const availH = storyH - headerH - footerH;
+
+        const scaleW = maxW / ticketCanvas.width;
+        const drawH0 = ticketCanvas.height * scaleW;
+        const shrink = drawH0 > availH ? (availH / drawH0) : 1;
+        const scale = scaleW * shrink;
+        const drawW = ticketCanvas.width * scale;
+        const drawH = ticketCanvas.height * scale;
+        const startY = headerH + Math.max(0, (availH - drawH) / 2);
+
+        const out = document.createElement('canvas');
+        out.width = storyW; out.height = storyH;
+        const ctx = out.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 0, 0, storyH);
+        grad.addColorStop(0, '#1c3a1e');
+        grad.addColorStop(1, '#0f2211');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, storyW, storyH);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= storyW; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, storyH); ctx.stroke(); }
+        for (let y = 0; y <= storyH; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(storyW, y); ctx.stroke(); }
+
+        ctx.textAlign = 'left';
+        ctx.font = '400 46px "Bebas Neue", sans-serif';
+        const word1 = 'SALVADOR ', word2 = 'FINANCIERO';
+        const w1 = ctx.measureText(word1).width, w2 = ctx.measureText(word2).width;
+        const startX = storyW / 2 - (w1 + w2) / 2;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(word1, startX, 110);
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText(word2, startX + w1, 110);
+        ctx.textAlign = 'center';
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 40;
+        ctx.drawImage(ticketCanvas, (storyW - drawW) / 2, startY, drawW, drawH);
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.font = 'italic 26px "DM Mono", monospace';
+        ctx.fillText('Uso interno ✦', storyW / 2, startY + drawH + 70);
+        ctx.font = '400 30px "Bebas Neue", sans-serif';
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText('SALVADOR FINANCIERO', storyW / 2, startY + drawH + 116);
+
+        out.toBlob(blob => {
           const file = new File([blob], 'ticket-salvador-financiero.png', { type: 'image/png' });
 
           function fallbackDownload() {
             const link = document.createElement('a');
             link.download = 'ticket-salvador-financiero.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = out.toDataURL('image/png');
             link.click();
           }
 
