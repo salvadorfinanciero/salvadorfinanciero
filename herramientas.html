@@ -28,6 +28,7 @@
   .nav-brand span { color:var(--fern); }
   .nav-back { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fern); text-decoration:none; }
   .nav-back:hover { color:var(--white); }
+  #rotLine1, #rotLine2 { transition:opacity .4s ease; }
 
   #herramientas { background:#1c3a1e; padding:88px 60px; background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px); background-size:36px 36px; }
   .tools-grid { max-width:1080px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -48,6 +49,22 @@
   .herr-lock-btn { width:100%; background:var(--forest); color:white; border:none; padding:13px; border-radius:10px; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.06em; cursor:pointer; }
   .herr-lock-btn:hover { background:var(--sage); }
   .herr-lock-error { font-family:'DM Mono',monospace; font-size:0.68rem; color:#c0564d; margin-top:12px; display:none; }
+
+  .ejemplos-wrap { max-width:720px; margin:0 auto 18px; text-align:center; }
+  .ejemplos-label { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:12px; }
+  .ejemplos-chips { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .ejemplo-chip { font-family:'DM Mono',monospace; font-size:0.68rem; padding:9px 16px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); color:rgba(255,255,255,0.75); border-radius:20px; cursor:pointer; transition:all .18s; }
+  .ejemplo-chip:hover { background:rgba(255,255,255,0.13); border-color:var(--fern); color:white; }
+  .ejemplo-chip.active { background:var(--fern); border-color:var(--fern); color:var(--forest); }
+
+  .search-wrap { max-width:640px; margin:0 auto 40px; }
+  .herr-search { width:100%; padding:16px 20px; border:1.5px solid rgba(255,255,255,0.18); border-radius:14px; background:rgba(255,255,255,0.07); color:white; font-family:'DM Mono',monospace; font-size:0.85rem; outline:none; box-sizing:border-box; transition:border-color .2s,background .2s; }
+  .herr-search::placeholder { color:rgba(255,255,255,0.4); }
+  .herr-search:focus { border-color:var(--fern); background:rgba(255,255,255,0.11); }
+  .herr-search-clear { position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.5); font-size:0.9rem; cursor:pointer; padding:6px; }
+  .herr-search-clear:hover { color:white; }
+  .tool-card.no-match { display:none; }
+  .tool-card.match-highlight { border-color:var(--fern); background:rgba(255,255,255,0.12); }
 
   footer { background:var(--forest); padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08); }
   .ftext { font-size:0.58rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
@@ -70,8 +87,8 @@
 <section id="herramientas">
   <div style="text-align:center;margin-bottom:52px;">
     <div style="display:inline-block;background:#5a7a4a;color:white;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 16px;margin-bottom:14px;border-radius:20px;">Herramientas ✦</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;">No solo lees —<br>calculas.</h2>
-    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Diez herramientas interactivas para ponerle número a tus finanzas.</p>
+    <h2 id="rotTitle" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:white;letter-spacing:0.04em;line-height:1;margin-bottom:10px;"><span id="rotLine1">No solo lees —</span><br><span id="rotLine2" style="color:var(--fern);">calculas.</span></h2>
+    <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#a8c498;letter-spacing:0.1em;">Trece herramientas interactivas para ponerle número a tus finanzas.</p>
   </div>
 
   <div class="herr-lock" id="herrLock">
@@ -83,66 +100,101 @@
     <div class="herr-lock-error" id="herrLockError">Contraseña incorrecta — intenta de nuevo.</div>
   </div>
 
+  <div class="search-wrap hidden" id="searchWrap" style="position:relative;">
+    <input type="text" id="herrSearch" class="herr-search" placeholder="Ej. 'cliente con muchas deudas de tarjetas' o 'quiere ahorrar pero no puede'" autocomplete="off">
+    <button type="button" id="herrSearchClear" class="herr-search-clear" title="Limpiar" style="display:none;">✕</button>
+  </div>
+
+  <div class="ejemplos-wrap hidden" id="ejemplosWrap">
+    <div class="ejemplos-label">¿No sabes por dónde empezar? Prueba con:</div>
+    <div class="ejemplos-chips" id="ejemplosChips">
+      <button type="button" class="ejemplo-chip" data-q="tiene deudas de tarjetas">tiene deudas de tarjetas</button>
+      <button type="button" class="ejemplo-chip" data-q="no puede ahorrar">no puede ahorrar</button>
+      <button type="button" class="ejemplo-chip" data-q="quiere invertir por primera vez">quiere invertir por primera vez</button>
+      <button type="button" class="ejemplo-chip" data-q="gasta impulsivamente">gasta impulsivamente</button>
+      <button type="button" class="ejemplo-chip" data-q="quiere diversificar ingresos">quiere diversificar ingresos</button>
+      <button type="button" class="ejemplo-chip" data-q="mala relación con el dinero">mala relación con el dinero</button>
+    </div>
+  </div>
+
   <div class="tools-grid" id="herrGrid" style="display:none;">
-    <a href="fondo-emergencia.html" class="tool-card">
+    <a href="fondo-emergencia.html" class="tool-card" data-tags="fondo de emergencia ahorro emergencia colchón imprevisto sin ahorros no tiene ahorros perdió el trabajo quiere empezar a ahorrar 3 a 6 meses de gastos red de seguridad">
       <div class="tool-icon">🛡️</div>
       <div class="tool-ttl">Fondo de Emergencia</div>
       <div class="tool-desc">Calcula tu meta de fondo de emergencia y cuánto tiempo te toma llegar, con proyección mes a mes.</div>
       <div class="tool-tag">Gratis</div>
     </a>
-    <a href="presupuesto-mensual.html" class="tool-card">
+    <a href="presupuesto-mensual.html" class="tool-card" data-tags="presupuesto plantilla presupuesto categorías de gasto seguimiento de gastos cliente formal control mensual">
       <div class="tool-icon">📋</div>
       <div class="tool-ttl">Presupuesto Mensual</div>
       <div class="tool-desc">Plantilla completa para planear y dar seguimiento a tu presupuesto, categoría por categoría.</div>
       <div class="tool-tag premium">Clientes</div>
     </a>
-    <a href="index.html#perfil" class="tool-card">
+    <a href="index.html#perfil" class="tool-card" data-tags="perfil de riesgo quiere invertir no sabe qué tipo de inversionista es conservador moderado agresivo primera vez que invierte no sabe por dónde empezar a invertir">
       <div class="tool-icon">🎯</div>
       <div class="tool-ttl">Perfil de Riesgo</div>
       <div class="tool-desc">8 preguntas, 3 minutos. Descubre si tu perfil de inversionista es conservador, moderado o agresivo.</div>
       <div class="tool-tag">Gratis</div>
     </a>
-    <a href="calculadora-interes-compuesto.html" class="tool-card">
+    <a href="calculadora-interes-compuesto.html" class="tool-card" data-tags="interés compuesto cuánto crece mi dinero proyección de inversión quiere ver el crecimiento a largo plazo ahorrar para el futuro">
       <div class="tool-icon">✦</div>
       <div class="tool-ttl">Interés Compuesto</div>
       <div class="tool-desc">Simula cuánto puede crecer tu dinero con el tiempo — ponle números concretos a tu futuro.</div>
       <div class="tool-tag">Gratis</div>
     </a>
-    <a href="comparador-inversion.html" class="tool-card">
+    <a href="comparador-inversion.html" class="tool-card" data-tags="dinero parado no invierte cuánto le cuesta no invertir comparar invertir vs no invertir tiene ahorros pero no los mueve">
       <div class="tool-icon">🚀</div>
       <div class="tool-ttl">Comparador de Inversión</div>
       <div class="tool-desc">🐌 Dinero parado vs 🚀 invertido con acompañamiento — mira cuánto te cuesta no invertir.</div>
       <div class="tool-tag">Gratis</div>
     </a>
-    <a href="motor-eliminacion-deudas.html" class="tool-card">
+    <a href="motor-eliminacion-deudas.html" class="tool-card" data-tags="deudas tarjetas de crédito muchas deudas no sabe qué deuda pagar primero snowball avalanche tasas de interés altas quiere salir de deudas ahogado en deudas">
       <div class="tool-icon">💳</div>
       <div class="tool-ttl">Eliminación de Deudas</div>
       <div class="tool-desc">Compara Snowball, Avalanche e Híbrida con tus deudas reales — y sal con un plan de a cuál pagarle primero.</div>
-      <div class="tool-tag">Gratis</div>
+      <div class="tool-tag premium">Clientes</div>
     </a>
-    <a href="presupuesto-sin-verguenza.html" class="tool-card">
+    <a href="presupuesto-sin-verguenza.html" class="tool-card" data-tags="presupuesto flexible gasta en gustos se siente culpable al gastar 50 30 20 no quiere vivir como monje quiere balance entre ahorrar y disfrutar">
       <div class="tool-icon">😌</div>
       <div class="tool-ttl">Presupuesto Sin Vergüenza</div>
       <div class="tool-desc">Tu 50/30/20 adaptado a tu vida real, con guiones para decir que no sin sentirte mal.</div>
-      <div class="tool-tag">Gratis</div>
+      <div class="tool-tag premium">Clientes</div>
     </a>
-    <a href="bloqueador-gastos-impulsivos.html" class="tool-card">
+    <a href="bloqueador-gastos-impulsivos.html" class="tool-card" data-tags="compras impulsivas gasta sin pensar compra de más no puede controlar el gasto lista de deseos impulsivo con el dinero compra por ansiedad o aburrimiento">
       <div class="tool-icon">✋</div>
       <div class="tool-ttl">Gastos Impulsivos</div>
       <div class="tool-desc">Fricción antes de comprar — regla de espera, lista de deseos, y un test rápido de "¿debo comprarlo?".</div>
-      <div class="tool-tag">Gratis</div>
+      <div class="tool-tag premium">Clientes</div>
     </a>
-    <a href="sistema-ahorro-automatico.html" class="tool-card">
+    <a href="sistema-ahorro-automatico.html" class="tool-card" data-tags="quiere ahorrar automático no logra ahorrar ahorro constante cuánto debería ahorrar meta de ahorro no le queda nada a fin de mes">
       <div class="tool-icon">🪜</div>
       <div class="tool-ttl">Ahorro Automático</div>
       <div class="tool-desc">Tu jerarquía de ahorro en orden — de tu colchón inicial a tu fondo de emergencia completo.</div>
-      <div class="tool-tag">Gratis</div>
+      <div class="tool-tag premium">Clientes</div>
     </a>
-    <a href="panel-claridad-financiera.html" class="tool-card">
+    <a href="panel-claridad-financiera.html" class="tool-card" data-tags="no sabe cuánto tiene quiere ver todo junto patrimonio neto no tiene claridad de sus finanzas cuentas y deudas dispersas quiere un panorama completo">
       <div class="tool-icon">📊</div>
       <div class="tool-ttl">Claridad Financiera</div>
       <div class="tool-desc">Todo tu dinero en un solo lugar: patrimonio neto, deudas, ahorro y objetivos, de un vistazo.</div>
-      <div class="tool-tag">Gratis</div>
+      <div class="tool-tag premium">Clientes</div>
+    </a>
+    <a href="detector-fugas-gastos.html" class="tool-card" data-tags="no sabe en qué se le va el dinero gasto hormiga suscripciones olvidadas fugas de dinero gasta más de lo que cree cliente que no llega a fin de mes sin saber por qué">
+      <div class="tool-icon">🚨</div>
+      <div class="tool-ttl">Fugas de Gastos</div>
+      <div class="tool-desc">Detecta gasto hormiga y suscripciones olvidadas por categoría, con un plan de reducción de 30 días.</div>
+      <div class="tool-tag premium">Clientes</div>
+    </a>
+    <a href="plano-flujos-ingresos.html" class="tool-card" data-tags="quiere un segundo ingreso depende de un solo sueldo diversificar ingresos quiere generar más dinero side hustle ingresos extra le da miedo perder su único ingreso">
+      <div class="tool-icon">🧭</div>
+      <div class="tool-ttl">Flujos de Ingresos</div>
+      <div class="tool-desc">Compara 7 posibles fuentes de ingreso según tu capital y tiempo, con hoja de ruta a 12 meses.</div>
+      <div class="tool-tag premium">Clientes</div>
+    </a>
+    <a href="reescritor-mentalidad-financiera.html" class="tool-card" data-tags="mala relación con el dinero culpa al gastar creencias limitantes trauma financiero mentalidad de escasez no puede cambiar sus hábitos financieros ansiedad con el dinero">
+      <div class="tool-icon">🧠</div>
+      <div class="tool-ttl">Mentalidad Financiera</div>
+      <div class="tool-desc">Plan práctico de 21 días para cambiar tu relación con el dinero — sin frases motivacionales vacías.</div>
+      <div class="tool-tag premium">Clientes</div>
     </a>
   </div>
 </section>
@@ -152,6 +204,25 @@
 </footer>
 
 <script>
+  var PINNED_HREFS = ['fondo-emergencia.html', 'calculadora-interes-compuesto.html', 'presupuesto-mensual.html', 'index.html#perfil'];
+
+  function ordenarGrid() {
+    var grid = document.getElementById('herrGrid');
+    if (!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.tool-card'));
+    var fijas = [];
+    PINNED_HREFS.forEach(href => {
+      var c = cards.find(x => x.getAttribute('href') === href);
+      if (c) fijas.push(c);
+    });
+    var resto = cards.filter(c => fijas.indexOf(c) === -1);
+    for (var i = resto.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = resto[i]; resto[i] = resto[j]; resto[j] = tmp;
+    }
+    fijas.concat(resto).forEach(c => grid.appendChild(c));
+  }
+
   (function() {
     var lockBox = document.getElementById('herrLock');
     var grid = document.getElementById('herrGrid');
@@ -165,6 +236,12 @@
       if (val === 'sf29') {
         lockBox.style.display = 'none';
         grid.style.display = 'grid';
+        var searchWrap = document.getElementById('searchWrap');
+        if (searchWrap) searchWrap.classList.remove('hidden');
+        var ejemplosWrap = document.getElementById('ejemplosWrap');
+        if (ejemplosWrap) ejemplosWrap.classList.remove('hidden');
+        ordenarGrid();
+        window.__origOrder = Array.prototype.slice.call(document.querySelectorAll('.tool-card'));
       } else {
         error.style.display = 'block';
         input.value = '';
@@ -174,6 +251,117 @@
     btn.addEventListener('click', tryUnlock);
     input.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryUnlock(); });
     input.focus();
+  })();
+
+  // ── BUSCADOR POR SITUACIÓN DE CLIENTE ──────────────────────
+  (function() {
+    var search = document.getElementById('herrSearch');
+    if (!search) return;
+
+    var STOPWORDS = ['de', 'del', 'la', 'las', 'el', 'los', 'un', 'una', 'unos', 'unas', 'con', 'que', 'para', 'por', 'muy', 'mas', 'más', 'sus', 'su', 'se', 'es', 'al', 'en', 'y', 'o', 'lo', 'le', 'les', 'ya', 'este', 'esta', 'estos', 'estas', 'tiene', 'tener', 'cliente', 'situacion', 'situación', 'mi', 'me', 'no', 'sin', 'como'];
+
+    function normalizar(s) {
+      return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function filtrar() {
+      var grid = document.getElementById('herrGrid');
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.tool-card'));
+      var q = normalizar(search.value).trim();
+      cards.forEach(c => c.classList.remove('match-highlight', 'no-match'));
+
+      if (!q) {
+        (window.__origOrder || cards).forEach(c => grid.appendChild(c));
+        return;
+      }
+
+      var palabras = q.split(/\s+/).filter(w => w.length > 2 && STOPWORDS.indexOf(w) === -1);
+      var puntuadas = cards.map(c => {
+        var tags = normalizar(c.dataset.tags || '') + ' ' + normalizar(c.querySelector('.tool-ttl').textContent) + ' ' + normalizar(c.querySelector('.tool-desc').textContent);
+        var score = 0;
+        if (tags.indexOf(q) !== -1) score += 10;
+        palabras.forEach(w => { var raiz = w.length > 6 ? w.slice(0, 6) : w; if (tags.indexOf(raiz) !== -1) score += 1; });
+        return { card: c, score };
+      });
+
+      var UMBRAL = palabras.length <= 1 ? 1 : 2;
+      var conMatch = puntuadas.filter(p => p.score >= UMBRAL).sort((a, b) => b.score - a.score);
+      var sinMatch = puntuadas.filter(p => p.score < UMBRAL);
+
+      if (conMatch.length === 0) {
+        cards.forEach(c => c.classList.add('no-match'));
+        return;
+      }
+
+      conMatch.forEach(p => grid.appendChild(p.card));
+      sinMatch.forEach(p => { grid.appendChild(p.card); p.card.classList.add('no-match'); });
+      conMatch.forEach(p => p.card.classList.add('match-highlight'));
+    }
+
+    var clearBtn = document.getElementById('herrSearchClear');
+
+    function actualizarLimpiar() {
+      if (clearBtn) clearBtn.style.display = search.value ? 'block' : 'none';
+    }
+
+    var t;
+    search.addEventListener('input', function() {
+      document.querySelectorAll('.ejemplo-chip.active').forEach(c => c.classList.remove('active'));
+      actualizarLimpiar();
+      clearTimeout(t);
+      t = setTimeout(filtrar, 150);
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        search.value = '';
+        document.querySelectorAll('.ejemplo-chip.active').forEach(c => c.classList.remove('active'));
+        actualizarLimpiar();
+        filtrar();
+        search.focus();
+      });
+    }
+
+    document.querySelectorAll('.ejemplo-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        var yaActivo = chip.classList.contains('active');
+        document.querySelectorAll('.ejemplo-chip.active').forEach(c => c.classList.remove('active'));
+        if (yaActivo) {
+          search.value = '';
+        } else {
+          chip.classList.add('active');
+          search.value = chip.dataset.q;
+        }
+        actualizarLimpiar();
+        filtrar();
+        search.focus();
+      });
+    });
+  })();
+
+  // Título rotativo
+  (function() {
+    var l1 = document.getElementById('rotLine1');
+    var l2 = document.getElementById('rotLine2');
+    if (!l1 || !l2) return;
+    var phrases = [
+      ['No solo lees —', 'calculas.'],
+      ['Trece herramientas,', 'un plan claro.'],
+      ['Deja de adivinar —', 'empieza a calcular.'],
+      ['Del diagnóstico', 'a la decisión.']
+    ];
+    var i = 0;
+    setInterval(function() {
+      l1.style.opacity = '0';
+      l2.style.opacity = '0';
+      setTimeout(function() {
+        i = (i + 1) % phrases.length;
+        l1.textContent = phrases[i][0];
+        l2.textContent = phrases[i][1];
+        l1.style.opacity = '1';
+        l2.style.opacity = '1';
+      }, 400);
+    }, 10000);
   })();
 </script>
 </body>
