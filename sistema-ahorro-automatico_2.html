@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<meta name="theme-color" content="#1c3a1e">
+<title>Sistema de Ahorro Automático · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --forest: #1c3a1e;
+    --pine:   #2d5a30;
+    --sage:   #5a7a4a;
+    --fern:   #a8c498;
+    --cream:  #f5f3ee;
+    --white:  #ffffff;
+    --mid:    #555;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; overflow-x:hidden; }
+  body { background:#f0ede6; font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh; overflow-x:hidden;
+    background-image:
+      linear-gradient(rgba(28,58,30,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,58,30,0.06) 1px, transparent 1px);
+    background-size:36px 36px;
+  }
+
+  nav { background:var(--forest); padding:16px 40px; padding-left:max(40px, env(safe-area-inset-left)); padding-right:max(40px, env(safe-area-inset-right)); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:3px solid var(--sage); }
+  .nav-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.1em; color:var(--white); text-decoration:none; }
+  .nav-brand span { color:var(--fern); }
+  .nav-back { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fern); text-decoration:none; }
+  .nav-back:hover { color:var(--white); }
+  .btn-pdf { font-family:'Bebas Neue',sans-serif; font-size:0.78rem; letter-spacing:0.08em; padding:8px 18px; background:transparent; color:var(--fern); border:1.5px solid var(--fern); cursor:pointer; border-radius:6px; transition:all .2s; }
+  .btn-pdf:hover { background:var(--fern); color:var(--forest); }
+
+  /* MODAL DE BIENVENIDA */
+  .modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(10,25,12,0.88); backdrop-filter:blur(8px); display:flex; align-items:flex-end; justify-content:center; padding:0 16px; }
+  @media(min-width:600px){ .modal-overlay{ align-items:center; padding:24px; } }
+  .modal-box { background:var(--white); max-width:420px; width:100%; border-radius:20px 20px 0 0; overflow:hidden; box-shadow:0 -8px 40px rgba(0,0,0,0.3); max-height:88vh; overflow-y:auto; }
+  @media(min-width:600px){ .modal-box{ border-radius:20px; max-height:none; max-width:480px; } }
+  .modal-hd { background:var(--forest); padding:22px 24px 18px; position:relative; }
+  .modal-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; color:var(--white); margin-bottom:6px; }
+  .modal-logo span { color:var(--fern); }
+  .modal-ttl { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:0.05em; color:var(--white); line-height:0.95; }
+  .modal-ttl span { color:var(--fern); }
+  .modal-x { position:absolute; top:16px; right:16px; width:32px; height:32px; background:rgba(255,255,255,0.1); border:none; color:rgba(255,255,255,0.7); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+  .modal-x:hover { background:rgba(255,255,255,0.2); color:var(--white); }
+  .modal-body { padding:20px 24px; }
+  .modal-step { display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
+  .modal-num { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--sage); line-height:1; flex-shrink:0; width:22px; }
+  .modal-step-text { font-size:0.74rem; letter-spacing:0.02em; color:var(--mid); line-height:1.7; }
+  .modal-step-text strong { color:var(--forest); }
+  .modal-ft { padding:16px 24px 20px; border-top:1px solid rgba(28,58,30,0.1); display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .modal-hint { font-size:0.58rem; letter-spacing:0.06em; color:rgba(28,58,30,0.4); }
+  .modal-btn { font-family:'Bebas Neue',sans-serif; font-size:0.95rem; letter-spacing:0.12em; padding:11px 26px; background:var(--sage); color:var(--white); border:none; cursor:pointer; border-radius:8px; transition:background .2s; }
+  .modal-btn:hover { background:var(--forest); }
+
+  /* DONA DE PROGRESO */
+  .chart-card { background:var(--white); border-top:4px solid var(--sage); box-shadow:0 2px 16px rgba(28,58,30,0.07); padding:36px; }
+  .chart-body { display:flex; flex-direction:column; align-items:center; gap:20px; }
+  .chart-wrap { position:relative; width:220px; height:220px; }
+  .chart-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+  .chart-center-val { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; color:var(--forest); line-height:1; }
+  .chart-center-lbl { font-size:0.56rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(28,58,30,0.4); margin-top:3px; }
+  .chart-legend { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:8px; }
+  .legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+  .legend-name { font-size:0.68rem; color:rgba(28,58,30,0.6); }
+  .legend-val { font-family:'Bebas Neue',sans-serif; font-size:0.95rem; color:var(--forest); }
+
+  /* RESUMEN STICKY */
+  .resumen-sticky { position:sticky; bottom:0; z-index:90; background:var(--forest); border-top:3px solid var(--sage); padding:16px 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; box-shadow:0 -8px 32px rgba(28,58,30,0.2); transition:background .5s,border-color .5s; }
+  .res-block label { font-size:0.54rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); display:block; margin-bottom:4px; }
+  .res-val { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--white); }
+  .res-hint { font-size:0.54rem; color:rgba(255,255,255,0.3); margin-top:2px; }
+  @media(max-width:760px){ .resumen-sticky{ grid-template-columns:1fr 1fr; padding:14px 20px; } .res-val{ font-size:1.2rem; } .res-hint{ display:none; } }
+
+  /* PRINT */
+  .print-header { display:none; }
+  @media print {
+    .print-header { display:flex !important; position:fixed; top:0; left:0; right:0; background:white; padding:6px 24px 8px; border-bottom:2px solid #1c3a1e; z-index:9999; justify-content:space-between; align-items:center; }
+    .ph-logo { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:#1c3a1e; }
+    .ph-logo span { color:#5a7a4a; }
+    .ph-tag { font-size:0.5rem; letter-spacing:0.12em; text-transform:uppercase; color:#aaa; text-align:right; }
+    body { padding-top:40px !important; background:white; }
+    .btn-pdf, .btn-img, .modal-overlay, footer, nav .nav-back { display:none !important; }
+    nav { position:static !important; }
+    .resumen-sticky { position:static !important; box-shadow:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    @page { margin:8mm; size:A4; }
+  }
+
+  footer { background:var(--forest); padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08); }
+
+  .hero { background:var(--forest); padding:52px max(40px, env(safe-area-inset-right)) 40px max(40px, env(safe-area-inset-left)); border-bottom:3px solid var(--sage); }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--fern); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .hero-eyebrow span { display:block; width:24px; height:2px; background:var(--fern); }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.4rem,7vw,4.2rem); line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:6px; }
+  .hero h1 span { color:var(--fern); }
+  .hero p { font-family:'Instrument Serif',serif; font-style:italic; font-size:1rem; color:rgba(255,255,255,0.5); line-height:1.75; max-width:520px; margin-top:14px; }
+
+  .container { max-width:860px; margin:0 auto; padding:40px 40px 80px; display:flex; flex-direction:column; gap:20px; }
+
+  .card { background:var(--white); border-top:4px solid var(--sage); padding:36px; box-shadow:0 2px 16px rgba(28,58,30,0.07); }
+  .card-label { font-size:0.65rem; letter-spacing:0.2em; color:rgba(28,58,30,0.4); margin-bottom:6px; text-transform:uppercase; }
+  .card h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--sage); margin-bottom:8px; }
+  .card .card-sub { font-size:0.68rem; color:rgba(28,58,30,0.45); line-height:1.6; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid rgba(28,58,30,0.1); }
+
+  .input-group { display:flex; flex-direction:column; gap:5px; margin-bottom:18px; }
+  .input-group label { font-size:0.58rem; letter-spacing:0.13em; text-transform:uppercase; color:rgba(28,58,30,0.5); }
+  .input-wrap { position:relative; display:flex; align-items:center; }
+  .input-wrap .prefix { position:absolute; left:13px; font-size:0.85rem; color:var(--sage); pointer-events:none; }
+  input[type="number"] {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.9rem;
+    padding:12px 16px 12px 32px; outline:none; transition:border-color .18s;
+    -moz-appearance:textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+  input:focus { border-color:var(--sage); }
+  select {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.85rem;
+    padding:12px 16px; outline:none; cursor:pointer;
+  }
+  select:focus { border-color:var(--sage); }
+
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+  /* JERARQUÍA */
+  .jerarquia-item { padding:20px 22px; background:var(--cream); border-left:4px solid var(--sage); margin-bottom:14px; }
+  .jerarquia-item .je-num { font-family:'Bebas Neue',sans-serif; font-size:0.85rem; color:var(--sage); letter-spacing:0.1em; margin-bottom:4px; }
+  .jerarquia-item .je-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--forest); letter-spacing:0.02em; margin-bottom:6px; }
+  .jerarquia-item .je-value { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--sage); margin-bottom:6px; }
+  .jerarquia-item .je-desc { font-size:0.66rem; color:rgba(28,58,30,0.55); line-height:1.65; }
+
+  .progreso-track { height:12px; background:rgba(28,58,30,0.08); overflow:hidden; margin:10px 0; }
+  .progreso-fill { height:100%; background:var(--sage); transition:width .4s; }
+  .progreso-label { font-size:0.6rem; color:rgba(28,58,30,0.5); }
+
+  /* RESUMEN GRID */
+  .resumen-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:8px; }
+  .resumen-item { background:var(--forest); padding:16px 18px; }
+  .resumen-item .ri-label { font-size:0.54rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:5px; }
+  .resumen-item .ri-value { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--fern); line-height:1.1; }
+  .resumen-item .ri-sub { font-size:0.56rem; color:rgba(255,255,255,0.4); margin-top:3px; }
+
+  /* REGLAS */
+  .reglas-grid { display:flex; flex-direction:column; gap:12px; margin-top:6px; }
+  .regla-item { display:flex; gap:14px; padding:14px 16px; background:var(--cream); border-left:3px solid var(--sage); }
+  .regla-item .rg-icon { font-size:1.1rem; flex-shrink:0; }
+  .regla-item .rg-text { font-size:0.68rem; line-height:1.7; color:rgba(28,58,30,0.72); }
+  .regla-item .rg-text strong { color:var(--forest); }
+
+  /* INCREMENTO GRADUAL */
+  table { width:100%; min-width:420px; border-collapse:collapse; font-size:0.7rem; }
+  .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  th { text-align:left; padding:10px 12px; background:rgba(28,58,30,0.05); color:rgba(28,58,30,0.45); font-size:0.56rem; letter-spacing:0.1em; text-transform:uppercase; border-bottom:1px solid rgba(28,58,30,0.1); }
+  td { padding:10px 12px; color:rgba(28,58,30,0.65); border-bottom:1px solid rgba(28,58,30,0.06); }
+  td.td-accent { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--sage); }
+
+  /* PROYECCIONES */
+  .proy-toggle-row { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+  .proy-toggle-btn { font-family:'DM Mono',monospace; font-size:0.64rem; letter-spacing:0.06em; padding:9px 18px; background:transparent; border:1.5px solid rgba(28,58,30,0.2); color:rgba(28,58,30,0.5); cursor:pointer; transition:all .18s; }
+  .proy-toggle-btn.active { background:var(--forest); border-color:var(--forest); color:var(--fern); }
+  .proy-row { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:var(--cream); margin-bottom:8px; }
+  .proy-row .pr-nombre { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--forest); }
+  .proy-row .pr-pct { font-size:0.58rem; color:rgba(28,58,30,0.45); }
+  .proy-row .pr-valor { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--sage); }
+
+  .hidden { display:none !important; }
+
+  .btn-img { display:inline-flex; align-items:center; gap:10px; background:transparent; color:var(--forest); border:1.5px solid var(--sage); font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; padding:13px 28px; cursor:pointer; transition:all .2s; margin-top:24px; }
+  .btn-img:hover { background:var(--sage); color:white; }
+  .btn-img:disabled { opacity:0.5; cursor:not-allowed; }
+
+  .ahorro-ticket { position:fixed; left:-9999px; top:0; width:520px; background:#ffffff; font-family:'DM Mono',monospace; color:var(--forest); }
+  .ti-header { background:var(--forest); padding:26px 30px 22px; }
+  .ti-header .ti-icon { font-size:1.8rem; margin-bottom:6px; }
+  .ti-header .ti-name { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.05em; color:#ffffff; }
+  .ti-header .ti-sub { font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--fern); margin-top:4px; }
+  .ti-body { padding:24px 30px; display:flex; flex-direction:column; gap:12px; }
+  .ti-block { padding:16px 20px; background:var(--cream); border-left:4px solid var(--sage); }
+  .ti-block .tb-label { font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:4px; }
+  .ti-block .tb-value { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--forest); }
+  .ti-block .tb-sub { font-size:0.58rem; color:rgba(28,58,30,0.4); margin-top:3px; }
+
+  .cta-section { background:var(--forest); padding:56px 40px; text-align:center; margin-top:8px; }
+  .cta-section h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.4rem); color:white; letter-spacing:0.03em; margin-bottom:10px; }
+  .cta-section p { font-family:'Instrument Serif',serif; font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.6); margin-bottom:26px; }
+  .cta-btn { display:inline-block; background:var(--fern); color:var(--forest); font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.08em; padding:15px 36px; text-decoration:none; transition:all .2s; }
+  .cta-btn:hover { background:white; }
+
+  footer { background:var(--forest); padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08); }
+  .ftext { font-size:0.58rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
+
+  @media(max-width:760px){
+    .row3 { grid-template-columns:1fr; }
+    .resumen-grid { grid-template-columns:1fr; }
+  }
+  @media(max-width:600px){
+    nav { padding:13px max(20px, env(safe-area-inset-right)) 13px max(20px, env(safe-area-inset-left)); }
+    .hero { padding:36px max(20px, env(safe-area-inset-right)) 30px max(20px, env(safe-area-inset-left)); }
+    .container { padding:24px max(16px, env(safe-area-inset-right)) 60px max(16px, env(safe-area-inset-left)); }
+    .card, .cta-section { padding:22px 18px; }
+    .row2 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-header"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tag">Sistema de Ahorro Automático<br>@salvadorfinanciero</div></div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-logo">Salvador <span>Financiero</span></div>
+      <div class="modal-ttl">Sistema de<br><span>Ahorro Automático</span></div>
+      <button class="modal-x" id="btn-x">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step"><div class="modal-num">1</div><div class="modal-step-text">Mete tu <strong>ingreso, gastos fijos y ahorros actuales</strong> — con eso armamos tu jerarquía completa.</div></div>
+      <div class="modal-step"><div class="modal-num">2</div><div class="modal-step-text">Verás tus <strong>3 escalones</strong>: colchón inicial, fondo de emergencia completo, y tu % de ahorro automático recomendado.</div></div>
+      <div class="modal-step"><div class="modal-num">3</div><div class="modal-step-text">La <strong>dona de progreso</strong> te muestra qué tanto llevas cubierto de tu fondo completo, de un vistazo.</div></div>
+      <div class="modal-step"><div class="modal-num">4</div><div class="modal-step-text">Elige tu ritmo en <strong>Proyecciones</strong> — conservador, moderado o agresivo — y mira cuánto acumulas a distintos plazos.</div></div>
+      <div class="modal-step"><div class="modal-num">5</div><div class="modal-step-text">Abajo del todo siempre verás tu <strong>resumen fijo</strong> con lo esencial, sin importar qué tanto hayas bajado.</div></div>
+    </div>
+    <div class="modal-ft">
+      <span class="modal-hint">✦ @salvadorfinanciero</span>
+      <button class="modal-btn" id="btn-comenzar">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-brand">SALVADOR <span>FINANCIERO</span></a>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <button class="btn-pdf" id="btn-pdf" type="button">⬇ Descargar PDF</button>
+    <a href="index.html" class="nav-back">← Regresar al inicio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow"><span></span>Herramienta de Ahorro</div>
+  <h1>Sistema de Ahorro<br><span>Automático</span></h1>
+  <p>Un sistema que no depende de tu fuerza de voluntad — se mueve solo, en el orden correcto, hacia la meta correcta.</p>
+</div>
+
+<div class="container">
+
+  <!-- SECCIÓN 01 -->
+  <div class="card">
+    <div class="card-label">Sección 01</div>
+    <h2>📊 Tus Números</h2>
+    <div class="card-sub">Con esto armamos tu jerarquía de ahorro — qué guardar primero, cuánto y en qué orden.</div>
+
+    <div class="row2">
+      <div class="input-group">
+        <label>Ingreso neto mensual</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-ingreso" placeholder="0" min="0"></div>
+      </div>
+      <div class="input-group">
+        <label>Gastos fijos mensuales</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-fijos" placeholder="0" min="0"></div>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="input-group">
+        <label>Ahorros actuales</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-ahorros" placeholder="0" min="0"></div>
+      </div>
+      <div class="input-group" style="margin-bottom:0;">
+        <label>Tu objetivo principal</label>
+        <select id="sel-objetivo">
+          <option value="emergencia">Fondo de emergencia</option>
+          <option value="viajes">Viajes</option>
+          <option value="inversion">Empezar a invertir</option>
+          <option value="casa">Comprar casa</option>
+          <option value="deudas">Pagar deudas</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 02: JERARQUÍA -->
+  <div class="card hidden" id="card-jerarquia">
+    <div class="card-label">Sección 02</div>
+    <h2>🪜 Tu Jerarquía de Ahorro</h2>
+    <div class="card-sub">El orden importa — no ahorres para todo a la vez, ve subiendo estos escalones uno por uno.</div>
+
+    <div id="jerarquia-list"></div>
+    <div class="resumen-grid" id="resumen-grid"></div>
+  </div>
+
+  <!-- DONA DE PROGRESO -->
+  <div class="card hidden chart-card" id="card-dona">
+    <div class="card-label">Tu Avance</div>
+    <h2>📊 Progreso hacia tu Fondo Completo</h2>
+    <div class="card-sub">De un vistazo — cuánto ya tienes cubierto contra tu meta de 3-6 meses de gastos.</div>
+    <div class="chart-body">
+      <div class="chart-wrap">
+        <canvas id="donutChart" width="220" height="220"></canvas>
+        <div class="chart-center">
+          <div class="chart-center-val" id="donut-center">0%</div>
+          <div class="chart-center-lbl">cubierto</div>
+        </div>
+      </div>
+      <div class="chart-legend" id="chart-legend"></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 03: REGLAS -->
+  <div class="card hidden" id="card-reglas">
+    <div class="card-label">Sección 03</div>
+    <h2>🔒 Reglas Para No Tocarlo</h2>
+    <div class="card-sub">Un fondo de emergencia que usas para todo, no es un fondo de emergencia.</div>
+
+    <div class="reglas-grid" id="reglas-list"></div>
+  </div>
+
+  <!-- SECCIÓN 04: INCREMENTO GRADUAL -->
+  <div class="card hidden" id="card-incremento">
+    <div class="card-label">Sección 04</div>
+    <h2>📈 Sube Tu Tasa Poco a Poco</h2>
+    <div class="card-sub">No hace falta llegar al 20% desde el mes uno — sube 1 punto cada trimestre hasta llegar.</div>
+
+    <div class="table-wrap">
+      <table id="tabla-incremento">
+        <thead><tr><th>Trimestre</th><th>% de ahorro</th><th>Monto mensual</th></tr></thead>
+        <tbody id="tabla-incremento-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 05: PROYECCIONES -->
+  <div class="card hidden" id="card-proyecciones">
+    <div class="card-label">Sección 05</div>
+    <h2>🔮 Proyecciones</h2>
+    <div class="card-sub">Así se ve tu ahorro acumulado según qué tan agresivo quieras ir — cambia el plazo abajo.</div>
+
+    <div class="proy-toggle-row" id="proy-toggle-row"></div>
+    <div id="proy-list"></div>
+
+    <button class="btn-img" id="btn-imagen" type="button" onclick="generarImagenAhorro()">📲 Descargar Mi Sistema como Imagen</button>
+  </div>
+
+</div>
+
+<div class="ahorro-ticket" id="ahorro-ticket"></div>
+
+<div class="resumen-sticky hidden" id="resumen-sticky">
+  <div class="res-block"><label>Ahorro automático</label><div class="res-val" id="res-recomendado">$0</div><div class="res-hint">recomendado / mes</div></div>
+  <div class="res-block"><label>Meta fondo completo</label><div class="res-val" id="res-meta">$0</div><div class="res-hint">3-6 meses de gastos</div></div>
+  <div class="res-block"><label>Ya tienes</label><div class="res-val" id="res-tienes">$0</div><div class="res-hint" id="res-tienes-hint">0% cubierto</div></div>
+  <div class="res-block"><label>Te falta</label><div class="res-val" id="res-falta">$0</div><div class="res-hint">para el fondo completo</div></div>
+</div>
+
+<div class="cta-section">
+  <h2>¿Quieres automatizarlo de verdad?</h2>
+  <p>Esta herramienta te da la estructura — en una sesión revisamos en qué cuenta específica mover cada peso.</p>
+  <a href="javascript:void(0)" id="agendarBtn" class="cta-btn">📅 Agenda tu cita →</a>
+</div>
+
+<footer>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México · Hecho con estrategia ✦</div>
+</footer>
+
+<script>
+  let ultimoAhorro = null;
+  let mesesProy = 12;
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  const CUENTA_POR_OBJETIVO = {
+    emergencia: { nombre: 'Cuenta de ahorro líquida o CETES a 28 días', razon: 'necesitas poder sacarlo en 1-2 días sin penalización, sin que pierda valor por estar en una inversión de riesgo.' },
+    viajes: { nombre: 'Cuenta o "alcancía" separada de tu cuenta del día a día', razon: 'que no la veas en tu saldo principal ayuda a que no se mezcle con tu gasto normal — literal "ojos que no ven".' },
+    inversion: { nombre: 'Cuenta de inversión (SIC o similar)', razon: 'aquí sí quieres que el dinero trabaje — una vez que tienes tu colchón de emergencia, el siguiente peso debe ir a crecer, no solo a quedarse quieto.' },
+    casa: { nombre: 'Instrumento a plazo según tu horizonte (CETES si es en <2 años, Fibras/fondos si es más largo)', razon: 'entre más lejos esté tu meta, más puedes tolerar algo de volatilidad a cambio de mejor rendimiento.' },
+    deudas: { nombre: 'No es "ahorro" — es pago acelerado', razon: 'si tu objetivo es pagar deudas, el dinero no debe ir a una cuenta aparte, debe ir directo al pago extra de tu deuda con la tasa más alta.' },
+  };
+
+  function calcular() {
+    const ingreso = parseFloat(document.getElementById('inp-ingreso').value) || 0;
+    const fijos = parseFloat(document.getElementById('inp-fijos').value) || 0;
+    const ahorros = parseFloat(document.getElementById('inp-ahorros').value) || 0;
+    const objetivo = document.getElementById('sel-objetivo').value;
+
+    if (ingreso <= 0 || fijos <= 0) {
+      ['card-jerarquia', 'card-dona', 'card-reglas', 'card-incremento', 'card-proyecciones'].forEach(id => document.getElementById(id).classList.add('hidden'));
+      document.getElementById('resumen-sticky').classList.add('hidden');
+      return;
+    }
+
+    const colchonInicial = Math.min(fijos, 15000);
+    const fondoCompleto = fijos * 4; // punto medio de 3-6 meses
+    const disponible = Math.max(0, ingreso - fijos);
+    const pctRecomendado = 0.20;
+    const montoRecomendado = ingreso * pctRecomendado;
+    const faltante = Math.max(0, fondoCompleto - ahorros);
+    const progresoPct = Math.min(100, (ahorros / fondoCompleto) * 100);
+
+    ultimoAhorro = { ingreso, fijos, ahorros, objetivo, colchonInicial, fondoCompleto, disponible, montoRecomendado, faltante, progresoPct };
+
+    ['card-jerarquia', 'card-dona', 'card-reglas', 'card-incremento', 'card-proyecciones'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+    document.getElementById('resumen-sticky').classList.remove('hidden');
+
+    renderJerarquia();
+    renderReglas();
+    renderIncremento();
+    renderProyecciones();
+    renderDona();
+    renderResumenSticky();
+  }
+
+  function colorPorPct(pct) {
+    if (pct >= 100) return '#3d9160';
+    if (pct >= 50) return '#5a7a4a';
+    if (pct >= 25) return '#c47d0e';
+    return '#d96060';
+  }
+
+  function renderJerarquia() {
+    const a = ultimoAhorro;
+    const cuenta = CUENTA_POR_OBJETIVO[a.objetivo];
+    const colchonListo = a.ahorros >= a.colchonInicial;
+
+    document.getElementById('jerarquia-list').innerHTML = `
+      <div class="jerarquia-item">
+        <div class="je-num">ESCALÓN 1</div>
+        <div class="je-title">Colchón inicial rápido</div>
+        <div class="je-value">${fmt(a.colchonInicial)}</div>
+        <div class="je-desc">${colchonListo ? '✅ Ya lo tienes cubierto con tus ahorros actuales.' : `Te falta ${fmt(a.colchonInicial - a.ahorros)} para este primer escalón — antes que cualquier otra cosa, junta esto. Es tu colchón contra un imprevisto chico (llanta ponchada, consulta médica) sin usar tarjeta de crédito.`}</div>
+      </div>
+      <div class="jerarquia-item">
+        <div class="je-num">ESCALÓN 2</div>
+        <div class="je-title">Fondo de emergencia completo</div>
+        <div class="je-value">${fmt(a.fondoCompleto)}</div>
+        <div class="je-desc">Equivale a 4 meses de tus gastos fijos (${fmt(a.fijos)}/mes) — el rango sano es de 3 a 6 meses según qué tan estable sea tu ingreso.</div>
+        <div class="progreso-track"><div class="progreso-fill" style="width:${a.progresoPct}%;background:${colorPorPct(a.progresoPct)};"></div></div>
+        <div class="progreso-label">${a.progresoPct.toFixed(0)}% cubierto · te faltan ${fmt(a.faltante)}</div>
+      </div>
+      <div class="jerarquia-item">
+        <div class="je-num">ESCALÓN 3</div>
+        <div class="je-title">Ahorro automático recomendado</div>
+        <div class="je-value">${fmt(a.montoRecomendado)}<span style="font-size:1rem;color:rgba(28,58,30,0.4);"> / mes (20%)</span></div>
+        <div class="je-desc">De tus ${fmt(a.ingreso)} de ingreso, este es el punto de partida clásico. Prográmalo para que salga automático el mismo día que te pagan — antes de que el dinero pase por tu cuenta del día a día.</div>
+      </div>
+      <div class="jerarquia-item" style="border-left-color:var(--forest);">
+        <div class="je-num">DÓNDE GUARDARLO</div>
+        <div class="je-title">${cuenta.nombre}</div>
+        <div class="je-desc">¿Por qué? Porque ${cuenta.razon}</div>
+      </div>
+    `;
+
+    document.getElementById('resumen-grid').innerHTML = `
+      <div class="resumen-item"><div class="ri-label">Disponible tras fijos</div><div class="ri-value">${fmt(a.disponible)}</div><div class="ri-sub">al mes</div></div>
+      <div class="resumen-item"><div class="ri-label">Frecuencia ideal</div><div class="ri-value">Automático</div><div class="ri-sub">el mismo día que te pagan</div></div>
+    `;
+  }
+
+  function renderReglas() {
+    const reglas = [
+      { icon: '🚫', text: '<strong>Sin tarjeta ligada.</strong> Tu fondo de emergencia no debe tener tarjeta de débito asociada — que sacar el dinero tome al menos un paso extra (transferencia manual).' },
+      { icon: '❓', text: '<strong>Define qué SÍ cuenta como emergencia</strong> antes de necesitarlo: pérdida de ingreso, salud, reparación urgente. Un buen precio en una tienda no es una emergencia.' },
+      { icon: '🔄', text: '<strong>Si lo usas, repónlo primero.</strong> Antes de retomar cualquier otra meta de ahorro, el siguiente dinero disponible regresa a rellenar el fondo hasta su nivel completo.' },
+      { icon: '👀', text: '<strong>Revísalo, no lo toques.</strong> Está bien ver el saldo cada mes para confirmar que sigue ahí — la regla es no mover el dinero, no ignorarlo.' },
+    ];
+    document.getElementById('reglas-list').innerHTML = reglas.map(r => `
+      <div class="regla-item"><div class="rg-icon">${r.icon}</div><div class="rg-text">${r.text}</div></div>
+    `).join('');
+  }
+
+  function renderIncremento() {
+    const a = ultimoAhorro;
+    const pasos = [5, 10, 15, 20];
+    const tbody = document.getElementById('tabla-incremento-body');
+    tbody.innerHTML = pasos.map((pct, i) => `
+      <tr>
+        <td>Trimestre ${i + 1}</td>
+        <td class="td-accent">${pct}%</td>
+        <td>${fmt(a.ingreso * pct / 100)} / mes</td>
+      </tr>`).join('');
+  }
+
+  function setProyeccion(meses) {
+    mesesProy = meses;
+    document.querySelectorAll('.proy-toggle-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.meses) === meses));
+    renderProyeccionesLista();
+  }
+
+  function renderProyecciones() {
+    const row = document.getElementById('proy-toggle-row');
+    row.innerHTML = [6, 12, 24, 36].map(m => `
+      <button type="button" class="proy-toggle-btn ${m === mesesProy ? 'active' : ''}" data-meses="${m}" onclick="setProyeccion(${m})">${m} meses</button>
+    `).join('');
+    renderProyeccionesLista();
+  }
+
+  function renderProyeccionesLista() {
+    const a = ultimoAhorro;
+    const franjas = [
+      { nombre: 'Conservadora', pct: 5, icon: '🐢' },
+      { nombre: 'Moderada', pct: 15, icon: '🚶' },
+      { nombre: 'Agresiva', pct: 25, icon: '🏃' },
+    ];
+    document.getElementById('proy-list').innerHTML = franjas.map(f => {
+      const mensual = a.ingreso * f.pct / 100;
+      const total = mensual * mesesProy;
+      return `
+        <div class="proy-row">
+          <div>
+            <div class="pr-nombre">${f.icon} ${f.nombre}</div>
+            <div class="pr-pct">${f.pct}% del ingreso · ${fmt(mensual)}/mes</div>
+          </div>
+          <div class="pr-valor">${fmt(total)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // Recalcular en vivo
+  (function() {
+    let timer = null;
+    function trigger() {
+      clearTimeout(timer);
+      timer = setTimeout(calcular, 400);
+    }
+    ['inp-ingreso', 'inp-fijos', 'inp-ahorros'].forEach(id => {
+      document.getElementById(id).addEventListener('input', trigger);
+    });
+    document.getElementById('sel-objetivo').addEventListener('change', function() {
+      if (ultimoAhorro) calcular();
+    });
+  })();
+
+  // ── GENERAR IMAGEN ──────────────────────
+  function generarImagenAhorro() {
+    if (!ultimoAhorro) {
+      alert('Primero mete tu ingreso y tus gastos fijos.');
+      return;
+    }
+    if (typeof html2canvas === 'undefined') {
+      alert('No se pudo cargar el generador de imagen — revisa tu conexión e intenta de nuevo.');
+      return;
+    }
+
+    const a = ultimoAhorro;
+    const ticket = document.getElementById('ahorro-ticket');
+    ticket.innerHTML = `
+      <div class="ti-header">
+        <div class="ti-icon">🪜</div>
+        <div class="ti-name">Mi Sistema de Ahorro</div>
+        <div class="ti-sub">Automático, en el orden correcto</div>
+      </div>
+      <div class="ti-body">
+        <div class="ti-block"><div class="tb-label">Colchón inicial</div><div class="tb-value">${fmt(a.colchonInicial)}</div><div class="tb-sub">${a.ahorros >= a.colchonInicial ? 'Ya cubierto ✅' : 'Meta rápida antes que todo lo demás'}</div></div>
+        <div class="ti-block"><div class="tb-label">Fondo de emergencia (4 meses)</div><div class="tb-value">${fmt(a.fondoCompleto)}</div><div class="tb-sub">${a.progresoPct.toFixed(0)}% cubierto</div></div>
+        <div class="ti-block"><div class="tb-label">Ahorro automático recomendado</div><div class="tb-value">${fmt(a.montoRecomendado)}/mes</div><div class="tb-sub">20% de tu ingreso, el mismo día que te pagan</div></div>
+      </div>`;
+
+    const btnImg = document.getElementById('btn-imagen');
+    const originalText = btnImg.textContent;
+    btnImg.textContent = 'Generando imagen...';
+    btnImg.disabled = true;
+
+    const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    setTimeout(() => {
+      Promise.all([
+        html2canvas(ticket, { backgroundColor: '#ffffff', scale: 2 }),
+        fontsReady
+      ]).then(([ticketCanvas]) => {
+        const storyW = 1080, storyH = 1920;
+        const maxW = storyW - 100;
+        const headerH = 180, footerH = 180;
+        const availH = storyH - headerH - footerH;
+
+        const scaleW = maxW / ticketCanvas.width;
+        const drawH0 = ticketCanvas.height * scaleW;
+        const shrink = drawH0 > availH ? (availH / drawH0) : 1;
+        const scale = scaleW * shrink;
+        const drawW = ticketCanvas.width * scale;
+        const drawH = ticketCanvas.height * scale;
+        const startY = headerH + Math.max(0, (availH - drawH) / 2);
+
+        const out = document.createElement('canvas');
+        out.width = storyW; out.height = storyH;
+        const ctx = out.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 0, 0, storyH);
+        grad.addColorStop(0, '#1c3a1e');
+        grad.addColorStop(1, '#0f2211');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, storyW, storyH);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= storyW; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, storyH); ctx.stroke(); }
+        for (let y = 0; y <= storyH; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(storyW, y); ctx.stroke(); }
+
+        ctx.textAlign = 'left';
+        ctx.font = '400 46px "Bebas Neue", sans-serif';
+        const word1 = 'SALVADOR ', word2 = 'FINANCIERO';
+        const w1 = ctx.measureText(word1).width, w2 = ctx.measureText(word2).width;
+        const startX = storyW / 2 - (w1 + w2) / 2;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(word1, startX, 110);
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText(word2, startX + w1, 110);
+        ctx.textAlign = 'center';
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 40;
+        ctx.drawImage(ticketCanvas, (storyW - drawW) / 2, startY, drawW, drawH);
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.font = 'italic 26px "DM Mono", monospace';
+        ctx.fillText('Herramienta de Ahorro ✦', storyW / 2, startY + drawH + 70);
+        ctx.font = '400 30px "Bebas Neue", sans-serif';
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText('SALVADOR FINANCIERO', storyW / 2, startY + drawH + 116);
+
+        out.toBlob(blob => {
+          const file = new File([blob], 'sistema-ahorro-automatico.png', { type: 'image/png' });
+
+          function fallbackDownload() {
+            const link = document.createElement('a');
+            link.download = 'sistema-ahorro-automatico.png';
+            link.href = out.toDataURL('image/png');
+            link.click();
+          }
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Mi Sistema de Ahorro Automático · Salvador Financiero' }).catch(err => {
+              if (err && err.name !== 'AbortError') fallbackDownload();
+            });
+          } else {
+            fallbackDownload();
+          }
+          btnImg.textContent = originalText;
+          btnImg.disabled = false;
+        }, 'image/png');
+      });
+    }, 50);
+  }
+
+  // ── DONA DE PROGRESO ──────────────────────
+  let donutChart = null;
+  function renderDona() {
+    const a = ultimoAhorro;
+    const cubierto = Math.min(a.ahorros, a.fondoCompleto);
+    const falta = Math.max(0, a.fondoCompleto - a.ahorros);
+    const color = colorPorPct(a.progresoPct);
+
+    document.getElementById('donut-center').textContent = a.progresoPct.toFixed(0) + '%';
+    document.getElementById('chart-legend').innerHTML = `
+      <div class="legend-item"><div class="legend-dot" style="background:${color};"></div><div><div class="legend-name">Cubierto</div><div class="legend-val">${fmt(cubierto)}</div></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e0dbd0;"></div><div><div class="legend-name">Te falta</div><div class="legend-val">${fmt(falta)}</div></div></div>
+    `;
+
+    if (typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('donutChart');
+    if (!ctx) return;
+    const data = { labels: ['Cubierto', 'Falta'], datasets: [{ data: [cubierto, falta || 0.0001], backgroundColor: [color, '#e0dbd0'], borderWidth: 0 }] };
+    if (donutChart) {
+      donutChart.data = data;
+      donutChart.update();
+    } else {
+      donutChart = new Chart(ctx, { type: 'doughnut', data, options: { cutout: '72%', plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+    }
+  }
+
+  // ── RESUMEN STICKY ──────────────────────
+  function renderResumenSticky() {
+    const a = ultimoAhorro;
+    const res = document.getElementById('resumen-sticky');
+    const pct = a.progresoPct;
+    if (pct >= 100) { res.style.background = '#163318'; res.style.borderTopColor = '#3d9160'; }
+    else if (pct >= 50) { res.style.background = '#1c3a1e'; res.style.borderTopColor = '#5a7a4a'; }
+    else if (pct >= 25) { res.style.background = '#3a2c05'; res.style.borderTopColor = '#c47d0e'; }
+    else if (pct > 0) { res.style.background = '#3a0f0f'; res.style.borderTopColor = '#d96060'; }
+    else { res.style.background = '#1c3a1e'; res.style.borderTopColor = '#5a7a4a'; }
+
+    document.getElementById('res-recomendado').textContent = fmt(a.montoRecomendado);
+    document.getElementById('res-meta').textContent = fmt(a.fondoCompleto);
+    document.getElementById('res-tienes').textContent = fmt(a.ahorros);
+    document.getElementById('res-tienes-hint').textContent = pct.toFixed(0) + '% cubierto';
+    document.getElementById('res-falta').textContent = fmt(a.faltante);
+  }
+
+  // ── MODAL DE BIENVENIDA ──────────────────────
+  (function() {
+    function cerrarModal() {
+      const m = document.getElementById('modal');
+      m.style.transition = 'opacity .25s';
+      m.style.opacity = '0';
+      m.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+      setTimeout(() => { m.style.display = 'none'; }, 260);
+    }
+    document.body.style.overflow = 'hidden';
+    document.getElementById('btn-x').addEventListener('click', cerrarModal);
+    document.getElementById('btn-comenzar').addEventListener('click', cerrarModal);
+  })();
+
+  // ── DESCARGAR PDF ──────────────────────
+  document.getElementById('btn-pdf').addEventListener('click', function() {
+    if (!ultimoAhorro) {
+      alert('Primero mete tu ingreso y tus gastos fijos.');
+      return;
+    }
+    window.print();
+  });
+
+  // Agendar cita por Instagram
+  (function() {
+    var btn = document.getElementById('agendarBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var msg = 'Hola! Quiero platicar mi sistema de ahorro.';
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg);
+      } catch (e) {}
+      window.open('https://ig.me/m/salvadorfinanciero', '_blank');
+    });
+  })();
+</script>
+</body>
+</html>
