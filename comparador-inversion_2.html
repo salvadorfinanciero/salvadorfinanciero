@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<meta charset="UTF-8">
+<meta name="theme-color" content="#1c3a1e">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Comparador de Inversión · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --forest:#1c3a1e;--pine:#2d5a30;--sage:#5a7a4a;--fern:#a8c498;
+  --white:#fff;--cream:#f4f2ed;--rule:#e0dbd0;--mid:#444;--soft:#888;
+  --amber:#c47d0e;--red:#d96060;--green:#3d9160;
+  --radius:16px;--radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;background:var(--forest);}
+body{font-family:'DM Mono',monospace;background:var(--cream);background-image:linear-gradient(rgba(28,58,30,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(28,58,30,0.04) 1px,transparent 1px);background-size:36px 36px;color:var(--forest);font-size:15px;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 40px;background:var(--forest);border-bottom:3px solid var(--sage);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--fern);}
+.btn-pdf{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;padding:9px 22px;background:transparent;color:var(--fern);border:1.5px solid var(--fern);cursor:pointer;border-radius:6px;transition:all .2s;}
+.btn-pdf:hover{background:var(--fern);color:var(--forest);}
+
+/* HERO */
+.hero{background:var(--forest);padding:36px 40px;border-bottom:3px solid var(--sage);}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,6vw,5rem);color:var(--white);letter-spacing:0.04em;line-height:0.9;margin-bottom:14px;}
+.hero h1 span{color:var(--fern);}
+#rotLine1,#rotLine2{transition:opacity .4s ease;}
+.hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:520px;line-height:1.6;}
+
+/* BANNERS */
+.banner{margin:20px 40px 0;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;border-radius:var(--radius-sm);}
+.banner.light{background:var(--white);border:1px solid var(--rule);}
+.banner.dark{background:var(--forest);border:1px solid var(--pine);}
+.banner-icon{font-size:1.6rem;flex-shrink:0;line-height:1.2;}
+.banner-content{flex:1;}
+.banner-toggle{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px;}
+.banner-toggle strong{font-size:0.8rem;letter-spacing:0.04em;}
+.banner.light .banner-toggle strong{color:var(--forest);}
+.banner.dark .banner-toggle strong{color:var(--fern);}
+.toggle-btn{font-size:0.65rem;letter-spacing:0.1em;color:var(--sage);white-space:nowrap;padding:3px 10px;border:1px solid var(--sage);border-radius:4px;cursor:pointer;flex-shrink:0;}
+.banner-body{font-size:0.75rem;letter-spacing:0.03em;line-height:1.85;margin-top:10px;}
+.banner.light .banner-body{color:var(--mid);}
+.banner.dark .banner-body{color:rgba(255,255,255,0.75);}
+.banner-body strong{font-weight:500;}
+.banner.light .banner-body strong{color:var(--forest);}
+.banner.dark .banner-body strong{color:var(--fern);}
+
+/* MAIN */
+.main{padding:32px 40px 52px;}
+.section-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;align-items:start;}
+
+.section{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;}
+.section-hd{padding:18px 20px 14px;border-bottom:2px solid var(--rule);background:rgba(28,58,30,0.02);}
+.section-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.08em;color:var(--forest);}
+.section-sub{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);margin-top:4px;}
+
+/* SLIDERS */
+.slider-block{padding:18px 20px;}
+.slider-block+.slider-block{border-top:1px solid var(--rule);}
+.slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+.slider-emoji{font-size:1.4rem;line-height:1;}
+.slider-lbl{font-size:0.72rem;color:var(--mid);letter-spacing:0.03em;display:flex;align-items:center;gap:8px;}
+.slider-big{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--forest);letter-spacing:0.02em;}
+.slider-note{font-size:0.62rem;color:var(--soft);margin-top:8px;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:rgba(90,122,74,0.15);border-radius:3px;outline:none;cursor:pointer;margin:8px 0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--forest);border-radius:50%;cursor:pointer;box-shadow:0 2px 8px rgba(28,58,30,0.3);}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--forest);border-radius:50%;cursor:pointer;border:none;}
+.txt-inp{border:1.5px solid var(--rule);padding:9px 12px;font-size:0.78rem;color:var(--forest);outline:none;width:100%;background:transparent;transition:border-color .15s;margin-top:8px;border-radius:var(--radius-sm);}
+.txt-inp:focus{border-color:var(--sage);}
+
+.tasa-block{padding:16px 20px;border-top:1px solid var(--rule);}
+.tasa-label{font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.tasa-row{display:flex;gap:10px;align-items:center;}
+.tasa-inp{font-size:0.95rem;color:var(--forest);border:1.5px solid var(--rule);padding:8px 14px;outline:none;width:80px;text-align:center;background:transparent;border-radius:var(--radius-sm);transition:border-color .15s;}
+.tasa-inp:focus{border-color:var(--sage);}
+.tasa-suf{font-size:0.75rem;color:var(--mid);}
+.tasa-note{font-size:0.65rem;color:var(--soft);line-height:1.8;margin-top:8px;}
+
+/* PLAZO */
+.plazo-selector{display:flex;gap:10px;padding:0 20px 18px;}
+.plazo-btn{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;padding:14px 10px;background:var(--white);border:1.5px solid var(--rule);color:var(--soft);cursor:pointer;transition:all .2s;flex:1;text-align:center;line-height:1;border-radius:var(--radius-sm);}
+.plazo-btn:hover{border-color:var(--sage);color:var(--forest);}
+.plazo-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);box-shadow:0 4px 16px rgba(28,58,30,0.25);}
+.plazo-btn-sub{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);display:block;margin-top:4px;}
+.plazo-btn.active .plazo-btn-sub{color:var(--fern);}
+
+/* VS CARDS */
+.vs-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:20px;}
+.vs-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;}
+.vs-hd{padding:18px 20px;display:flex;align-items:center;gap:12px;}
+.vs-hd.parado{background:rgba(217,96,96,0.08);}
+.vs-hd.invertido{background:rgba(61,145,96,0.08);}
+.vs-emoji{font-size:1.8rem;line-height:1;}
+.vs-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:var(--forest);}
+.vs-sub{font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--soft);margin-top:2px;}
+.vs-body{padding:20px;}
+.vs-final{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;line-height:1;margin-bottom:4px;}
+.vs-card.parado .vs-final{color:var(--red);}
+.vs-card.invertido .vs-final{color:var(--green);}
+.vs-final-lbl{font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;}
+.vs-row{display:flex;justify-content:space-between;padding:8px 0;border-top:1px dashed var(--rule);font-size:0.72rem;color:var(--mid);}
+.vs-row span:last-child{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--forest);}
+.vs-mid{display:flex;align-items:center;justify-content:center;padding:0 16px;}
+.vs-vs{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--soft);letter-spacing:0.05em;}
+
+/* DIFERENCIA */
+.dif-card{background:var(--forest);border-radius:var(--radius);padding:28px 32px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden;}
+.dif-lbl{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--fern);margin-bottom:10px;}
+.dif-val{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,7vw,4rem);color:var(--white);line-height:1;}
+.dif-note{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:rgba(255,255,255,0.6);margin-top:12px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;}
+
+/* CHART */
+.chart-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.chart-hd{background:var(--forest);padding:16px 24px;}
+.chart-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:var(--white);}
+.chart-body{padding:24px 20px;}
+.chart-legend-row{display:flex;gap:20px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:8px;}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.legend-name{font-size:0.7rem;color:var(--mid);}
+
+/* NOTA */
+.nota-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;}
+.nota-card p{font-size:0.7rem;color:var(--mid);line-height:1.9;}
+.nota-card strong{color:var(--forest);}
+
+/* CTA */
+.cta-card{background:var(--pine);border-radius:var(--radius);padding:28px 32px;text-align:center;}
+.cta-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--white);letter-spacing:0.05em;margin-bottom:10px;}
+.cta-sub{font-size:0.75rem;color:rgba(255,255,255,0.7);margin-bottom:18px;}
+.cta-btn{display:inline-block;background:var(--fern);color:var(--forest);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;padding:13px 34px;text-decoration:none;border-radius:8px;transition:all .2s;}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+
+/* RESUMEN STICKY */
+.resumen{position:sticky;bottom:0;z-index:90;background:var(--forest);border-top:3px solid var(--sage);padding:16px 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;box-shadow:0 -8px 32px rgba(28,58,30,0.2);}
+.res-block label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:4px;}
+.res-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--white);}
+.res-hint{font-size:0.58rem;color:rgba(255,255,255,0.3);margin-top:2px;}
+
+footer{background:var(--forest) !important;padding:16px 40px;display:flex;align-items:center;justify-content:center;border-top:2px solid var(--pine);flex-wrap:wrap;gap:16px;text-align:center;}
+.flogo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);letter-spacing:0.1em;text-decoration:none;}
+.flogo span{color:var(--fern);}
+.ftext{font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(10,25,12,0.88);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0 16px;}
+@media(min-width:600px){.modal-overlay{align-items:center;}}
+.modal-box{background:var(--white);max-width:420px;width:100%;border-radius:20px 20px 0 0;overflow:hidden;box-shadow:0 -8px 40px rgba(0,0,0,0.3);max-height:88vh;overflow-y:auto;}
+@media(min-width:600px){.modal-box{border-radius:20px;max-height:none;max-width:480px;}}
+.modal-hd{background:var(--forest);padding:22px 24px 18px;position:relative;}
+.modal-logo{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--white);margin-bottom:6px;}
+.modal-logo span{color:var(--fern);}
+.modal-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.05em;color:var(--white);line-height:0.9;}
+.modal-ttl span{color:var(--fern);}
+.modal-x{position:absolute;top:16px;right:16px;width:32px;height:32px;background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.modal-x:hover{background:rgba(255,255,255,0.2);color:var(--white);}
+.modal-body{padding:20px 24px;}
+.modal-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.modal-num{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--sage);line-height:1;flex-shrink:0;width:22px;}
+.modal-step-text{font-size:0.78rem;letter-spacing:0.02em;color:var(--mid);line-height:1.7;}
+.modal-step-text strong{color:var(--forest);}
+.modal-ft{padding:16px 24px 20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.modal-hint{font-size:0.6rem;letter-spacing:0.06em;color:var(--soft);}
+.modal-btn{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;padding:12px 28px;background:var(--sage);color:var(--white);border:none;cursor:pointer;border-radius:8px;transition:background .2s;}
+.modal-btn:hover{background:var(--forest);}
+
+/* PRINT */
+.print-header{display:none;}
+@media print{
+  .print-header{display:block !important;position:fixed;top:0;left:0;right:0;background:white;padding:6px 24px 8px;border-bottom:2px solid #1c3a1e;z-index:9999;display:flex;justify-content:space-between;align-items:center;}
+  .ph-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#1c3a1e;}
+  .ph-logo span{color:#5a7a4a;}
+  .ph-tag{font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;text-align:right;}
+  body{padding-top:40px !important;background:white;}
+  .banner,.btn-pdf,.modal-overlay,footer,.cta-card{display:none !important;}
+  nav{position:static !important;}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .resumen{-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static !important;box-shadow:none;}
+  .main{padding:12px 16px 16px;}
+  @page{margin:8mm;size:A4;}
+}
+
+/* RESPONSIVE */
+@media(max-width:1000px){.grid2{grid-template-columns:1fr;}.vs-wrap{grid-template-columns:1fr;}.vs-mid{padding:8px 0;}.vs-vs{transform:rotate(90deg);}}
+@media(max-width:768px){
+  nav,.hero,.banner,.main,footer{padding-left:16px;padding-right:16px;}
+  .banner{margin-left:16px;margin-right:16px;}
+  .resumen{grid-template-columns:1fr;gap:10px;padding:14px 16px;}
+  .res-val{font-size:1.4rem;}
+  input,select{font-size:16px !important;}
+  .dif-card{padding:22px 18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="print-header"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tag">Comparador de Inversión<br>@salvadorfinanciero</div></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-logo">Salvador <span>Financiero</span></div>
+      <div class="modal-ttl">Comparador de<br><span>Inversión</span></div>
+      <button class="modal-x" id="btn-x">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step"><div class="modal-num">1</div><div class="modal-step-text">Escribe <strong>cuánto tienes hoy</strong> y <strong>cuánto puedes aportar cada mes</strong>.</div></div>
+      <div class="modal-step"><div class="modal-num">2</div><div class="modal-step-text">Elige el <strong>plazo</strong> — a cuántos años quieres ver el resultado.</div></div>
+      <div class="modal-step"><div class="modal-num">3</div><div class="modal-step-text">🐌 <strong>Dinero parado</strong>: se queda en una cuenta sin rendimiento y pierde valor por inflación cada año.</div></div>
+      <div class="modal-step"><div class="modal-num">4</div><div class="modal-step-text">🚀 <strong>Invertido con acompañamiento</strong>: crece con interés compuesto a la tasa que definamos juntos según tu perfil.</div></div>
+      <div class="modal-step"><div class="modal-num">5</div><div class="modal-step-text">Verás la <strong>diferencia real</strong> entre dejarlo quieto y ponerlo a trabajar.</div></div>
+    </div>
+    <div class="modal-ft">
+      <span class="modal-hint">✦ @salvadorfinanciero</span>
+      <button class="modal-btn" id="btn-comenzar">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a class="nav-logo" href="#">Salvador <span>Financiero</span></a>
+  <button class="btn-pdf" id="btn-pdf">⬇ Descargar PDF</button>
+</nav>
+
+<div class="hero">
+  <h1 id="rotTitle"><span id="rotLine1">Comparador de</span><br><span id="rotLine2">Inversión</span></h1>
+  <div class="hero-sub">🐌 vs 🚀 — mismo dinero, dos caminos. Mira cuánto te cuesta, en números reales, dejar tu dinero quieto.</div>
+</div>
+
+<div class="banner dark" id="ban1">
+  <div class="banner-icon">💡</div>
+  <div class="banner-content">
+    <div class="banner-toggle">
+      <strong>El dinero parado no está "seguro" — está perdiendo.</strong>
+      <span class="toggle-btn" id="ban1-btn" style="border-color:rgba(168,196,152,0.4);color:rgba(168,196,152,0.7);">Ver menos ▴</span>
+    </div>
+    <div class="banner-body" id="ban1-body" style="display:block;">
+      La inflación le quita poder adquisitivo a tu dinero cada año, aunque el número en tu estado de cuenta no cambie. <strong>$10,000 hoy no van a comprar lo mismo en 10 años</strong> si se quedan quietos. Invertir con una estrategia no es un lujo — es la forma de que tu dinero, por lo menos, no pierda.
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="grid2">
+    <!-- COL 1: TU SITUACIÓN -->
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-ttl">Tu Punto de Partida</div>
+        <div class="section-sub">¿Cuánto tienes y cuánto puedes aportar?</div>
+      </div>
+      <div class="slider-block">
+        <div class="slider-top">
+          <span class="slider-lbl"><span class="slider-emoji">💰</span> Tengo hoy</span>
+          <span class="slider-big" id="val-actual">$0</span>
+        </div>
+        <input type="range" id="slider-actual" min="0" max="500000" step="1000" value="20000">
+        <div class="slider-note">Mueve el control o escribe abajo</div>
+        <input type="text" class="txt-inp" id="input-actual" inputmode="numeric" placeholder="Escribe el monto exacto">
+      </div>
+      <div class="slider-block">
+        <div class="slider-top">
+          <span class="slider-lbl"><span class="slider-emoji">📅</span> Aporto al mes</span>
+          <span class="slider-big" id="val-mensual">$0</span>
+        </div>
+        <input type="range" id="slider-mensual" min="0" max="30000" step="100" value="2000">
+        <div class="slider-note">Lo que separas cada mes, en cualquiera de los dos caminos</div>
+        <input type="text" class="txt-inp" id="input-mensual" inputmode="numeric" placeholder="Escribe el monto exacto">
+      </div>
+      <div class="section-label" style="padding:0 20px;margin-top:4px;">Plazo</div>
+      <div class="plazo-selector">
+        <button class="plazo-btn" data-anios="3">3<span class="plazo-btn-sub">años</span></button>
+        <button class="plazo-btn active" data-anios="5">5<span class="plazo-btn-sub">años</span></button>
+        <button class="plazo-btn" data-anios="10">10<span class="plazo-btn-sub">años</span></button>
+        <button class="plazo-btn" data-anios="20">20<span class="plazo-btn-sub">años</span></button>
+      </div>
+    </div>
+
+    <!-- COL 2: TASAS -->
+    <div class="section">
+      <div class="section-hd">
+        <div class="section-ttl">Los Dos Caminos</div>
+        <div class="section-sub">Ajusta las tasas si quieres afinar el escenario</div>
+      </div>
+      <div class="tasa-block">
+        <div class="tasa-label">🐌 Dinero parado — inflación anual</div>
+        <div class="tasa-row">
+          <input type="text" class="tasa-inp" id="tasa-inflacion" inputmode="numeric" value="4.5">
+          <span class="tasa-suf">% anual</span>
+        </div>
+        <div class="tasa-note">Lo que pierde de poder adquisitivo cada año por quedarse quieto (sin rendimiento).</div>
+      </div>
+      <div class="tasa-block">
+        <div class="tasa-label">🚀 Invertido con acompañamiento — rendimiento estimado</div>
+        <div class="tasa-row">
+          <input type="text" class="tasa-inp" id="tasa-inversion" inputmode="numeric" value="10">
+          <span class="tasa-suf">% anual</span>
+        </div>
+        <div class="tasa-note">Estimación de referencia según estrategia y horizonte — se ajusta según tu perfil de riesgo real.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VS -->
+  <div class="vs-wrap">
+    <div class="vs-card parado">
+      <div class="vs-hd parado">
+        <div class="vs-emoji">🐌</div>
+        <div><div class="vs-ttl">Dinero Parado</div><div class="vs-sub">Cuenta sin rendimiento</div></div>
+      </div>
+      <div class="vs-body">
+        <div class="vs-final" id="parado-final">$0</div>
+        <div class="vs-final-lbl">Valor nominal al final del plazo</div>
+        <div class="vs-row"><span>Poder de compra real</span><span id="parado-real">$0</span></div>
+        <div class="vs-row"><span>Total aportado</span><span id="parado-aportado">$0</span></div>
+      </div>
+    </div>
+    <div class="vs-mid"><div class="vs-vs">VS</div></div>
+    <div class="vs-card invertido">
+      <div class="vs-hd invertido">
+        <div class="vs-emoji">🚀</div>
+        <div><div class="vs-ttl">Invertido</div><div class="vs-sub">Con acompañamiento</div></div>
+      </div>
+      <div class="vs-body">
+        <div class="vs-final" id="inv-final">$0</div>
+        <div class="vs-final-lbl">Valor al final del plazo</div>
+        <div class="vs-row"><span>Ganado por interés compuesto</span><span id="inv-ganado">$0</span></div>
+        <div class="vs-row"><span>Total aportado</span><span id="inv-aportado">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIFERENCIA -->
+  <div class="dif-card">
+    <div class="dif-lbl">✦ Lo que te cuesta no invertir ✦</div>
+    <div class="dif-val" id="dif-val">$0</div>
+    <div class="dif-note" id="dif-note">Esa es la diferencia entre dejar tu dinero quieto y ponerlo a trabajar en tu plazo elegido.</div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-card">
+    <div class="chart-hd"><div class="chart-ttl">Cómo Crece Cada Camino</div></div>
+    <div class="chart-body">
+      <canvas id="lineChart" height="90"></canvas>
+      <div class="chart-legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#d96060;"></div><div class="legend-name">🐌 Dinero parado</div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3d9160;"></div><div class="legend-name">🚀 Invertido</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nota-card">
+    <p>💡 Esta comparación es una <strong>estimación educativa</strong>, no una promesa de rendimiento. Las tasas reales de inversión varían según el mercado, tu perfil de riesgo y el plazo. Lo que sí es constante: el dinero que no se mueve, pierde valor con el tiempo.</p>
+  </div>
+
+  <div class="cta-card">
+    <div class="cta-ttl">¿Le ponemos número a tu caso real?</div>
+    <div class="cta-sub">Con tu situación y tu perfil de riesgo puedo darte una tasa y una estrategia concretas — no una estimación genérica.</div>
+    <a href="index.html#contacto" class="cta-btn">Hablemos →</a>
+  </div>
+
+</div>
+
+<div class="resumen" id="resumen">
+  <div class="res-block"><label>🐌 Parado (real)</label><div class="res-val" id="res-parado">$0</div><div class="res-hint">Poder de compra ajustado</div></div>
+  <div class="res-block"><label>🚀 Invertido</label><div class="res-val" id="res-inv">$0</div><div class="res-hint">Al final del plazo</div></div>
+  <div class="res-block"><label>Diferencia</label><div class="res-val" id="res-dif" style="color:var(--fern);">$0</div><div class="res-hint">Lo que ganas por invertir</div></div>
+</div>
+
+<footer>
+  <a class="flogo" href="#">Salvador <span>Financiero</span></a>
+  <div class="ftext">Maestro en Administración Patrimonial · @salvadorfinanciero · Herramienta educativa, no asesoría certificada.</div>
+</footer>
+
+<script>
+function parse(v){if(!v)return 0;return parseFloat(String(v).replace(/[^0-9.]/g,''))||0;}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-MX');}
+function fmtInp(inp){var r=parse(inp.value);if(r>0)inp.value=fmt(r);}
+
+var anios=5, lineChart=null;
+
+function getActual(){return Math.max(parse(document.getElementById('input-actual').value),parseInt(document.getElementById('slider-actual').value)||0);}
+function getMensual(){return Math.max(parse(document.getElementById('input-mensual').value),parseInt(document.getElementById('slider-mensual').value)||0);}
+
+function syncSl(key){
+  var v=parseInt(document.getElementById('slider-'+key).value)||0;
+  document.getElementById('val-'+key).textContent=fmt(v);
+  var inp=document.getElementById('input-'+key);inp.value=v>0?fmt(v):'';
+  recalc();
+}
+function syncInp(key){
+  var inp=document.getElementById('input-'+key);fmtInp(inp);
+  var v=parse(inp.value);
+  document.getElementById('val-'+key).textContent=fmt(v);
+  var sl=document.getElementById('slider-'+key);
+  if(v>parseInt(sl.max))sl.max=Math.ceil(v*1.5);
+  sl.value=v;recalc();
+}
+
+function setAnios(n,btn){
+  anios=n;
+  document.querySelectorAll('.plazo-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  recalc();
+}
+
+function seriesFor(actual,mensual,tasaAnualPct,meses){
+  var tm=Math.pow(1+tasaAnualPct/100,1/12)-1;
+  var acum=actual, out=[acum];
+  for(var i=1;i<=meses;i++){
+    acum=acum*(1+tm)+mensual;
+    out.push(acum);
+  }
+  return out;
+}
+
+function buildChart(paradoSerie,invSerie,meses){
+  var labels=[];
+  for(var i=0;i<=meses;i+=Math.max(1,Math.round(meses/10))){labels.push('Año '+(i/12).toFixed(1));}
+  // simplify: sample yearly
+  var yearLabels=[],paradoY=[],invY=[];
+  for(var y=0;y<=anios;y++){
+    var idx=Math.min(y*12,meses);
+    yearLabels.push('Año '+y);
+    paradoY.push(Math.round(paradoSerie[idx]));
+    invY.push(Math.round(invSerie[idx]));
+  }
+  if(lineChart)lineChart.destroy();
+  lineChart=new Chart(document.getElementById('lineChart').getContext('2d'),{
+    type:'line',
+    data:{labels:yearLabels,datasets:[
+      {label:'Dinero parado',data:paradoY,borderColor:'#d96060',backgroundColor:'rgba(217,96,96,0.08)',fill:true,tension:0.3,pointRadius:3},
+      {label:'Invertido',data:invY,borderColor:'#3d9160',backgroundColor:'rgba(61,145,96,0.08)',fill:true,tension:0.3,pointRadius:3}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c3a1e',titleColor:'#a8c498',bodyColor:'rgba(255,255,255,0.85)',titleFont:{family:'Bebas Neue',size:14},bodyFont:{family:'DM Mono',size:11},padding:12,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt(c.raw);}}}},
+      scales:{y:{ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(28,58,30,0.06)'}},x:{grid:{display:false},ticks:{font:{size:10}}}}
+    }
+  });
+}
+
+function recalc(){
+  var actual=getActual(), mensual=getMensual(), meses=anios*12;
+  var tasaInfl=parse(document.getElementById('tasa-inflacion').value);
+  var tasaInv=parse(document.getElementById('tasa-inversion').value);
+
+  // Dinero parado: crece nominal a $0 (sin rendimiento), pero pierde valor real por inflación
+  var totalAportadoParado=actual+mensual*meses;
+  var paradoSerie=seriesFor(actual,mensual,0,meses); // nominal, sin rendimiento
+  var paradoNominalFinal=totalAportadoParado;
+  var paradoRealFinal=paradoNominalFinal/Math.pow(1+tasaInfl/100,anios);
+
+  // Invertido: crece con interés compuesto a tasaInv
+  var invSerie=seriesFor(actual,mensual,tasaInv,meses);
+  var invFinal=invSerie[invSerie.length-1];
+  var totalAportadoInv=actual+mensual*meses;
+  var invGanado=invFinal-totalAportadoInv;
+
+  document.getElementById('parado-final').textContent=fmt(paradoNominalFinal);
+  document.getElementById('parado-real').textContent=fmt(paradoRealFinal);
+  document.getElementById('parado-aportado').textContent=fmt(totalAportadoParado);
+
+  document.getElementById('inv-final').textContent=fmt(invFinal);
+  document.getElementById('inv-ganado').textContent=fmt(Math.max(invGanado,0));
+  document.getElementById('inv-aportado').textContent=fmt(totalAportadoInv);
+
+  var dif=invFinal-paradoRealFinal;
+  document.getElementById('dif-val').textContent=fmt(Math.max(dif,0));
+  document.getElementById('dif-note').textContent='En '+anios+' años, invertir en vez de dejarlo quieto significa '+fmt(Math.max(dif,0))+' de diferencia en tu bolsillo.';
+
+  document.getElementById('res-parado').textContent=fmt(paradoRealFinal);
+  document.getElementById('res-inv').textContent=fmt(invFinal);
+  document.getElementById('res-dif').textContent=fmt(Math.max(dif,0));
+
+  buildChart(paradoSerie,invSerie,meses);
+}
+
+function toast(){}
+function cerrar(){
+  var m=document.getElementById('modal');
+  m.style.transition='opacity .25s';m.style.opacity='0';m.style.pointerEvents='none';
+  document.body.style.overflow='';
+  document.documentElement.style.overflow='';
+  setTimeout(function(){m.style.display='none';},260);
+}
+function setupBanner(id,bodyId,btnId){
+  var parent=document.getElementById(id);
+  var body=document.getElementById(bodyId);
+  var btn=document.getElementById(btnId);
+  if(!parent||!body||!btn)return;
+  parent.addEventListener('click',function(){
+    var open=body.style.display==='block';
+    body.style.display=open?'none':'block';
+    btn.textContent=open?'Ver más ▾':'Ver menos ▴';
+  });
+}
+
+// INIT
+document.body.style.overflow='hidden';
+document.documentElement.style.overflow='hidden';
+document.getElementById('btn-x').addEventListener('click',cerrar);
+document.getElementById('btn-comenzar').addEventListener('click',cerrar);
+document.getElementById('btn-pdf').addEventListener('click',function(){window.print();});
+document.getElementById('slider-actual').addEventListener('input',function(){syncSl('actual');});
+document.getElementById('slider-mensual').addEventListener('input',function(){syncSl('mensual');});
+document.getElementById('input-actual').addEventListener('input',function(){syncInp('actual');});
+document.getElementById('input-mensual').addEventListener('input',function(){syncInp('mensual');});
+document.getElementById('tasa-inflacion').addEventListener('input',recalc);
+document.getElementById('tasa-inversion').addEventListener('input',recalc);
+document.querySelectorAll('.plazo-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){setAnios(parseInt(this.dataset.anios),this);});
+});
+setupBanner('ban1','ban1-body','ban1-btn');
+
+// valores iniciales
+document.getElementById('val-actual').textContent=fmt(20000);
+document.getElementById('input-actual').value=fmt(20000);
+document.getElementById('val-mensual').textContent=fmt(2000);
+document.getElementById('input-mensual').value=fmt(2000);
+
+recalc();
+
+// Título rotativo
+(function() {
+  var l1 = document.getElementById('rotLine1');
+  var l2 = document.getElementById('rotLine2');
+  if (!l1 || !l2) return;
+  var phrases = [
+    ['Comparador de', 'Inversión'],
+    ['Lo que te cuesta', 'no invertir']
+  ];
+  var i = 0;
+  setInterval(function() {
+    l1.style.opacity = '0';
+    l2.style.opacity = '0';
+    setTimeout(function() {
+      i = (i + 1) % phrases.length;
+      l1.textContent = phrases[i][0];
+      l2.textContent = phrases[i][1];
+      l1.style.opacity = '1';
+      l2.style.opacity = '1';
+    }, 400);
+  }, 10000);
+})();
+</script>
+</body>
+</html>
