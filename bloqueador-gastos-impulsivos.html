@@ -459,6 +459,7 @@
   let triggersSel = new Set();
   let categoriasSel = new Set();
   let respuestas = {};
+  let donutChart = null;
 
   function fmt(n) {
     return '$' + Math.round(n).toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -784,7 +785,6 @@
   }
 
   // ── DONA DE SUSCRIPCIONES ──────────────────────
-  let donutChart = null;
   const SUB_COLORS = ['#5a7a4a', '#c47d0e', '#2d5a30', '#d96060', '#8a9e88', '#a8c498', '#7a4a8a', '#2d6a8a'];
   function renderDona() {
     const subs = [];
