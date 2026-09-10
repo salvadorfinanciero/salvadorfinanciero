@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<meta name="theme-color" content="#1c3a1e">
+<title>Panel de Claridad Financiera · Salvador Financiero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --forest: #1c3a1e;
+    --pine:   #2d5a30;
+    --sage:   #5a7a4a;
+    --fern:   #a8c498;
+    --cream:  #f5f3ee;
+    --white:  #ffffff;
+    --mid:    #555;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; overflow-x:hidden; }
+  body { background:#f0ede6; font-family:'DM Mono',monospace; color:var(--forest); min-height:100vh; overflow-x:hidden;
+    background-image:
+      linear-gradient(rgba(28,58,30,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,58,30,0.06) 1px, transparent 1px);
+    background-size:36px 36px;
+  }
+
+  nav { background:var(--forest); padding:16px 40px; padding-left:max(40px, env(safe-area-inset-left)); padding-right:max(40px, env(safe-area-inset-right)); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:3px solid var(--sage); }
+  .nav-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.1em; color:var(--white); text-decoration:none; }
+  .nav-brand span { color:var(--fern); }
+  .nav-back { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fern); text-decoration:none; }
+  .nav-back:hover { color:var(--white); }
+  .btn-pdf { font-family:'Bebas Neue',sans-serif; font-size:0.78rem; letter-spacing:0.08em; padding:8px 18px; background:transparent; color:var(--fern); border:1.5px solid var(--fern); cursor:pointer; border-radius:6px; transition:all .2s; }
+  .btn-pdf:hover { background:var(--fern); color:var(--forest); }
+
+  /* MODAL DE BIENVENIDA */
+  .modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(10,25,12,0.88); backdrop-filter:blur(8px); display:flex; align-items:flex-end; justify-content:center; padding:0 16px; }
+  @media(min-width:600px){ .modal-overlay{ align-items:center; padding:24px; } }
+  .modal-box { background:var(--white); max-width:420px; width:100%; border-radius:20px 20px 0 0; overflow:hidden; box-shadow:0 -8px 40px rgba(0,0,0,0.3); max-height:88vh; overflow-y:auto; }
+  @media(min-width:600px){ .modal-box{ border-radius:20px; max-height:none; max-width:480px; } }
+  .modal-hd { background:var(--forest); padding:22px 24px 18px; position:relative; }
+  .modal-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; color:var(--white); margin-bottom:6px; }
+  .modal-logo span { color:var(--fern); }
+  .modal-ttl { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:0.05em; color:var(--white); line-height:0.95; }
+  .modal-ttl span { color:var(--fern); }
+  .modal-x { position:absolute; top:16px; right:16px; width:32px; height:32px; background:rgba(255,255,255,0.1); border:none; color:rgba(255,255,255,0.7); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+  .modal-x:hover { background:rgba(255,255,255,0.2); color:var(--white); }
+  .modal-body { padding:20px 24px; }
+  .modal-step { display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
+  .modal-num { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--sage); line-height:1; flex-shrink:0; width:22px; }
+  .modal-step-text { font-size:0.74rem; letter-spacing:0.02em; color:var(--mid); line-height:1.7; }
+  .modal-step-text strong { color:var(--forest); }
+  .modal-ft { padding:16px 24px 20px; border-top:1px solid rgba(28,58,30,0.1); display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .modal-hint { font-size:0.58rem; letter-spacing:0.06em; color:rgba(28,58,30,0.4); }
+  .modal-btn { font-family:'Bebas Neue',sans-serif; font-size:0.95rem; letter-spacing:0.12em; padding:11px 26px; background:var(--sage); color:var(--white); border:none; cursor:pointer; border-radius:8px; transition:background .2s; }
+  .modal-btn:hover { background:var(--forest); }
+
+  /* DONA */
+  .chart-card { background:var(--white); border-top:4px solid var(--sage); box-shadow:0 2px 16px rgba(28,58,30,0.07); padding:36px; }
+  .chart-body { display:flex; flex-direction:column; align-items:center; gap:20px; }
+  .chart-wrap { position:relative; width:220px; height:220px; }
+  .chart-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+  .chart-center-val { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--forest); line-height:1; }
+  .chart-center-lbl { font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(28,58,30,0.4); margin-top:3px; }
+  .chart-legend { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:8px; }
+  .legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+  .legend-name { font-size:0.64rem; color:rgba(28,58,30,0.6); }
+  .legend-val { font-family:'Bebas Neue',sans-serif; font-size:0.88rem; color:var(--forest); }
+
+  /* BARRA FIJA ABAJO */
+  .resumen-sticky { position:fixed; left:0; right:0; bottom:0; z-index:90; background:var(--forest); border-top:3px solid var(--sage); padding:16px 40px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; box-shadow:0 -8px 32px rgba(28,58,30,0.2); transition:background .5s,border-color .5s; }
+  .resumen-sticky-data { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; flex:1; min-width:280px; }
+  .res-block label { font-size:0.54rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); display:block; margin-bottom:4px; }
+  .res-val { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--white); }
+  .res-hint { font-size:0.54rem; color:rgba(255,255,255,0.3); margin-top:2px; }
+  .resumen-sticky-dl-wrap { position:relative; flex-shrink:0; }
+  .resumen-sticky-dl { display:inline-flex; align-items:center; gap:8px; font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:0.06em; background:transparent; color:var(--fern); border:1.5px solid var(--fern); padding:11px 20px; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all .2s; width:100%; }
+  .resumen-sticky-dl:hover { background:var(--fern); color:var(--forest); }
+  .dl-menu { position:absolute; bottom:calc(100% + 8px); right:0; background:var(--white); border-radius:10px; overflow:hidden; box-shadow:0 8px 28px rgba(0,0,0,0.3); display:none; min-width:180px; }
+  .dl-menu.open { display:block; }
+  .dl-menu button { display:flex; align-items:center; gap:10px; width:100%; padding:13px 18px; background:var(--white); border:none; border-bottom:1px solid rgba(28,58,30,0.08); text-align:left; font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--forest); cursor:pointer; }
+  .dl-menu button:last-child { border-bottom:none; }
+  .dl-menu button:hover { background:var(--cream); }
+  body.has-sticky-bar { padding-bottom:90px; }
+  @media(max-width:760px){ .resumen-sticky{ padding:14px 20px; } .resumen-sticky-data{ grid-template-columns:1fr 1fr; } .res-val{ font-size:1.1rem; } .res-hint{ display:none; } .resumen-sticky-dl{ width:100%; justify-content:center; } body.has-sticky-bar{ padding-bottom:150px; } }
+
+  /* PRINT */
+  .print-header { display:none; }
+  @media print {
+    .print-header { display:flex !important; position:fixed; top:0; left:0; right:0; background:white; padding:6px 24px 8px; border-bottom:2px solid #1c3a1e; z-index:9999; justify-content:space-between; align-items:center; }
+    .ph-logo { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:#1c3a1e; }
+    .ph-logo span { color:#5a7a4a; }
+    .ph-tag { font-size:0.5rem; letter-spacing:0.12em; text-transform:uppercase; color:#aaa; text-align:right; }
+    body { padding-top:40px !important; background:white; }
+    .btn-pdf, .btn-img, .modal-overlay, footer, nav .nav-back { display:none !important; }
+    nav { position:static !important; }
+    .resumen-sticky { position:static !important; box-shadow:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    @page { margin:8mm; size:A4; }
+  }
+
+  .hero { background:var(--forest); padding:52px max(40px, env(safe-area-inset-right)) 40px max(40px, env(safe-area-inset-left)); border-bottom:3px solid var(--sage); }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--fern); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .hero-eyebrow span { display:block; width:24px; height:2px; background:var(--fern); }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.4rem,7vw,4.2rem); line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:6px; }
+  .hero h1 span { color:var(--fern); }
+  .hero p { font-family:'Instrument Serif',serif; font-style:italic; font-size:1rem; color:rgba(255,255,255,0.5); line-height:1.75; max-width:520px; margin-top:14px; }
+
+  .container { max-width:900px; margin:0 auto; padding:40px 40px 80px; display:flex; flex-direction:column; gap:20px; }
+
+  .card { background:var(--white); border-top:4px solid var(--sage); padding:36px; box-shadow:0 2px 16px rgba(28,58,30,0.07); }
+  .card-label { font-size:0.65rem; letter-spacing:0.2em; color:rgba(28,58,30,0.4); margin-bottom:6px; text-transform:uppercase; }
+  .card h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--sage); margin-bottom:8px; }
+  .card .card-sub { font-size:0.68rem; color:rgba(28,58,30,0.45); line-height:1.6; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid rgba(28,58,30,0.1); }
+
+  .input-group { display:flex; flex-direction:column; gap:5px; margin-bottom:0; }
+  .input-group label { font-size:0.58rem; letter-spacing:0.13em; text-transform:uppercase; color:rgba(28,58,30,0.5); }
+  .input-wrap { position:relative; display:flex; align-items:center; }
+  .input-wrap .prefix { position:absolute; left:13px; font-size:0.85rem; color:var(--sage); pointer-events:none; }
+  input[type="number"], input[type="text"] {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.88rem;
+    padding:11px 14px; outline:none; transition:border-color .18s;
+    -moz-appearance:textfield;
+  }
+  input[type="number"] { padding-left:32px; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+  input:focus { border-color:var(--sage); }
+  select {
+    width:100%; background:var(--cream); border:1px solid rgba(28,58,30,0.15);
+    color:var(--forest); font-family:'DM Mono',monospace; font-size:0.85rem;
+    padding:11px 14px; outline:none; cursor:pointer;
+  }
+  select:focus { border-color:var(--sage); }
+
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:18px; }
+
+  /* FILAS DINÁMICAS */
+  .fila { display:grid; grid-template-columns:1.4fr 1fr 1fr auto; gap:10px; align-items:end; padding:14px; background:var(--cream); border:1px solid rgba(28,58,30,0.08); margin-bottom:10px; }
+  .fila.f2 { grid-template-columns:1.6fr 1fr auto; }
+  .fila.f3 { grid-template-columns:1.6fr 1fr 1fr auto; }
+  .fila-del { background:none; border:none; color:rgba(160,50,50,0.55); cursor:pointer; font-size:1.05rem; padding:10px 6px; }
+  .fila-del:hover { color:#a03232; }
+  .btn-add-row { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1.5px dashed rgba(28,58,30,0.3); color:var(--sage); font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; padding:11px 20px; cursor:pointer; width:100%; justify-content:center; transition:all .2s; margin-top:4px; margin-bottom:8px; }
+  .btn-add-row:hover { border-color:var(--sage); background:rgba(90,122,74,0.06); }
+
+  .total-box { margin-top:14px; padding:14px 18px; background:var(--forest); display:flex; justify-content:space-between; align-items:center; border-radius:14px; }
+  .total-box .tb-label { font-size:0.56rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+  .total-box .tb-value { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--fern); }
+
+  /* PANEL PRINCIPAL */
+  .panel-net { text-align:center; padding:28px 20px; background:var(--forest); margin-bottom:20px; border-radius:20px; }
+  .panel-net .pn-label { font-size:0.6rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--fern); margin-bottom:8px; }
+  .panel-net .pn-value { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.2rem,6vw,3.2rem); color:white; }
+  .panel-net .pn-sub { font-size:0.62rem; color:rgba(255,255,255,0.45); margin-top:6px; }
+
+  .panel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .panel-item { background:var(--cream); padding:16px 14px; border-top:3px solid var(--sage); border-radius:14px; }
+  .panel-item .pi-icon { font-size:1.1rem; margin-bottom:6px; }
+  .panel-item .pi-label { font-size:0.52rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:3px; }
+  .panel-item .pi-value { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; color:var(--forest); line-height:1.15; }
+  .panel-item .pi-value.neg { color:#a03232; }
+
+  /* OBJETIVOS */
+  .objetivo-item { margin-bottom:16px; }
+  .objetivo-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .objetivo-nombre { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--forest); }
+  .objetivo-pct { font-size:0.6rem; color:rgba(28,58,30,0.45); }
+  .objetivo-track { height:10px; background:rgba(28,58,30,0.08); overflow:hidden; }
+  .objetivo-fill { height:100%; background:var(--sage); transition:width .4s; }
+  .objetivo-desc { font-size:0.6rem; color:rgba(28,58,30,0.45); margin-top:5px; }
+
+  /* CADENCIA DE REVISIÓN */
+  .cadencia-grid { display:flex; flex-direction:column; gap:14px; margin-top:6px; }
+  .cadencia-item { display:flex; gap:16px; padding:16px 18px; background:var(--cream); border-left:4px solid var(--sage); }
+  .cadencia-item .cd-when { flex-shrink:0; width:90px; font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--sage); }
+  .cadencia-item .cd-what { font-size:0.68rem; line-height:1.7; color:rgba(28,58,30,0.7); }
+
+  .checklist { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+  .checklist-item { display:flex; gap:12px; align-items:flex-start; font-size:0.68rem; line-height:1.6; color:rgba(28,58,30,0.7); }
+  .checklist-item .ci-num { flex-shrink:0; width:22px; height:22px; background:var(--sage); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:0.75rem; }
+
+  .hidden { display:none !important; }
+
+  .btn-img { display:inline-flex; align-items:center; gap:10px; background:transparent; color:var(--forest); border:1.5px solid var(--sage); font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; padding:13px 28px; cursor:pointer; transition:all .2s; margin-top:24px; }
+  .btn-img:hover { background:var(--sage); color:white; }
+  .btn-img:disabled { opacity:0.5; cursor:not-allowed; }
+
+  .panel-ticket { position:fixed; left:-9999px; top:0; width:520px; background:#ffffff; font-family:'DM Mono',monospace; color:var(--forest); }
+  .ti-header { background:var(--forest); padding:26px 30px 22px; text-align:center; }
+  .ti-header .ti-icon { font-size:1.8rem; margin-bottom:6px; }
+  .ti-header .ti-name { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.05em; color:#ffffff; }
+  .ti-header .ti-net { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:var(--fern); margin-top:8px; }
+  .ti-header .ti-sub { font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-top:4px; }
+  .ti-body { padding:22px 26px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .ti-block { padding:14px 16px; background:var(--cream); border-left:3px solid var(--sage); }
+  .ti-block .tb-label { font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(28,58,30,0.45); margin-bottom:3px; }
+  .ti-block .tb-value { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; color:var(--forest); }
+
+  .cta-section { background:var(--forest); padding:56px 40px; text-align:center; margin-top:8px; }
+  .cta-section h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.4rem); color:white; letter-spacing:0.03em; margin-bottom:10px; }
+  .cta-section p { font-family:'Instrument Serif',serif; font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.6); margin-bottom:26px; }
+  .cta-btn { display:inline-block; background:var(--fern); color:var(--forest); font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.08em; padding:15px 36px; text-decoration:none; transition:all .2s; }
+  .cta-btn:hover { background:white; }
+
+  footer { background:var(--forest); padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08); }
+  .ftext { font-size:0.58rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
+
+  @media(max-width:760px){
+    .row2, .row3 { grid-template-columns:1fr; }
+    .panel-grid { grid-template-columns:1fr 1fr; }
+    .ti-body { grid-template-columns:1fr; }
+  }
+  @media(max-width:600px){
+    nav { padding:13px max(20px, env(safe-area-inset-right)) 13px max(20px, env(safe-area-inset-left)); }
+    .hero { padding:36px max(20px, env(safe-area-inset-right)) 30px max(20px, env(safe-area-inset-left)); }
+    .container { padding:24px max(16px, env(safe-area-inset-right)) 60px max(16px, env(safe-area-inset-left)); }
+    .card, .cta-section { padding:22px 18px; }
+    .fila, .fila.f2, .fila.f3 { grid-template-columns:1fr; }
+    .panel-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-header"><div class="ph-logo">Salvador <span>Financiero</span></div><div class="ph-tag">Panel de Claridad Financiera<br>@salvadorfinanciero</div></div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-logo">Salvador <span>Financiero</span></div>
+      <div class="modal-ttl">Panel de<br><span>Claridad Financiera</span></div>
+      <button class="modal-x" id="btn-x">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step"><div class="modal-num">1</div><div class="modal-step-text">Llena tus <strong>cuentas, deudas, flujo mensual, suscripciones y objetivos</strong> — todo lo que ya tienes por ahí, junto.</div></div>
+      <div class="modal-step"><div class="modal-num">2</div><div class="modal-step-text">Tu <strong>Patrimonio Neto</strong> se calcula solo: activos menos deudas, sin que tengas que sacar la calculadora.</div></div>
+      <div class="modal-step"><div class="modal-num">3</div><div class="modal-step-text">La <strong>dona</strong> te muestra cómo se compone lo que tienes — cuánto está en efectivo, ahorro, inversión.</div></div>
+      <div class="modal-step"><div class="modal-num">4</div><div class="modal-step-text">Baja hasta <strong>Qué Revisar y Cuándo</strong> — semanal, mensual, trimestral — para no vivir pegado a esto.</div></div>
+      <div class="modal-step"><div class="modal-num">5</div><div class="modal-step-text">Abajo del todo, tu <strong>resumen fijo</strong> con lo esencial, siempre visible mientras bajas.</div></div>
+    </div>
+    <div class="modal-ft">
+      <span class="modal-hint">✦ @salvadorfinanciero</span>
+      <button class="modal-btn" id="btn-comenzar">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-brand">SALVADOR <span>FINANCIERO</span></a>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <button class="btn-pdf" id="btn-pdf" type="button">⬇ Descargar PDF</button>
+    <a href="index.html" class="nav-back">← Regresar al inicio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow"><span></span>Herramienta de Claridad Financiera</div>
+  <h1>Panel de<br><span>Claridad Financiera</span></h1>
+  <p>Toda tu situación financiera en un solo lugar — sin abrir seis apps distintas para saber cómo vas.</p>
+</div>
+
+<div class="container">
+
+  <!-- SECCIÓN 01: CUENTAS -->
+  <div class="card">
+    <div class="card-label">Sección 01</div>
+    <h2>🏦 Tus Cuentas</h2>
+    <div class="card-sub">Todo lo que tienes: cuentas, efectivo, inversiones.</div>
+    <div id="cuentas-list"></div>
+    <button class="btn-add-row" type="button" onclick="agregarCuenta()">+ Agregar cuenta</button>
+    <div class="total-box"><div class="tb-label">Total en activos</div><div class="tb-value" id="total-activos">$0</div></div>
+  </div>
+
+  <!-- SECCIÓN 02: DEUDAS -->
+  <div class="card">
+    <div class="card-label">Sección 02</div>
+    <h2>💳 Tus Deudas</h2>
+    <div class="card-sub">Todo lo que debes: tarjetas, préstamos, financiamientos.</div>
+    <div id="deudas-list"></div>
+    <button class="btn-add-row" type="button" onclick="agregarDeuda()">+ Agregar deuda</button>
+    <div class="total-box"><div class="tb-label">Total en deudas</div><div class="tb-value" id="total-deudas">$0</div></div>
+  </div>
+
+  <!-- SECCIÓN 03: FLUJO MENSUAL -->
+  <div class="card">
+    <div class="card-label">Sección 03</div>
+    <h2>💵 Flujo Mensual</h2>
+    <div class="card-sub">Lo que entra y lo que sale cada mes.</div>
+    <div class="row3">
+      <div class="input-group">
+        <label>Ingreso mensual</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-ingreso" placeholder="0" min="0" oninput="calcular()"></div>
+      </div>
+      <div class="input-group">
+        <label>Gasto mensual</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-gasto" placeholder="0" min="0" oninput="calcular()"></div>
+      </div>
+      <div class="input-group">
+        <label>Comisiones y tarifas</label>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="inp-comisiones" placeholder="0" min="0" oninput="calcular()"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 04: SUSCRIPCIONES -->
+  <div class="card">
+    <div class="card-label">Sección 04</div>
+    <h2>🔁 Suscripciones</h2>
+    <div class="card-sub">Cargos recurrentes — la fuga más silenciosa.</div>
+    <div id="subs-list"></div>
+    <button class="btn-add-row" type="button" onclick="agregarSub()">+ Agregar suscripción</button>
+    <div class="total-box"><div class="tb-label">Total mensual en suscripciones</div><div class="tb-value" id="total-subs">$0</div></div>
+  </div>
+
+  <!-- SECCIÓN 05: OBJETIVOS -->
+  <div class="card">
+    <div class="card-label">Sección 05</div>
+    <h2>🎯 Tus Objetivos Financieros</h2>
+    <div class="card-sub">Hacia dónde va todo esto.</div>
+    <div id="objetivos-form"></div>
+    <button class="btn-add-row" type="button" onclick="agregarObjetivoForm()">+ Agregar objetivo</button>
+  </div>
+
+  <!-- PANEL PRINCIPAL -->
+  <div class="card hidden" id="card-panel">
+    <div class="card-label">Tu Panel</div>
+    <h2>📊 Claridad Financiera</h2>
+    <div class="card-sub">Así se ve tu situación completa, de un vistazo.</div>
+
+    <div class="panel-net">
+      <div class="pn-label">Patrimonio Neto</div>
+      <div class="pn-value" id="panel-net-value">$0</div>
+      <div class="pn-sub" id="panel-net-sub"></div>
+    </div>
+
+    <div class="panel-grid" id="panel-grid"></div>
+
+    <div id="objetivos-progreso" style="margin-top:24px;"></div>
+  </div>
+
+  <!-- DONA -->
+  <div class="card hidden chart-card" id="card-dona">
+    <div class="card-label">Tus Activos</div>
+    <h2>📊 Composición de lo que Tienes</h2>
+    <div class="card-sub">Corriente, ahorro, inversión, efectivo — en qué está repartido.</div>
+    <div class="chart-body">
+      <div class="chart-wrap">
+        <canvas id="donutChart" width="220" height="220"></canvas>
+        <div class="chart-center">
+          <div class="chart-center-val" id="donut-center">$0</div>
+          <div class="chart-center-lbl">en activos</div>
+        </div>
+      </div>
+      <div class="chart-legend" id="chart-legend"></div>
+    </div>
+  </div>
+
+  <!-- CADENCIA -->
+  <div class="card hidden" id="card-cadencia">
+    <div class="card-label">Guía</div>
+    <h2>🗓️ Qué Revisar y Cuándo</h2>
+    <div class="card-sub">No todo se revisa igual de seguido — así no te agota mantener esto al día.</div>
+
+    <div class="cadencia-grid">
+      <div class="cadencia-item"><div class="cd-when">Semanal</div><div class="cd-what"><strong>Gasto vs. lo planeado</strong> y saldo disponible. 15 minutos, no una auditoría — solo para no llegar a fin de mes con sorpresas.</div></div>
+      <div class="cadencia-item"><div class="cd-when">Mensual</div><div class="cd-what"><strong>Ingreso, gasto total, ahorro real, y avance en tus objetivos.</strong> Aquí sí revisas si tu presupuesto está funcionando o hay que ajustarlo.</div></div>
+      <div class="cadencia-item"><div class="cd-when">Trimestral</div><div class="cd-what"><strong>Patrimonio neto, inversiones, suscripciones y comisiones.</strong> Lo que se mueve lento se revisa lento — aquí decides qué cancelar o rebalancear.</div></div>
+    </div>
+
+    <div class="checklist" id="checklist-semanal"></div>
+
+    <button class="btn-img" id="btn-imagen" type="button" onclick="generarImagenPanel()">📲 Descargar Mi Panel como Imagen</button>
+  </div>
+
+</div>
+
+<div class="panel-ticket" id="panel-ticket"></div>
+
+<div class="resumen-sticky hidden" id="resumen-sticky">
+  <div class="resumen-sticky-data">
+    <div class="res-block"><label>Patrimonio Neto</label><div class="res-val" id="res-neto">$0</div><div class="res-hint">activos − deudas</div></div>
+    <div class="res-block"><label>Ingreso mensual</label><div class="res-val" id="res-ingreso">$0</div><div class="res-hint">al mes</div></div>
+    <div class="res-block"><label>Ahorro mensual</label><div class="res-val" id="res-ahorro">$0</div><div class="res-hint">al mes</div></div>
+    <div class="res-block"><label>Deudas totales</label><div class="res-val" id="res-deudas">$0</div><div class="res-hint">por pagar</div></div>
+  </div>
+  <div class="resumen-sticky-dl-wrap">
+    <button type="button" class="resumen-sticky-dl" id="stickyDescargarBtn">⬇ Descargar</button>
+    <div class="dl-menu" id="dlMenu">
+      <button type="button" id="dlPdfBtn">📄 Como PDF</button>
+      <button type="button" id="dlImgBtn">📲 Como imagen</button>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>¿Quieres que lo revisemos juntos?</h2>
+  <p>Esta herramienta te da la fotografía completa — en una sesión vemos qué mover primero.</p>
+  <a href="javascript:void(0)" id="agendarBtn" class="cta-btn">📅 Agenda tu cita →</a>
+</div>
+
+<footer>
+  <div class="ftext">© 2026 · Maestro en Administración Patrimonial · CDMX, México · Hecho con estrategia ✦</div>
+</footer>
+
+<script>
+  let cuentaSeq = 0, deudaSeq = 0, subSeq = 0, objSeq = 0;
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  // ── CUENTAS ──────────────────────
+  function agregarCuenta(nombre, tipo, saldo) {
+    const id = 'c' + (cuentaSeq++);
+    const row = document.createElement('div');
+    row.className = 'fila f3';
+    row.dataset.id = id;
+    row.innerHTML = `
+      <div class="input-group"><label>Cuenta</label><input type="text" class="c-nombre" placeholder="Ej. BBVA Débito" value="${nombre || ''}" oninput="calcular()"></div>
+      <div class="input-group"><label>Tipo</label>
+        <select class="c-tipo" onchange="calcular()">
+          <option value="corriente" ${tipo === 'corriente' ? 'selected' : ''}>Cuenta corriente</option>
+          <option value="ahorro" ${tipo === 'ahorro' ? 'selected' : ''}>Ahorro</option>
+          <option value="inversion" ${tipo === 'inversion' ? 'selected' : ''}>Inversión</option>
+          <option value="efectivo" ${tipo === 'efectivo' ? 'selected' : ''}>Efectivo</option>
+          <option value="otro" ${tipo === 'otro' ? 'selected' : ''}>Otro</option>
+        </select>
+      </div>
+      <div class="input-group"><label>Saldo</label><div class="input-wrap"><span class="prefix">$</span><input type="number" class="c-saldo" placeholder="0" min="0" value="${saldo || ''}" oninput="calcular()"></div></div>
+      <button class="fila-del" type="button" onclick="quitarFila('${id}')" title="Quitar">✕</button>
+    `;
+    document.getElementById('cuentas-list').appendChild(row);
+  }
+
+  // ── DEUDAS ──────────────────────
+  function agregarDeuda(nombre, saldo) {
+    const id = 'd' + (deudaSeq++);
+    const row = document.createElement('div');
+    row.className = 'fila f2';
+    row.dataset.id = id;
+    row.innerHTML = `
+      <div class="input-group"><label>Deuda</label><input type="text" class="dd-nombre" placeholder="Ej. Tarjeta Santander" value="${nombre || ''}" oninput="calcular()"></div>
+      <div class="input-group"><label>Saldo</label><div class="input-wrap"><span class="prefix">$</span><input type="number" class="dd-saldo" placeholder="0" min="0" value="${saldo || ''}" oninput="calcular()"></div></div>
+      <button class="fila-del" type="button" onclick="quitarFila('${id}')" title="Quitar">✕</button>
+    `;
+    document.getElementById('deudas-list').appendChild(row);
+  }
+
+  // ── SUSCRIPCIONES ──────────────────────
+  function agregarSub(nombre, precio) {
+    const id = 's' + (subSeq++);
+    const row = document.createElement('div');
+    row.className = 'fila f2';
+    row.dataset.id = id;
+    row.innerHTML = `
+      <div class="input-group"><label>Suscripción</label><input type="text" class="s-nombre" placeholder="Ej. Spotify" value="${nombre || ''}" oninput="calcular()"></div>
+      <div class="input-group"><label>Costo mensual</label><div class="input-wrap"><span class="prefix">$</span><input type="number" class="s-precio" placeholder="0" min="0" value="${precio || ''}" oninput="calcular()"></div></div>
+      <button class="fila-del" type="button" onclick="quitarFila('${id}')" title="Quitar">✕</button>
+    `;
+    document.getElementById('subs-list').appendChild(row);
+  }
+
+  // ── OBJETIVOS ──────────────────────
+  function agregarObjetivoForm(nombre, meta, ahorrado) {
+    const id = 'o' + (objSeq++);
+    const row = document.createElement('div');
+    row.className = 'fila f3';
+    row.dataset.id = id;
+    row.innerHTML = `
+      <div class="input-group"><label>Objetivo</label><input type="text" class="o-nombre" placeholder="Ej. Enganche depa" value="${nombre || ''}" oninput="calcular()"></div>
+      <div class="input-group"><label>Meta</label><div class="input-wrap"><span class="prefix">$</span><input type="number" class="o-meta" placeholder="0" min="0" value="${meta || ''}" oninput="calcular()"></div></div>
+      <div class="input-group"><label>Ya llevas</label><div class="input-wrap"><span class="prefix">$</span><input type="number" class="o-ahorrado" placeholder="0" min="0" value="${ahorrado || ''}" oninput="calcular()"></div></div>
+      <button class="fila-del" type="button" onclick="quitarFila('${id}')" title="Quitar">✕</button>
+    `;
+    document.getElementById('objetivos-form').appendChild(row);
+  }
+
+  function quitarFila(id) {
+    const row = document.querySelector(`[data-id="${id}"]`);
+    if (row) row.remove();
+    calcular();
+  }
+
+  const TIPO_LABEL = { corriente: 'Cuenta corriente', ahorro: 'Ahorro', inversion: 'Inversión', efectivo: 'Efectivo', otro: 'Otro' };
+
+  function calcular() {
+    // Cuentas
+    let totalActivos = 0, totalInversiones = 0;
+    const porTipo = { corriente: 0, ahorro: 0, inversion: 0, efectivo: 0, otro: 0 };
+    document.querySelectorAll('#cuentas-list .fila').forEach(row => {
+      const saldo = parseFloat(row.querySelector('.c-saldo').value) || 0;
+      const tipo = row.querySelector('.c-tipo').value;
+      totalActivos += saldo;
+      porTipo[tipo] = (porTipo[tipo] || 0) + saldo;
+      if (tipo === 'inversion') totalInversiones += saldo;
+    });
+    document.getElementById('total-activos').textContent = fmt(totalActivos);
+
+    // Deudas
+    let totalDeudas = 0;
+    document.querySelectorAll('#deudas-list .fila').forEach(row => {
+      totalDeudas += parseFloat(row.querySelector('.dd-saldo').value) || 0;
+    });
+    document.getElementById('total-deudas').textContent = fmt(totalDeudas);
+
+    // Suscripciones
+    let totalSubs = 0;
+    document.querySelectorAll('#subs-list .fila').forEach(row => {
+      totalSubs += parseFloat(row.querySelector('.s-precio').value) || 0;
+    });
+    document.getElementById('total-subs').textContent = fmt(totalSubs);
+
+    // Flujo
+    const ingreso = parseFloat(document.getElementById('inp-ingreso').value) || 0;
+    const gasto = parseFloat(document.getElementById('inp-gasto').value) || 0;
+    const comisiones = parseFloat(document.getElementById('inp-comisiones').value) || 0;
+    const ahorroMensual = ingreso - gasto - comisiones;
+
+    // Objetivos
+    const objetivos = [];
+    document.querySelectorAll('#objetivos-form .fila').forEach(row => {
+      const nombre = row.querySelector('.o-nombre').value.trim();
+      const meta = parseFloat(row.querySelector('.o-meta').value) || 0;
+      const ahorrado = parseFloat(row.querySelector('.o-ahorrado').value) || 0;
+      if (nombre && meta > 0) objetivos.push({ nombre, meta, ahorrado });
+    });
+
+    const hayDatos = totalActivos > 0 || totalDeudas > 0 || ingreso > 0;
+    document.getElementById('card-panel').classList.toggle('hidden', !hayDatos);
+    document.getElementById('card-cadencia').classList.toggle('hidden', !hayDatos);
+    document.getElementById('card-dona').classList.toggle('hidden', !hayDatos);
+    document.getElementById('resumen-sticky').classList.toggle('hidden', !hayDatos);
+    document.body.classList.toggle('has-sticky-bar', hayDatos);
+    if (!hayDatos) return;
+
+    const patrimonioNeto = totalActivos - totalDeudas;
+
+    window.__ultimoPanel = { totalActivos, totalDeudas, totalSubs, totalInversiones, porTipo, ingreso, gasto, comisiones, ahorroMensual, objetivos, patrimonioNeto };
+
+    document.getElementById('panel-net-value').textContent = fmt(patrimonioNeto);
+    document.getElementById('panel-net-sub').textContent = `Activos (${fmt(totalActivos)}) − Deudas (${fmt(totalDeudas)})`;
+
+    document.getElementById('panel-grid').innerHTML = `
+      <div class="panel-item"><div class="pi-icon">💰</div><div class="pi-label">Ingreso mensual</div><div class="pi-value">${fmt(ingreso)}</div></div>
+      <div class="panel-item"><div class="pi-icon">💸</div><div class="pi-label">Gasto mensual</div><div class="pi-value">${fmt(gasto)}</div></div>
+      <div class="panel-item"><div class="pi-icon">🐷</div><div class="pi-label">Ahorro mensual</div><div class="pi-value ${ahorroMensual < 0 ? 'neg' : ''}">${fmt(ahorroMensual)}</div></div>
+      <div class="panel-item"><div class="pi-icon">💳</div><div class="pi-label">Deudas totales</div><div class="pi-value">${fmt(totalDeudas)}</div></div>
+      <div class="panel-item"><div class="pi-icon">📈</div><div class="pi-label">Inversiones</div><div class="pi-value">${fmt(totalInversiones)}</div></div>
+      <div class="panel-item"><div class="pi-icon">🔁</div><div class="pi-label">Suscripciones/mes</div><div class="pi-value">${fmt(totalSubs)}</div></div>
+    `;
+
+    document.getElementById('objetivos-progreso').innerHTML = objetivos.length === 0 ? '' : `
+      <div style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(28,58,30,0.4);margin-bottom:14px;">Progreso hacia tus objetivos</div>
+      ${objetivos.map(o => {
+        const pct = Math.min(100, (o.ahorrado / o.meta) * 100);
+        return `<div class="objetivo-item">
+          <div class="objetivo-top"><div class="objetivo-nombre">${o.nombre}</div><div class="objetivo-pct">${fmt(o.ahorrado)} de ${fmt(o.meta)}</div></div>
+          <div class="objetivo-track"><div class="objetivo-fill" style="width:${pct}%;"></div></div>
+          <div class="objetivo-desc">${pct.toFixed(0)}% cubierto</div>
+        </div>`;
+      }).join('')}
+    `;
+
+    document.getElementById('checklist-semanal').innerHTML = `
+      <div class="checklist-item"><div class="ci-num">1</div><div>Revisa tu saldo disponible en tus cuentas principales — ¿va como esperabas? (2 min)</div></div>
+      <div class="checklist-item"><div class="ci-num">2</div><div>Compara tu gasto de la semana contra lo planeado — sin juzgarte, solo mirar. (3 min)</div></div>
+      <div class="checklist-item"><div class="ci-num">3</div><div>Confirma que tus pagos mínimos de deudas ya salieron o están programados. (2 min)</div></div>
+      <div class="checklist-item"><div class="ci-num">4</div><div>Anota cualquier gasto grande no planeado que haya salido esta semana. (3 min)</div></div>
+      <div class="checklist-item"><div class="ci-num">5</div><div>Ve cuánto llevas en tu objetivo principal — un vistazo rápido, no un recálculo completo. (2 min)</div></div>
+      <div class="checklist-item"><div class="ci-num">6</div><div>Cierra la sesión. No necesitas más de 15 minutos — si te está tomando más, es que estás sobre-analizando.</div></div>
+    `;
+
+    renderDona();
+    renderResumenSticky();
+  }
+
+  // Precargar filas de ejemplo
+  agregarCuenta();
+  agregarCuenta();
+  agregarDeuda();
+  agregarSub();
+  agregarObjetivoForm();
+
+  // ── GENERAR IMAGEN ──────────────────────
+  function generarImagenPanel() {
+    const p = window.__ultimoPanel;
+    if (!p) {
+      alert('Primero mete tus cuentas, deudas o ingreso.');
+      return;
+    }
+    if (typeof html2canvas === 'undefined') {
+      alert('No se pudo cargar el generador de imagen — revisa tu conexión e intenta de nuevo.');
+      return;
+    }
+
+    // Clonar los cards reales (panel + dona) tal como se ven en pantalla
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;width:560px;background:#ffffff;';
+
+    const panelClone = document.getElementById('card-panel').cloneNode(true);
+    panelClone.classList.remove('hidden');
+    panelClone.style.boxShadow = 'none';
+    wrapper.appendChild(panelClone);
+
+    const donaClone = document.getElementById('card-dona').cloneNode(true);
+    donaClone.classList.remove('hidden');
+    donaClone.style.boxShadow = 'none';
+    // El <canvas> de la dona no copia su dibujo al clonar — se reemplaza por una imagen con el contenido real
+    const origCanvas = document.getElementById('donutChart');
+    const clonedCanvas = donaClone.querySelector('#donutChart');
+    if (origCanvas && clonedCanvas) {
+      const img = document.createElement('img');
+      img.src = origCanvas.toDataURL('image/png');
+      img.style.width = '220px';
+      img.style.height = '220px';
+      clonedCanvas.replaceWith(img);
+    }
+    wrapper.appendChild(donaClone);
+
+    document.body.appendChild(wrapper);
+
+    const btnImg = document.getElementById('btn-imagen');
+    const originalText = btnImg.textContent;
+    btnImg.textContent = 'Generando imagen...';
+    btnImg.disabled = true;
+
+    const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    setTimeout(() => {
+      Promise.all([
+        html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2 }),
+        fontsReady
+      ]).then(([ticketCanvas]) => {
+        document.body.removeChild(wrapper);
+        const storyW = 1080, storyH = 1920;
+        const maxW = storyW - 100;
+        const headerH = 180, footerH = 180;
+        const availH = storyH - headerH - footerH;
+
+        const scaleW = maxW / ticketCanvas.width;
+        const drawH0 = ticketCanvas.height * scaleW;
+        const shrink = drawH0 > availH ? (availH / drawH0) : 1;
+        const scale = scaleW * shrink;
+        const drawW = ticketCanvas.width * scale;
+        const drawH = ticketCanvas.height * scale;
+        const startY = headerH + Math.max(0, (availH - drawH) / 2);
+
+        const out = document.createElement('canvas');
+        out.width = storyW; out.height = storyH;
+        const ctx = out.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 0, 0, storyH);
+        grad.addColorStop(0, '#1c3a1e');
+        grad.addColorStop(1, '#0f2211');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, storyW, storyH);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= storyW; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, storyH); ctx.stroke(); }
+        for (let y = 0; y <= storyH; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(storyW, y); ctx.stroke(); }
+
+        ctx.textAlign = 'left';
+        ctx.font = '400 46px "Bebas Neue", sans-serif';
+        const word1 = 'SALVADOR ', word2 = 'FINANCIERO';
+        const w1 = ctx.measureText(word1).width, w2 = ctx.measureText(word2).width;
+        const startX = storyW / 2 - (w1 + w2) / 2;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(word1, startX, 110);
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText(word2, startX + w1, 110);
+        ctx.textAlign = 'center';
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 40;
+        ctx.drawImage(ticketCanvas, (storyW - drawW) / 2, startY, drawW, drawH);
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.font = 'italic 26px "DM Mono", monospace';
+        ctx.fillText('Herramienta de Claridad Financiera ✦', storyW / 2, startY + drawH + 70);
+        ctx.font = '400 30px "Bebas Neue", sans-serif';
+        ctx.fillStyle = '#a8c498';
+        ctx.fillText('SALVADOR FINANCIERO', storyW / 2, startY + drawH + 116);
+
+        out.toBlob(blob => {
+          const file = new File([blob], 'panel-claridad-financiera.png', { type: 'image/png' });
+
+          function fallbackDownload() {
+            const link = document.createElement('a');
+            link.download = 'panel-claridad-financiera.png';
+            link.href = out.toDataURL('image/png');
+            link.click();
+          }
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Panel de Claridad Financiera · Salvador Financiero' }).catch(err => {
+              if (err && err.name !== 'AbortError') fallbackDownload();
+            });
+          } else {
+            fallbackDownload();
+          }
+          btnImg.textContent = originalText;
+          btnImg.disabled = false;
+        }, 'image/png');
+      });
+    }, 50);
+  }
+
+  // ── DONA DE COMPOSICIÓN DE ACTIVOS ──────────────────────
+  let donutChart = null;
+  const TIPO_COLOR = { corriente: '#5a7a4a', ahorro: '#a8c498', inversion: '#2d5a30', efectivo: '#c47d0e', otro: '#8a9e88' };
+  function renderDona() {
+    const p = window.__ultimoPanel;
+    document.getElementById('donut-center').textContent = fmt(p.totalActivos);
+
+    const tipos = Object.keys(p.porTipo).filter(t => p.porTipo[t] > 0);
+    document.getElementById('chart-legend').innerHTML = tipos.map(t => `
+      <div class="legend-item"><div class="legend-dot" style="background:${TIPO_COLOR[t]};"></div><div><div class="legend-name">${TIPO_LABEL[t]}</div><div class="legend-val">${fmt(p.porTipo[t])}</div></div></div>
+    `).join('') || '<div style="font-size:0.68rem;color:rgba(28,58,30,0.4);">Agrega una cuenta con saldo para ver la composición.</div>';
+
+    if (typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('donutChart');
+    if (!ctx || tipos.length === 0) return;
+    const data = { labels: tipos.map(t => TIPO_LABEL[t]), datasets: [{ data: tipos.map(t => p.porTipo[t]), backgroundColor: tipos.map(t => TIPO_COLOR[t]), borderWidth: 0 }] };
+    if (donutChart) {
+      donutChart.data = data;
+      donutChart.update();
+    } else {
+      donutChart = new Chart(ctx, { type: 'doughnut', data, options: { cutout: '72%', plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+    }
+  }
+
+  // ── RESUMEN FIJO ──────────────────────
+  function renderResumenSticky() {
+    const p = window.__ultimoPanel;
+    const res = document.getElementById('resumen-sticky');
+    if (p.patrimonioNeto >= 0) { res.style.background = '#1c3a1e'; res.style.borderTopColor = '#5a7a4a'; }
+    else { res.style.background = '#3a0f0f'; res.style.borderTopColor = '#d96060'; }
+
+    document.getElementById('res-neto').textContent = fmt(p.patrimonioNeto);
+    document.getElementById('res-ingreso').textContent = fmt(p.ingreso);
+    document.getElementById('res-ahorro').textContent = fmt(p.ahorroMensual);
+    document.getElementById('res-deudas').textContent = fmt(p.totalDeudas);
+  }
+
+  // ── MODAL DE BIENVENIDA ──────────────────────
+  (function() {
+    function cerrarModal() {
+      const m = document.getElementById('modal');
+      m.style.transition = 'opacity .25s';
+      m.style.opacity = '0';
+      m.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+      setTimeout(() => { m.style.display = 'none'; }, 260);
+    }
+    document.body.style.overflow = 'hidden';
+    document.getElementById('btn-x').addEventListener('click', cerrarModal);
+    document.getElementById('btn-comenzar').addEventListener('click', cerrarModal);
+  })();
+
+  // ── DESCARGAR PDF ──────────────────────
+  document.getElementById('btn-pdf').addEventListener('click', function() {
+    if (!window.__ultimoPanel) { alert('Primero mete tus cuentas, deudas o ingreso.'); return; }
+    window.print();
+  });
+
+  // ── MENÚ DE DESCARGA EN LA BARRA FIJA ──────────────────────
+  (function() {
+    var toggleBtn = document.getElementById('stickyDescargarBtn');
+    var menu = document.getElementById('dlMenu');
+    if (!toggleBtn || !menu) return;
+    toggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.toggle('open');
+    });
+    document.addEventListener('click', function() { menu.classList.remove('open'); });
+    document.getElementById('dlPdfBtn').addEventListener('click', function() {
+      menu.classList.remove('open');
+      if (!window.__ultimoPanel) { alert('Primero mete tus cuentas, deudas o ingreso.'); return; }
+      window.print();
+    });
+    document.getElementById('dlImgBtn').addEventListener('click', function() {
+      menu.classList.remove('open');
+      generarImagenPanel();
+    });
+  })();
+
+  // Agendar cita por Instagram
+  (function() {
+    var btn = document.getElementById('agendarBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var msg = 'Hola! Quiero platicar mi panel financiero completo.';
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg);
+      } catch (e) {}
+      window.open('https://ig.me/m/salvadorfinanciero', '_blank');
+    });
+  })();
+</script>
+</body>
+</html>
