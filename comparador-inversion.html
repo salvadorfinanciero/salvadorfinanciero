@@ -280,6 +280,7 @@ footer{background:var(--forest) !important;padding:16px 40px;display:flex;align-
       </div>
       <div class="section-label" style="padding:0 20px;margin-top:4px;">Plazo</div>
       <div class="plazo-selector">
+        <button class="plazo-btn" data-anios="1">1<span class="plazo-btn-sub">año</span></button>
         <button class="plazo-btn" data-anios="3">3<span class="plazo-btn-sub">años</span></button>
         <button class="plazo-btn active" data-anios="5">5<span class="plazo-btn-sub">años</span></button>
         <button class="plazo-btn" data-anios="10">10<span class="plazo-btn-sub">años</span></button>
@@ -478,7 +479,7 @@ function recalc(){
 
   var dif=invFinal-paradoRealFinal;
   document.getElementById('dif-val').textContent=fmt(Math.max(dif,0));
-  document.getElementById('dif-note').textContent='En '+anios+' años, invertir en vez de dejarlo quieto significa '+fmt(Math.max(dif,0))+' de diferencia en tu bolsillo.';
+  document.getElementById('dif-note').textContent='En '+anios+(anios===1?' año':' años')+', invertir en vez de dejarlo quieto significa '+fmt(Math.max(dif,0))+' de diferencia en tu bolsillo.';
 
   document.getElementById('res-parado').textContent=fmt(paradoRealFinal);
   document.getElementById('res-inv').textContent=fmt(invFinal);
