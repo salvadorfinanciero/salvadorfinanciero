@@ -305,9 +305,11 @@
         <select id="sel-servicio" onchange="onServicioChange()">
           <option value="diagnostico">🧭 Diagnóstico Patrimonial</option>
           <option value="educacion">📚 Educación Financiera (1 hora)</option>
+          <option value="asesoria">💬 Asesoría</option>
           <option value="fiscal">📄 Trámites y Asesoría Fiscal</option>
           <option value="empresas">🏢 Empresas y Emprendedores</option>
           <option value="hijos">🧸 ¿Tienes Hijos? (mismo esquema que Portafolio)</option>
+          <option value="otro">📝 Otro</option>
         </select>
       </div>
       <div class="input-group">
@@ -315,6 +317,20 @@
         <div class="input-wrap">
           <span class="prefix">$</span>
           <input type="number" id="inp-precio-servicio" placeholder="0" min="0">
+          <span class="suffix">MXN</span>
+        </div>
+      </div>
+    </div>
+    <div class="input-group hidden" id="nombre-otro-wrap" style="margin-top:14px;">
+      <label>¿Qué servicio es?</label>
+      <input type="text" id="inp-nombre-otro" placeholder="Ej. Asesoría especial, sesión extra...">
+    </div>
+    <div class="servicio-row" style="margin-top:14px;">
+      <div class="input-group">
+        <label>Descuento (opcional)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="inp-descuento-servicio" placeholder="0" min="0">
           <span class="suffix">MXN</span>
         </div>
       </div>
@@ -366,9 +382,11 @@
   const catalogoServicios = {
     diagnostico: { label: '🧭 Diagnóstico Patrimonial', precio: () => 750, hint: 'Precio fijo por paquete de diagnóstico.' },
     educacion:   { label: '📚 Educación Financiera (1 hora)', precio: () => (estadoMensual && estadoMensual.califica) ? 500 : 750, hint: () => (estadoMensual && estadoMensual.califica) ? 'Ya es cliente de Portafolio — tarifa preferencial $500/hora.' : 'No es cliente de Portafolio — tarifa independiente $750/hora.' },
+    asesoria:    { label: '💬 Asesoría', precio: () => 750, hint: 'Precio base de asesoría — ajústalo o usa el descuento si fue una sesión especial.' },
     fiscal:      { label: '📄 Trámites y Asesoría Fiscal', precio: () => '', hint: 'Sin precio fijo — se cotiza según el caso. Escríbelo manualmente.' },
     empresas:    { label: '🏢 Empresas y Emprendedores', precio: () => '', hint: 'Sin precio fijo — se cotiza según el caso. Escríbelo manualmente.' },
     hijos:       { label: '🧸 ¿Tienes Hijos? (Portafolio a nombre de hijos)', precio: () => '', hint: 'Usa el mismo esquema de Gestión de Portafolio — calcula en Sección 01 y agrégalo desde ahí, o escribe el monto acordado aquí.' },
+    otro:        { label: '📝 Otro', precio: () => '', hint: 'Escribe qué servicio es y el precio acordado.' },
   };
 
   const planesMensual = [
@@ -444,24 +462,47 @@
     const def = catalogoServicios[key];
     const precioInput = document.getElementById('inp-precio-servicio');
     const hintEl = document.getElementById('servicio-hint');
+    const nombreOtroWrap = document.getElementById('nombre-otro-wrap');
     const precio = typeof def.precio === 'function' ? def.precio() : def.precio;
     precioInput.value = precio === '' ? '' : precio;
     hintEl.textContent = typeof def.hint === 'function' ? def.hint() : def.hint;
+    nombreOtroWrap.classList.toggle('hidden', key !== 'otro');
   }
 
   function agregarServicioSeleccionado() {
     const key = document.getElementById('sel-servicio').value;
     const def = catalogoServicios[key];
     const precio = parseFloat(document.getElementById('inp-precio-servicio').value) || 0;
+    const descuento = parseFloat(document.getElementById('inp-descuento-servicio').value) || 0;
+    const hintEl = document.getElementById('servicio-hint');
+
     if (precio <= 0) {
-      const hintEl = document.getElementById('servicio-hint');
       hintEl.textContent = 'Escribe un precio antes de agregarlo al ticket.';
       hintEl.style.color = '#a03232';
       return;
     }
-    agregarAlCarrito(def.label, 'Servicio adicional', precio);
+
+    let label = def.label;
+    if (key === 'otro') {
+      const nombreOtro = document.getElementById('inp-nombre-otro').value.trim();
+      if (!nombreOtro) {
+        hintEl.textContent = 'Escribe qué servicio es antes de agregarlo.';
+        hintEl.style.color = '#a03232';
+        return;
+      }
+      label = '📝 ' + nombreOtro;
+    }
+
+    const precioFinal = Math.max(0, precio - descuento);
+    const sub = descuento > 0
+      ? `Precio base ${fmt(precio)} · descuento ${fmt(descuento)} · Total ${fmt(precioFinal)}`
+      : 'Servicio adicional';
+
+    agregarAlCarrito(label, sub, precioFinal);
+
     document.getElementById('inp-precio-servicio').value = '';
-    const hintEl = document.getElementById('servicio-hint');
+    document.getElementById('inp-descuento-servicio').value = '';
+    if (key === 'otro') document.getElementById('inp-nombre-otro').value = '';
     hintEl.style.color = '';
     hintEl.textContent = '✓ Agregado al ticket.';
   }
@@ -657,6 +698,13 @@
         <div class="tk-total">
           <div class="tk-total-label">Total a cobrar</div>
           <div class="tk-total-val">${fmt(total)}</div>
+        </div>
+        <div style="margin-top:14px;padding:16px 20px;background:#f5f3ee;border-left:4px solid #5a7a4a;">
+          <div style="font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(28,58,30,0.45);margin-bottom:6px;">Datos para transferencia</div>
+          <div style="font-size:0.62rem;color:rgba(28,58,30,0.5);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;">CLABE (Nu)</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:0.04em;color:#1c3a1e;margin-bottom:8px;">638180010117968061</div>
+          <div style="font-size:0.62rem;color:rgba(28,58,30,0.5);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;">A nombre de</div>
+          <div style="font-size:0.78rem;color:#1c3a1e;">Miguel Valdez</div>
         </div>
       </div>
 
